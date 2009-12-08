@@ -44,25 +44,13 @@ namespace protean {
     };
 
     template<class TYPE>
-    std::string getStreamObjRegName(const std::string& name)
-    {
-        std::string className(name);
-        if (className.empty())
-        {
-            className = typeid(TYPE).name();
-            className = className.substr(6); // ignore the 'class ' prefix
-        }
-        return className;
-    }
-
-    template<class TYPE>
     void object_factory::register_instance(const std::string& name="")
     {
         std::string class_name(name);
         if (class_name.empty())
         {
             class_name = typeid(TYPE).name();
-            class_name = className.substr(6); // ignore the 'class ' prefix
+            class_name = class_name.substr(6); // ignore the 'class ' prefix
         }
         create_fn_t create_fn(&object::create<TYPE>);
         std::pair<instance_map_t::iterator, bool> ret =
