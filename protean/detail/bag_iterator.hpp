@@ -7,6 +7,7 @@
 #define PROTEAN_DETAIL_BAG_ITERATOR_HPP
 
 #include <protean/config.hpp>
+#include <protean/variant_error.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -52,7 +53,7 @@ namespace protean { namespace detail {
         }
         bool equal(const BASE *rhs) const
         {
-            const bag_iterator* cast_rhs = dynamic_cast<const bag_iterator*>(rhs);
+            const bag_iterator_interface* cast_rhs = dynamic_cast<const bag_iterator_interface*>(rhs);
             if (cast_rhs==NULL)
             {
                 boost::throw_exception(variant_error("Unable to convert iterator to bag iterator"));
@@ -85,4 +86,4 @@ namespace protean { namespace detail {
 #pragma warning(pop)
 #endif
 
-#endif PROTEAN_DETAIL_BAG_ITERATOR_HPP
+#endif // PROTEAN_DETAIL_BAG_ITERATOR_HPP

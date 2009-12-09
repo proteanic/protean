@@ -7,6 +7,7 @@
 #define PROTEAN_DETAIL_LIST_ITERATOR_HPP
 
 #include <protean/config.hpp>
+#include <protean/variant_error.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -51,7 +52,11 @@ namespace protean { namespace detail {
         }
         bool equal(const BASE* rhs) const
         {
-            const list_iterator* cast_rhs = dynamic_cast<const list_iterator*>(rhs);
+            const list_iterator_interface * cast_rhs = dynamic_cast<const list_iterator_interface *>(rhs);
+            if (cast_rhs==NULL)
+            {
+                boost::throw_exception(variant_error("Unable to convert iterator to list iterator"));
+            }
             return m_iterator==cast_rhs->iterator();
         }
         iterator_type iterator() const
