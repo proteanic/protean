@@ -7,7 +7,7 @@
 #define PROTEAN_OBJECT_FACTORY_HPP
 
 #include <protean/config.hpp>
-
+#include <protean/variant_error.hpp>
 #include <protean/object.hpp>
 
 #include <boost/function.hpp>

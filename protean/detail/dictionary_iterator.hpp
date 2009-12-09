@@ -7,6 +7,7 @@
 #define PROTEAN_DETAIL_DICTIONARY_ITERATOR_HPP
 
 #include <protean/config.hpp>
+#include <protean/variant_error.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)

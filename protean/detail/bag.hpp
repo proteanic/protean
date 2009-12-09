@@ -19,7 +19,7 @@ namespace protean { namespace detail {
 
     class PROTEAN_DLLEXPORT bag : public mapping
     {
-        typedef std::list<std::pair<std::string, variant>> container_type;
+        typedef std::list<std::pair<std::string, variant> > container_type;
 
     public:
         int compare(const collection& rhs) const;

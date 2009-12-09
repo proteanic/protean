@@ -7,6 +7,8 @@
 
 #include <boost/functional/hash.hpp>
 
+#include <typeinfo>
+
 namespace protean {
 
     exception_info::exception_info(const std::string& type, const std::string& message) :

@@ -168,13 +168,13 @@ namespace protean {
             size_t                num_rows;
             size_t                num_row;
 
-            friend sax_content_handler;
+            friend class sax_content_handler;
         };
 
         const xercesc::Locator*     m_locator;
         variant&                    m_result;
         variant                     m_instructions; // processing instructions
-        std::stack<boost::shared_ptr<element_info>> m_stack;
+        std::stack<boost::shared_ptr<element_info> > m_stack;
 
         int                         m_flags;
 
