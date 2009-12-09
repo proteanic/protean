@@ -9,6 +9,7 @@
 #include <protean/config.hpp>
 
 #include <map>
+#include <string>
 
 #ifdef _MSC_VER
 #pragma warning(push)
