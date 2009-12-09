@@ -7,6 +7,7 @@
 #define PROTEAN_DETAIL_BUFFER_HPP
 
 #include <protean/config.hpp>
+#include <cstddef>
 
 namespace protean { namespace detail {
     
@@ -24,8 +25,8 @@ namespace protean { namespace detail {
         int compare(const buffer& rhs) const;
         size_t hash() const;
     private:
-        void*  m_data;
         size_t m_size;
+        void*  m_data;
     };
 
 }} // namespace protean::detail

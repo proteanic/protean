@@ -6,6 +6,8 @@
 #ifndef PROTEAN_DETAIL_TUPLE_ITERATOR_HPP
 #define PROTEAN_DETAIL_TUPLE_ITERATOR_HPP
 
+#include "protean/variant_error.hpp"
+
 namespace protean { namespace detail {
 
     template<

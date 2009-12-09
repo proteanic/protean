@@ -24,7 +24,7 @@ namespace protean {
     }
 
     template<typename TARGET, typename SOURCE>
-    static TARGET variant::lexical_cast(const SOURCE& arg)
+    TARGET variant::lexical_cast(const SOURCE& arg)
     { 
         try
         {
@@ -66,7 +66,7 @@ namespace protean {
     variant::is() const
     {
         // If you get here, then T is unsupported
-        BOOST_STATIC_ASSERT( false );
+        BOOST_STATIC_ASSERT( sizeof(T)==0 );
     }
     template<> bool PROTEAN_DLLEXPORT variant::is<std::string>()                    const;
     template<> bool PROTEAN_DLLEXPORT variant::is<bool>()                           const;
@@ -107,7 +107,7 @@ namespace protean {
     variant::as() const
     {
         // If you get here, then T is unsupported
-        BOOST_STATIC_ASSERT( false );
+        BOOST_STATIC_ASSERT( sizeof(T)==0 );
     }
 
     template<> PROTEAN_DLLEXPORT std::string                    variant::as<std::string>()            const;
