@@ -1,0 +1,81 @@
+# This is a prototype jamfile that is far from complete and only works
+# under Windows. I will add Linux support later, and also make the
+# configuration more user-friendly.
+#
+# Quickstart:
+#
+# Install Boost, you will need iostreams with zlib support.
+# (I will write detailed instructions later or on request)
+#
+# Install Xerces
+# (ditto)
+#
+# Set BOOST_ROOT, under Cygwin this can be done e.g. by
+# export BOOST_ROOT c:/boost_1_41_0
+#
+# Put bjam on your path. Under Cygwin this can be done e.g. as follows
+# export PATH=${PATH}:/cygdrive/c/boost_1_41_0
+#
+# Edit the system-specific variables below
+#
+# run bjam in the directory this file is in. It will compile everything,
+# and then it will run the unit tests.
+
+using msvc ;
+using gcc ;
+using testing ;
+
+import os ;
+
+######## These variables are system-specific #################
+
+XERCES_LIB = c:/xerces-c-3.0.1/Build/Win32/VC8/Release ;
+XERCES_INCLUDE = c:/xerces-c-3.0.1/src ;
+BOOST_INCLUDE = c:/boost_1_41_0 ;
+BOOST_LIB = c:/boost_1_41_0/stage/lib ;
+BL = -vc80-mt-gd-1_41.lib ;
+
+##############################################################
+
+project : requirements 
+    <include>$(BOOST_INCLUDE) 
+    <include>.
+    <toolset>gcc:<cxxflags>"-Wno-multichar"
+    <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+;
+
+SOURCES = [ glob src/*.cpp ] ;
+
+lib xerces : : <file>$(XERCES_LIB)/xerces-c_3.lib : : <include>$(XERCES_INCLUDE) ;
+lib zlib : : <file>$(BOOST_LIB)/libboost_zlib$(BL) ;
+lib filesystem : : <file>$(BOOST_LIB)/libboost_filesystem$(BL) ;
+lib iostreams : zlib : <file>$(BOOST_LIB)/libboost_iostreams$(BL) ;
+lib datetime : : <file>$(BOOST_LIB)/libboost_date_time$(BL) ;
+lib regexp : : <file>$(BOOST_LIB)/libboost_regex$(BL) ;
+lib system : : <file>$(BOOST_LIB)/libboost_system$(BL) ;
+lib unittest : : <file>$(BOOST_LIB)/libboost_unit_test_framework$(BL) ;
+
+lib protean : 
+   $(SOURCES)
+   xerces filesystem iostreams datetime regexp system 
+:
+   <link>static
+;
+
+
+rule test-protean ( source ) {
+    return [
+            unit-test
+                $(source:B)
+            :
+                $(source)
+                protean 
+                unittest
+            : # command
+            : # input files
+            : <link>static
+        ] ;
+}
+
+test-protean test/basic_types.cpp ;
+test-protean test/trivial.cpp ;
