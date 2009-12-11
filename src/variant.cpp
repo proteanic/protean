@@ -189,10 +189,6 @@ namespace protean {
         variant_base(type, size),
         m_type(type)
     {
-        if (!is<Collection>())
-        {
-            boost::throw_exception(variant_error("Attempt to default construct a variant which does not represent a collection"));
-        }
     }
 
     variant::variant(enum_type_t type, const variant_base& base) :
