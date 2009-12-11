@@ -180,7 +180,7 @@ namespace protean {
 
     variant& variant::operator=(const variant &value)
     {
-        variant temp( value );
+        variant temp(value);
         swap(temp);
         return *this;
     }
@@ -191,10 +191,15 @@ namespace protean {
     {
     }
 
-    variant::variant(enum_type_t type, const variant_base& base) :
-        variant_base(base),
-        m_type(type)
+    variant::variant(enum_type_t type, const variant& rhs)
     {
+        boost::throw_exception(variant_error("TODO"));
+
+		if (type==rhs.type())
+		{
+            variant temp(rhs);
+            swap(temp);
+		}
     }
 
     variant::~variant()

@@ -29,7 +29,7 @@ namespace protean {
         variant(const variant& value);
 
         explicit variant(enum_type_t type, size_t size=0);
-        explicit variant(enum_type_t type, const variant_base& base);
+        explicit variant(enum_type_t type, const variant& base);
         explicit variant(const std::string& value);
         explicit variant(const char *value);
         explicit variant(int value);
