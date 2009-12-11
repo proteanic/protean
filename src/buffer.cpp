@@ -9,12 +9,6 @@
 
 namespace protean { namespace detail {
 
-    buffer::buffer() :
-        m_size(0),
-        m_data(NULL)
-    {
-    }
-
     buffer::buffer(void* data, size_t size, bool copyData) :
         m_size(size)
     {

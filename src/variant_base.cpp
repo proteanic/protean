@@ -19,6 +19,9 @@ namespace protean {
         {
             switch( type )
             {
+                case None:
+					m_value.set<None>(boost::blank());
+					break;
                 case Date:
                     m_value.set<Date>(boost::gregorian::date());
                     break;
@@ -30,12 +33,6 @@ namespace protean {
                     break;
                 case TimeSeries:
                     m_value.set<TimeSeries>(detail::timeseries());
-                    break;
-                case Buffer:
-                    m_value.set<Buffer>(detail::buffer());
-                    break;
-                case Object:
-                    m_value.set<Object>(object_handle());
                     break;
                 case Any:
                     m_value.set<Any>(detail::string());
@@ -55,9 +52,8 @@ namespace protean {
                 case Tuple:
                     m_value.set<Tuple>(detail::tuple(sequence_size));
                     break;
-                case Exception:
-                    m_value.set<Exception>(exception_info("UNINITIALISED", ""));
-                    break;
+				default:
+					boost::throw_exception(variant_error(std::string("Cannot default construct variant of type ") + enum_to_string(type)));
             }
         }
     }
@@ -70,8 +66,11 @@ namespace protean {
         }
         else
         {
-            switch( type )
+            switch(type)
             {
+                case None:
+					m_value.set<None>(rhs.m_value.get<None>());
+					break;
                 case Any:
                     m_value.set<Any>(rhs.m_value.get<Any>());
                     break;
@@ -111,6 +110,8 @@ namespace protean {
                 case Exception:
                     m_value.set<Exception>(rhs.m_value.get<Exception>());
                     break;
+				default:
+					boost::throw_exception(variant_error(std::string("Attempt to copy unknown variant type ") + enum_to_string(type)));
             }
         }
     }
@@ -125,6 +126,9 @@ namespace protean {
         {
             switch( type )
             {
+                case None:
+                    m_value.destroy<None>();
+                    break;
                 case Any:
                     m_value.destroy<Any>();
                     break;
@@ -164,6 +168,8 @@ namespace protean {
                 case Exception:
                     m_value.destroy<Exception>();
                     break;
+				default:
+					boost::throw_exception(variant_error(std::string("Attempt to destruct unknown variant type ") + enum_to_string(type)));
             }
         }
     }
