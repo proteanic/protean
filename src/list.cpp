@@ -27,7 +27,7 @@ namespace protean { namespace detail {
         }
         if ( m_value.size()!=rhsList->m_value.size() )
         {
-            return m_value.size()<rhsList->m_value.size();
+            return (m_value.size()<rhsList->m_value.size() ? -1 : 1);
         }
         return std::lexicographical_compare(
             m_value.begin(), m_value.end(), rhsList->m_value.begin(), rhsList->m_value.end() );

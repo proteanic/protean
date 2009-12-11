@@ -59,7 +59,7 @@ namespace protean { namespace detail {
         }
         if ( size()!=rhs.size() )
         {
-            return size()<rhs.size();
+            return (size()<rhs.size() ? -1 : 1);
         }
         return std::lexicographical_compare(
             m_value, m_value + m_size, rhs_cast->m_value, rhs_cast->m_value + m_size);
