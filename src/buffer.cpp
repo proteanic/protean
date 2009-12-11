@@ -36,6 +36,12 @@ namespace protean { namespace detail {
         memcpy(m_data, rhs.data(), m_size);
     }
 
+	buffer& buffer::operator=(const buffer& rhs)
+	{
+		buffer(rhs).swap(*this);
+		return *this;
+	}
+
     buffer::~buffer()
     {
         if (m_data)
@@ -73,5 +79,11 @@ namespace protean { namespace detail {
         const char* char_array( static_cast<const char*>(m_data) );
         return boost::hash_range(char_array, char_array+m_size);
     }
+
+	void buffer::swap(buffer& rhs)
+	{
+		std::swap(m_size, rhs.m_size);
+		std::swap(m_data, rhs.m_data);
+	}
 
 }} // namespace protean::detail

@@ -39,6 +39,12 @@ namespace protean { namespace detail {
         }
     }
 
+	tuple& tuple::operator=(const tuple& rhs)
+	{
+		tuple(rhs).swap(*this);
+		return *this;
+	}
+
     tuple::~tuple()
     {
        delete[] m_value;
@@ -97,7 +103,13 @@ namespace protean { namespace detail {
         boost::throw_exception(variant_error("Attempt to clear tuple"));
     }
 
-    variant_const_iterator_base* tuple::begin() const
+    void tuple::swap(tuple& rhs)
+	{
+		std::swap(m_size, rhs.m_size);
+		std::swap(m_value, rhs.m_value);
+	}
+
+	variant_const_iterator_base* tuple::begin() const
     {
         return new tuple_const_iterator(m_value);
     }
