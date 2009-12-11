@@ -99,7 +99,7 @@ namespace protean { namespace detail {
         else
         {
             heapPointer(static_cast<char*>(alignedMalloc(size+1)));
-            strncpy_s(heapPointer(), size, value, _TRUNCATE);
+            strncpy_s(heapPointer(), size+1, value, _TRUNCATE);
         }
     }
 
