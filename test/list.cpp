@@ -11,7 +11,7 @@ using boost::unit_test::test_suite;
 #include <protean/variant.hpp>
 using namespace protean;
 
-void test_List()
+void test_list_basic()
 {
     variant v1(variant::List);
     BOOST_CHECK(v1.is<variant::List>());
@@ -93,7 +93,7 @@ void test_list_iterator()
 test_suite* init_unit_test_suite(int, char* []) 
 {
     test_suite* test = BOOST_TEST_SUITE("list type");
-    test->add(BOOST_TEST_CASE(&test_List));
+    test->add(BOOST_TEST_CASE(&test_list_basic));
     test->add(BOOST_TEST_CASE(&test_list_iterator));
 
     return test;

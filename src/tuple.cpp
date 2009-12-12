@@ -57,12 +57,8 @@ namespace protean { namespace detail {
         {
             boost::throw_exception(variant_error("Unable to cast collection to tuple"));
         }
-        if ( size()!=rhs.size() )
-        {
-            return (size()<rhs.size() ? -1 : 1);
-        }
-        return std::lexicographical_compare(
-            m_value, m_value + m_size, rhs_cast->m_value, rhs_cast->m_value + m_size);
+        return (std::lexicographical_compare(m_value, m_value + m_size, rhs_cast->m_value, rhs_cast->m_value + m_size) ?
+            -1 : (std::lexicographical_compare(rhs_cast->m_value, rhs_cast->m_value + m_size, m_value, m_value + m_size) ? 1 : 0));
     }
 
     size_t tuple::hash() const

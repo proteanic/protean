@@ -21,12 +21,8 @@ namespace protean { namespace detail {
         {
             boost::throw_exception(variant_error("Unable to cast collection to bag"));
         }
-        if ( m_value.size()!=cast_rhs->m_value.size() )
-        {
-            return (m_value.size()<cast_rhs->m_value.size() ? -1 : 1);
-        }
-        return std::lexicographical_compare(
-            m_value.begin(), m_value.end(), cast_rhs->m_value.begin(), cast_rhs->m_value.end() );
+        return (std::lexicographical_compare(m_value.begin(), m_value.end(), cast_rhs->m_value.begin(), cast_rhs->m_value.end()) ?
+            -1 : (std::lexicographical_compare(cast_rhs->m_value.begin(), cast_rhs->m_value.end(), m_value.begin(), m_value.end()) ? 1 : 0));
     }
 
     size_t bag::hash() const

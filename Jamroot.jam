@@ -78,3 +78,4 @@ rule test-protean ( source ) {
 test-protean test/number.cpp ;
 test-protean test/string.cpp ;
 test-protean test/list.cpp ;
+test-protean test/object.cpp ;

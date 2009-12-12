@@ -93,7 +93,7 @@ namespace protean {
         }
         
         object_handle obj(m_value.get<Object>());
-        return obj->name()==object::create<T>()->name();
+        return obj->name()==T().name();
     }
 
     template<> bool PROTEAN_DLLEXPORT variant::is<object>() const;
@@ -147,7 +147,7 @@ namespace protean {
             T* casted = new T();
             casted->coerce(*obj.as<object_proxy>());
 
-            const_cast<object&>(obj) = casted;
+            const_cast<object_handle&>(obj) = casted;
             return *casted;
         }
         else

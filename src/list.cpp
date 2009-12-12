@@ -20,17 +20,13 @@ namespace protean { namespace detail {
 
     int list::compare(const collection& rhs) const
     {
-        const list* rhsList = dynamic_cast<const list*>(&rhs);
-        if ( rhsList==NULL )
+        const list* cast_rhs = dynamic_cast<const list*>(&rhs);
+        if (cast_rhs==NULL)
         {
             boost::throw_exception(variant_error("Unable to cast collection to list"));
         }
-        if ( m_value.size()!=rhsList->m_value.size() )
-        {
-            return (m_value.size()<rhsList->m_value.size() ? -1 : 1);
-        }
-        return std::lexicographical_compare(
-            m_value.begin(), m_value.end(), rhsList->m_value.begin(), rhsList->m_value.end() );
+        return (std::lexicographical_compare(m_value.begin(), m_value.end(), cast_rhs->m_value.begin(), cast_rhs->m_value.end()) ?
+            -1 : (std::lexicographical_compare(cast_rhs->m_value.begin(), cast_rhs->m_value.end(), m_value.begin(), m_value.end()) ? 1 : 0));
     }
 
     size_t list::hash() const
