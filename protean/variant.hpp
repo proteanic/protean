@@ -17,10 +17,28 @@ namespace protean {
         typedef boost::gregorian::date              date_t;
         typedef boost::posix_time::time_duration    time_t;
         typedef boost::posix_time::ptime            date_time_t;
+#ifndef linux
         typedef boost::int32_t                      int32_t;
         typedef boost::uint32_t                     uint32_t;
         typedef boost::int64_t                      int64_t;
         typedef boost::uint64_t                     uint64_t;
+#else
+        // int is hanled separately in various constructors, so
+        // int32_t has to be something different. Otherwise the
+        // overloaded constructors become indistinguishable. It so
+        // happens that boost chooses long to implement boost::int32_t
+        // under Windows, so everything compiles fine there. This
+        // problem will be fixed elsewhere, but for now here is a
+        // quick and dirty workaround to let everything compile under
+        // 32-bit g++
+        typedef long                                int32_t;
+        typedef unsigned                            long uint32_t;
+        typedef long long                           int64_t;
+        typedef unsigned long long                  uint64_t;
+#endif
+
+        BOOST_STATIC_ASSERT (sizeof (int32_t)==4 && sizeof (uint32_t)==4);
+        BOOST_STATIC_ASSERT (sizeof (int64_t)==8 && sizeof (uint64_t)==8);
 
     public:
         /* Construction */
@@ -180,9 +198,10 @@ namespace protean {
         typedef const variant value_type;
         typedef std::vector<variant>::const_iterator list_iterator_type;
         typedef std::map<std::string, variant>::const_iterator dictionary_iterator_type;
-        typedef std::list<std::pair<std::string, variant>>::const_iterator bag_iterator_type;
-        typedef std::vector<std::pair<boost::posix_time::ptime, variant>>::const_iterator timeseries_iterator_type;
+        typedef std::list<std::pair<std::string, variant> >::const_iterator bag_iterator_type;
+        typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::const_iterator timeseries_iterator_type;
         typedef const variant* tuple_iterator_type;
+        typedef size_t difference_type;
     };
 
     struct iterator_traits
@@ -190,9 +209,10 @@ namespace protean {
         typedef variant value_type;
         typedef std::vector<variant>::iterator list_iterator_type;
         typedef std::map<std::string, variant>::iterator dictionary_iterator_type;
-        typedef std::list<std::pair<std::string, variant>>::iterator bag_iterator_type;
-        typedef std::vector<std::pair<boost::posix_time::ptime, variant>>::iterator timeseries_iterator_type;
+        typedef std::list<std::pair<std::string, variant> >::iterator bag_iterator_type;
+        typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::iterator timeseries_iterator_type;
         typedef variant* tuple_iterator_type;
+        typedef size_t difference_type;
     };
 
 } // namespace protean

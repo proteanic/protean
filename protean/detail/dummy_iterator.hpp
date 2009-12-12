@@ -16,7 +16,6 @@ namespace protean { namespace detail {
     >
     class PROTEAN_DLLEXPORT dummy_iterator_interface : public BASE
     {
-        typedef typename dummy_iterator_interface<ITERATOR_TRAITS> self_type;
         typedef typename ITERATOR_TRAITS::value_type& reference_type;
         typedef typename BASE::date_time_t date_time_t;
 
@@ -46,7 +45,8 @@ namespace protean { namespace detail {
         }
         bool equal(const BASE *rhs) const
         {
-            const self_type* cast_rhs = dynamic_cast<const self_type*>(rhs);
+            const dummy_iterator_interface<ITERATOR_TRAITS>* cast_rhs =
+                dynamic_cast<const dummy_iterator_interface<ITERATOR_TRAITS>*>(rhs);
             if (cast_rhs==NULL)
             {
                 boost::throw_exception(variant_error("Unable to convert iterator to dummy iterator"));
@@ -55,7 +55,7 @@ namespace protean { namespace detail {
         }
         BASE* clone()
         {
-            return new self_type();
+            return new dummy_iterator_interface<ITERATOR_TRAITS>();
         }
         variant_const_iterator_base* to_const() const
         {

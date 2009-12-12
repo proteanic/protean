@@ -15,7 +15,7 @@ namespace protean {
     }
 
     template<typename ITERATOR_TRAITS>
-    variant_iterator<ITERATOR_TRAITS>::variant_iterator(iterator_type* iterator) :
+    variant_iterator<ITERATOR_TRAITS>::variant_iterator(variant_iterator_interface<ITERATOR_TRAITS>* iterator) :
         m_iterator(iterator)
     {
     }
@@ -127,12 +127,14 @@ namespace protean {
         }
     }
 
+  
     template<typename ITERATOR_TRAITS>
-    const typename variant_iterator<ITERATOR_TRAITS>::iterator_type* variant_iterator<ITERATOR_TRAITS>::iterator() const
+    const variant_iterator_interface<ITERATOR_TRAITS> *
+        variant_iterator<ITERATOR_TRAITS>::iterator() const
     {
         return m_iterator.get();
     }
-
+  
     // Explicit template instantiation
     template class variant_iterator<const_iterator_traits>;
     template class variant_iterator<iterator_traits>;

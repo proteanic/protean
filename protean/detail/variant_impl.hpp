@@ -114,7 +114,7 @@ namespace protean { namespace detail {
     };
 
     template<int TAG, typename TYPE, typename ALLOC_TRAIT, typename NAME>
-    struct tagged_type : public boost::mpl::pair<boost::mpl::int_<TAG>, boost::mpl::vector<TYPE, ALLOC_TRAIT, NAME>>
+    struct tagged_type : public boost::mpl::pair<boost::mpl::int_<TAG>, boost::mpl::vector<TYPE, ALLOC_TRAIT, NAME> >
     {};
 
     template<BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(VARIANT_MAX_ARITY, class T, boost::blank)>
@@ -142,13 +142,13 @@ namespace protean { namespace detail {
         {};
 
         enum {
-            TYPE_COUNT = typename boost::mpl::size<mpl_types_info_by_enum>::value
+            TYPE_COUNT = boost::mpl::size<mpl_types_info_by_enum>::value
         };
 
         template <int N>
         struct getType :
             boost::mpl::at<
-                typename boost::mpl::at<mpl_types_info_by_enum, boost::mpl::int_<N>>::type,
+                typename boost::mpl::at<mpl_types_info_by_enum, boost::mpl::int_<N> >::type,
                 boost::mpl::int_<0>
             >
         {};
@@ -156,7 +156,7 @@ namespace protean { namespace detail {
         template <int N>
         struct getStorage :
             boost::mpl::at<
-                typename boost::mpl::at<mpl_types_info_by_enum, boost::mpl::int_<N>>::type,
+                typename boost::mpl::at<mpl_types_info_by_enum, boost::mpl::int_<N> >::type,
                 boost::mpl::int_<1>
             >
         {};
@@ -164,7 +164,7 @@ namespace protean { namespace detail {
         template <int N>
         struct getName :
             boost::mpl::at<
-                typename boost::mpl::at<mpl_types_info_by_enum, boost::mpl::int_<N>>::type,
+                typename boost::mpl::at<mpl_types_info_by_enum, boost::mpl::int_<N> >::type,
                 boost::mpl::int_<2>
             >
         {};
@@ -185,14 +185,14 @@ namespace protean { namespace detail {
         template<int N>
         static std::string getName_impl() 
         {
-            return boost::mpl::c_str<getName<N>::type>::value;
+            return boost::mpl::c_str<typename getName<N>::type>::value;
         }
 
         struct enumToIndex
         {
             static size_t convert(const int enumValue)
             {
-                return enumToIndex_impl<TYPE_COUNT, boost::mpl::begin<mpl_types_info_by_enum>::type>::value(enumValue);
+                return enumToIndex_impl<TYPE_COUNT, typename boost::mpl::begin<mpl_types_info_by_enum>::type>::value(enumValue);
             }
 
             template<int N, typename ITER>
@@ -200,10 +200,10 @@ namespace protean { namespace detail {
             {
                 static size_t value(const int enumValue)
                 {
-                    if (boost::mpl::first<boost::mpl::deref<ITER>::type>::type::value == enumValue)
+                    if (boost::mpl::first<typename boost::mpl::deref<ITER>::type>::type::value == enumValue)
                         return TYPE_COUNT-N;
                     else
-                        return enumToIndex_impl<N-1, boost::mpl::next<ITER>::type>::value(enumValue);
+                        return enumToIndex_impl<N-1, typename boost::mpl::next<ITER>::type>::value(enumValue);
                 }
             };
 
@@ -223,7 +223,7 @@ namespace protean { namespace detail {
             void operator()(T&)
             {
                 sm_runtime_fn_dispatch[enumToIndex::convert(boost::mpl::first<T>::type::value)].get<0>()=
-                    &self::getName_impl<boost::mpl::first<T>::type::value>
+                    &self::template getName_impl<boost::mpl::first<T>::type::value>
                 ;
 
                 sm_str_to_enum_map[getName_impl<boost::mpl::first<T>::type::value>()]=boost::mpl::first<T>::type::value;
@@ -259,21 +259,24 @@ namespace protean { namespace detail {
         template<int N>
         void destroy()
         {
-            getStorage<N>::type::destroy<typename getType<N>::type>(*this);
+            getStorage<N>::type::template destroy<typename getType<N>::type>(*this);
         }
 
         // Get variant corresponding to enum
         template<int N>
         typename getType<N>::type& get()
         {
-            return getStorage<N>::type::get<typename getType<N>::type>(*this);
+            return getStorage<N>::type::template get<typename getType<N>::type>(*this);
         }
 
         // Get variant corresponding to enum
         template<int N>
-        typename const getType<N>::type& get() const
+        const typename getType<N>::type& get() const
         {
-            return getStorage<N>::type::get<typename getType<N>::type>(*this);
+	    // g++ will fail if this is done on one line
+            typedef typename getStorage<N>::type storage;
+            typedef typename getType<N>::type thetype;
+            return storage::template get<thetype>(*this);
         }
 
         // Swap contents of self and rhs

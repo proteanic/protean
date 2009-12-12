@@ -7,6 +7,7 @@
 #define PROTEAN_DETAIL_TIMESERIES_ITERATOR_HPP
 
 #include <protean/config.hpp>
+#include <protean/variant_error.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -32,7 +33,7 @@ namespace protean { namespace detail {
         }
         const std::string& key() const
         {
-            boost::throw_exception(variant_error("Attempt to call key() on timeseries iterator"));
+	    boost::throw_exception (variant_error ("Attempt to call key() on timeseries iterator"));
         }
         reference_type value() const
         {
@@ -55,7 +56,7 @@ namespace protean { namespace detail {
             const timeseries_iterator_interface* cast_rhs = dynamic_cast<const timeseries_iterator_interface*>(rhs);
             if (cast_rhs==NULL)
             {
-                boost::throw_exception(variant_error("Unable to convert iterator to timeseries iterator"));
+                boost::throw_exception (variant_error ("Unable to convert iterator to timeseries iterator"));
             }
             return m_iterator==cast_rhs->iterator();
         }

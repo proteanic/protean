@@ -58,13 +58,19 @@ namespace protean {
             >
     {
         typedef typename ITERATOR_TRAITS::value_type& reference_type;
-        typedef typename variant_iterator_interface<ITERATOR_TRAITS> iterator_type;
-        typedef typename iterator_type::date_time_t date_time_t;
+        typedef typename variant_iterator_interface<ITERATOR_TRAITS>::date_time_t date_time_t;
 
     public:
 
+        // BOOST_FOREACH for some reason demands that this be public, possibly
+        // because it has failed to figure out the type based on the traits,
+        // which might in turn be because they are somewhat non-standard 
+        // (e.g. iterator_category and pointer are missing, see 
+        // http://www.sgi.com/tech/stl/iterator_traits.html).
+        typedef typename ITERATOR_TRAITS::difference_type difference_type;
+
         variant_iterator();
-        variant_iterator(iterator_type* iterator);
+        variant_iterator(variant_iterator_interface<ITERATOR_TRAITS> * iterator);
 
         template <typename OTHER_TRAITS>
         variant_iterator(const variant_iterator<OTHER_TRAITS>& rhs);
@@ -97,10 +103,10 @@ namespace protean {
 
         void advance(difference_type n);
 
-        const iterator_type* iterator() const;
+        const variant_iterator_interface<ITERATOR_TRAITS>* iterator() const;
 
 
-        boost::shared_ptr<iterator_type> m_iterator;
+        boost::shared_ptr<variant_iterator_interface<ITERATOR_TRAITS> > m_iterator;
     };
 
     // Copy constructor definitions
@@ -111,9 +117,6 @@ namespace protean {
     {
     }
 
-    template<typename ITERATOR_TRAITS>
-    PROTEAN_DLLEXPORT variant_iterator<ITERATOR_TRAITS>::variant_iterator(const variant_iterator<ITERATOR_TRAITS>& rhs);
-
     // Assignment operator definitions
     template<typename ITERATOR_TRAITS>
     template<typename OTHER_TRAITS>
@@ -122,9 +125,6 @@ namespace protean {
         m_iterator.reset( rhs.iterator()->to_const() );
         return *this;
     }
-
-    template<typename ITERATOR_TRAITS>
-    PROTEAN_DLLEXPORT const variant_iterator<ITERATOR_TRAITS>& variant_iterator<ITERATOR_TRAITS>::operator=(const variant_iterator<ITERATOR_TRAITS>& rhs);
 
 } // protean
 
