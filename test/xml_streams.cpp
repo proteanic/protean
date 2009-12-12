@@ -13,26 +13,28 @@ using boost::unit_test::test_suite;
 #include <protean/xml_writer.hpp>
 using namespace protean;
 
-static const std::string typed_xml =
-    "<Variant variant=\"Dictionary\">"
-    "    <Any variant=\"Any\">Any Variant</Any>"
-    "    <Boolean variant=\"Boolean\">true</Boolean>"
-    "    <Date variant=\"Date\">2007-01-03</Date>"
-    "    <DateTime variant=\"DateTime\">2007-01-03T10:30:00</DateTime>"
-    "    <Double variant=\"Double\">3.7000000000000002</Double>"
-    "    <Float variant=\"Float\">4</Float>"
-    "    <Int32 variant=\"Int32\">-1</Int32>"
-    "    <Int64 variant=\"Int64\">-1</Int64>"
-    "    <String variant=\"String\">Element</String>"
-    "    <Time variant=\"Time\">10:30:00</Time>"
-    "    <UInt32 variant=\"UInt32\">4294967295</UInt32>"
-    "    <UInt64 variant=\"UInt64\">18446744073709551615</UInt64>"
-    "</Variant>";
 
-void test_typed_xml()
+
+void test_xml_typed()
 {
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<Variant variant=\"Dictionary\">\n"
+        "  <Boolean variant=\"Boolean\">true</Boolean>\n"
+        "  <Date variant=\"Date\">2007-01-03</Date>\n"
+        "  <DateTime variant=\"DateTime\">2007-01-03T10:30:00</DateTime>\n"
+        "  <Double variant=\"Double\">3.7000000000000002</Double>\n"
+        "  <Float variant=\"Float\">4</Float>\n"
+        "  <Int32 variant=\"Int32\">-1</Int32>\n"
+        "  <Int64 variant=\"Int64\">-1</Int64>\n"
+        "  <String variant=\"String\">Element</String>\n"
+        "  <Time variant=\"Time\">10:30:00</Time>\n"
+        "  <UInt32 variant=\"UInt32\">4294967295</UInt32>\n"
+        "  <UInt64 variant=\"UInt64\">18446744073709551615</UInt64>\n"
+        "</Variant>";
+
     std::stringstream iss;
-    iss << typed_xml;
+    iss << xml;
 
     variant v1;
     xml_reader reader(iss);
@@ -74,10 +76,149 @@ void test_typed_xml()
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
+
+
+void test_xml_untyped()
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<Variant>\n"
+        "  <Boolean>true</Boolean>\n"
+        "  <Date>2007-01-03</Date>\n"
+        "  <DateTime>2007-01-03T10:30:00</DateTime>\n"
+        "  <Double>3.7000000000000002</Double>\n"
+        "  <Float>4</Float>\n"
+        "  <Int32>-1</Int32>\n"
+        "  <Int64>-1</Int64>\n"
+        "  <String>Element</String>\n"
+        "  <Time>10:30:00</Time>\n"
+        "  <UInt32>4294967295</UInt32>\n"
+        "  <UInt64>18446744073709551615</UInt64>\n"
+        "</Variant>";
+
+    std::stringstream iss;
+    iss << xml;
+
+    variant v1;
+    xml_reader reader(iss);
+    reader >> v1;
+
+    BOOST_CHECK(v1.is<variant::Bag>());
+    BOOST_CHECK(v1["String"].is<variant::Any>());
+    BOOST_CHECK(v1["Boolean"].is<variant::Any>());
+    BOOST_CHECK(v1["Int32"].is<variant::Any>());
+    BOOST_CHECK(v1["UInt32"].is<variant::Any>());
+    BOOST_CHECK(v1["Int64"].is<variant::Any>());
+    BOOST_CHECK(v1["UInt64"].is<variant::Any>());
+    BOOST_CHECK(v1["Float"].is<variant::Any>());
+    BOOST_CHECK(v1["Double"].is<variant::Any>());
+    BOOST_CHECK(v1["Date"].is<variant::Any>());
+    BOOST_CHECK(v1["Time"].is<variant::Any>());
+    BOOST_CHECK(v1["DateTime"].is<variant::Any>());
+
+    BOOST_CHECK_EQUAL(v1["String"].as<std::string>(), "Element");
+    BOOST_CHECK_EQUAL(v1["Boolean"].as<bool>(), true);
+    BOOST_CHECK_EQUAL(v1["Int32"].as<variant::int32_t>(), 0xFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["UInt32"].as<variant::uint32_t>(), 0xFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["Int64"].as<variant::int64_t>(), 0xFFFFFFFFFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["UInt64"].as<variant::uint64_t>(), 0xFFFFFFFFFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["Float"].as<float>(), 4.0);
+    BOOST_CHECK_EQUAL(v1["Double"].as<double>(), 3.7);
+    
+    variant::date_t date = variant::date_t(2007, 1, 3);
+    BOOST_CHECK_EQUAL(v1["Date"].as<variant::date_t>(), date);
+    variant::time_t time = variant::time_t(10, 30, 0);
+    BOOST_CHECK_EQUAL(v1["Time"].as<variant::time_t>(), time);
+    variant::date_time_t date_time = variant::date_time_t(date, time);
+    BOOST_CHECK_EQUAL(v1["DateTime"].as<variant::date_time_t>(), date_time);
+
+    std::stringstream oss;
+    xml_writer writer(oss, xml_writer::Preserve);
+    writer << variant(variant::Dictionary).insert("Variant", v1);
+
+    BOOST_CHECK_EQUAL(iss.str(), oss.str());
+}
+
+
+void test_xml_validation()
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<Variant aBoolean=\"true\" aDate=\"2007-01-03\" aDateTime=\"2007-01-03T10:30:00\" aFloat=\"0.5\" aDouble=\"3.9\" aInteger=\"1\" aUnsigned=\"2\" aInt32=\"3\" aUInt32=\"4\" aInt64=\"5\" aUInt64=\"6\" aString=\"Element\" aTime=\"10:30:00\">\n"
+        "  <Boolean>true</Boolean>\n"
+        "  <Date>2007-01-03</Date>\n"
+        "  <DateTime>2007-01-03T10:30:00</DateTime>\n"
+        "  <Float>0.5</Float>\n"
+        "  <Double>1</Double>\n"
+        "  <Integer>1</Integer>\n"
+        "  <Unsigned>2</Unsigned>\n"
+        "  <Int32>3</Int32>\n"
+        "  <UInt32>4</UInt32>\n"
+        "  <Int64>5</Int64>\n"
+        "  <UInt64>6</UInt64>\n"
+        "  <String>Element</String>\n"
+        "  <Time>10:30:00</Time>\n"
+        "</Variant>\n";
+
+    static const std::string xdr =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n"
+        "  <xsd:element name=\"Variant\">\n"
+        "    <xsd:complexType mixed=\"true\">\n"
+        "      <xsd:all>\n"
+        "        <xsd:element name=\"String\"   type=\"xsd:string\"/>\n"
+        "        <xsd:element name=\"Boolean\"  type=\"xsd:boolean\"/>\n"
+        "        <xsd:element name=\"Integer\"  type=\"xsd:integer\"/>\n"
+        "        <xsd:element name=\"Unsigned\" type=\"xsd:positiveInteger\"/>\n"
+        "        <xsd:element name=\"Int32\"    type=\"xsd:int\"/>\n"
+        "        <xsd:element name=\"UInt32\"   type=\"xsd:unsignedInt\"/>\n"
+        "        <xsd:element name=\"Int64\"    type=\"xsd:long\"/>\n"
+        "        <xsd:element name=\"UInt64\"   type=\"xsd:unsignedLong\"/>\n"
+        "        <xsd:element name=\"Float\"    type=\"xsd:float\"/>\n"
+        "        <xsd:element name=\"Double\"   type=\"xsd:double\"/>\n"
+        "        <xsd:element name=\"Date\"     type=\"xsd:date\"/>\n"
+        "        <xsd:element name=\"Time\"     type=\"xsd:time\"/>\n"
+        "        <xsd:element name=\"DateTime\" type=\"xsd:dateTime\"/>\n"
+        "      </xsd:all>\n"
+        "      <xsd:attribute name=\"variant\"   type=\"xsd:string\" use=\"optional\" default=\"Dictionary\"/>\n"
+        "      <xsd:attribute name=\"aString\"   type=\"xsd:string\"/>\n"
+        "      <xsd:attribute name=\"aBoolean\"  type=\"xsd:boolean\"/>\n"
+        "      <xsd:attribute name=\"aInteger\"  type=\"xsd:integer\"/>\n"
+        "      <xsd:attribute name=\"aUnsigned\" type=\"xsd:positiveInteger\"/>\n"
+        "      <xsd:attribute name=\"aInt32\"    type=\"xsd:int\"/>\n"
+        "      <xsd:attribute name=\"aUInt32\"   type=\"xsd:unsignedInt\"/>\n"
+        "      <xsd:attribute name=\"aInt64\"    type=\"xsd:long\"/>\n"
+        "      <xsd:attribute name=\"aUInt64\"   type=\"xsd:unsignedLong\"/>\n"
+        "      <xsd:attribute name=\"aFloat\"    type=\"xsd:float\"/>\n"
+        "      <xsd:attribute name=\"aDouble\"   type=\"xsd:double\"/>\n"
+        "      <xsd:attribute name=\"aDate\"     type=\"xsd:date\"/>\n"
+        "      <xsd:attribute name=\"aTime\"     type=\"xsd:time\"/>\n"
+        "      <xsd:attribute name=\"aDateTime\" type=\"xsd:dateTime\"/>\n"
+        "    </xsd:complexType>\n"
+        "  </xsd:element>\n"
+        "</xsd:schema>\n";
+
+    std::stringstream iss;
+    iss << xml;
+
+    std::stringstream xdr_ss;
+    xdr_ss << xdr;
+
+    variant v1;
+    xml_reader reader(iss);
+    reader.set_external_schema("my_schema");
+	reader.add_entity_stream("my_schema", xdr_ss);
+
+    reader >> v1;
+}
+
 test_suite* init_unit_test_suite(int, char* []) 
 {
     test_suite* test = BOOST_TEST_SUITE("object type");
-    test->add(BOOST_TEST_CASE(&test_typed_xml));
+    test->add(BOOST_TEST_CASE(&test_xml_typed));
+    test->add(BOOST_TEST_CASE(&test_xml_untyped));
+    test->add(BOOST_TEST_CASE(&test_xml_validation));
+    
 
     return test;
 }
