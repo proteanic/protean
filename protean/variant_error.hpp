@@ -10,14 +10,17 @@
 
 #include <boost/throw_exception.hpp>
 #include <boost/format.hpp>
+#include <boost/utility.hpp>
+#include <stdexcept>
+#include <sstream>
 
 namespace protean {
 
-    class variant_error : public std::exception
+    class variant_error : public std::runtime_error
     {
     public:
         variant_error(const std::string& what_arg) :
-            std::exception(what_arg.c_str())
+            std::runtime_error(what_arg.c_str())
         {}
     };
 
