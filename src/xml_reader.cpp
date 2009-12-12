@@ -37,7 +37,9 @@ namespace protean {
             // this scope ends. Xerces is picky and insists that the parser is deleted
             // before xercesc::XMLPlatformUtils::Terminate is called so the order of
             // guard creation (and hence destruction) is important.
-            BOOST_SCOPE_EXIT()
+
+            char terminate; // BOOST_SCOPE_EXIT will not accept an empty list under MSVC
+            BOOST_SCOPE_EXIT ((&terminate))
             {
                 xercesc::XMLPlatformUtils::Terminate();
             }
