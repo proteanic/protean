@@ -143,6 +143,10 @@ namespace protean {
                 write(e.message());
                 break;
             }
+	    default:
+ 	        boost::throw_exception (
+		    variant_error ("Case exhaustion: " + variant::enum_to_string (value.type ()))); 
+	 
         }
     }
 

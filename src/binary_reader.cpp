@@ -8,6 +8,7 @@
 #include <protean/variant.hpp>
 #include <protean/object_proxy.hpp>
 #include <protean/object_factory.hpp>
+#include <protean/variant_base.hpp>
 
 #include <boost/scoped_array.hpp>
 
@@ -196,6 +197,9 @@ namespace protean {
                 read( s ); value = variant(s).upCast();
                 break;
             }
+	    default:	    
+	        boost::throw_exception (
+                    variant_error ("Case exhaustion: " + variant::enum_to_string (type)));	    
         }
     }
 

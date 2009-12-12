@@ -14,8 +14,8 @@
 namespace protean {
 
     xml_reader::xml_reader(std::istream &is, int flags) :
-        m_flags(flags),
         m_is(is),
+        m_flags(flags),
         m_entity_path("./"),
         m_factory(NULL)
     {
@@ -37,7 +37,7 @@ namespace protean {
             // this scope ends. Xerces is picky and insists that the parser is deleted
             // before xercesc::XMLPlatformUtils::Terminate is called so the order of
             // guard creation (and hence destruction) is important.
-            BOOST_SCOPE_EXIT((&terminate))
+            BOOST_SCOPE_EXIT()
             {
                 xercesc::XMLPlatformUtils::Terminate();
             }

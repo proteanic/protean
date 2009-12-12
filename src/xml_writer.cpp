@@ -13,9 +13,9 @@
 namespace protean {
 
     xml_writer::xml_writer(std::ostream &os, int flags) :
+        m_indentation(0),
         m_os(os),
-        m_flags(flags),
-        m_indentation(0)
+        m_flags(flags)
     {
         if(!os.good())
         {
@@ -310,6 +310,9 @@ namespace protean {
                 end_content();
                 end_tag();
             }
+	    default:
+ 	        boost::throw_exception (
+		    variant_error ("Case exhaustion: " + variant::enum_to_string (type))); 
             }
         }
         catch (const std::exception &e)

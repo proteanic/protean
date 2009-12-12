@@ -55,11 +55,11 @@ namespace protean {
     }
 
     sax_content_handler::sax_content_handler(variant& result, int flags, object_factory* factory) :
-         m_result(result),
-         m_flags(flags),
-         m_factory(factory),
          m_locator(NULL),
-         m_instructions(variant::Bag)
+         m_result(result),
+         m_instructions(variant::Bag),
+         m_flags(flags),
+         m_factory(factory)
     {
     }
 
@@ -390,7 +390,11 @@ namespace protean {
                     boost::throw_exception(variant_error("Unexpected characters encountered"));
                 };
                 break;
-            }
+	    default:
+	        
+	        boost::throw_exception (
+                    variant_error ("Case exhaustion: " + variant::enum_to_string (context->m_type))); 
+	    }
         }
         catch(const std::exception &e)
         {
