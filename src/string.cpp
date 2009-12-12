@@ -9,8 +9,8 @@
 
 namespace protean { namespace detail {
 
-    static const boost::uint64_t s_onStackMask    = 0x0000000000000001i64;
-    static const boost::uint64_t s_sizeMask        = 0x00000000000000FEi64;
+    static const boost::uint64_t s_onStackMask    = 0x0000000000000001ull;
+    static const boost::uint64_t s_sizeMask        = 0x00000000000000FEull;
 
     string::string() :
         m_rawData(0)
@@ -99,7 +99,17 @@ namespace protean { namespace detail {
         else
         {
             heapPointer(static_cast<char*>(alignedMalloc(size+1)));
+            #ifdef MSVC
             strncpy_s(heapPointer(), size+1, value, _TRUNCATE);
+            #else
+            // This triggers unpleasant warnings under MSVC, but
+            // maybe is is better to define _CRT_SECURE_NO_DEPRECATE
+            // than to use two different versions.
+            strncpy (heapPointer(), value, size);
+            // strncopy will not terminate the string unless it has
+            // enough space
+            *(heapPointer()+size)=0;
+            #endif
         }
     }
 

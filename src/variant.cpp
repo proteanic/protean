@@ -32,7 +32,7 @@ namespace protean {
     #define BEGIN_VARIANT_CONTEXT                                                                \
         try                                                                                        \
         {                                                                                        \
-        char
+	BOOST_STATIC_ASSERT (true)
 
     #define END_VARIANT_CONTEXT                                                                            \
         }                                                                                                \
@@ -44,7 +44,7 @@ namespace protean {
         {                                                                                                \
             boost::throw_exception(variant_error(std::string("Unknown exception\n") + this->str()));    \
         }                                                                                                \
-        char
+        BOOST_STATIC_ASSERT (true)
 
 
     /* Constructors */
@@ -1337,7 +1337,7 @@ namespace protean {
                 else
                 {
                     oss << "[\n";
-                    variant::const_iterator it, end(end());
+                    variant::const_iterator it, end(variant::end());
                     for( it=begin(); it!=end; )
                     {
                         oss << it->str(false, indent + tab);
@@ -1360,7 +1360,7 @@ namespace protean {
                 else
                 {
                     oss << "{\n";
-                    variant::const_iterator it, end(end());
+                    variant::const_iterator it, end(variant::end());
                     for( it=begin(); it!=end; )
                     {
                         oss << indent << tab << it.key() << ": ";
@@ -1391,7 +1391,7 @@ namespace protean {
                 else
                 {
                     oss << "[\n";
-                    variant::const_iterator it, end(end());
+                    variant::const_iterator it, end(variant::end());
                     for( it=begin(); it!=end; )
                     {
                         oss << indent << tab << "(" << it.key() << ", ";
@@ -1423,7 +1423,7 @@ namespace protean {
                 else
                 {
                     oss << "TimeSeries(\n";
-                    variant::const_iterator it, end(end());
+                    variant::const_iterator it, end(variant::end());
                     for( it=begin(); it!=end; )
                     {
                         oss << indent << tab << "(" << it.time() << ", ";
@@ -1482,7 +1482,7 @@ namespace protean {
                 else
                 {
                     oss << "(\n";
-                    variant::const_iterator it, end(end());
+                    variant::const_iterator it, end(variant::end ());
                     for( it=begin(); it!=end; )
                     {
                         oss << it->str(false, indent + tab);
