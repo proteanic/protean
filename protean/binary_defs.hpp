@@ -38,9 +38,9 @@ namespace protean {
         unsigned char    _unused;
     } binary_time_t;
 
-    static const unsigned short binary_magic_number = 0x13FF;
-    static const unsigned char binary_major_version = 1;
-    static const unsigned char binary_minor_version = 0;
+    static const boost::uint32_t binary_magic_number = 0x484913FF;
+    static const boost::uint16_t binary_major_version = 1;
+    static const boost::uint16_t binary_minor_version = 0;
 
 } // namespace protean
 

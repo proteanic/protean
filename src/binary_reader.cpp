@@ -322,21 +322,21 @@ namespace protean {
         }
 
         // read header
-        int header[2];
+        int header[3];
         if (!m_is.read(reinterpret_cast<char*>(header), sizeof(header)))
         {
             boost::throw_exception(variant_error("Error reading header from stream"));
         }
 
         // check magic number
-        if ((header[0] >> 16)!=binary_magic_number)
+        if (header[0]!=binary_magic_number)
         {
             boost::throw_exception(variant_error("Bad magic number, this looks like invalid binary data"));
         }
 
         // store version information
-        m_major_version = ((header[0] >> 8) & 0x000000FF);
-        m_minor_version = header[0] & 0x000000FF;
+        m_major_version = (header[1] >> 16) & 0x0000FFFF;
+        m_minor_version = header[1] & 0x0000FFFF;
 
         if (m_major_version>binary_major_version)
         {
@@ -347,7 +347,7 @@ namespace protean {
         }
 
         // create compression filter if necessary
-        if ((header[1] & 0x00000001)!=0)
+        if ((header[2] & 0x00000001)!=0)
         {
             m_filter.push(boost::iostreams::zlib_decompressor(binary_compression_params()));
         }

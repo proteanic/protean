@@ -259,12 +259,13 @@ namespace protean {
             boost::throw_exception(variant_error("Output stream is bad"));
         }
 
-        int header[2];
+        boost::uint32_t header[3];
 
         // write header
-        // [13 FF MAJOR MINOR][00 00 00 COMPRESS]
-        header[0] = (binary_magic_number << 16) | (binary_major_version << 8) | binary_minor_version;
-        header[1] = (m_flags & Compress) ? 1 : 0;
+        // [13 FF 48 49][MAJOR MINOR][FLAGS]
+        header[0] = binary_magic_number;
+        header[1] = (binary_major_version << 16) | binary_minor_version;
+        header[2] = (m_flags & Compress) ? 1 : 0;
 
         if (!m_os.write(reinterpret_cast<const char*>(header), sizeof(header)))
         {
