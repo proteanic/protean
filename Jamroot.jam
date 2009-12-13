@@ -44,7 +44,7 @@ project : requirements
 
 SOURCES = [ glob src/*.cpp ] ;
 
-lib xerces : : <file>$(XERCES_LIB)/xerces-c-x86-vc90-mt-d-3_0.lib : : <include>$(XERCES_INCLUDE) ;
+lib xerces : : <file>$(XERCES_LIB)/xerces-c-x86-vc90-mt-gd-3_0.lib : : <include>$(XERCES_INCLUDE) ;
 lib zlib : : <file>$(BOOST_LIB)/libboost_zlib$(BL) ;
 lib filesystem : : <file>$(BOOST_LIB)/libboost_filesystem$(BL) ;
 lib iostreams : zlib : <file>$(BOOST_LIB)/libboost_iostreams$(BL) ;

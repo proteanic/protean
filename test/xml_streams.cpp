@@ -158,7 +158,7 @@ void test_xml_validation()
         "  <UInt64>6</UInt64>\n"
         "  <String>Element</String>\n"
         "  <Time>10:30:00</Time>\n"
-        "</Variant>\n";
+        "</Variant>";
 
     static const std::string xdr =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -205,11 +205,77 @@ void test_xml_validation()
     xdr_ss << xdr;
 
     variant v1;
-    xml_reader reader(iss);
-    reader.set_external_schema("my_schema");
-	reader.add_entity_stream("my_schema", xdr_ss);
+    xml_reader reader1(iss);
+    reader1.set_external_schema("my_schema");
+	reader1.add_entity_stream("my_schema", xdr_ss);
 
-    reader >> v1;
+    reader1 >> v1;
+
+    BOOST_CHECK(v1.is<variant::Dictionary>());
+
+    // Check node types
+    BOOST_CHECK(v1["String"].is<variant::String>());
+    BOOST_CHECK(v1["Boolean"].is<variant::Boolean>());
+    BOOST_CHECK(v1["Integer"].is<variant::Int32>());
+    BOOST_CHECK(v1["Unsigned"].is<variant::UInt32>());
+    BOOST_CHECK(v1["Int32"].is<variant::Int32>());
+    BOOST_CHECK(v1["UInt32"].is<variant::UInt32>());
+    BOOST_CHECK(v1["Int64"].is<variant::Int64>());
+    BOOST_CHECK(v1["UInt64"].is<variant::UInt64>());
+    BOOST_CHECK(v1["Float"].is<variant::Float>());
+    BOOST_CHECK(v1["Double"].is<variant::Double>());
+    BOOST_CHECK(v1["Date"].is<variant::Date>());
+    BOOST_CHECK(v1["Time"].is<variant::Time>());
+    BOOST_CHECK(v1["DateTime"].is<variant::DateTime>());
+
+    // check attribute types
+    BOOST_CHECK(v1["aString"].is<variant::String>());
+    BOOST_CHECK(v1["aBoolean"].is<variant::Boolean>());
+    BOOST_CHECK(v1["aInteger"].is<variant::Int32>());
+    BOOST_CHECK(v1["aUnsigned"].is<variant::UInt32>());
+    BOOST_CHECK(v1["aInt32"].is<variant::Int32>());
+    BOOST_CHECK(v1["aUInt32"].is<variant::UInt32>());
+    BOOST_CHECK(v1["aInt64"].is<variant::Int64>());
+    BOOST_CHECK(v1["aUInt64"].is<variant::UInt64>());
+    BOOST_CHECK(v1["aFloat"].is<variant::Float>());
+    BOOST_CHECK(v1["aDouble"].is<variant::Double>());
+    BOOST_CHECK(v1["aDate"].is<variant::Date>());
+    BOOST_CHECK(v1["aTime"].is<variant::Time>());
+    BOOST_CHECK(v1["aDateTime"].is<variant::DateTime>());
+}
+
+void test_xml_preserve()
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<Variant aBoolean=\"true\" aDate=\"2007-01-03\" aDateTime=\"2007-01-03T10:30:00\" aFloat=\"0.5\" aDouble=\"3.9\" aInteger=\"1\" aUnsigned=\"2\" aInt32=\"3\" aUInt32=\"4\" aInt64=\"5\" aUInt64=\"6\" aString=\"Element\" aTime=\"10:30:00\">\n"
+        "  <Boolean>true</Boolean>\n"
+        "  <Date>2007-01-03</Date>\n"
+        "  <DateTime>2007-01-03T10:30:00</DateTime>\n"
+        "  <Float>0.5</Float>\n"
+        "  <Double>1</Double>\n"
+        "  <Integer>1</Integer>\n"
+        "  <Unsigned>2</Unsigned>\n"
+        "  <Int32>3</Int32>\n"
+        "  <UInt32>4</UInt32>\n"
+        "  <Int64>5</Int64>\n"
+        "  <UInt64>6</UInt64>\n"
+        "  <String>Element</String>\n"
+        "  <Time>10:30:00</Time>\n"
+        "</Variant>";
+
+    std::stringstream iss;
+    iss << xml;
+
+    variant v1;
+    xml_reader reader2(iss, xml_reader::Preserve);
+    reader2 >> v1;
+
+    std::ostringstream oss;
+    xml_writer writer(oss, xml_writer::Preserve);
+    writer << v1;
+
+    BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
 test_suite* init_unit_test_suite(int, char* []) 
@@ -218,7 +284,7 @@ test_suite* init_unit_test_suite(int, char* [])
     test->add(BOOST_TEST_CASE(&test_xml_typed));
     test->add(BOOST_TEST_CASE(&test_xml_untyped));
     test->add(BOOST_TEST_CASE(&test_xml_validation));
-    
+    test->add(BOOST_TEST_CASE(&test_xml_preserve));    
 
     return test;
 }

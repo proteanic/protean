@@ -150,7 +150,7 @@ namespace protean {
         public:
             element_info() :
                 m_type(variant::None),
-                m_attributes(variant::Dictionary),
+                m_attributes(variant::Bag),
                 m_element(NULL),
                 num_rows(0),
                 num_row(0)
