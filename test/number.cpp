@@ -11,7 +11,9 @@ using boost::unit_test::test_suite;
 #include <protean/variant.hpp>
 using namespace protean;
 
-void test_int32()
+BOOST_AUTO_TEST_SUITE(number_suite);
+
+BOOST_AUTO_TEST_CASE(test_int32)
 {
     boost::int32_t arg(0xFFFFFFFF);
 
@@ -40,7 +42,7 @@ void test_int32()
     BOOST_CHECK_THROW(v1.as<boost::uint32_t>(), variant_error);
 }
 
-void test_uint32()
+BOOST_AUTO_TEST_CASE(test_uint32)
 {
     boost::uint32_t arg(0xFFFFFFFF);
 
@@ -69,7 +71,7 @@ void test_uint32()
     BOOST_CHECK_THROW(v1.as<boost::int32_t>(), variant_error);
 }
 
-void test_int64()
+BOOST_AUTO_TEST_CASE(test_int64)
 {
     boost::int64_t arg(0xFFFFFFFFFFFFFFFF);
 
@@ -98,7 +100,7 @@ void test_int64()
     BOOST_CHECK_THROW(v1.as<boost::uint64_t>(), variant_error);
 }
 
-void test_uint64()
+BOOST_AUTO_TEST_CASE(test_uInt64)
 {
     boost::uint64_t arg(0xFFFFFFFFFFFFFFFF);
 
@@ -127,7 +129,7 @@ void test_uint64()
     BOOST_CHECK_THROW(v1.as<boost::int64_t>(), variant_error);
 }
 
-void test_float()
+BOOST_AUTO_TEST_CASE(test_float)
 {
     float arg(std::numeric_limits<float>::max());
 
@@ -154,7 +156,7 @@ void test_float()
     BOOST_CHECK_EQUAL(v5.as<float>(), 0.);
 }
 
-void test_double()
+BOOST_AUTO_TEST_CASE(test_double)
 {
     double arg(std::numeric_limits<double>::max());
 
@@ -181,7 +183,7 @@ void test_double()
     BOOST_CHECK_EQUAL(v5.as<double>(), 0.);
 }
 
-void test_boolean()
+BOOST_AUTO_TEST_CASE(test_boolean)
 {
     bool arg(true);
 
@@ -208,16 +210,4 @@ void test_boolean()
     BOOST_CHECK_EQUAL(v5.as<bool>(), false);
 }
 
-test_suite* init_unit_test_suite(int, char* []) 
-{
-    test_suite* test = BOOST_TEST_SUITE("number types");
-    test->add(BOOST_TEST_CASE(&test_int32));
-    test->add(BOOST_TEST_CASE(&test_uint32));
-    test->add(BOOST_TEST_CASE(&test_int64));
-    test->add(BOOST_TEST_CASE(&test_uint64));
-    test->add(BOOST_TEST_CASE(&test_float));
-    test->add(BOOST_TEST_CASE(&test_double));
-    test->add(BOOST_TEST_CASE(&test_boolean));
-
-    return test;
-}
+BOOST_AUTO_TEST_SUITE_END()

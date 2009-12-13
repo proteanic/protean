@@ -11,7 +11,9 @@ using boost::unit_test::test_suite;
 #include <protean/variant.hpp>
 using namespace protean;
 
-void test_detail_string()
+BOOST_AUTO_TEST_SUITE(string_suite);
+
+BOOST_AUTO_TEST_CASE(test_detail_string)
 {
 	detail::string vs00;
 	BOOST_CHECK_EQUAL(vs00.size(), 0);
@@ -54,7 +56,7 @@ void test_detail_string()
 	BOOST_CHECK_EQUAL(vs06.value(), "1");
 }
 
-void test_string()
+BOOST_AUTO_TEST_CASE(test_string)
 {
     std::string arg("This is a string");
 
@@ -83,11 +85,4 @@ void test_string()
     BOOST_CHECK_EQUAL(v5.as<std::string>(), "");
 }
 
-test_suite* init_unit_test_suite(int, char* []) 
-{
-    test_suite* test = BOOST_TEST_SUITE("string type");
-    test->add(BOOST_TEST_CASE(&test_detail_string));
-    test->add(BOOST_TEST_CASE(&test_string));
-
-    return test;
-}
+BOOST_AUTO_TEST_SUITE_END()

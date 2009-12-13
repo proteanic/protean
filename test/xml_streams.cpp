@@ -13,9 +13,9 @@ using boost::unit_test::test_suite;
 #include <protean/xml_writer.hpp>
 using namespace protean;
 
+BOOST_AUTO_TEST_SUITE(xml_streams_suite);
 
-
-void test_xml_typed()
+BOOST_AUTO_TEST_CASE(test_xml_typed)
 {
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -76,9 +76,7 @@ void test_xml_typed()
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
-
-
-void test_xml_untyped()
+BOOST_AUTO_TEST_CASE(test_xml_untyped)
 {
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -139,8 +137,7 @@ void test_xml_untyped()
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
-
-void test_xml_validation()
+BOOST_AUTO_TEST_CASE(test_xml_validation)
 {
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -278,13 +275,55 @@ void test_xml_preserve()
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
-test_suite* init_unit_test_suite(int, char* []) 
+class testing_object : public object
 {
-    test_suite* test = BOOST_TEST_SUITE("object type");
-    test->add(BOOST_TEST_CASE(&test_xml_typed));
-    test->add(BOOST_TEST_CASE(&test_xml_untyped));
-    test->add(BOOST_TEST_CASE(&test_xml_validation));
-    test->add(BOOST_TEST_CASE(&test_xml_preserve));    
+public:
+    testing_object() :
+        m_count(++sm_count)
+    {}
+    testing_object(const testing_object& rhs) :
+        m_count(++sm_count),
+        m_id(rhs.m_id)
+    {}
 
-    return test;
-}
+    boost::int32_t count() const {
+        return m_count;
+    }
+
+    std::string id() const {
+        return m_id;
+    }
+
+    void set_id(const std::string& id) {
+        m_id = id;
+    }
+
+public:
+    object_handle clone() const
+    {
+        return object_handle(new testing_object(*this));
+    }
+    int version() const
+    {
+        return 1;
+    }
+    void deflate(variant& params) const
+    {
+        params = variant(variant::Dictionary);
+        params.insert("count",  variant(m_count));
+        params.insert("id",     variant(m_id));
+    }
+    void inflate(const variant& params, int version)
+    {
+        m_count = params["count"].as<boost::int32_t>();
+        m_id = params["id"].as<std::string>();
+    }
+private:
+    static boost::int32_t  sm_count;
+    boost::int32_t  m_count;
+    std::string     m_id;
+};
+
+boost::int32_t testing_object::sm_count = 0;
+
+BOOST_AUTO_TEST_SUITE_END()

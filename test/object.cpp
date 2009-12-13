@@ -11,6 +11,8 @@ using boost::unit_test::test_suite;
 #include <protean/variant.hpp>
 using namespace protean;
 
+BOOST_AUTO_TEST_SUITE(object_suite);
+
 class testing_object : public object
 {
 public:
@@ -122,11 +124,4 @@ void test_object_proxy()
 	BOOST_CHECK(v.is<testing_object>());
 }
 
-test_suite* init_unit_test_suite(int, char* []) 
-{
-    test_suite* test = BOOST_TEST_SUITE("object type");
-    test->add(BOOST_TEST_CASE(&test_object));
-    test->add(BOOST_TEST_CASE(&test_object_proxy));
-
-    return test;
-}
+BOOST_AUTO_TEST_SUITE_END()

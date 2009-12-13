@@ -153,11 +153,23 @@
 				Name="suites"
 				>
 				<File
+					RelativePath="..\..\test\list.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\test\number.cpp"
 					>
 				</File>
 				<File
+					RelativePath="..\..\test\object.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\test\string.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\test\xml_streams.cpp"
 					>
 				</File>
 			</Filter>
