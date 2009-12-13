@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="Release"
+	InheritedPropertySheets=".\base.vsprops"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		Optimization="2"
+		PreprocessorDefinitions="NDEBUG"
+		RuntimeLibrary="2"
+		DebugInformationFormat="3"
+	/>
+	<UserMacro
+		Name="BuildFlag"
+		Value="mt-d"
+	/>
+</VisualStudioPropertySheet>

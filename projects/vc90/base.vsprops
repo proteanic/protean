@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="Base"
+	OutputDirectory="$(SolutionDir)bin/$(ProjectName)_$(ConfigurationName)_$(InstructionSetFlag)/"
+	IntermediateDirectory="$(SolutionDir)temp/$(ProjectName)_$(ConfigurationName)_$(InstructionSetFlag)/"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="&quot;$(SolutionDir)../../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;;&quot;$(XERCES_INCLUDE_PATH)&quot;"
+		PreprocessorDefinitions="_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;"
+		RuntimeTypeInfo="true"
+		WarningLevel="3"
+		WarnAsError="true"
+		DisableSpecificWarnings="4251;4503;4275"
+	/>
+	<Tool
+		Name="VCLibrarianTool"
+		OutputFile="&quot;$(OutDir)$(ProjectName)-$(InstructionSetFlag).lib&quot;"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="$(XERCES_LIB)"
+		OutputFile="&quot;$(OutDir)$(ProjectName)-$(InstructionSetFlag).exe&quot;"
+		AdditionalLibraryDirectories="$(XERCES_LIB_PATH)"
+		GenerateDebugInformation="true"
+		SubSystem="2"
+	/>
+</VisualStudioPropertySheet>

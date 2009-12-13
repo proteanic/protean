@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="paths"
+	>
+    
+    <!-- These variables are system-specific -->
+	<UserMacro
+		Name="BOOST_ROOT"
+		Value="J:/data/svn/Simulation/3rd party/boost-1_40/"
+	/>
+	<UserMacro
+		Name="XERCES_ROOT"
+		Value="J:/data/svn/Simulation/3rd party/xerces-3_0/"
+	/>
+
+    <!-- sub directories relative to root paths defined above -->
+	<UserMacro
+		Name="BOOST_INCLUDE_PATH"
+		Value="$(BOOST_ROOT)"
+	/>
+	<UserMacro
+		Name="BOOST_LIB_PATH"
+		Value="$(BOOST_ROOT)lib/"
+	/>
+	<UserMacro
+		Name="BOOST_LIB64_PATH"
+		Value="$(BOOST_ROOT)lib64/"
+	/>
+	<UserMacro
+		Name="XERCES_INCLUDE_PATH"
+		Value="$(XERCES_ROOT)include/"
+	/>
+	<UserMacro
+		Name="XERCES_LIB_PATH"
+		Value="$(XERCES_ROOT)lib/"
+	/>
+	<UserMacro
+		Name="XERCES_LIB64_PATH"
+		Value="$(XERCES_ROOT)lib64/"
+	/>
+	<UserMacro
+		Name="XERCES_BIN_PATH"
+		Value="$(XERCES_ROOT)bin/"
+	/>
+	<UserMacro
+		Name="XERCES_BIN64_PATH"
+		Value="$(XERCES_ROOT)bin64/"
+	/>
+    
+	<UserMacro
+		Name="XERCES_LIB"
+		Value="xerces-c-$(InstructionSetFlag)-$(CompilerFlag)-$(BuildFlag)-3_0.lib"
+	/>
+    
+</VisualStudioPropertySheet>

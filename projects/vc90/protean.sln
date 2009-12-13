@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protean", "protean.vcproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test.vcproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF} = {AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.Debug|Win32.Build.0 = Debug|Win32
+		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.Release|Win32.ActiveCfg = Release|Win32
+		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.Release|Win32.Build.0 = Release|Win32
+		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Debug|Win32.Build.0 = Debug|Win32
+		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Release|Win32.ActiveCfg = Release|Win32
+		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
