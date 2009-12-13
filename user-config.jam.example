@@ -1,0 +1,31 @@
+##############################################################
+#### These values should be edited to match your system  #####
+##############################################################
+
+# Hints:
+#
+# - leave a space between all tokens, and in particular
+#   before the semicolons
+#
+# - enclose any paths containing spaces in double quotes
+#
+# - both compilers can be enabled, e.g. when using Cygwin
+
+using msvc ;
+#using gcc ;
+
+#XERCES_LIB = c:/xerces-c-3.0.1/Build/Win32/VC8/Release ;
+#XERCES_LIB_FILE = xerces-c_3.lib ;
+#XERCES_INCLUDE = c:/xerces-c-3.0.1/src ;
+#BOOST_INCLUDE = c:/boost_1_41_0 ;
+#BOOST_LIB = c:/boost_1_41_0/stage/lib ;
+#BL = -vc80-mt-gd-1_41.lib ;
+
+XERCES_LIB = "C:/Development/Simulation/3rd party/xerces-3_0/lib" ;
+XERCES_INCLUDE = "C:/Development/Simulation/3rd party/xerces-3_0/include" ;
+BOOST_INCLUDE = "C:/Development/Simulation/3rd party/boost-1_40" ;
+BOOST_LIB = "C:/Development/Simulation/3rd party/boost-1_40/lib" ;
+BL = -vc90-mt-gd-1_40.lib ;
+XERCES_LIB_FILE = xerces-c-x86-vc90-mt-gd-3_0.lib ;
+
+##############################################################

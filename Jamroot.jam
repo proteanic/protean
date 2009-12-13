@@ -4,6 +4,9 @@
 #
 # Quickstart:
 #
+# Copy user-config.jam.example to user-config.jam and edit the
+# settings to match your system.
+#
 # Install Boost, you will need iostreams with zlib support.
 # (I will write detailed instructions later or on request)
 #
@@ -16,24 +19,13 @@
 # Put bjam on your path. Under Cygwin this can be done e.g. as follows
 # export PATH=${PATH}:/cygdrive/c/boost_1_41_0
 #
-# Edit the system-specific variables below
-#
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
 
 using testing ;
-
 import os ;
 
-######## These variables are system-specific #################
-
-XERCES_LIB = "C:/Development/Simulation/3rd party/xerces-3_0/lib" ;
-XERCES_INCLUDE = "C:/Development/Simulation/3rd party/xerces-3_0/include" ;
-BOOST_INCLUDE = "C:/Development/Simulation/3rd party/boost-1_40" ;
-BOOST_LIB = "C:/Development/Simulation/3rd party/boost-1_40/lib" ;
-BL = -vc90-mt-gd-1_40.lib ;
-
-##############################################################
+include user-config.jam ;
 
 project : requirements 
     <include>$(BOOST_INCLUDE) 
@@ -44,7 +36,7 @@ project : requirements
 
 SOURCES = [ glob src/*.cpp ] ;
 
-lib xerces : : <file>$(XERCES_LIB)/xerces-c-x86-vc90-mt-gd-3_0.lib : : <include>$(XERCES_INCLUDE) ;
+lib xerces : : <file>$(XERCES_LIB)/$(XERCES_LIB_FILE) : : <include>$(XERCES_INCLUDE) ;
 lib zlib : : <file>$(BOOST_LIB)/libboost_zlib$(BL) ;
 lib filesystem : : <file>$(BOOST_LIB)/libboost_filesystem$(BL) ;
 lib iostreams : zlib : <file>$(BOOST_LIB)/libboost_iostreams$(BL) ;
@@ -60,7 +52,6 @@ lib protean :
    <link>static
 ;
 
-
 rule test-protean ( source ) {
     return [
             unit-test
@@ -69,14 +60,11 @@ rule test-protean ( source ) {
                 $(source)
                 protean 
                 unittest
+                xerces
             : # command
             : # input files
             : <link>static
         ] ;
 }
 
-test-protean test/number.cpp ;
-test-protean test/string.cpp ;
-test-protean test/list.cpp ;
-test-protean test/object.cpp ;
-test-protean test/xml_streams.cpp ;
+test-protean test/master.cpp ;
