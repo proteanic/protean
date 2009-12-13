@@ -68,7 +68,7 @@ namespace protean {
             case variant::Dictionary:
             case variant::Bag:
             {
-                write(static_cast<int>(value.size()));
+                write(static_cast<boost::uint32_t>(value.size()));
 
                 variant::const_iterator it, end = value.end();
                 for ( it=value.begin(); it != end; ++it )
@@ -80,7 +80,7 @@ namespace protean {
             }
             case variant::Tuple:
             {
-                write(static_cast<int>(value.size()));
+                write(static_cast<boost::uint32_t>(value.size()));
 
                 for(size_t n(0); n!= value.size(); ++n)
                 {
@@ -91,7 +91,7 @@ namespace protean {
             }
             case variant::List:
             {
-                write(static_cast<int>(value.size()));
+                write(static_cast<boost::uint32_t>(value.size()));
 
                 BOOST_FOREACH(const variant& child, value)
                 {
@@ -106,10 +106,10 @@ namespace protean {
             }
             case variant::TimeSeries:
             {
-                write(static_cast<int>(value.size()));
+                write(static_cast<boost::uint32_t>(value.size()));
 
                 variant::const_iterator it, end = value.end();
-                for ( it=value.begin(); it != end; ++it )
+                for (it=value.begin(); it != end; ++it)
                 {
                     write(it.time());
                     write(it.value());
@@ -124,7 +124,7 @@ namespace protean {
                 write(obj.name());
 
                 // write version
-                write(obj.version());
+                write(static_cast<boost::int32_t>(obj.version()));
 
                 // write parameter dictionary
                 variant params;
@@ -154,7 +154,7 @@ namespace protean {
 
     void binary_writer::write(const variant& value)
     {
-        write(static_cast<int>(value.type()));
+        write(static_cast<boost::int32_t>(value.type()));
         write_value( value );
     }
 
@@ -162,19 +162,16 @@ namespace protean {
     {
         size_t length = value.size();
 
-        write(static_cast<int>(length));
-        if ( length>0 )
+        write(static_cast<boost::uint32_t>(length));
+        if (length>0)
         {
             write_bytes(value.c_str(), length);
         }
     }
-    void binary_writer::write(bool value)
+    void binary_writer::write(bool arg)
     {
-        write( value ? 1 : 0 );
-    }
-    void binary_writer::write(int value)
-    {
-        write_bytes(reinterpret_cast<const char*>(&value), sizeof(int));
+        boost::int32_t value(arg ? 1 : 0);
+        write(value);
     }
     void binary_writer::write(variant::int32_t value)
     {
@@ -228,7 +225,7 @@ namespace protean {
 
     void binary_writer::write(const void* data, size_t length)
     {
-        write(static_cast<int>(length));
+        write(static_cast<boost::uint32_t>(length));
         write_bytes(reinterpret_cast<const char*>(data), length);
     }
 

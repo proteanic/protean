@@ -34,7 +34,6 @@ namespace protean {
         void read(variant& value);
         void read(std::string& value);
         void read(bool& value);
-        void read(int& value);
         void read(variant::int32_t& value);
         void read(variant::uint32_t& value);
         void read(variant::int64_t& value);
@@ -57,8 +56,8 @@ namespace protean {
         boost::iostreams::filtering_istream     m_filter;
         int                                     m_flags;
         object_factory*                         m_factory;
-        unsigned char                           m_major_version;
-        unsigned char                           m_minor_version;
+        boost::uint16_t                         m_major_version;
+        boost::uint16_t                         m_minor_version;
 
         void setup();
         void close();

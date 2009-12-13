@@ -32,7 +32,6 @@ namespace protean {
         void write(const variant& value);
         void write(const std::string& value);
         void write(bool value);
-        void write(int value);
         void write(variant::int32_t value);
         void write(variant::uint32_t value);
         void write(variant::int64_t value);

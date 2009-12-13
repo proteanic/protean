@@ -100,9 +100,9 @@ namespace protean {
             case variant::Bag:
             {
                 value = variant( static_cast<variant::enum_type_t>(type) );
-                int size; read( size );
+                boost::uint32_t size; read( size );
 
-                for (int i=0; i<size; ++i)
+                for (boost::uint32_t i=0; i<size; ++i)
                 {
                     std::string name;
                     read(name);
@@ -115,11 +115,11 @@ namespace protean {
             case variant::List:
             case variant::Tuple:
             {
-                int size;
+                boost::uint32_t size;
                 read(size);
                 value = variant(static_cast<variant::enum_type_t>(type), size);
 
-                for ( int i=0; i<size; ++i )
+                for (boost::uint32_t i=0; i<size; ++i)
                 {
                     read(value[i]);
                 }
@@ -136,9 +136,9 @@ namespace protean {
             case variant::TimeSeries:
             {
                 value = variant(static_cast<variant::enum_type_t>(type));
-                int size; read(size);
+                boost::uint32_t size; read(size);
 
-                for (int i=0; i<size; ++i)
+                for (boost::uint32_t i=0; i<size; ++i)
                 {
                     variant::date_time_t date_time;
                     read(date_time);
@@ -151,7 +151,7 @@ namespace protean {
             case variant::Object:
             {
                 std::string class_name;
-                int version;
+                boost::int32_t version;
 
                 read(class_name);
                 read(version);
@@ -207,13 +207,13 @@ namespace protean {
 
     void binary_reader::read(variant& value)
     {
-        int type = variant::None;
+        boost::int32_t type = variant::None;
         read(type);
         read_value(static_cast<variant::enum_type_t>(type), value);
     }
     void binary_reader::read(std::string& value)
     {
-        int length;
+        boost::uint32_t length;
         read(length);
 
         boost::scoped_array<char> buffer( new char[length] );
@@ -223,13 +223,9 @@ namespace protean {
     }
     void binary_reader::read(bool& value)
     {
-        int b;
-        read( b );
+        boost::int32_t b;
+        read(b);
         value = (b != 0);
-    }
-    void binary_reader::read(int& value)
-    {
-        read_bytes(reinterpret_cast<char*>(&value), sizeof(int) );
     }
     void binary_reader::read(variant::int32_t& value)
     {
@@ -281,12 +277,12 @@ namespace protean {
     }
     void binary_reader::read(void*& data, size_t& length)
     {
-        int i;
+        boost::uint32_t i;
         read(i);
         length = i;
 
         // 'data' will be owned by the variant
-        data = malloc( length );
+        data = malloc(length);
         read_bytes(reinterpret_cast<char*>(data), length);
     }
 
