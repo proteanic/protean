@@ -35,7 +35,7 @@ namespace protean {
         void shutdown();
 
         template<typename TYPE>
-        void register_instance(const std::string& name);
+        void register_object(const std::string& name);
 
         object_handle create_instance(const std::string& name);
 
@@ -44,7 +44,7 @@ namespace protean {
     };
 
     template<class TYPE>
-    void object_factory::register_instance(const std::string& name="")
+    void object_factory::register_object(const std::string& name="")
     {
         std::string class_name(name);
         if (class_name.empty())
@@ -52,7 +52,7 @@ namespace protean {
             class_name = typeid(TYPE).name();
             class_name = class_name.substr(6); // ignore the 'class ' prefix
         }
-        create_fn_t create_fn(&object::create<TYPE>);
+        create_fn_t create_fn(&object_handle::create<TYPE>);
         std::pair<instance_map_t::iterator, bool> ret =
             sm_instance_map.insert( std::make_pair(class_name, create_fn) );
 

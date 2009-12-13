@@ -288,9 +288,9 @@ namespace protean {
         read_bytes(reinterpret_cast<char*>(data), length);
     }
 
-    void binary_reader::set_factory(object_factory* factory)
+    void binary_reader::set_factory(object_factory& factory)
     {
-        m_factory = factory;
+        m_factory = &factory;
     }
 
     void binary_reader::read_bytes(char* buffer, size_t length)

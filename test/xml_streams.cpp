@@ -11,69 +11,184 @@ using boost::unit_test::test_suite;
 #include <protean/variant.hpp>
 #include <protean/xml_reader.hpp>
 #include <protean/xml_writer.hpp>
+#include <protean/object_factory.hpp>
 using namespace protean;
 
 BOOST_AUTO_TEST_SUITE(xml_streams_suite);
 
-BOOST_AUTO_TEST_CASE(test_xml_typed)
+BOOST_AUTO_TEST_CASE(test_xml_primitives)
 {
-    static const std::string xml =
-        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-        "<Variant variant=\"Dictionary\">\n"
-        "  <Boolean variant=\"Boolean\">true</Boolean>\n"
-        "  <Date variant=\"Date\">2007-01-03</Date>\n"
-        "  <DateTime variant=\"DateTime\">2007-01-03T10:30:00</DateTime>\n"
-        "  <Double variant=\"Double\">3.7000000000000002</Double>\n"
-        "  <Float variant=\"Float\">4</Float>\n"
-        "  <Int32 variant=\"Int32\">-1</Int32>\n"
-        "  <Int64 variant=\"Int64\">-1</Int64>\n"
-        "  <String variant=\"String\">Element</String>\n"
-        "  <Time variant=\"Time\">10:30:00</Time>\n"
-        "  <UInt32 variant=\"UInt32\">4294967295</UInt32>\n"
-        "  <UInt64 variant=\"UInt64\">18446744073709551615</UInt64>\n"
-        "</Variant>";
-
-    std::stringstream iss;
-    iss << xml;
-
-    variant v1;
-    xml_reader reader(iss);
-    reader >> v1;
-
-    BOOST_CHECK(v1.is<variant::Dictionary>());
-    BOOST_CHECK(v1["String"].is<std::string>());
-    BOOST_CHECK(v1["Boolean"].is<bool>());
-    BOOST_CHECK(v1["Int32"].is<variant::int32_t>());
-    BOOST_CHECK(v1["UInt32"].is<variant::uint32_t>());
-    BOOST_CHECK(v1["Int64"].is<variant::int64_t>());
-    BOOST_CHECK(v1["UInt64"].is<variant::uint64_t>());
-    BOOST_CHECK(v1["Float"].is<float>());
-    BOOST_CHECK(v1["Double"].is<double>());
-    BOOST_CHECK(v1["Date"].is<variant::date_t>());
-    BOOST_CHECK(v1["Time"].is<variant::time_t>());
-    BOOST_CHECK(v1["DateTime"].is<variant::date_time_t>());
-
-    BOOST_CHECK_EQUAL(v1["String"].as<std::string>(), "Element");
-    BOOST_CHECK_EQUAL(v1["Boolean"].as<bool>(), true);
-    BOOST_CHECK_EQUAL(v1["Int32"].as<variant::int32_t>(), 0xFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["UInt32"].as<variant::uint32_t>(), 0xFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["Int64"].as<variant::int64_t>(), 0xFFFFFFFFFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["UInt64"].as<variant::uint64_t>(), 0xFFFFFFFFFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["Float"].as<float>(), 4.0);
-    BOOST_CHECK_EQUAL(v1["Double"].as<double>(), 3.7);
+    boost::int32_t arg_int32(0xffffffff);
+    boost::uint32_t arg_uint32(0xffffffff);
+    boost::int64_t arg_int64(0xffffffffffffffff);
+    boost::uint64_t arg_uint64(0xffffffffffffffff);
+    bool arg_bool(true);
+    float arg_float(std::numeric_limits<float>::max());
+    double arg_double(std::numeric_limits<double>::max());
+    std::string arg_string("test string");
     
-    variant::date_t date = variant::date_t(2007, 1, 3);
-    BOOST_CHECK_EQUAL(v1["Date"].as<variant::date_t>(), date);
-    variant::time_t time = variant::time_t(10, 30, 0);
-    BOOST_CHECK_EQUAL(v1["Time"].as<variant::time_t>(), time);
-    variant::date_time_t date_time = variant::date_time_t(date, time);
-    BOOST_CHECK_EQUAL(v1["DateTime"].as<variant::date_time_t>(), date_time);
+    variant v1(variant::Dictionary);
+    v1.insert("Int32", variant(arg_int32))
+      .insert("UInt32", variant(arg_uint32))
+      .insert("Int64", variant(arg_int64))
+      .insert("UInt64", variant(arg_uint64))
+      .insert("Float", variant(arg_float))
+      .insert("Double", variant(arg_double))
+      .insert("Boolean", variant(arg_bool))
+      .insert("String", variant(arg_string))
+      .insert("None", variant(variant::None));
 
-    std::stringstream oss;
+    std::ostringstream oss;
     xml_writer writer(oss);
     writer << v1;
 
-    BOOST_CHECK_EQUAL(iss.str(), oss.str());
+    variant v2;
+    std::stringstream iss;
+    iss << oss.str();
+    xml_reader reader(iss);
+    reader >> v2;
+
+    BOOST_CHECK(v1["Int32"].is<variant::Int32>());
+    BOOST_CHECK(v1["UInt32"].is<variant::UInt32>());
+    BOOST_CHECK(v1["Int64"].is<variant::Int64>());
+    BOOST_CHECK(v1["UInt64"].is<variant::UInt64>());
+    BOOST_CHECK(v1["Float"].is<variant::Float>());
+    BOOST_CHECK(v1["Double"].is<variant::Double>());
+    BOOST_CHECK(v1["Boolean"].is<variant::Boolean>());
+    BOOST_CHECK(v1["String"].is<variant::String>());
+    BOOST_CHECK(v1["None"].is<variant::None>());
+
+    BOOST_CHECK_EQUAL(v1["Int32"].as<boost::int32_t>(), arg_int32);
+    BOOST_CHECK_EQUAL(v1["UInt32"].as<boost::uint32_t>(), arg_uint32);
+    BOOST_CHECK_EQUAL(v1["Int64"].as<boost::int64_t>(), arg_int64);
+    BOOST_CHECK_EQUAL(v1["UInt64"].as<boost::uint64_t>(), arg_uint64);
+    BOOST_CHECK_EQUAL(v1["Float"].as<float>(), arg_float);
+    BOOST_CHECK_EQUAL(v1["Double"].as<double>(), arg_double);
+    BOOST_CHECK_EQUAL(v1["Boolean"].as<bool>(), arg_bool);
+    BOOST_CHECK_EQUAL(v1["String"].as<std::string>(), arg_string);
+}
+
+BOOST_AUTO_TEST_CASE(test_xml_exception)
+{
+    exception_info arg("test_exception", "test message");
+    variant v1(arg);
+
+    std::ostringstream oss;
+    xml_writer writer(oss);
+    writer << v1;
+
+    variant v2;
+    std::stringstream iss;
+    iss << oss.str();
+    xml_reader reader(iss);
+    reader >> v2;
+
+    BOOST_CHECK(v1.compare(v2)==0);
+}
+
+BOOST_AUTO_TEST_CASE(test_xml_buffer)
+{
+    char* arg("some buffer contents");
+    variant v1(static_cast<void*>(arg), strlen(arg));
+
+    std::ostringstream oss;
+    xml_writer writer(oss);
+    writer << v1;
+
+    variant v2;
+    std::stringstream iss;
+    iss << oss.str();
+    xml_reader reader(iss);
+    reader >> v2;
+
+    BOOST_CHECK(v1.compare(v2)==0);
+}
+
+class testing_object : public object
+{
+public:
+    testing_object() :
+        m_count(++sm_count)
+    {}
+    testing_object(const std::string& id) :
+        m_id(id),
+        m_count(++sm_count)
+    {}
+    testing_object(const testing_object& rhs) :
+        m_count(++sm_count),
+        m_id(rhs.m_id)
+    {}
+
+    boost::int32_t count() const {
+        return m_count;
+    }
+
+    std::string id() const {
+        return m_id;
+    }
+
+    void set_id(const std::string& id) {
+        m_id = id;
+    }
+
+public:
+    object_handle clone() const
+    {
+        return object_handle(new testing_object(*this));
+    }
+    int version() const
+    {
+        return 1;
+    }
+    void deflate(variant& params) const
+    {
+        params = variant(variant::Dictionary);
+        params.insert("count",  variant(m_count));
+        params.insert("id",     variant(m_id));
+    }
+    void inflate(const variant& params, int version)
+    {
+        m_count = params["count"].as<boost::int32_t>();
+        m_id = params["id"].as<std::string>();
+    }
+private:
+    static boost::int32_t  sm_count;
+    boost::int32_t  m_count;
+    std::string     m_id;
+};
+
+boost::int32_t testing_object::sm_count = 0;
+
+BOOST_AUTO_TEST_CASE(test_xml_object)
+{
+    testing_object arg("test object");
+    variant v1(arg);
+
+    std::ostringstream oss;
+    xml_writer writer(oss);
+    writer << v1;
+
+    variant v2;
+    std::stringstream iss1;
+    iss1 << oss.str();
+    xml_reader reader1(iss1);
+    reader1 >> v2;
+
+    BOOST_CHECK(v2.is<object_proxy>());
+    BOOST_CHECK(v1.compare(v2)==0);
+
+    variant v3;
+    std::stringstream iss2;
+    iss2 << oss.str();
+
+    object_factory factory;
+    factory.register_object<testing_object>();
+    xml_reader reader2(iss2);
+    reader2.set_factory(factory);
+    reader2 >> v3;
+
+    BOOST_CHECK(!v3.is<object_proxy>());
+    BOOST_CHECK(v1.compare(v3)==0);
 }
 
 BOOST_AUTO_TEST_CASE(test_xml_untyped)
@@ -241,7 +356,7 @@ BOOST_AUTO_TEST_CASE(test_xml_validation)
     BOOST_CHECK(v1["aDateTime"].is<variant::DateTime>());
 }
 
-void test_xml_preserve()
+BOOST_AUTO_TEST_CASE(test_xml_preserve)
 {
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -274,56 +389,5 @@ void test_xml_preserve()
 
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
-
-class testing_object : public object
-{
-public:
-    testing_object() :
-        m_count(++sm_count)
-    {}
-    testing_object(const testing_object& rhs) :
-        m_count(++sm_count),
-        m_id(rhs.m_id)
-    {}
-
-    boost::int32_t count() const {
-        return m_count;
-    }
-
-    std::string id() const {
-        return m_id;
-    }
-
-    void set_id(const std::string& id) {
-        m_id = id;
-    }
-
-public:
-    object_handle clone() const
-    {
-        return object_handle(new testing_object(*this));
-    }
-    int version() const
-    {
-        return 1;
-    }
-    void deflate(variant& params) const
-    {
-        params = variant(variant::Dictionary);
-        params.insert("count",  variant(m_count));
-        params.insert("id",     variant(m_id));
-    }
-    void inflate(const variant& params, int version)
-    {
-        m_count = params["count"].as<boost::int32_t>();
-        m_id = params["id"].as<std::string>();
-    }
-private:
-    static boost::int32_t  sm_count;
-    boost::int32_t  m_count;
-    std::string     m_id;
-};
-
-boost::int32_t testing_object::sm_count = 0;
 
 BOOST_AUTO_TEST_SUITE_END()

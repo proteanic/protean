@@ -385,6 +385,7 @@ namespace protean {
             case variant::Dictionary:
             case variant::Bag:
             case variant::Exception:
+            case variant::Object:
                 if (!is_ws(chars))
                 {
                     boost::throw_exception(variant_error("Unexpected characters encountered"));

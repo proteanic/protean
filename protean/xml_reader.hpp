@@ -34,7 +34,7 @@ namespace protean {
         void set_entity_path(const std::string& entity_path);
         void set_external_schema(const std::string& externalSchema);
         void add_entity_stream(const std::string& id, std::istream& is);
-        void set_factory(object_factory* factory);
+        void set_factory(object_factory& factory);
 
     private:
         std::istream&        m_is;

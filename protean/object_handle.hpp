@@ -36,6 +36,9 @@ namespace protean {
 
         void swap(object_handle& rhs);
 
+        template<typename TYPE>
+        static object_handle create();
+
     private:
         object*    m_pointee;
     };
@@ -51,6 +54,13 @@ namespace protean {
     {
         return dynamic_cast<T*>(m_pointee);
     }
+
+    template<typename TYPE>
+    object_handle object_handle::create()
+    {
+        return object_handle(new TYPE());
+    }
+
 } // namespace protean
 
 #endif // PROTEAN_OBJECT_HANDLE_HPP

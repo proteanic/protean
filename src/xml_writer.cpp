@@ -309,6 +309,7 @@ namespace protean {
 
                 end_content();
                 end_tag();
+                break;
             }
 	    default:
  	        boost::throw_exception (

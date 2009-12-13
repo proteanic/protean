@@ -110,9 +110,9 @@ namespace protean {
         m_entities.insert(make_pair(name, &is));
     }
 
-    void xml_reader::set_factory(object_factory* factory)
+    void xml_reader::set_factory(object_factory& factory)
     {
-        m_factory = factory;
+        m_factory = &factory;
     }
 
     xml_reader& operator>>(xml_reader& reader, variant& variant)

@@ -70,7 +70,7 @@ namespace protean {
 
     object_handle::operator bool() const
     {
-        return m_pointee==NULL;
+        return m_pointee!=NULL;
     }
 
     void object_handle::swap(object_handle& rhs)

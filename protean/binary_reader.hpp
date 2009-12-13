@@ -50,7 +50,7 @@ namespace protean {
         void read_bytes(char* value, size_t length);
         void read_value(variant::enum_type_t type, variant& value);
 
-        void set_factory(object_factory* factory);
+        void set_factory(object_factory& factory);
 
     private:
         std::istream&                           m_is;
