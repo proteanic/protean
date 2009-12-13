@@ -104,6 +104,105 @@ BOOST_AUTO_TEST_CASE(test_xml_buffer)
     BOOST_CHECK(v1.compare(v2)==0);
 }
 
+BOOST_AUTO_TEST_CASE(test_xml_collection)
+{
+    {
+        variant v1(variant::List);
+        v1.push_back(variant("string"));
+        v1.push_back(variant(1.0));
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss;
+        iss << oss.str();
+        xml_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+    }
+
+    {
+        variant v1(variant::Tuple, 2);
+        v1[0] = "string";
+        v1[1] = 1.0;
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss;
+        iss << oss.str();
+        xml_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+    }
+
+    {
+        variant v1(variant::Dictionary);
+        v1.insert("child1", variant("string"));
+        v1.insert("child2", variant(1.0));
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss;
+        iss << oss.str();
+        xml_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+    }
+
+    {
+        variant v1(variant::Bag);
+        v1.insert("child1", variant("string"));
+        v1.insert("child2", variant(1.0));
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss;
+        iss << oss.str();
+        xml_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+    }
+
+    {
+        variant v1(variant::TimeSeries);
+
+        variant::date_t date1 = variant::date_t(2007, 1, 3);
+        variant::time_t time1 = variant::time_t(10, 30, 0);
+        variant::date_t date2 = variant::date_t(2007, 1, 4);
+        variant::time_t time2 = variant::time_t(11, 30, 0);
+
+        v1.push_back(variant::date_time_t(date1, time1), variant("string"));
+        v1.push_back(variant::date_time_t(date2, time2), variant(1.0));
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss;
+        iss << oss.str();
+        xml_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+    }
+}
+
 class testing_object : public object
 {
 public:

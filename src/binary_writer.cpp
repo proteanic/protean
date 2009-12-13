@@ -133,6 +133,8 @@ namespace protean {
 
                 break;
             }
+            case variant::None:
+                break;
             case variant::Any:
                 write(value.as<std::string>());
                 break;

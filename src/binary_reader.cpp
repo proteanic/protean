@@ -191,6 +191,8 @@ namespace protean {
                 value = exception_info(type, message);
                 break;
             }
+            case variant::None:
+                break;
             case variant::Any:
             {
                 std::string s;

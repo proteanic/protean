@@ -153,6 +153,10 @@
 				Name="suites"
 				>
 				<File
+					RelativePath="..\..\test\binary_streams.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\test\list.cpp"
 					>
 				</File>

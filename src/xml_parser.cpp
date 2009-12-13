@@ -382,8 +382,10 @@ namespace protean {
                 break;
             case variant::None:
             case variant::List:
+            case variant::Tuple:
             case variant::Dictionary:
             case variant::Bag:
+            case variant::TimeSeries:
             case variant::Exception:
             case variant::Object:
                 if (!is_ws(chars))
