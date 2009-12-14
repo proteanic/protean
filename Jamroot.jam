@@ -52,10 +52,10 @@ lib protean :
    <link>static
 ;
 
-rule test-protean ( source ) {
+rule test-protean ( source * ) {
     return [
             unit-test
-                $(source:B)
+                thetest
             :
                 $(source)
                 protean 
@@ -63,8 +63,9 @@ rule test-protean ( source ) {
                 xerces
             : # command
             : # input files
-            : <link>static
+            :   <link>static
+                <library-path>$(XERCES_LIB)
         ] ;
 }
 
-test-protean test/master.cpp ;
+test-protean [ glob test/*.cpp ] ;
