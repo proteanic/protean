@@ -16,6 +16,7 @@
 #include <boost/mpl/identity.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include <protean/detail/variant_macros_define.hpp>
 
 namespace protean {
 
@@ -169,29 +170,20 @@ namespace protean {
     typename boost::disable_if<boost::is_base_of<object, T>, T>::type
     variant::as() const
     {
-        if (!is<Any | type_to_enum<T>::value>())
+        BEGIN_VARIANT_CONTEXT();
+
+        CHECK_VARIANT_FUNCTION(Any | type_to_enum<T>::value, "as<" + typeid(T).name() + ">()")
+
+        if (is<Any>())
         {
-            boost::throw_exception(variant_error(std::string("Attempt to call as<") + typeid(T).name() + ">() on " + enum_to_string(m_type) + " variant"));
+            return lexical_cast<T>(m_value.get<Any>().value());
         }
-        try 
+        else
         {
-            if (is<Any>())
-            {
-                return lexical_cast<T>(m_value.get<Any>().value());
-            }
-            else
-            {
-                return m_value.get<type_to_enum<T>::value>();
-            }
+            return m_value.get<type_to_enum<T>::value>();
         }
-        catch(std::exception& e)
-        {
-            boost::throw_exception(variant_error(std::string(e.what()) + "\n" + this->str()));
-        }
-        catch(...)
-        {
-            boost::throw_exception(variant_error(std::string("Unknown exception\n") + this->str()));
-        }
+
+        END_VARIANT_CONTEXT();
     }
 
     template<> PROTEAN_DLLEXPORT std::string                    variant::as<std::string>()            const;
@@ -206,10 +198,9 @@ namespace protean {
     typename boost::enable_if<boost::is_base_of<object, T>, const T&>::type
     variant::as() const
     {
-        if (m_type!=Object)
-        {
-            boost::throw_exception(variant_error(std::string("Attempt to cast ") + enum_to_string(type()) + " to Object"));
-        }
+        BEGIN_VARIANT_CONTEXT();
+
+        CHECK_VARIANT_FUNCTION(Object, "as<" + typeid(T).name() + ">()")
 
         const object_handle& obj(m_value.get<Object>());
 
@@ -230,6 +221,8 @@ namespace protean {
         {
             boost::throw_exception(variant_error(std::string("Attempt to coerce ") + typeid(*obj).name() + " into object of type " + typeid(T).name()));
         }
+
+        END_VARIANT_CONTEXT();
     }
 
     template<> PROTEAN_DLLEXPORT const object& variant::as<object>() const;
@@ -238,6 +231,8 @@ namespace protean {
     typename boost::enable_if<boost::is_base_of<object, T>, T&>::type
     variant::as()
     {
+        BEGIN_VARIANT_CONTEXT();
+
         const T& obj(static_cast<const variant*>(this)->as<T>());
 
         object_handle& base(m_value.get<Object>());
@@ -252,8 +247,12 @@ namespace protean {
             base = copy;
             return *copy;
         }
+
+        END_VARIANT_CONTEXT();
     }
 
     template<> PROTEAN_DLLEXPORT object& variant::as<object>();
 
 } // namespace protean
+
+#include <protean/detail/variant_macros_undef.hpp>

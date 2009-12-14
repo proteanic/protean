@@ -15,37 +15,9 @@
 
 #include <protean/detail/dummy_iterator.hpp>
 
+#include <protean/detail/variant_macros_define.hpp>
+
 namespace protean {
-
-    #define CHECK_VARIANT_FUNCTION(TYPE, FUNCTION)                                                                                                \
-    if (!is<TYPE>())                                                                                                                            \
-    {                                                                                                                                            \
-        boost::throw_exception(variant_error(std::string("Attempt to call ") + #FUNCTION + "() on " + enum_to_string(m_type) + " variant"));        \
-    }
-
-    #define CHECK_VARIANT(TYPE)                                                                                                                    \
-    if (!is<TYPE>())                                                                                                                            \
-    {                                                                                                                                            \
-        boost::throw_exception(variant_error(std::string("Attempt to call ") + __FUNCTION__ + "() on " + enum_to_string(m_type) + " variant"));    \
-    }
-
-    #define BEGIN_VARIANT_CONTEXT                                                                \
-        try                                                                                        \
-        {                                                                                        \
-	BOOST_STATIC_ASSERT (true)
-
-    #define END_VARIANT_CONTEXT                                                                            \
-        }                                                                                                \
-        catch(std::exception& e)                                                                        \
-        {                                                                                                \
-            boost::throw_exception(variant_error(std::string(e.what()) + "\n" + this->str()));            \
-        }                                                                                                \
-        catch(...)                                                                                        \
-        {                                                                                                \
-            boost::throw_exception(variant_error(std::string("Unknown exception\n") + this->str()));    \
-        }                                                                                                \
-        BOOST_STATIC_ASSERT (true)
-
 
     /* Constructors */
     variant::variant() :
@@ -1437,3 +1409,5 @@ namespace protean {
     }
 
 } // namespace protean
+
+#include <protean/detail/variant_macros_undef.hpp>

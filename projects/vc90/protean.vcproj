@@ -370,6 +370,14 @@
 					RelativePath="..\..\protean\detail\variant_impl.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\protean\detail\variant_macros_define.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\variant_macros_undef.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
