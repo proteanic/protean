@@ -153,8 +153,8 @@ namespace protean {
 
         size_t hash() const;
 
-        variant downCast(enum_type_t type) const;
-        variant upCast() const;
+        variant down_cast(enum_type_t type) const;
+        variant up_cast() const;
 
         std::string str(bool summarise=false, const std::string& indent = "") const;
 

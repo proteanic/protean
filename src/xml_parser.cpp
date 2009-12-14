@@ -278,7 +278,7 @@ namespace protean {
 
             if ( (context->m_type & variant::Primitive)!=0 )
             {
-                context->element() = variant::make_any(context->m_data).downCast(context->m_type);
+                context->element() = variant::make_any(context->m_data).down_cast(context->m_type);
             }
             else if ( context->m_type==variant::Exception )
             {
@@ -662,7 +662,7 @@ namespace protean {
             variant::enum_type_t type = derived_from_type(attr->getTypeDefinition());
             if (attrs.has_key(name))
             {
-                attrs[name] = attrs[name].downCast(type);
+                attrs[name] = attrs[name].down_cast(type);
             }
         }
     }

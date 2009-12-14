@@ -196,7 +196,7 @@ namespace protean {
             case variant::Any:
             {
                 std::string s;
-                read( s ); value = variant(s).upCast();
+                read( s ); value = variant(s).up_cast();
                 break;
             }
 	    default:	    

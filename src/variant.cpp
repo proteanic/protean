@@ -233,7 +233,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Collection | Any);
+        CHECK_VARIANT_FUNCTION(Collection | Any, "empty()");
 
         if (is<Any>())
         {
@@ -251,7 +251,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Collection | Buffer);
+        CHECK_VARIANT_FUNCTION(Collection | Buffer, "size()");
 
         if (is<Collection>())
         {
@@ -269,18 +269,18 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Collection);
+        CHECK_VARIANT_FUNCTION(Collection, "clear()");
 
         m_value.get<Collection>().clear();
 
         END_VARIANT_CONTEXT();
     }
 
-    variant& variant::push_back(const variant &value, enum_return_trait_t ret)
+    variant& variant::push_back(const variant& value, enum_return_trait_t ret)
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(List);
+        CHECK_VARIANT_FUNCTION(List, "push_back()");
 
         variant& result = m_value.get<List>().push_back( value );
 
@@ -293,7 +293,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(List);
+        CHECK_VARIANT_FUNCTION(List, "pop_back()");
 
         m_value.get<List>().pop_back();
         return *this;
@@ -305,7 +305,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(TimeSeries);
+        CHECK_VARIANT_FUNCTION(TimeSeries, "pop_back()");
 
         variant& result = m_value.get<TimeSeries>().push_back(time, value);
 
@@ -318,7 +318,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Mapping)
+        CHECK_VARIANT_FUNCTION(Mapping, "insert(\"" + key + "\")")
 
         variant& result = m_value.get<Mapping>().insert(key, value);
 
@@ -326,36 +326,32 @@ namespace protean {
 
         END_VARIANT_CONTEXT();
     }
-    variant& variant::remove( const std::string &key )
+    variant& variant::remove(const std::string& key)
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Mapping);
+        CHECK_VARIANT_FUNCTION(Mapping, "remove(\"" + key + "\")")
 
         m_value.get<Mapping>().remove(key);
         return *this;
 
         END_VARIANT_CONTEXT();
     }
-    bool variant::has_key( const std::string &key ) const
+    bool variant::has_key(const std::string& key) const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Mapping);
+        CHECK_VARIANT_FUNCTION(Mapping, "has_key(\"" + key + "\")")
 
         return m_value.get<Mapping>().has_key( key );
 
         END_VARIANT_CONTEXT();
     }
-    bool variant::contains( const std::string &key ) const
-    {
-        return has_key(key);
-    }
-    const variant& variant::at( size_t index ) const
+    const variant& variant::at(size_t index) const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Sequence);
+        CHECK_VARIANT_FUNCTION(Sequence, "at()")
 
         return m_value.get<Sequence>().at(index);
 
@@ -365,17 +361,17 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Sequence);
+        CHECK_VARIANT_FUNCTION(Sequence, "at()")
 
         return m_value.get<Sequence>().at(index);
 
         END_VARIANT_CONTEXT();
     }
-    const variant& variant::operator[]( size_t index ) const
+    const variant& variant::operator[](size_t index) const
     {
         return at(index);
     }
-    variant& variant::operator[]( size_t index )
+    variant& variant::operator[](size_t index)
     {
         return at(index);
     }
@@ -383,7 +379,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Mapping);
+        CHECK_VARIANT_FUNCTION(Mapping, "at(\"" + key + "\")");
 
         return m_value.get<Mapping>().at(key);
 
@@ -394,7 +390,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Mapping);
+        CHECK_VARIANT_FUNCTION(Mapping, "at(\"" + key + "\")");
 
         return m_value.get<Mapping>().at(key);
 
@@ -411,11 +407,11 @@ namespace protean {
         return at(key);
     }
 
-    variant variant::range(const std::string &key) const
+    variant variant::range(const std::string& key) const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Mapping);
+        CHECK_VARIANT_FUNCTION(Mapping, "range(\"" + key + "\")");
 
         return m_value.get<Mapping>().range( key );
         
@@ -483,7 +479,7 @@ namespace protean {
 
         BOOST_FOREACH(const variant& i, nodes)
         {
-            if (pred_key.empty() || (i.is<Mapping>() && i.has_key(pred_key) && i.at(pred_key).upCast().as<std::string>()==pred_val))
+            if (pred_key.empty() || (i.is<Mapping>() && i.has_key(pred_key) && i.at(pred_key).up_cast().as<std::string>()==pred_val))
             {
                 select_impl(i, tail, result);
             }
@@ -494,7 +490,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Any | Collection);
+        CHECK_VARIANT_FUNCTION(Any | Collection, "begin()");
 
         if (is<Any>())
         {
@@ -518,7 +514,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Any | Collection)
+        CHECK_VARIANT_FUNCTION(Any | Collection, "end()");
 
         if (is<Any>())
         {
@@ -542,7 +538,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Any | Collection);
+        CHECK_VARIANT_FUNCTION(Any | Collection, "begin()");
 
         if (is<Any>())
         {
@@ -566,7 +562,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Any | Collection);
+        CHECK_VARIANT_FUNCTION(Any | Collection, "end()");
 
         if (is<Any>())
         {
@@ -814,11 +810,11 @@ namespace protean {
         return boost::posix_time::to_iso_extended_string(arg);
     }
 
-    variant variant::downCast(enum_type_t type) const
+    variant variant::down_cast(enum_type_t type) const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Any);
+        CHECK_VARIANT_FUNCTION(Primitive, "down_cast()");
 
         if ( type==Any )
         {
@@ -877,11 +873,11 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    variant variant::upCast() const
+    variant variant::up_cast() const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT(Primitive);
+        CHECK_VARIANT_FUNCTION(Primitive, "up_cast()");
 
         if ( m_type==Any )
         {
@@ -958,7 +954,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Any | String, as<std::string>);
+        CHECK_VARIANT_FUNCTION(Any | String, "as<std::string>()");
 
         return m_value.get<String>().value();
 
@@ -968,7 +964,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Any | Boolean, as<bool>);
+        CHECK_VARIANT_FUNCTION(Any | Boolean, "as<bool>()");
 
         if (is<Any>())
         {
@@ -985,7 +981,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Any | Date, as<date_t>);
+        CHECK_VARIANT_FUNCTION(Any | Date, "as<date_t>()");
 
         if (is<Any>())
         {
@@ -1002,7 +998,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Any | Time, as<time_t>);
+        CHECK_VARIANT_FUNCTION(Any | Time, "as<time_t>()");
 
         if (is<Any>())
         {
@@ -1019,7 +1015,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Any | DateTime, as<date_time_t>);
+        CHECK_VARIANT_FUNCTION(Any | DateTime, "as<date_time_t>()");
 
         if (is<Any>())
         {
@@ -1036,7 +1032,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Buffer, as<void*>);
+        CHECK_VARIANT_FUNCTION(Buffer, "as<void*>()");
 
         return m_value.get<Buffer>().data();
 
@@ -1046,7 +1042,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Exception, as<variant::exception_info>);
+        CHECK_VARIANT_FUNCTION(Exception, "as<variant::exception_info>()");
 
         return m_value.get<Exception>();
 
@@ -1057,7 +1053,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Object, as<object>);
+        CHECK_VARIANT_FUNCTION(Object, "as<object>()");
 
         return *m_value.get<Object>();
 
@@ -1068,7 +1064,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Object, as<object>);
+        CHECK_VARIANT_FUNCTION(Object, "as<object>()");
 
         object_handle& obj = m_value.get<Object>();
 
@@ -1114,7 +1110,7 @@ namespace protean {
             case Date:
             case Time:
             case DateTime:
-                oss << upCast().as<std::string>();
+                oss << up_cast().as<std::string>();
                 break;
             case List:
             {

@@ -4,27 +4,19 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #ifndef CHECK_VARIANT_FUNCTION
-#define CHECK_VARIANT_FUNCTION(TYPE, FUNCTION)                                                                                                      \
+#define CHECK_VARIANT_FUNCTION(TYPE, FUNCTION_CALL)                                                                                                      \
     if (!is<TYPE>())                                                                                                                                \
     {                                                                                                                                               \
-        boost::throw_exception(variant_error(std::string("Attempt to call ") + #FUNCTION + "() on " + enum_to_string(m_type) + " variant"));        \
+    boost::throw_exception(variant_error(std::string("Attempt to call ") + FUNCTION_CALL + " on " + enum_to_string(m_type) + " variant"));        \
     }
-#endif
-
-#ifndef CHECK_VARIANT
-#define CHECK_VARIANT(TYPE)                                                                                                                         \
-    if (!is<TYPE>())                                                                                                                                \
-    {                                                                                                                                               \
-        boost::throw_exception(variant_error(std::string("Attempt to call ") + __FUNCTION__ + "() on " + enum_to_string(m_type) + " variant"));     \
-    }
-#endif
+#endif // CHECK_VARIANT_FUNCTION
 
 #ifndef BEGIN_VARIANT_CONTEXT
 #define BEGIN_VARIANT_CONTEXT                                                                           \
         try                                                                                             \
         {                                                                                               \
 	        BOOST_STATIC_ASSERT (true)
-#endif
+#endif // BEGIN_VARIANT_CONTEXT
 
 #ifndef END_VARIANT_CONTEXT
 #define END_VARIANT_CONTEXT                                                                             \
@@ -38,4 +30,4 @@
             boost::throw_exception(variant_error(std::string("Unknown exception\n") + this->str()));    \
         }                                                                                               \
         BOOST_STATIC_ASSERT (true)
-#endif
+#endif // END_VARIANT_CONTEXT
