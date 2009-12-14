@@ -4,10 +4,10 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #ifndef CHECK_VARIANT_FUNCTION
-#define CHECK_VARIANT_FUNCTION(TYPE, FUNCTION_CALL)                                                                                                      \
+#define CHECK_VARIANT_FUNCTION(TYPE, FUNCTION_CALL)                                                                                                 \
     if (!is<TYPE>())                                                                                                                                \
     {                                                                                                                                               \
-    boost::throw_exception(variant_error(std::string("Attempt to call ") + FUNCTION_CALL + " on " + enum_to_string(m_type) + " variant"));        \
+        boost::throw_exception(variant_error(std::string("Attempt to call ") + FUNCTION_CALL + " on " + enum_to_string(m_type) + " variant"));      \
     }
 #endif // CHECK_VARIANT_FUNCTION
 

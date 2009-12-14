@@ -156,7 +156,7 @@ namespace protean {
             return false;
         }
         
-        object_handle obj(m_value.get<Object>());
+        handle<object> obj(m_value.get<Object>());
         return obj->name()==T().name();
     }
 
@@ -202,7 +202,7 @@ namespace protean {
 
         CHECK_VARIANT_FUNCTION(Object, "as<" + typeid(T).name() + ">()")
 
-        const object_handle& obj(m_value.get<Object>());
+        const handle<object>& obj(m_value.get<Object>());
 
         if (obj.is<T>())
         {
@@ -214,7 +214,7 @@ namespace protean {
             T* casted = new T();
             casted->coerce(*obj.as<object_proxy>());
 
-            const_cast<object_handle&>(obj) = casted;
+            const_cast<handle<object>&>(obj) = casted;
             return *casted;
         }
         else
@@ -235,7 +235,7 @@ namespace protean {
 
         const T& obj(static_cast<const variant*>(this)->as<T>());
 
-        object_handle& base(m_value.get<Object>());
+        handle<object>& base(m_value.get<Object>());
 
         if (base.unique())
         {

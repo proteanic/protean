@@ -291,7 +291,7 @@ namespace protean {
                 std::string class_name(context->element()["class"].as<std::string>());
                 int version(context->element()["version"].as<int>());
 
-                object_handle obj;
+                handle<object> obj;
                 if ( m_factory!=NULL )
                 {
                     obj = m_factory->create_instance(class_name);

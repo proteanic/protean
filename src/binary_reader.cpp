@@ -156,7 +156,7 @@ namespace protean {
                 read(class_name);
                 read(version);
 
-                object_handle obj;
+                handle<object> obj;
                 if (m_factory!=NULL)
                 {
                     obj = m_factory->create_instance(class_name);
@@ -196,7 +196,8 @@ namespace protean {
             case variant::Any:
             {
                 std::string s;
-                read( s ); value = variant(s).up_cast();
+                read(s);
+                value = variant(s).up_cast();
                 break;
             }
 	    default:	    

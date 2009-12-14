@@ -37,9 +37,9 @@ public:
     }
 
 public:
-    object_handle clone() const
+    handle<object> clone() const
     {
-        return object_handle(new testing_object(*this));
+        return handle<object>(new testing_object(*this));
     }
     int version() const
     {

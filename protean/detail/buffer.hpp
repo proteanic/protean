@@ -14,7 +14,7 @@ namespace protean { namespace detail {
     class PROTEAN_DLLEXPORT buffer
     {
     public:
-        buffer(void* data, size_t size, bool copyData);
+        buffer(void* data, size_t size, bool copy_data);
         buffer(const buffer& rhs);
 		buffer& operator=(const buffer& rhs);
         ~buffer();

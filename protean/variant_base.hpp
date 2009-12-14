@@ -18,6 +18,7 @@
 
 #include <protean/detail/string.hpp>
 #include <protean/exception_info.hpp>
+#include <protean/object.hpp>
 #include <protean/detail/buffer.hpp>
 #include <protean/detail/collection.hpp>
 #    include <protean/detail/sequence.hpp>
@@ -27,7 +28,7 @@
 #        include <protean/detail/bag.hpp>
 #        include <protean/detail/dictionary.hpp>
 #    include <protean/detail/timeseries.hpp>
-#include <protean/object_handle.hpp>
+#include <protean/handle.hpp>
 #include <protean/detail/variant_impl.hpp>
 
 namespace protean {
@@ -89,7 +90,7 @@ namespace protean {
             detail::tagged_type<Mapping,            detail::mapping,                    detail::alloc_new,          boost::mpl::string<'Mapp','ing'> >,
             detail::tagged_type<Dictionary,         detail::dictionary,                 detail::alloc_new,          boost::mpl::string<'Dict','iona','ry'> >,
             detail::tagged_type<Bag,                detail::bag,                        detail::alloc_new,          boost::mpl::string<'Bag'> >,
-            detail::tagged_type<Object,             object_handle,                      detail::alloc_placement,    boost::mpl::string<'Obje','ct'> >,
+            detail::tagged_type<Object,             handle<object>,                     detail::alloc_placement,    boost::mpl::string<'Obje','ct'> >,
             detail::tagged_type<TimeSeries,         detail::timeseries,                 detail::alloc_new,          boost::mpl::string<'Time','Seri','es'> >,
             detail::tagged_type<Tuple,              detail::tuple,                      detail::alloc_new,          boost::mpl::string<'Tupl','e'> >,
             detail::tagged_type<Buffer,             detail::buffer,                     detail::alloc_new,          boost::mpl::string<'Buff','er'> >,

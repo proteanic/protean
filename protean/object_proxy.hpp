@@ -9,7 +9,7 @@
 #include <protean/config.hpp>
 
 #include <protean/object.hpp>
-#include <protean/object_handle.hpp>
+#include <protean/handle.hpp>
 
 namespace protean {
 
@@ -22,7 +22,7 @@ namespace protean {
         int version() const;
         void deflate(variant& params) const;
         void inflate(const variant& params, int version);
-        object_handle clone() const;
+        handle<object> clone() const;
 
     private:
         std::string m_class_name;

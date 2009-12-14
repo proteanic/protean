@@ -4,7 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include <protean/object_factory.hpp>
-#include <protean/object_handle.hpp>
+#include <protean/handle.hpp>
 
 namespace protean {
 
@@ -19,14 +19,14 @@ namespace protean {
         sm_instance_map.clear();
     }
 
-    /*static*/ object_handle object_factory::create_instance(const std::string& name)
+    /*static*/ handle<object> object_factory::create_instance(const std::string& name)
     {
         instance_map_t::const_iterator citr(sm_instance_map.find(name));
 
         if (citr == sm_instance_map.end())
         {
             // Return empty handle
-            return object_handle(NULL);
+            return handle<object>(NULL);
         }
 
         return citr->second();

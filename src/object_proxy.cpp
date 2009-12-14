@@ -31,7 +31,7 @@ namespace protean {
         m_version = version;
         m_params = params;
     }
-    object_handle object_proxy::clone() const
+    handle<object> object_proxy::clone() const
     {            
         return new object_proxy(*this);
     }        

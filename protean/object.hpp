@@ -8,14 +8,16 @@
 
 #include <protean/config.hpp>
 
+#include <protean/detail/ref_counted.hpp>
+
 #include <string>
 
 namespace protean {
 
     class variant;
-    class object_handle;
+    template<typename T> class handle;
 
-    class PROTEAN_DLLEXPORT object
+    class PROTEAN_DLLEXPORT object : public detail::ref_counted
     {
     public:
         object();
@@ -37,11 +39,7 @@ namespace protean {
         virtual int version() const = 0;
         virtual void deflate(variant& params) const = 0;
         virtual void inflate(const variant& params, int version) = 0;
-        virtual object_handle clone() const = 0;
-
-    private:
-        size_t    m_ref_count;
-        friend class object_handle;
+        virtual handle<object> clone() const = 0;
     };
 
 } // namespace protean

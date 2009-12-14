@@ -12,27 +12,27 @@
 
 namespace protean {
 
-    class object_handle;
+    template<typename T> class handle;
 
     namespace detail {
 
-    class PROTEAN_DLLEXPORT ref_counted
-    {
-    public:
-        ref_counted();
-        ref_counted(const ref_counted& rhs);
-    private:
-        size_t  m_ref_count;
-        friend class object_handle;
-    };
+        class PROTEAN_DLLEXPORT ref_counted
+        {
+        public:
+            ref_counted();
+            ref_counted(const ref_counted& rhs);
+        private:
+            size_t  m_ref_count;
+            template<typename T> friend class handle;
+        };
 
-    inline ref_counted::ref_counted() :
-        m_ref_count(0)
-    {}
+        inline ref_counted::ref_counted() :
+            m_ref_count(0)
+        {}
 
-    inline ref_counted::ref_counted(const ref_counted& rhs) :
-        m_ref_count(0)
-    {}
+        inline ref_counted::ref_counted(const ref_counted& rhs) :
+            m_ref_count(0)
+        {}
 
 }} // namespace protean::detail
 

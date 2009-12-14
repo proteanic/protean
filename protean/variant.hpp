@@ -28,18 +28,18 @@ namespace protean {
         variant(T value, typename boost::enable_if<boost::is_pod<T> >::type* dummy = 0);
 
         explicit variant(enum_type_t type, size_t size=0);
-        explicit variant(enum_type_t type, const variant& base);
-        explicit variant(const std::string& value);
-        explicit variant(const char *value);
-        explicit variant(bool value);
-        explicit variant(const date_t& value);
-        explicit variant(const time_t& value);
-        explicit variant(const date_time_t& value);
-        explicit variant(void* data, size_t size, bool clone=true);
-        explicit variant(const exception_info& value);
-        explicit variant(const std::exception& e);
-        explicit variant(const object& o);
-        explicit variant(const object_handle& o);
+        explicit variant(enum_type_t type, const variant& arg);
+        explicit variant(const std::string& arg);
+        explicit variant(const char *arg);
+        explicit variant(bool arg);
+        explicit variant(const date_t& arg);
+        explicit variant(const time_t& arg);
+        explicit variant(const date_time_t& arg);
+        explicit variant(void* data, size_t size, bool copy_data=true);
+        explicit variant(const exception_info& arg);
+        explicit variant(const std::exception& arg);
+        explicit variant(const object& arg);
+        explicit variant(const handle<object>& arg);
 
 
         /* Assignment */

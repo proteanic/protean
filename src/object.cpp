@@ -10,13 +10,11 @@
 
 namespace protean {
 
-    object::object() :
-        m_ref_count(0)
+    object::object()
     {
     }
 
-    object::object(const object& rhs) :
-        m_ref_count(0)
+    object::object(const object& rhs)
     {
     }
 

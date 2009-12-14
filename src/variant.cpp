@@ -24,83 +24,83 @@ namespace protean {
         m_type(None)
     {
     }
-    variant::variant(const std::string& value) :
+    variant::variant(const std::string& arg) :
         m_type(String)
     {
-        m_value.set<String>(detail::string(value.c_str(), value.size()));
+        m_value.set<String>(detail::string(arg.c_str(), arg.size()));
     }
-    variant::variant(const char *value) :
+    variant::variant(const char *arg) :
         m_type(String)
     {
-        m_value.set<String>(detail::string(value));
+        m_value.set<String>(detail::string(arg));
     }
-    variant::variant(bool value) :
+    variant::variant(bool arg) :
         m_type(Boolean)
     {
-        m_value.set<Boolean>(value);
+        m_value.set<Boolean>(arg);
     }
 
-    variant::variant(const date_t& value) :
+    variant::variant(const date_t& arg) :
         m_type(Date)
     {
-        if ( value.is_special() )
+        if (arg.is_special())
         {
             boost::throw_exception(variant_error("Attempt to construct Date variant with invalid date"));
         }
-        m_value.set<Date>(value);
+        m_value.set<Date>(arg);
     }
-    variant::variant(const time_t& value) :
+    variant::variant(const time_t& arg) :
         m_type(Time)
     {
-        if ( value.is_special() )
+        if ( arg.is_special() )
         {
             boost::throw_exception(variant_error("Attempt to construct Time variant with invalid time"));
         }
-        m_value.set<Time>(value);
+        m_value.set<Time>(arg);
     }
-    variant::variant(const date_time_t& value) :
+    variant::variant(const date_time_t& arg) :
         m_type(DateTime)
     {
-        if ( value.is_special() )
+        if (arg.is_special())
         {
             boost::throw_exception(variant_error("Attempt to construct DateTime variant with invalid date/time"));
         }
-        m_value.set<DateTime>(value);
+        m_value.set<DateTime>(arg);
     }
 
-    variant::variant(void* data, size_t size, bool copy) :
+    variant::variant(void* data, size_t size, bool copy_data) :
         m_type(Buffer)
     {
-        m_value.set<Buffer>(detail::buffer(data, size, copy));
+        m_value.set<Buffer>(detail::buffer(data, size, copy_data));
     }
 
-    variant::variant(const exception_info& value) :
+    variant::variant(const exception_info& arg) :
         m_type(Exception)
     {
-        m_value.set<Exception>(value);
+        m_value.set<Exception>(arg);
     }
 
-    variant::variant(const std::exception& e) :
+    variant::variant(const std::exception& arg) :
         m_type(Exception)
     {
-        m_value.set<Exception>(exception_info(e));
+        m_value.set<Exception>(exception_info(arg));
     }
 
-    variant::variant(const object& o) :
+    variant::variant(const object& arg) :
         m_type(Object)
     {
-        m_value.set<Object>(o.clone());
+        m_value.set<Object>(arg.clone());
     }
 
-    variant::variant(const object_handle& o) :
+    variant::variant(const handle<object>& arg) :
         m_type(Object)
     {
-        m_value.set<Object>(o);
+        m_value.set<Object>(arg);
     }
 
-    variant::variant(const variant& value) :
-        variant_base(value.m_type, value),
-        m_type(value.m_type)
+    variant::variant(const variant& rhs) :
+        variant_base(rhs.m_type, rhs),
+        m_type(rhs.m_type)
     {
     }
 
@@ -282,7 +282,7 @@ namespace protean {
 
         CHECK_VARIANT_FUNCTION(List, "push_back()");
 
-        variant& result = m_value.get<List>().push_back( value );
+        variant& result = m_value.get<List>().push_back(value);
 
         return (ret==ReturnSelf ? *this : result);
 
@@ -343,7 +343,7 @@ namespace protean {
 
         CHECK_VARIANT_FUNCTION(Mapping, "has_key(\"" + key + "\")")
 
-        return m_value.get<Mapping>().has_key( key );
+        return m_value.get<Mapping>().has_key(key);
 
         END_VARIANT_CONTEXT();
     }
@@ -413,7 +413,7 @@ namespace protean {
 
         CHECK_VARIANT_FUNCTION(Mapping, "range(\"" + key + "\")");
 
-        return m_value.get<Mapping>().range( key );
+        return m_value.get<Mapping>().range(key);
         
         END_VARIANT_CONTEXT();
     }
@@ -1066,7 +1066,7 @@ namespace protean {
 
         CHECK_VARIANT_FUNCTION(Object, "as<object>()");
 
-        object_handle& obj = m_value.get<Object>();
+        handle<object>& obj = m_value.get<Object>();
 
         if ( obj.unique() )
         {
@@ -1288,7 +1288,7 @@ namespace protean {
             }
             case Object:
             {
-                object_handle obj(m_value.get<Object>());
+                handle<object> obj(m_value.get<Object>());
                 if (summarise)
                 {
                     oss << obj->name() << "(version=" << obj->version() << ")";

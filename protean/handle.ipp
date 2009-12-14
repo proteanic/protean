@@ -3,16 +3,16 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#include <protean/object_handle.hpp>
-#include <protean/variant_error.hpp>
-
 namespace protean {
 
-    object_handle::object_handle() :
+    template<typename T>
+    handle<T>::handle() :
         m_pointee(NULL)
     {
     }
-    object_handle::object_handle(object* pointee) :
+    
+    template<typename T>
+    handle<T>::handle(T* pointee) :
         m_pointee(pointee)
     {
         if (m_pointee!=NULL)
@@ -20,7 +20,9 @@ namespace protean {
             ++m_pointee->m_ref_count;
         }
     }
-    object_handle::~object_handle()
+
+    template<typename T>
+    handle<T>::~handle()
     {
         if (m_pointee!=NULL)
         {
@@ -31,7 +33,9 @@ namespace protean {
         }
         m_pointee = NULL;
     }
-    object_handle::object_handle(const object_handle& rhs)
+
+    template<typename T>
+    handle<T>::handle(const handle<T>& rhs)
     {
         m_pointee = rhs.m_pointee;
         if (m_pointee!=NULL)
@@ -39,13 +43,16 @@ namespace protean {
             ++m_pointee->m_ref_count;
         }
     }
-    object_handle& object_handle::operator=(const object_handle& rhs)
+
+    template<typename T>
+    handle<T>& handle<T>::operator=(const handle<T>& rhs)
     {
-        object_handle(rhs).swap(*this);
+        handle<T>(rhs).swap(*this);
         return *this;
     }
 
-    object& object_handle::operator*() const
+    template<typename T>
+    T& handle<T>::operator*() const
     {
         if (m_pointee==NULL)
         {
@@ -54,7 +61,8 @@ namespace protean {
         return *m_pointee;
     }
 
-    object* object_handle::operator->() const
+    template<typename T>
+    T* handle<T>::operator->() const
     {
         if (m_pointee==NULL)
         {
@@ -63,18 +71,43 @@ namespace protean {
         return m_pointee;
     }
 
-    bool object_handle::unique() const
+    template<typename T>
+    bool handle<T>::unique() const
     {
         return m_pointee!=NULL && m_pointee->m_ref_count==1;
     }
 
-    object_handle::operator bool() const
+    template<typename T>
+    handle<T>::operator bool() const
     {
         return m_pointee!=NULL;
     }
 
-    void object_handle::swap(object_handle& rhs)
+    template<typename T>
+    void handle<T>::swap(handle<T>& rhs)
     {
         std::swap(m_pointee, rhs.m_pointee);
     }
+
+    template<typename T>
+    template<typename U>
+    bool handle<T>::is() const
+    {
+        return as<U>()!=NULL;
+    }
+
+    template<typename T>
+    template<typename U>
+    U* handle<T>::as() const
+    {
+        return dynamic_cast<U*>(m_pointee);
+    }
+
+    template<typename T>
+    template<typename U>
+    handle<T> handle<T>::create()
+    {
+        return handle<T>(new U());
+    }
+
 } // namespace protean

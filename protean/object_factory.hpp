@@ -22,12 +22,12 @@
 
 namespace protean {
 
-    class object_handle;
+    template<typename T> class handle;
 
     class PROTEAN_DLLEXPORT object_factory
     {
     public:
-        typedef boost::function<object_handle()> create_fn_t;
+        typedef boost::function<handle<object>()> create_fn_t;
         typedef std::map<std::string, create_fn_t> instance_map_t;
 
     public:
@@ -37,22 +37,22 @@ namespace protean {
         template<typename TYPE>
         void register_object(const std::string& name);
 
-        object_handle create_instance(const std::string& name);
+        handle<object> create_instance(const std::string& name);
 
     private:
         static instance_map_t    sm_instance_map;
     };
 
-    template<class TYPE>
+    template<class T>
     void object_factory::register_object(const std::string& name="")
     {
         std::string class_name(name);
         if (class_name.empty())
         {
-            class_name = typeid(TYPE).name();
+            class_name = typeid(T).name();
             class_name = class_name.substr(6); // ignore the 'class ' prefix
         }
-        create_fn_t create_fn(&object_handle::create<TYPE>);
+        create_fn_t create_fn(&handle<object>::create<T>);
         std::pair<instance_map_t::iterator, bool> ret =
             sm_instance_map.insert( std::make_pair(class_name, create_fn) );
 

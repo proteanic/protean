@@ -174,10 +174,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\object_handle.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\object_proxy.cpp"
 				>
 			</File>
@@ -244,15 +240,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\protean\handle.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\protean\handle.ipp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\protean\object.hpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\protean\object_factory.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\protean\object_handle.hpp"
 				>
 			</File>
 			<File
@@ -340,6 +340,10 @@
 				</File>
 				<File
 					RelativePath="..\..\protean\detail\mapping.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\ref_counted.hpp"
 					>
 				</File>
 				<File

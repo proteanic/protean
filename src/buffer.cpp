@@ -9,13 +9,13 @@
 
 namespace protean { namespace detail {
 
-    buffer::buffer(void* data, size_t size, bool copyData) :
+    buffer::buffer(void* data, size_t size, bool copy_data) :
         m_size(size)
     {
-        if (copyData)
+        if (copy_data)
         {
-            m_data = malloc( size );
-            memcpy( m_data, data, size );
+            m_data = malloc(size);
+            memcpy(m_data, data, size);
         }
         else
         {

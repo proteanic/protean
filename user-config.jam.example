@@ -11,7 +11,7 @@
 #
 # - both compilers can be enabled, e.g. when using Cygwin
 
-using msvc ;
+using msvc 9.0 ;
 #using gcc ;
 
 #XERCES_LIB = c:/xerces-c-3.0.1/Build/Win32/VC8/Release ;
