@@ -176,6 +176,10 @@
 					RelativePath="..\..\test\xml_streams.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\test\types.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

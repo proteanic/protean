@@ -17,25 +17,11 @@ namespace protean {
         typedef boost::gregorian::date              date_t;
         typedef boost::posix_time::time_duration    time_t;
         typedef boost::posix_time::ptime            date_time_t;
-#ifndef linux
-        typedef boost::int32_t                      int32_t;
-        typedef boost::uint32_t                     uint32_t;
-        typedef boost::int64_t                      int64_t;
-        typedef boost::uint64_t                     uint64_t;
-#else
-        // int is hanled separately in various constructors, so
-        // int32_t has to be something different. Otherwise the
-        // overloaded constructors become indistinguishable. It so
-        // happens that boost chooses long to implement boost::int32_t
-        // under Windows, so everything compiles fine there. This
-        // problem will be fixed elsewhere, but for now here is a
-        // quick and dirty workaround to let everything compile under
-        // 32-bit g++
+
         typedef long                                int32_t;
         typedef unsigned                            long uint32_t;
         typedef long long                           int64_t;
         typedef unsigned long long                  uint64_t;
-#endif
 
         BOOST_STATIC_ASSERT (sizeof (int32_t)==4 && sizeof (uint32_t)==4);
         BOOST_STATIC_ASSERT (sizeof (int64_t)==8 && sizeof (uint64_t)==8);
@@ -46,18 +32,13 @@ namespace protean {
         variant();
         variant(const variant& value);
 
+        template<typename T>
+        variant(T value, typename boost::enable_if<boost::is_pod<T> >::type* dummy = 0);
+
         explicit variant(enum_type_t type, size_t size=0);
         explicit variant(enum_type_t type, const variant& base);
         explicit variant(const std::string& value);
         explicit variant(const char *value);
-        explicit variant(int value);
-        explicit variant(unsigned int value);
-        explicit variant(int32_t value);
-        explicit variant(uint32_t value);
-        explicit variant(int64_t value);
-        explicit variant(uint64_t value);
-        explicit variant(float value);
-        explicit variant(double value);
         explicit variant(bool value);
         explicit variant(const date_t& value);
         explicit variant(const time_t& value);
@@ -67,6 +48,7 @@ namespace protean {
         explicit variant(const std::exception& e);
         explicit variant(const object& o);
         explicit variant(const object_handle& o);
+
 
         /* Assignment */
         /**************/

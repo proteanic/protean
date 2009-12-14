@@ -62,46 +62,6 @@ namespace protean {
     {
         m_value.set<String>(detail::string(value));
     }
-    variant::variant(int value) :
-        m_type(Int32)
-    {
-        m_value.set<Int32>(value);
-    }
-    variant::variant(unsigned int value) :
-        m_type(UInt32)
-    {
-        m_value.set<UInt32>(value);
-    }
-    variant::variant(int32_t value) :
-        m_type(Int32)
-    {
-        m_value.set<Int32>(value);
-    }
-    variant::variant(uint32_t value) :
-        m_type(UInt32)
-    {
-        m_value.set<UInt32>(value);
-    }
-    variant::variant(int64_t value) :
-        m_type(Int64)
-    {
-        m_value.set<Int64>(value);
-    }
-    variant::variant(uint64_t value) :
-        m_type(UInt64)
-    {
-        m_value.set<UInt64>(value);
-    }
-    variant::variant(float value) :
-        m_type(Float)
-    {
-        m_value.set<Float>(value);
-    }
-    variant::variant(double value) :
-        m_type(Double)
-    {
-        m_value.set<Double>(value);
-    }
     variant::variant(bool value) :
         m_type(Boolean)
     {
@@ -1009,14 +969,6 @@ namespace protean {
      */
     template<> bool variant::is<std::string>()              const { return m_type==String; }
     template<> bool variant::is<bool>()                     const { return m_type==Boolean; }
-    template<> bool variant::is<int>()                      const { return m_type==Int32; }
-    template<> bool variant::is<unsigned int>()             const { return m_type==UInt32; }
-    template<> bool variant::is<variant::int32_t>()         const { return m_type==Int32; }
-    template<> bool variant::is<variant::uint32_t>()        const { return m_type==UInt32; }
-    template<> bool variant::is<variant::int64_t>()         const { return m_type==Int64; }
-    template<> bool variant::is<variant::uint64_t>()        const { return m_type==UInt64; }
-    template<> bool variant::is<float>()                    const { return m_type==Float; }
-    template<> bool variant::is<double>()                   const { return m_type==Double; }
     template<> bool variant::is<variant::date_t>()          const { return m_type==Date; }
     template<> bool variant::is<variant::time_t>()          const { return m_type==Time; }
     template<> bool variant::is<variant::date_time_t>()     const { return m_type==DateTime; }
@@ -1053,142 +1005,6 @@ namespace protean {
         else
         {
             return m_value.get<Boolean>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> int variant::as<int>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | Int32, as<int>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<int>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<Int32>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> unsigned int variant::as<unsigned int>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | UInt32, as<unsigned int>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<unsigned int>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<UInt32>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> variant::int32_t variant::as<variant::int32_t>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | Int32, as<int32_t>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<int32_t>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<Int32>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> variant::uint32_t variant::as<variant::uint32_t>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | UInt32, as<uint32_t>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<uint32_t>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<UInt32>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> variant::int64_t variant::as<variant::int64_t>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | Int64, as<int64_t>);
-        
-        if (is<Any>())
-        {
-            return lexical_cast<int64_t>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<Int64>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> variant::uint64_t variant::as<variant::uint64_t>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | UInt64, as<uint64_t>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<uint64_t>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<UInt64>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> float variant::as<float>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | Float, as<float>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<float>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<Float>();
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-    template<> double variant::as<double>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Any | Double, as<double>);
-
-        if (is<Any>())
-        {
-            return lexical_cast<double>(m_value.get<Any>().value());
-        }
-        else
-        {
-            return m_value.get<Double>();
         }
 
         END_VARIANT_CONTEXT();
