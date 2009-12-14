@@ -32,10 +32,10 @@ namespace protean {
         void write(const variant& value);
         void write(const std::string& value);
         void write(bool value);
-        void write(variant::int32_t value);
-        void write(variant::uint32_t value);
-        void write(variant::int64_t value);
-        void write(variant::uint64_t value);
+        void write(boost::int32_t value);
+        void write(boost::uint32_t value);
+        void write(boost::int64_t value);
+        void write(boost::uint64_t value);
         void write(float value);
         void write(double value);
         void write(const variant::date_t& value);

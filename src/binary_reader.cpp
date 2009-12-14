@@ -44,13 +44,13 @@ namespace protean {
             }
             case variant::Int32:
             {
-                variant::int32_t i;
+                boost::int32_t i;
                 read( i ); value = i;
                 break;
             }
             case variant::UInt32:
             {
-                variant::uint32_t i;
+                boost::uint32_t i;
                 read( i ); value = i;
                 break;
             }
@@ -62,13 +62,13 @@ namespace protean {
             }
             case variant::Int64:
             {
-                variant::int64_t i;
+                boost::int64_t i;
                 read( i ); value = i;
                 break;
             }
             case variant::UInt64:
             {
-                variant::uint64_t i;
+                boost::uint64_t i;
                 read( i ); value = i;
                 break;
             }
@@ -227,19 +227,19 @@ namespace protean {
         read(b);
         value = (b != 0);
     }
-    void binary_reader::read(variant::int32_t& value)
+    void binary_reader::read(boost::int32_t& value)
     {
         read_bytes(reinterpret_cast<char*>(&value), 4 );
     }
-    void binary_reader::read(variant::uint32_t& value )
+    void binary_reader::read(boost::uint32_t& value )
     {
         read_bytes(reinterpret_cast<char*>(&value), 4 );
     }
-    void binary_reader::read(variant::int64_t& value )
+    void binary_reader::read(boost::int64_t& value )
     {
         read_bytes(reinterpret_cast<char*>(&value), 8 );
     }
-    void binary_reader::read(variant::uint64_t& value )
+    void binary_reader::read(boost::uint64_t& value )
     {
         read_bytes(reinterpret_cast<char*>(&value), 8 );
     }

@@ -18,14 +18,6 @@ namespace protean {
         typedef boost::posix_time::time_duration    time_t;
         typedef boost::posix_time::ptime            date_time_t;
 
-        typedef long                                int32_t;
-        typedef unsigned                            long uint32_t;
-        typedef long long                           int64_t;
-        typedef unsigned long long                  uint64_t;
-
-        BOOST_STATIC_ASSERT (sizeof (int32_t)==4 && sizeof (uint32_t)==4);
-        BOOST_STATIC_ASSERT (sizeof (int64_t)==8 && sizeof (uint64_t)==8);
-
     public:
         /* Construction */
         /****************/

@@ -33,19 +33,19 @@ namespace protean {
                 write(value.as<std::string>());
                 break;
             case variant::Int32:
-                write(value.as<variant::int32_t>());
+                write(value.as<boost::int32_t>());
                 break;
             case variant::Boolean:
                 write(value.as<bool>());
                 break;
             case variant::UInt32:
-                write(value.as<variant::uint32_t>());
+                write(value.as<boost::uint32_t>());
                 break;
             case variant::Int64:
-                write(value.as<variant::int64_t>());
+                write(value.as<boost::int64_t>());
                 break;
             case variant::UInt64:
-                write(value.as<variant::uint64_t>());
+                write(value.as<boost::uint64_t>());
                 break;
             case variant::Float:
                 write(value.as<float>());
@@ -173,19 +173,19 @@ namespace protean {
         boost::int32_t value(arg ? 1 : 0);
         write(value);
     }
-    void binary_writer::write(variant::int32_t value)
+    void binary_writer::write(boost::int32_t value)
     {
         write_bytes(reinterpret_cast<const char*>(&value), 4);
     }
-    void binary_writer::write(variant::uint32_t value)
+    void binary_writer::write(boost::uint32_t value)
     {
         write_bytes(reinterpret_cast<const char*>(&value), 4);
     }
-    void binary_writer::write(variant::int64_t value)
+    void binary_writer::write(boost::int64_t value)
     {
         write_bytes(reinterpret_cast<const char*>(&value), 8);
     }
-    void binary_writer::write(variant::uint64_t value)
+    void binary_writer::write(boost::uint64_t value)
     {
         write_bytes(reinterpret_cast<const char*>(&value), 8);
     }

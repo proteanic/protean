@@ -863,16 +863,16 @@ namespace protean {
                 result = data;
                 break;
             case Int32:
-                result = lexical_cast<int32_t>( data );
+                result = lexical_cast<boost::int32_t>( data );
                 break;
             case UInt32:
-                result = lexical_cast<uint32_t>( data );
+                result = lexical_cast<boost::uint32_t>( data );
                 break;
             case Int64:
-                result = lexical_cast<int64_t>( data );
+                result = lexical_cast<boost::int64_t>( data );
                 break;
             case UInt64:
-                result = lexical_cast<uint64_t>( data );
+                result = lexical_cast<boost::uint64_t>( data );
                 break;
             case Float:
                 result = lexical_cast<float>( data );

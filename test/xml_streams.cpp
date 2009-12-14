@@ -330,10 +330,10 @@ BOOST_AUTO_TEST_CASE(test_xml_untyped)
 
     BOOST_CHECK_EQUAL(v1["String"].as<std::string>(), "Element");
     BOOST_CHECK_EQUAL(v1["Boolean"].as<bool>(), true);
-    BOOST_CHECK_EQUAL(v1["Int32"].as<variant::int32_t>(), 0xFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["UInt32"].as<variant::uint32_t>(), 0xFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["Int64"].as<variant::int64_t>(), 0xFFFFFFFFFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["UInt64"].as<variant::uint64_t>(), 0xFFFFFFFFFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["Int32"].as<boost::int32_t>(), 0xFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["UInt32"].as<boost::uint32_t>(), 0xFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["Int64"].as<boost::int64_t>(), 0xFFFFFFFFFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["UInt64"].as<boost::uint64_t>(), 0xFFFFFFFFFFFFFFFF);
     BOOST_CHECK_EQUAL(v1["Float"].as<float>(), 4.0);
     BOOST_CHECK_EQUAL(v1["Double"].as<double>(), 3.7);
     

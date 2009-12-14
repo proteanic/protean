@@ -34,10 +34,10 @@ namespace protean {
         void read(variant& value);
         void read(std::string& value);
         void read(bool& value);
-        void read(variant::int32_t& value);
-        void read(variant::uint32_t& value);
-        void read(variant::int64_t& value);
-        void read(variant::uint64_t& value);
+        void read(boost::int32_t& value);
+        void read(boost::uint32_t& value);
+        void read(boost::int64_t& value);
+        void read(boost::uint64_t& value);
         void read(float &value);
         void read(double &value);
         void read(variant::date_t& value);
