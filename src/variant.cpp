@@ -71,7 +71,7 @@ namespace protean {
     variant::variant(void* data, size_t size, bool copy_data) :
         m_type(Buffer)
     {
-        m_value.set<Buffer>(detail::buffer(data, size, copy_data));
+        m_value.set<Buffer>(new detail::buffer(data, size, copy_data));
     }
 
     variant::variant(const exception_info& arg) :
@@ -192,7 +192,7 @@ namespace protean {
             case DateTime:
                 return compare_using_less(m_value.get<DateTime>(), rhs.m_value.get<DateTime>());
             case Buffer:
-                return m_value.get<Buffer>().compare(rhs.m_value.get<Buffer>());
+                return m_value.get<Buffer>()->compare(*rhs.m_value.get<Buffer>());
             case List:
             case Tuple:
             case Dictionary:
@@ -202,7 +202,7 @@ namespace protean {
             case Exception:
                 return m_value.get<Exception>().compare(rhs.m_value.get<Exception>());
             case Object:
-                return m_value.get<Object>()->compare( *rhs.m_value.get<Object>() );
+                return m_value.get<Object>()->compare(*rhs.m_value.get<Object>());
                 break;
             default:
                 boost::throw_exception(variant_error("Unrecognised variant type " + enum_to_string(m_type)));
@@ -259,7 +259,7 @@ namespace protean {
         }
         else
         {
-            return m_value.get<Buffer>().size();
+            return m_value.get<Buffer>()->size();
         }
 
         END_VARIANT_CONTEXT();
@@ -1028,16 +1028,18 @@ namespace protean {
 
         END_VARIANT_CONTEXT();
     }
+
     template<> void* variant::as<void*>() const
     {
         BEGIN_VARIANT_CONTEXT();
 
         CHECK_VARIANT_FUNCTION(Buffer, "as<void*>()");
 
-        return m_value.get<Buffer>().data();
+        return m_value.get<Buffer>()->data();
 
         END_VARIANT_CONTEXT();
     }
+
     template<> exception_info variant::as<exception_info>() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -1068,15 +1070,11 @@ namespace protean {
 
         handle<object>& obj = m_value.get<Object>();
 
-        if ( obj.unique() )
-        {
-            return *obj;
-        }
-        else
+        if (!obj.unique())
         {
             obj = obj->clone();
-            return *obj;
         }
+        return *obj;
 
         END_VARIANT_CONTEXT();
     }
@@ -1366,7 +1364,7 @@ namespace protean {
             }
             case Buffer:
             {
-                boost::hash_combine(seed, m_value.get<Buffer>().hash());
+                boost::hash_combine(seed, m_value.get<Buffer>()->hash());
                 break;
             }
             case Tuple:

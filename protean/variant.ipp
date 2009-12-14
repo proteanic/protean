@@ -167,7 +167,7 @@ namespace protean {
      * variant::as()
      */
     template<typename T>
-    typename boost::disable_if<boost::is_base_of<object, T>, T>::type
+    typename boost::disable_if<boost::is_base_of<object,T>, T>::type
     variant::as() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -186,13 +186,13 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DLLEXPORT std::string                    variant::as<std::string>()            const;
-    template<> PROTEAN_DLLEXPORT bool                           variant::as<bool>()                    const;
-    template<> PROTEAN_DLLEXPORT variant::date_t                variant::as<variant::date_t>()        const;
-    template<> PROTEAN_DLLEXPORT variant::time_t                variant::as<variant::time_t>()        const;
-    template<> PROTEAN_DLLEXPORT variant::date_time_t           variant::as<variant::date_time_t>()    const;
+    template<> PROTEAN_DLLEXPORT std::string                    variant::as<std::string>()          const;
+    template<> PROTEAN_DLLEXPORT bool                           variant::as<bool>()                 const;
+    template<> PROTEAN_DLLEXPORT variant::date_t                variant::as<variant::date_t>()      const;
+    template<> PROTEAN_DLLEXPORT variant::time_t                variant::as<variant::time_t>()      const;
+    template<> PROTEAN_DLLEXPORT variant::date_time_t           variant::as<variant::date_time_t>() const;
     template<> PROTEAN_DLLEXPORT void*                          variant::as<void*>()                const;
-    template<> PROTEAN_DLLEXPORT exception_info                 variant::as<exception_info>()        const;
+    template<> PROTEAN_DLLEXPORT exception_info                 variant::as<exception_info>()       const;
 
     template<typename T>
     typename boost::enable_if<boost::is_base_of<object, T>, const T&>::type

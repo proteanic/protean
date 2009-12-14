@@ -7,11 +7,14 @@
 #define PROTEAN_DETAIL_BUFFER_HPP
 
 #include <protean/config.hpp>
+
+#include <protean/detail/ref_counted.hpp>
+
 #include <cstddef>
 
 namespace protean { namespace detail {
     
-    class PROTEAN_DLLEXPORT buffer
+    class PROTEAN_DLLEXPORT buffer : public detail::ref_counted
     {
     public:
         buffer(void* data, size_t size, bool copy_data);

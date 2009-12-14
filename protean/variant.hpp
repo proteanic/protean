@@ -18,9 +18,9 @@ namespace protean {
         typedef boost::posix_time::time_duration    time_t;
         typedef boost::posix_time::ptime            date_time_t;
 
+    /* Construction */
+    /****************/
     public:
-        /* Construction */
-        /****************/
         variant();
         variant(const variant& value);
 
@@ -41,10 +41,10 @@ namespace protean {
         explicit variant(const object& arg);
         explicit variant(const handle<object>& arg);
 
-
-        /* Assignment */
-        /**************/
-        variant& operator=( const variant &value );
+    /* Assignment */
+    /**************/
+    public:
+        variant& operator=(const variant &rhs);
 
         template<typename T>
         typename boost::enable_if<boost::is_pod<T>, variant&>::type
@@ -58,8 +58,9 @@ namespace protean {
         /**************/
         ~variant();
 
-        /* Type inspection */
-        /*******************/
+    /* Type inspection */
+    /*******************/
+    public:
         enum_type_t type() const { return m_type; }
 
         template<typename T> 
@@ -73,8 +74,9 @@ namespace protean {
         template<int N>
         bool is() const;
 
-        /* Type casting */
-        /****************/
+    /* Type casting */
+    /****************/
+    public:
         template<typename T>
         typename boost::disable_if<boost::is_base_of<object,T>, T>::type
         as() const;
@@ -87,8 +89,9 @@ namespace protean {
         typename boost::enable_if<boost::is_base_of<object,T>, T&>::type
         as();
 
-        /* Collection interface */
-        /************************/
+    /* Collection interface */
+    /************************/
+    public:
         enum enum_return_trait_t {ReturnSelf, ReturnItem};
 
         typedef variant_iterator<const_iterator_traits> const_iterator;
@@ -103,29 +106,31 @@ namespace protean {
         size_t size() const;
         void clear();
 
-        /* List interface */
-        /******************/
+    /* List interface */
+    /******************/
+    public:
         variant& push_back(const variant& value, enum_return_trait_t ret = ReturnSelf);
         variant& pop_back();
 
-        /* TimeSeries interface */
-        /************************/
-        variant& push_back(const date_time_t& time, const variant& value, enum_return_trait_t ret = ReturnSelf );
+    /* TimeSeries interface */
+    /************************/
+    public:
+        variant& push_back(const date_time_t& time, const variant& value, enum_return_trait_t ret = ReturnSelf);
 
-        /* Sequence interface */
-        /*********************/
+    /* Sequence interface */
+    /*********************/
+    public:
         const variant& at(size_t index) const;
         variant& at(size_t index);
         const variant& operator[](size_t index) const;
         variant& operator[](size_t index);
 
-        /* Mapping interface */
-        /*********************/
+    /* Mapping interface */
+    /*********************/
+    public:
         variant& insert(const std::string& key, const variant& value, enum_return_trait_t ret = ReturnSelf);
         bool has_key(const std::string& key) const;
 
-        // TODO: deprecate
-        bool contains(const std::string& key) const;
         const variant& at(const std::string& key) const;
         variant& at(const std::string& key);
         const variant& operator[](const std::string& key) const;
@@ -133,15 +138,17 @@ namespace protean {
         variant& remove(const std::string& key);
         variant range(const std::string& key) const;
 
-        /* Comparison/Equality */
-        /***********************/
+    /* Comparison/Equality */
+    /***********************/
+    public:
         int compare(const variant& rhs) const;
         bool operator<(const variant& rhs) const;
         bool operator==(const variant& rhs) const;
         bool operator!=(const variant& rhs) const;
 
-        /* Miscelaneous */
-        /****************/
+    /* Miscelaneous */
+    /****************/
+    public:
         variant select(const std::string& path) const;
 
         template<typename TARGET, typename SOURCE>

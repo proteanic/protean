@@ -93,7 +93,7 @@ namespace protean {
             detail::tagged_type<Object,             handle<object>,                     detail::alloc_placement,    boost::mpl::string<'Obje','ct'> >,
             detail::tagged_type<TimeSeries,         detail::timeseries,                 detail::alloc_new,          boost::mpl::string<'Time','Seri','es'> >,
             detail::tagged_type<Tuple,              detail::tuple,                      detail::alloc_new,          boost::mpl::string<'Tupl','e'> >,
-            detail::tagged_type<Buffer,             detail::buffer,                     detail::alloc_new,          boost::mpl::string<'Buff','er'> >,
+            detail::tagged_type<Buffer,             handle<detail::buffer>,             detail::alloc_placement,    boost::mpl::string<'Buff','er'> >,
             detail::tagged_type<Exception,          exception_info,                     detail::alloc_new,          boost::mpl::string<'Exce','ptio','n'> >
         > variant_impl_t;
         
