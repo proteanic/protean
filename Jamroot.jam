@@ -1,22 +1,16 @@
-# This is a prototype jamfile that is far from complete and only works
-# under Windows. I will add Linux support later, and also make the
-# configuration more user-friendly.
-#
 # Quickstart:
 #
 # Copy user-config.jam.example to user-config.jam and edit the
 # settings to match your system.
 #
 # Install Boost, you will need iostreams with zlib support.
-# (I will write detailed instructions later or on request)
 #
 # Install Xerces
-# (ditto)
 #
-# Set BOOST_ROOT, under Cygwin this can be done e.g. by
+# Set BOOST_ROOT, under Linux/Cygwin this can be done e.g. by
 # export BOOST_ROOT c:/boost_1_41_0
 #
-# Put bjam on your path. Under Cygwin this can be done e.g. as follows
+# Put bjam on your path. Under Linux/Cygwin this can be done e.g. by
 # export PATH=${PATH}:/cygdrive/c/boost_1_41_0
 #
 # run bjam in the directory this file is in. It will compile everything,
@@ -36,10 +30,18 @@ project : requirements
 
 SOURCES = [ glob src/*.cpp ] ;
 
+switch [ os.name ]
+{
+    case "CYGWIN" :
+    case "NT" :
+        lib zlib : : <file>$(BOOST_LIB)/libboost_zlib$(BL) ;
+    case "LINUX" :
+        lib zlib : : <file>/usr/lib/libz.so ;
+}
+
 lib xerces : : <file>$(XERCES_LIB)/$(XERCES_LIB_FILE) : : <include>$(XERCES_INCLUDE) ;
-lib zlib : : <file>$(BOOST_LIB)/libboost_zlib$(BL) ;
-lib filesystem : : <file>$(BOOST_LIB)/libboost_filesystem$(BL) ;
 lib iostreams : zlib : <file>$(BOOST_LIB)/libboost_iostreams$(BL) ;
+lib filesystem : : <file>$(BOOST_LIB)/libboost_filesystem$(BL) ;
 lib datetime : : <file>$(BOOST_LIB)/libboost_date_time$(BL) ;
 lib regexp : : <file>$(BOOST_LIB)/libboost_regex$(BL) ;
 lib system : : <file>$(BOOST_LIB)/libboost_system$(BL) ;

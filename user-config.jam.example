@@ -14,12 +14,23 @@
 using msvc 9.0 ;
 #using gcc ;
 
+# Windows
+#
 #XERCES_LIB = c:/xerces-c-3.0.1/Build/Win32/VC8/Release ;
 #XERCES_LIB_FILE = xerces-c_3.lib ;
 #XERCES_INCLUDE = c:/xerces-c-3.0.1/src ;
 #BOOST_INCLUDE = c:/boost_1_41_0 ;
 #BOOST_LIB = c:/boost_1_41_0/stage/lib ;
 #BL = -vc80-mt-gd-1_41.lib ;
+
+# Linux
+#
+#XERCES_LIB = /home/user/xerces/lib ;
+#XERCES_LIB_FILE = libxerces-c-3.0.so ;
+#XERCES_INCLUDE = /home/user/xerces/include ;
+#BOOST_INCLUDE = /home/user/boost/include ;
+#BOOST_LIB = /home/user/boost/lib ;
+#BL = .a ;
 
 XERCES_LIB = "C:/Development/Simulation/3rd party/xerces-3_0/lib" ;
 XERCES_INCLUDE = "C:/Development/Simulation/3rd party/xerces-3_0/include" ;
