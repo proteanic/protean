@@ -66,14 +66,14 @@ BOOST_AUTO_TEST_CASE(test_uint32)
 
     variant v5(variant::UInt32);
     BOOST_CHECK(v5.is<variant::UInt32>());
-    BOOST_CHECK_EQUAL(v5.as<boost::uint32_t>(), 0);
+    BOOST_CHECK_EQUAL(v5.as<boost::uint32_t>(), 0u);
 
     BOOST_CHECK_THROW(v1.as<boost::int32_t>(), variant_error);
 }
 
 BOOST_AUTO_TEST_CASE(test_int64)
 {
-    boost::int64_t arg(0xFFFFFFFFFFFFFFFF);
+    boost::int64_t arg(0xFFFFFFFFFFFFFFFFull);
 
     variant v1(arg);
     BOOST_CHECK(v1.is<variant::Int64>());
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(test_int64)
 
 BOOST_AUTO_TEST_CASE(test_uInt64)
 {
-    boost::uint64_t arg(0xFFFFFFFFFFFFFFFF);
+    boost::uint64_t arg(0xFFFFFFFFFFFFFFFFull);
 
     variant v1(arg);
     BOOST_CHECK(v1.is<variant::UInt64>());
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(test_uInt64)
 
     variant v5(variant::UInt64);
     BOOST_CHECK(v5.is<variant::UInt64>());
-    BOOST_CHECK_EQUAL(v5.as<boost::uint64_t>(), 0);
+    BOOST_CHECK_EQUAL(v5.as<boost::uint64_t>(), 0u);
 
     BOOST_CHECK_THROW(v1.as<boost::int64_t>(), variant_error);
 }

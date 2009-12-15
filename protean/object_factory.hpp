@@ -9,6 +9,7 @@
 #include <protean/config.hpp>
 #include <protean/variant_error.hpp>
 #include <protean/object.hpp>
+#include <protean/handle.hpp>
 
 #include <boost/function.hpp>
 

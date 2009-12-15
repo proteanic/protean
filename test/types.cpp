@@ -32,10 +32,10 @@ BOOST_AUTO_TEST_CASE( pod_types )
 
 
     {
-        variant v( unsigned long(0) );
+        variant v( 0ul );
         BOOST_CHECK(v.is<variant::UInt32>());
         BOOST_CHECK(v.is<unsigned long>());
-        BOOST_CHECK_EQUAL(v.as<unsigned long>(), 0);
+        BOOST_CHECK_EQUAL(v.as<unsigned long>(), 0u);
     }
 
     {
@@ -46,24 +46,24 @@ BOOST_AUTO_TEST_CASE( pod_types )
     }
 
     {
-        variant v( unsigned int(0) );
+        variant v( 0u );
         BOOST_CHECK(v.is<variant::UInt32>());
         BOOST_CHECK(v.is<unsigned int>());
-        BOOST_CHECK_EQUAL(v.as<unsigned int>(), 0);
+        BOOST_CHECK_EQUAL(v.as<unsigned int>(), 0u);
     }
 
     {
-        variant v( long long(0) );
+        variant v( 0ll );
         BOOST_CHECK(v.is<variant::Int64>());
         BOOST_CHECK(v.is<long long>());
         BOOST_CHECK_EQUAL(v.as<long long>(), 0);
     }
 
     {
-        variant v( unsigned long long(0) );
+        variant v( 0ull );
         BOOST_CHECK(v.is<variant::UInt64>());
         BOOST_CHECK(v.is<unsigned long long>());
-        BOOST_CHECK_EQUAL(v.as<unsigned long long>(), 0);
+        BOOST_CHECK_EQUAL(v.as<unsigned long long>(), 0u);
     }
 
     {
@@ -79,13 +79,14 @@ BOOST_AUTO_TEST_CASE( pod_types )
         BOOST_CHECK(v.is<double>());
         BOOST_CHECK_EQUAL(v.as<double>(), 0);
     }
-
+#   ifdef _MSC_VER
     {
-        variant v( long double(0) );
+        variant v( static_cast<long double>(0) );
         BOOST_CHECK(v.is<variant::Double>());
         BOOST_CHECK(v.is<long double>());
         BOOST_CHECK_EQUAL(v.as<long double>(), 0);
     }
+#   endif
 }
 
 BOOST_AUTO_TEST_CASE( stl_types )
@@ -94,7 +95,7 @@ BOOST_AUTO_TEST_CASE( stl_types )
         variant v( size_t(0) );
         BOOST_CHECK(v.is<variant::UInt32>());
         BOOST_CHECK(v.is<size_t>());
-        BOOST_CHECK_EQUAL(v.as<size_t>(), 0);
+        BOOST_CHECK_EQUAL(v.as<size_t>(), 0u);
     }
 }
 
@@ -111,7 +112,7 @@ BOOST_AUTO_TEST_CASE( boost_types )
         variant v( boost::uint32_t(0) );
         BOOST_CHECK(v.is<variant::UInt32>());
         BOOST_CHECK(v.is<boost::uint32_t>());
-        BOOST_CHECK_EQUAL(v.as<boost::uint32_t>(), 0);
+        BOOST_CHECK_EQUAL(v.as<boost::uint32_t>(), 0u);
     }
 
     {
@@ -125,7 +126,7 @@ BOOST_AUTO_TEST_CASE( boost_types )
         variant v( boost::uint64_t(0) );
         BOOST_CHECK(v.is<variant::UInt64>());
         BOOST_CHECK(v.is<boost::uint64_t>());
-        BOOST_CHECK_EQUAL(v.as<boost::uint64_t>(), 0);
+        BOOST_CHECK_EQUAL(v.as<boost::uint64_t>(), 0u);
     }
 
 }

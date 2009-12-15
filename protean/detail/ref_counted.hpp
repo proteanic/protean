@@ -23,7 +23,7 @@ namespace protean {
             ref_counted(const ref_counted& rhs);
         private:
             size_t  m_ref_count;
-            template<typename T> friend class handle;
+            template <typename T> friend class protean::handle;
         };
 
         inline ref_counted::ref_counted() :
@@ -33,6 +33,7 @@ namespace protean {
         inline ref_counted::ref_counted(const ref_counted& rhs) :
             m_ref_count(0)
         {}
+
 
 }} // namespace protean::detail
 

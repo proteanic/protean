@@ -22,7 +22,7 @@ void test_list_basic()
     BOOST_CHECK(!v1.is<variant::Primitive>());
    
     BOOST_CHECK(v1.empty());
-    BOOST_CHECK_EQUAL(v1.size(), 0);
+    BOOST_CHECK_EQUAL(v1.size(), 0u);
 
     boost::int32_t arg1(0xFFFFFFFF);
     std::string arg2("This is a string");

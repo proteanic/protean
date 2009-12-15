@@ -20,8 +20,8 @@ BOOST_AUTO_TEST_CASE(test_xml_primitives)
 {
     boost::int32_t arg_int32(0xffffffff);
     boost::uint32_t arg_uint32(0xffffffff);
-    boost::int64_t arg_int64(0xffffffffffffffff);
-    boost::uint64_t arg_uint64(0xffffffffffffffff);
+    boost::int64_t arg_int64(0xffffffffffffffffll);
+    boost::uint64_t arg_uint64(0xffffffffffffffffull);
     bool arg_bool(true);
     float arg_float(std::numeric_limits<float>::max());
     double arg_double(std::numeric_limits<double>::max());
@@ -210,8 +210,8 @@ public:
         m_count(++sm_count)
     {}
     testing_object(const std::string& id) :
-        m_id(id),
-        m_count(++sm_count)
+        m_count(++sm_count),
+        m_id(id)
     {}
     testing_object(const testing_object& rhs) :
         m_count(++sm_count),
@@ -330,10 +330,10 @@ BOOST_AUTO_TEST_CASE(test_xml_untyped)
 
     BOOST_CHECK_EQUAL(v1["String"].as<std::string>(), "Element");
     BOOST_CHECK_EQUAL(v1["Boolean"].as<bool>(), true);
-    BOOST_CHECK_EQUAL(v1["Int32"].as<boost::int32_t>(), 0xFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["Int32"].as<boost::int32_t>(), static_cast<int> (0xFFFFFFFF));
     BOOST_CHECK_EQUAL(v1["UInt32"].as<boost::uint32_t>(), 0xFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["Int64"].as<boost::int64_t>(), 0xFFFFFFFFFFFFFFFF);
-    BOOST_CHECK_EQUAL(v1["UInt64"].as<boost::uint64_t>(), 0xFFFFFFFFFFFFFFFF);
+    BOOST_CHECK_EQUAL(v1["Int64"].as<boost::int64_t>(), static_cast<long long>(0xFFFFFFFFFFFFFFFFll));
+    BOOST_CHECK_EQUAL(v1["UInt64"].as<boost::uint64_t>(), 0xFFFFFFFFFFFFFFFFull);
     BOOST_CHECK_EQUAL(v1["Float"].as<float>(), 4.0);
     BOOST_CHECK_EQUAL(v1["Double"].as<double>(), 3.7);
     

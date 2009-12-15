@@ -326,7 +326,7 @@ namespace protean {
         }
 
         // check magic number
-        if (header[0]!=binary_magic_number)
+        if (header[0]!=static_cast<int> (binary_magic_number))
         {
             boost::throw_exception(variant_error("Bad magic number, this looks like invalid binary data"));
         }

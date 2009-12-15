@@ -20,8 +20,8 @@ BOOST_AUTO_TEST_CASE(test_binary_primitives)
 {
     boost::int32_t arg_int32(0xffffffff);
     boost::uint32_t arg_uint32(0xffffffff);
-    boost::int64_t arg_int64(0xffffffffffffffff);
-    boost::uint64_t arg_uint64(0xffffffffffffffff);
+    boost::int64_t arg_int64(0xffffffffffffffffll);
+    boost::uint64_t arg_uint64(0xffffffffffffffffull);
     bool arg_bool(true);
     float arg_float(std::numeric_limits<float>::max());
     double arg_double(std::numeric_limits<double>::max());
@@ -72,8 +72,8 @@ BOOST_AUTO_TEST_CASE(test_binary_primitives_zlib)
 {
     boost::int32_t arg_int32(0xffffffff);
     boost::uint32_t arg_uint32(0xffffffff);
-    boost::int64_t arg_int64(0xffffffffffffffff);
-    boost::uint64_t arg_uint64(0xffffffffffffffff);
+    boost::int64_t arg_int64(0xffffffffffffffffll);
+    boost::uint64_t arg_uint64(0xffffffffffffffffull);
     bool arg_bool(true);
     float arg_float(std::numeric_limits<float>::max());
     double arg_double(std::numeric_limits<double>::max());
@@ -262,8 +262,8 @@ public:
         m_count(++sm_count)
     {}
     testing_object(const std::string& id) :
-        m_id(id),
-        m_count(++sm_count)
+        m_count(++sm_count),
+        m_id(id)
     {}
     testing_object(const testing_object& rhs) :
         m_count(++sm_count),
