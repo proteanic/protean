@@ -278,7 +278,7 @@ namespace protean {
 
             if ( (context->m_type & variant::Primitive)!=0 )
             {
-                context->element() = variant::make_any(context->m_data).down_cast(context->m_type);
+                context->element() = make_any(context->m_data).down_cast(context->m_type);
             }
             else if ( context->m_type==variant::Exception )
             {
@@ -295,7 +295,7 @@ namespace protean {
                 if ( m_factory!=NULL )
                 {
                     obj = m_factory->create_instance(class_name);
-                    if (!obj)
+                    if (obj.null())
                     {
                         if ((m_flags & xml_reader::CreateProxy)!=0)
                         {
@@ -304,7 +304,7 @@ namespace protean {
                     }
                 }
 
-                if (!obj)
+                if (obj.null())
                 {
                     obj = new object_proxy(class_name);
                 }
@@ -645,7 +645,7 @@ namespace protean {
             // make sure we remove any schema related attributes
             if (name.find("xsi")==std::string::npos)
             {
-                result.insert(name, variant::make_any(value));
+                result.insert(name, make_any(value));
             }
         }
     }

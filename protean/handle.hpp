@@ -31,7 +31,7 @@ namespace protean {
         U* as() const;
 
         bool unique() const;
-        operator bool() const;
+        bool null() const;
 
         void swap(handle& rhs);
 

@@ -926,7 +926,7 @@ namespace protean {
                 boost::throw_exception(variant_error("Unrecognised variant type"));
             }
 
-            return variant::make_any(data);
+            return make_any(data);
         }
 
         END_VARIANT_CONTEXT();
@@ -1395,10 +1395,10 @@ namespace protean {
         return value.hash();
     }
 
-    /*static*/ variant variant::make_any(const std::string& value)
+    variant make_any(const std::string& value)
     {
-        variant result(Any);
-        result.m_value.set<Any>(detail::string(value.c_str(), value.size()));
+        variant result(variant::Any);
+        result.m_value.set<variant::Any>(detail::string(value.c_str(), value.size()));
         return result;
     }
 

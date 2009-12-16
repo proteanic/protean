@@ -160,7 +160,7 @@ namespace protean {
                 if (m_factory!=NULL)
                 {
                     obj = m_factory->create_instance(class_name);
-                    if (!obj)
+                    if (obj.null())
                     {
                         if ((m_flags & CreateProxy)!=0)
                         {
@@ -169,7 +169,7 @@ namespace protean {
                     }
                 }
 
-                if (!obj)
+                if (obj.null())
                 {
                     obj = new object_proxy(class_name);
                 }

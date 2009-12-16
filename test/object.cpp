@@ -100,6 +100,18 @@ void test_object()
     arg4.inflate(params, arg4.version());
 
     BOOST_CHECK(arg1.compare(arg4)==0);
+
+    {
+        variant params(variant::Dictionary);
+        params.insert("count", variant(boost::int32_t(10)))
+            .insert("id", variant("my id"));
+
+        variant v = make_object<testing_object>(params);
+
+        const testing_object& obj(v.as<testing_object>());
+        BOOST_CHECK_EQUAL(obj.id(),     "my id");
+        BOOST_CHECK_EQUAL(obj.count(),  10);
+    }
 }
 
 void test_object_proxy()

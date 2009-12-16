@@ -39,6 +39,8 @@ namespace protean {
         explicit variant(const exception_info& arg);
         explicit variant(const std::exception& arg);
         explicit variant(const object& arg);
+
+    private:
         explicit variant(const handle<object>& arg);
 
     /* Assignment */
@@ -154,7 +156,6 @@ namespace protean {
         template<typename TARGET, typename SOURCE>
         static TARGET lexical_cast(const SOURCE& toCast);
 
-        static variant make_any(const std::string& value);
 
         void swap(variant& rhs);
 
@@ -163,16 +164,29 @@ namespace protean {
         variant down_cast(enum_type_t type) const;
         variant up_cast() const;
 
-        std::string str(bool summarise=false, const std::string& indent = "") const;
+        std::string str(bool summarise=false, const std::string& indent="") const;
+
+    private:
+        template <typename T>
+        friend variant make_object(const variant& params);
+
+        friend variant make_any(const std::string& value);
+
+        friend size_t hash_value(const variant& value);
 
     private:
         static void select_impl(const variant& input, const std::string& path, variant& result);
 
         // type discriminator
-        enum_type_t m_type; 
-    };
+        enum_type_t m_type;
 
-    PROTEAN_DLLEXPORT size_t hash_value(const variant& val);
+    private:
+        friend class xml_reader;
+        friend class xml_writer;
+        friend class sax_content_handler;
+        friend class binary_reader;
+        friend class binary_writer;
+    };
 
     struct const_iterator_traits
     {

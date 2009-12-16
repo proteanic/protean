@@ -78,9 +78,9 @@ namespace protean {
     }
 
     template<typename T>
-    handle<T>::operator bool() const
+    bool handle<T>::null() const
     {
-        return m_pointee!=NULL;
+        return m_pointee==NULL;
     }
 
     template<typename T>
