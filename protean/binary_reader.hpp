@@ -43,7 +43,7 @@ namespace protean {
         void read(variant::date_t& value);
         void read(variant::time_t& value);
         void read(variant::date_time_t& value);
-        void read(void*& data, size_t& length);
+        void read(void*& data, size_t length);
 
         // read from stream
         void read_bytes(char* value, size_t length);

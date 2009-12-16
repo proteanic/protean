@@ -9,8 +9,17 @@
 
 namespace protean { namespace detail {
 
+    buffer::buffer(size_t size) :
+        m_size(size),
+        m_owned(true)
+    {
+        m_data = malloc(size);
+        memset(m_data, 0, size);
+    }
+
     buffer::buffer(void* data, size_t size, bool copy_data) :
-        m_size(size)
+        m_size(size),
+        m_owned(copy_data)
     {
         if (copy_data)
         {
@@ -24,10 +33,18 @@ namespace protean { namespace detail {
     }
 
     buffer::buffer(const buffer& rhs) :
-        m_size(rhs.size())
+        m_size(rhs.size()),
+        m_owned(rhs.m_owned)
     {
-        m_data = malloc(m_size);
-        memcpy(m_data, rhs.data(), m_size);
+        if (m_owned)
+        {
+            m_data = malloc(m_size);
+            memcpy(m_data, rhs.data(), m_size);
+        }
+        else
+        {
+            m_data = rhs.data();
+        }
     }
 
 	buffer& buffer::operator=(const buffer& rhs)
@@ -38,7 +55,7 @@ namespace protean { namespace detail {
 
     buffer::~buffer()
     {
-        if (m_data)
+        if (m_owned && m_data!=NULL)
         {
             free(m_data);
             m_data = NULL;

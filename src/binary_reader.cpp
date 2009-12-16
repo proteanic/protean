@@ -127,10 +127,13 @@ namespace protean {
             }
             case variant::Buffer:
             {
-                void*  data;
-                size_t size;
+                boost::uint32_t size;
+                read(size);
+
+                value = variant(variant::Buffer, size);
+                void* data = value.as<void*>();
                 read(data, size);
-                value = variant(data, size, false);
+
                 break;
             }
             case variant::TimeSeries:
@@ -276,14 +279,9 @@ namespace protean {
 
         value = variant::date_time_t(date, time);    
     }
-    void binary_reader::read(void*& data, size_t& length)
+    void binary_reader::read(void*& data, size_t length)
     {
-        boost::uint32_t i;
-        read(i);
-        length = i;
-
         // 'data' will be owned by the variant
-        data = malloc(length);
         read_bytes(reinterpret_cast<char*>(data), length);
     }
 

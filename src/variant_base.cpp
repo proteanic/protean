@@ -9,7 +9,7 @@ namespace protean {
     }
 
     // not sure if this method should try and default construct any type.. maybe the collections would do..
-    variant_base::variant_base(enum_type_t type, size_t sequence_size)
+    variant_base::variant_base(enum_type_t type, size_t size)
     {
         if ((type & Number)!=0)
         {
@@ -47,10 +47,13 @@ namespace protean {
                     m_value.set<Bag>(detail::bag());
                     break;
                 case List:
-                    m_value.set<List>(detail::list(sequence_size));
+                    m_value.set<List>(detail::list(size));
                     break;
                 case Tuple:
-                    m_value.set<Tuple>(detail::tuple(sequence_size));
+                    m_value.set<Tuple>(detail::tuple(size));
+                    break;
+                case Buffer:
+                    m_value.set<Buffer>(handle<detail::buffer>(new detail::buffer(size)));
                     break;
 				default:
 					boost::throw_exception(variant_error(std::string("Cannot default construct variant of type ") + enum_to_string(type)));

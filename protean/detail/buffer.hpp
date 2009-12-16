@@ -17,6 +17,7 @@ namespace protean { namespace detail {
     class PROTEAN_DLLEXPORT buffer : public detail::ref_counted
     {
     public:
+        buffer(size_t size);
         buffer(void* data, size_t size, bool copy_data);
         buffer(const buffer& rhs);
 		buffer& operator=(const buffer& rhs);
@@ -31,8 +32,9 @@ namespace protean { namespace detail {
 		void swap(buffer& rhs);
 
     private:
-        size_t m_size;
-        void*  m_data;
+        size_t  m_size;
+        void*   m_data;
+        bool    m_owned;
     };
 
 }} // namespace protean::detail
