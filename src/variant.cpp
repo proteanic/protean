@@ -123,15 +123,22 @@ namespace protean {
     {
     }
 
-    variant::variant(enum_type_t type, const variant& rhs)
+    variant::variant(enum_type_t type, const variant& rhs) :
+        m_type(None)
     {
-        boost::throw_exception(variant_error("TODO"));
+        if ((type & Primitive)==0 || !rhs.is<Primitive>())
+        {
+            boost::throw_exception(variant_error("Unable to cast from " + enum_to_string(rhs.type()) + " to " + enum_to_string(type)));
+        }
 
 		if (type==rhs.type())
 		{
-            variant temp(rhs);
-            swap(temp);
+            variant(rhs).swap(*this);
 		}
+        else
+        {
+            rhs.up_cast().down_cast(type).swap(*this);
+        }
     }
 
     variant::~variant()
@@ -950,7 +957,7 @@ namespace protean {
     /*
      * variant::as
      */
-    template<> std::string variant::as<std::string>() const 
+    template<> std::string variant::as<std::string>() const
     {
         BEGIN_VARIANT_CONTEXT();
 
