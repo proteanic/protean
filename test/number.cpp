@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(test_boolean)
 
     variant v1(arg);
     BOOST_CHECK(v1.is<variant::Boolean>());
-    BOOST_CHECK(!v1.is<variant::Integer>());
+    BOOST_CHECK(v1.is<variant::Integer>());
     BOOST_CHECK(v1.is<variant::Number>());
     BOOST_CHECK(v1.is<variant::Primitive>());
     BOOST_CHECK_EQUAL(v1.as<bool>(), arg);

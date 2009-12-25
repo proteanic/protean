@@ -62,8 +62,8 @@ namespace protean {
             Object                  = 0x00100000,
 
             // The following enums represent groupings of variants
-            Integer                 = Int32 | UInt32 | Int64 | UInt64,
-            Number                  = Integer | Boolean | Float | Double,
+            Integer                 = Boolean | Int32 | UInt32 | Int64 | UInt64,
+            Number                  = Integer | Float | Double,
             Primitive               = Number | Date | Time | DateTime | Any | String,
             Sequence                = List | Tuple,
             Mapping                 = Dictionary | Bag,
