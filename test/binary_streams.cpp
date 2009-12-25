@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(test_binary_exception)
 
 BOOST_AUTO_TEST_CASE(test_binary_buffer)
 {
-    char* arg("some buffer contents");
+    char arg [] = "some buffer contents";
     variant v1(static_cast<void*>(arg), strlen(arg));
 
     std::ostringstream oss;
