@@ -5,6 +5,7 @@
 
 #include <protean/xml_reader.hpp>
 #include <protean/xml_parser.hpp>
+#include <protean/detail/scoped_xmlch.hpp>
 
 #include <boost/scope_exit.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -69,7 +70,7 @@ namespace protean {
 
             if (!m_external_schema.empty())
             {
-                boost::scoped_array<XMLCh> schema(xercesc::XMLString::transcode(m_external_schema.c_str()));
+		scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
                 parser->setProperty( xercesc::XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, schema.get() );
             }
 

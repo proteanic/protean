@@ -6,6 +6,7 @@
 #include <protean/xml_parser.hpp>
 #include <protean/object_proxy.hpp>
 #include <protean/object_factory.hpp>
+#include <protean/detail/scoped_xmlch.hpp>
 
 #include <boost/regex.hpp>
 #include <boost/format.hpp>
@@ -38,7 +39,7 @@ namespace protean {
         else
         {
             boost::filesystem::path full_path = boost::filesystem::complete(boost::filesystem::path(name, boost::filesystem::native), m_entity_path);
-            boost::scoped_array<XMLCh> full_path_str( xercesc::XMLString::transcode( full_path.native_directory_string().c_str() ) );
+            scoped_xmlch full_path_str( xercesc::XMLString::transcode( full_path.native_directory_string().c_str() ) );
             result = new xercesc::LocalFileInputSource(full_path_str.get());
         }
         return result;
