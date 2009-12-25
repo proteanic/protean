@@ -210,6 +210,8 @@ namespace protean {
         typedef size_t difference_type;
     };
 
+    variant make_any(const std::string& value);
+
 } // namespace protean
 
 #include <protean/variant.ipp>
