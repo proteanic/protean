@@ -5,6 +5,7 @@
 
 #include <protean/xml_writer.hpp>
 #include <protean/xml_defs.hpp>
+#include <protean/detail/xerces_workaround.hpp>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
@@ -252,18 +253,23 @@ namespace protean {
                 size_t size = node.size();
                 if (data!=NULL && size>0)
                 {
+		    // TODO: remove this workaround, see protean/detail/xerces_workaround.hpp
                     XMLSize_t n = 0;
-                    boost::scoped_ptr<XMLByte> b64( xercesc::Base64::encode( reinterpret_cast<const XMLByte*>( data ), (unsigned int)size, &n ) );
-                    if (!b64.get())
+                    XMLByte * b64(
+                                  xercesc::Base64::encode( reinterpret_cast<const XMLByte*>( data ), 
+                                                           (unsigned int)size, &n, myMemoryManager ()) );
+                    if (!b64)
                     {
                         boost::throw_exception(variant_error("Unable to base64 encode data"));
                     }
 
                     // remove all newline characters
-                    std::string str64(reinterpret_cast<const char*>(b64.get()), n);
+                    std::string str64(reinterpret_cast<const char*>(b64), n);
                     boost::algorithm::erase_all( str64, "\n" );
-
-                    m_os << str64;
+                
+                    myMemoryManager ()->deallocate (b64);
+		    
+		    m_os << str64;
                 }
                 end_tag();
                 break;
