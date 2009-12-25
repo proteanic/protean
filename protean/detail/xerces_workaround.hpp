@@ -36,7 +36,7 @@ public:
 
   void deallocate (void * a)
   {
-    delete [] a;
+    delete [] (reinterpret_cast<char *> (a));
   }
 
   xercesc::MemoryManager * getExceptionMemoryManager ()
