@@ -258,12 +258,7 @@ namespace protean {
                     {
                         boost::throw_exception(variant_error("Unable to base64 encode data"));
                     }
-
-                    // remove all newline characters
-                    std::string str64(reinterpret_cast<const char*>(b64.get()), n);
-                    boost::algorithm::erase_all( str64, "\n" );
-
-                    m_os << str64;
+                    m_os << b64.get();
                 }
                 end_tag();
                 break;
