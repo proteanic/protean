@@ -6,7 +6,6 @@
 #include <protean/xml_parser.hpp>
 #include <protean/object_proxy.hpp>
 #include <protean/object_factory.hpp>
-#include <protean/detail/xerces_workaround.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
 
 #include <boost/regex.hpp>
@@ -321,18 +320,13 @@ namespace protean {
             {
                 if ( !context->m_data.empty() )
                 {
-                    // TODO: remove this workaround, see protean/detail/xerces_workaround.hpp
                     XMLSize_t n = 0;
-                    const XMLByte * encodedData (reinterpret_cast<const XMLByte*>(context->m_data.c_str()));
-                    XMLByte * data(xercesc::Base64::decode(encodedData, &n, myMemoryManager ()));
-
-                    if (!data)
+                    boost::scoped_ptr<XMLByte> data(xercesc::Base64::decode(reinterpret_cast<const XMLByte*>(context->m_data.c_str()), &n));
+                    if (!data.get())
                     {
                         boost::throw_exception(variant_error("Unable to base64 decode data"));
                     }
-               
-                    context->element() = variant(data, n);
-                    myMemoryManager ()->deallocate (data);
+                    context->element() = variant(data.get(), n);
                 }
                 else
                 {
