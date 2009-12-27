@@ -10,6 +10,18 @@ namespace protean {
 
     /*static*/ object_factory::instance_map_t object_factory::sm_instance_map;
 
+    /*static*/ void object_factory::insert (const std::string & class_name, handle<object> (*fn) ())
+    {
+        create_fn_t create_fn(fn);
+        std::pair<instance_map_t::iterator, bool> ret =
+            sm_instance_map.insert( std::make_pair(class_name, create_fn) );
+
+        if (!ret.second)
+        {
+            boost::throw_exception(variant_error("Duplicate item '" + class_name + "' detected in object factory"));
+        }
+    }
+
     /*static*/ void object_factory::initialise()
     {
     }

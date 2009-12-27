@@ -41,6 +41,8 @@ namespace protean {
         handle<object> create_instance(const std::string& name);
 
     private:
+
+        static void insert (const std::string & class_name, handle<object> (*fn) ());
         static instance_map_t    sm_instance_map;
     };
 
@@ -53,14 +55,7 @@ namespace protean {
             class_name = typeid(T).name();
             class_name = class_name.substr(6); // ignore the 'class ' prefix
         }
-        create_fn_t create_fn(&handle<object>::create<T>);
-        std::pair<instance_map_t::iterator, bool> ret =
-            sm_instance_map.insert( std::make_pair(class_name, create_fn) );
-
-        if (!ret.second)
-        {
-            boost::throw_exception(variant_error("Duplicate item '" + class_name + "' detected in object factory"));
-        }
+        insert (class_name, &handle<object>::create<T>);
     }
 } // namespace protean
 
