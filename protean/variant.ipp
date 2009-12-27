@@ -254,7 +254,7 @@ namespace protean {
     template<> PROTEAN_DLLEXPORT object& variant::as<object>();
 
     template<typename T>
-    PROTEAN_DLLEXPORT variant make_object(const variant& params)
+    variant make_object(const variant& params)
     {
         handle<object> obj(new T());
         obj->inflate(params, obj->version());
