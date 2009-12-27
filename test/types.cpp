@@ -177,11 +177,11 @@ BOOST_AUTO_TEST_CASE( cast_op )
     BOOST_CHECK(v2.is<boost::int32_t>());
     BOOST_CHECK_EQUAL(v2.as<boost::int32_t>(), 10);
     BOOST_CHECK(v3.is<boost::uint32_t>());
-    BOOST_CHECK_EQUAL(v3.as<boost::uint32_t>(), 10);
+    BOOST_CHECK_EQUAL(v3.as<boost::uint32_t>(), 10u);
     BOOST_CHECK(v4.is<boost::int64_t>());
     BOOST_CHECK_EQUAL(v4.as<boost::int64_t>(), 10);
     BOOST_CHECK(v5.is<boost::uint64_t>());
-    BOOST_CHECK_EQUAL(v5.as<boost::uint64_t>(), 10);
+    BOOST_CHECK_EQUAL(v5.as<boost::uint64_t>(), 10u);
     BOOST_CHECK(v6.is<float>());
     BOOST_CHECK_EQUAL(v6.as<float>(), 10);
     BOOST_CHECK(v7.is<double>());
