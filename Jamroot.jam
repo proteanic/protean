@@ -1,73 +1,172 @@
 # Quickstart:
-#
-# Copy user-config.jam.example to user-config.jam and edit the
-# settings to match your system.
-#
-# Install Boost, you will need iostreams with zlib support.
-#
-# Install Xerces
-#
-# Set BOOST_ROOT, under Linux/Cygwin this can be done e.g. by
-# export BOOST_ROOT c:/boost_1_41_0
-#
+
+# Install Boost. You will need iostreams with zlib support. You should
+# specify --build-type=complete
+
+# Install Xerces (optional)
+
 # Put bjam on your path. Under Linux/Cygwin this can be done e.g. by
 # export PATH=${PATH}:/cygdrive/c/boost_1_41_0
-#
+
+# Set BOOST_ROOT, under Linux/Cygwin this can be done e.g. by
+# export BOOST_ROOT c:/boost_1_41_0
+
+# Copy user-config.jam.example to user-config.jam and edit the
+# settings to match your system. You can also use environment
+# variables if you prefer. The user-config file will take precedence
+# if both methods are used. You can just set NO_XERCES if you are in a
+# hurry as everything else has a reasonabe default.
+
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
 
-using testing ;
 import os ;
 
 include user-config.jam ;
 
-project : requirements 
-    <include>$(BOOST_INCLUDE) 
-    <include>.
+# bjam does not actually get as far as this if BOOST_ROOT is not set, but in case that changes
+if ! [ os.environ BOOST_ROOT ]
+{
+    EXIT Protean: BOOST_ROOT needs to be set to the toplevel directory of a Boost distribution, e.g. c:/boost_1_41_0 ;
+}
+
+# needed by module boost
+BOOST_BUILD_PATH ?= $(BOOST_ROOT) ;
+
+BOOST_INCLUDE ?= [ os.environ BOOST_INCLUDE ] ;
+BOOST_INCLUDE ?= [ os.environ BOOST_ROOT ] ;
+BOOST_LIB ?= [ os.environ BOOST_LIB ] ;
+
+if ! $(BOOST_LIB)
+{
+    local BR = [ os.environ BOOST_ROOT ] ;
+    BOOST_LIB = $(BR)/stage/lib ;
+    ECHO Protean: BOOST_LIB defaults to $(BOOST_LIB) ;
+}
+
+if ! $(BOOST_LIB)
+{
+    EXIT Protean: BOOST_LIB must be set ;
+}
+
+if ! $(BOOST_INCLUDE)
+{
+    EXIT Protean: BOOST_INCLUDE must be set ;
+}
+
+NO_XERCES ?= [ os.environ NO_XERCES ] ;
+XERCES_BINARY ?= [ os.environ XERCES_BINARY ] ;
+XERCES_LIBPATH ?= [ os.environ XERCES_LIBPATH ] ;
+XERCES_INCLUDE ?= [ os.environ XERCES_INCLUDE ] ;
+
+#using boost 
+#   : 1.41
+#   : <include>$(BOOST_INCLUDE) <library>$(BOOST_LIB)
+#;
+
+using testing ;
+import boost ;
+boost.use-project ;
+
+project : requirements
     <toolset>gcc:<cxxflags>"-Wno-multichar"
     <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 ;
 
-SOURCES = [ glob src/*.cpp ] ;
+# backwards compatibility with old-style user-config.jam, to be removed 
+XERCES_LIBPATH ?= $(XERCES_LIB)/../Debug $(XERCES_LIB)/../Release ;
+
+ECHO BOOST_INCLUDE=$(BOOST_INCLUDE) ;
+ECHO BOOST_LIB=$(BOOST_LIB) ;
+ECHO XERCES_INCLUDE=$(XERCES_INCLUDE) ;
+ECHO XERCES_LIBPATH=$(XERCES_LIBPATH) ;
+ECHO XERCES_BINARY=$(XERCES_BINARY) ;
+ECHO NO_XERCES=$(NO_XERCES) ;
+
+if $(XERCES_BINARY)
+{
+    lib xerces : :  <name>$(XERCES_BINARY) <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+}
+else
+{
+    switch [ os.name ]
+    {
+        case "CYGWIN" :
+        case "NT" :
+            lib xerces : :  <variant>debug <name>xerces-c_3D <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            lib xerces : :  <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+
+        case "LINUX" :
+            lib xerces : :  <name>xerces-c-3.0 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+    }
+}
+
+DEPENDENTONXERCES =
+   src/xml_reader.cpp src/xml_parser.cpp src/xml_writer.cpp test/xml_streams.cpp 
+   protean/xml_reader.hpp protean/xml_parser.hpp protean/xml_writer.hpp protean/xml_defs.hpp
+;
+
+if $(NO_XERCES) 
+{
+   EXCLUDE = $(DEPENDENTONXERCES) ;
+   ECHO Protean: Building without Xerces support because NO_XERCES is set ;
+}
+else
+{
+   XERCES_BJAM_NAME = xerces ;
+   if ! $(XERCES_INCLUDE)
+   {
+	EXIT Protean: XERCES_INCLUDE needs to be set if NO_XERCES is not ;
+   }
+}
 
 switch [ os.name ]
 {
     case "CYGWIN" :
     case "NT" :
-        lib zlib : : <file>$(BOOST_LIB)/libboost_zlib$(BL) ;
-    case "LINUX" :
-        lib zlib : : <file>/usr/lib/libz.so ;
+        DLLEXPORTDEFINE = <link>shared:<define>PROTEAN_BUILD_DLL ;
 }
-
-lib xerces : : <file>$(XERCES_LIB)/$(XERCES_LIB_FILE) : : <include>$(XERCES_INCLUDE) ;
-lib iostreams : zlib : <file>$(BOOST_LIB)/libboost_iostreams$(BL) ;
-lib filesystem : : <file>$(BOOST_LIB)/libboost_filesystem$(BL) ;
-lib datetime : : <file>$(BOOST_LIB)/libboost_date_time$(BL) ;
-lib regexp : : <file>$(BOOST_LIB)/libboost_regex$(BL) ;
-lib system : : <file>$(BOOST_LIB)/libboost_system$(BL) ;
-lib unittest : : <file>$(BOOST_LIB)/libboost_unit_test_framework$(BL) ;
 
 lib protean : 
-   $(SOURCES)
-   xerces filesystem iostreams datetime regexp system 
+   [ glob src/*.cpp : $(EXCLUDE) ]
+   /boost//filesystem
+   /boost//date_time
+   /boost//regex
+   /boost//system
+   /boost//iostreams
+   $(XERCES_BJAM_NAME)
 :
-   <link>static
+   <library-path>$(XERCES_LIBPATH)
+   <library-path>$(BOOST_LIB)
+   <include>.
+   <link>shared:<define>BOOST_ALL_DYN_LINK
+   $(DLLEXPORTDEFINE)
+: : 
+   <include>.
 ;
 
-rule test-protean ( source * ) {
+rule test-protean ( PROPERTIES * : NAME )
+{
     return [
             unit-test
-                thetest
+                $(NAME)
             :
-                $(source)
-                protean 
-                unittest
-                xerces
+                [ glob test/*.cpp : $(EXCLUDE) ]
+                protean
+                /boost//unit_test_framework
+                $(XERCES_BJAM_NAME)
             : # command
-            : # input files
-            :   <link>static
-                <library-path>$(XERCES_LIB)
-        ] ;
+            : 
+                <library-path>$(XERCES_LIBPATH)
+                <library-path>$(BOOST_LIB)
+	        $(PROPERTIES)
+                # input files
+            :    
+                <link>shared:<define>BOOST_ALL_DYN_LINK
+            ] ;
 }
 
-test-protean [ glob test/*.cpp ] ;
+test-protean <link>static <variant>debug : thetest0 ;
+test-protean <link>shared <variant>debug : thetest1 ;
+test-protean <link>static <variant>release : thetest2 ;
+test-protean <link>shared <variant>release : thetest3 ;
