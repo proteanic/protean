@@ -41,9 +41,8 @@ namespace protean {
         handle<object> create_instance(const std::string& name);
 
     private:
-
-        static void insert (const std::string & class_name, handle<object> (*fn) ());
-        static instance_map_t    sm_instance_map;
+        void insert(const std::string& class_name, const create_fn_t& fn);
+        instance_map_t m_instance_map;
     };
 
     template<class T>
@@ -55,7 +54,7 @@ namespace protean {
             class_name = typeid(T).name();
             class_name = class_name.substr(6); // ignore the 'class ' prefix
         }
-        insert (class_name, &handle<object>::create<T>);
+        insert(class_name, &handle<object>::create<T>);
     }
 } // namespace protean
 

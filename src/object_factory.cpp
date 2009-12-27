@@ -8,13 +8,10 @@
 
 namespace protean {
 
-    /*static*/ object_factory::instance_map_t object_factory::sm_instance_map;
-
-    /*static*/ void object_factory::insert (const std::string & class_name, handle<object> (*fn) ())
+    void object_factory::insert(const std::string& class_name, const create_fn_t& fn)
     {
-        create_fn_t create_fn(fn);
         std::pair<instance_map_t::iterator, bool> ret =
-            sm_instance_map.insert( std::make_pair(class_name, create_fn) );
+            m_instance_map.insert( std::make_pair(class_name, fn) );
 
         if (!ret.second)
         {
@@ -22,20 +19,20 @@ namespace protean {
         }
     }
 
-    /*static*/ void object_factory::initialise()
+    void object_factory::initialise()
     {
     }
 
-    /*static*/ void object_factory::shutdown()
+    void object_factory::shutdown()
     {
-        sm_instance_map.clear();
+        m_instance_map.clear();
     }
 
-    /*static*/ handle<object> object_factory::create_instance(const std::string& name)
+    handle<object> object_factory::create_instance(const std::string& name)
     {
-        instance_map_t::const_iterator citr(sm_instance_map.find(name));
+        instance_map_t::const_iterator citr(m_instance_map.find(name));
 
-        if (citr == sm_instance_map.end())
+        if (citr == m_instance_map.end())
         {
             // Return empty handle
             return handle<object>(NULL);
