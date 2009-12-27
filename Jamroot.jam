@@ -97,7 +97,8 @@ else
             lib xerces : :  <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
 
         case "LINUX" :
-            lib xerces : :  <name>xerces-c-3.0 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            lib pthread : : <name>pthread ;
+            lib xerces : pthread/<link>shared : <name>xerces-c <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
     }
 }
 
@@ -116,7 +117,7 @@ else
    XERCES_BJAM_NAME = xerces ;
    if ! $(XERCES_INCLUDE)
    {
-	EXIT Protean: XERCES_INCLUDE needs to be set if NO_XERCES is not ;
+        EXIT Protean: XERCES_INCLUDE needs to be set if NO_XERCES is not ;
    }
 }
 
@@ -125,6 +126,8 @@ switch [ os.name ]
     case "CYGWIN" :
     case "NT" :
         DLLEXPORTDEFINE = <link>shared:<define>PROTEAN_BUILD_DLL ;
+
+    case "LINUX" :
 }
 
 lib protean : 
@@ -159,7 +162,7 @@ rule test-protean ( PROPERTIES * : NAME )
             : 
                 <library-path>$(XERCES_LIBPATH)
                 <library-path>$(BOOST_LIB)
-	        $(PROPERTIES)
+                $(PROPERTIES)
                 # input files
             :    
                 <link>shared:<define>BOOST_ALL_DYN_LINK
