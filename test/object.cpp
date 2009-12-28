@@ -36,6 +36,10 @@ public:
         m_id = id;
     }
 
+    /*virtual*/ std::string name() const {
+       return "protean::object::testing_object";
+    }
+
 public:
     handle<object> clone() const
     {
@@ -76,7 +80,7 @@ void test_object()
     BOOST_CHECK(!v1.is<object_proxy>());
 
     testing_object& arg2(v1.as<testing_object>());
-    BOOST_CHECK_EQUAL(arg2.name(), "testing_object");
+    BOOST_CHECK_EQUAL(arg2.name(), arg1.name());
     BOOST_CHECK_EQUAL(arg2.id(), "test1");
 
     BOOST_CHECK_EQUAL(v1.as<testing_object>().count(), v1.as<testing_object>().count());

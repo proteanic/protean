@@ -250,6 +250,10 @@ public:
         m_count = params["count"].as<boost::int32_t>();
         m_id = params["id"].as<std::string>();
     }
+    /*virtual*/ std::string name() const {
+       return "protean::xml_streams::testing_object";
+    }
+
 private:
     static boost::int32_t  sm_count;
     boost::int32_t  m_count;
@@ -281,7 +285,7 @@ BOOST_AUTO_TEST_CASE(test_xml_object)
     iss2 << oss.str();
 
     object_factory factory;
-    factory.register_object<testing_object>();
+    factory.register_object<testing_object>(arg.name ());
     xml_reader reader2(iss2);
     reader2.set_factory(factory);
     reader2 >> v3;

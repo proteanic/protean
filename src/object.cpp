@@ -37,13 +37,6 @@ namespace protean {
         inflate(params, rhs.version());
     }
 
-    /*virtual*/ std::string object::name() const
-    {
-        std::string class_name(typeid(*this).name());
-        class_name = class_name.substr(6);
-        return class_name;
-    }
-
     int object::compare(const object& rhs) const
     {
         if ( name()!=rhs.name() )

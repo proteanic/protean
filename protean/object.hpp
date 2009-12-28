@@ -27,7 +27,7 @@ namespace protean {
         template<typename TYPE>
         static object create();
 
-        virtual std::string name() const;
+        virtual std::string name() const = 0;
 
     public:
         void coerce(const object& rhs);

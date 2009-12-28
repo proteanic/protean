@@ -46,14 +46,9 @@ namespace protean {
     };
 
     template<class T>
-    void object_factory::register_object(const std::string& name="")
+    void object_factory::register_object(const std::string& name)
     {
         std::string class_name(name);
-        if (class_name.empty())
-        {
-            class_name = typeid(T).name();
-            class_name = class_name.substr(6); // ignore the 'class ' prefix
-        }
         insert(class_name, &handle<object>::create<T>);
     }
 } // namespace protean
