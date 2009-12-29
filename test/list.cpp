@@ -13,7 +13,7 @@ using namespace protean;
 
 BOOST_AUTO_TEST_SUITE(list_suite);
 
-void test_list_basic()
+BOOST_AUTO_TEST_CASE(test_list_basic)
 {
     variant v1(variant::List);
     BOOST_CHECK(v1.is<variant::List>());
@@ -56,7 +56,7 @@ void test_list_basic()
     BOOST_CHECK(v4==v3);
 }
 
-void test_list_iterator()
+BOOST_AUTO_TEST_CASE(test_list_iterator)
 {
     variant v1(variant::List);
 

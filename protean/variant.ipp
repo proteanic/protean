@@ -151,13 +151,14 @@ namespace protean {
     typename boost::enable_if<boost::is_base_of<object,T>, bool>::type
     variant::is() const
     {
-        if (m_type!=Object)
+        if (!is<Object>()) return false; 
+        handle<object> o = m_value.get<Object>(); 
+        if (o.is<T>()) return true;
+        if (o.is<object_proxy>())
         {
-            return false;
+            return o->name()==T().name();
         }
-        
-        handle<object> obj(m_value.get<Object>());
-        return obj->name()==T().name();
+        return false;
     }
 
     template<> bool PROTEAN_DLLEXPORT variant::is<object>() const;

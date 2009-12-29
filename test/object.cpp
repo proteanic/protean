@@ -68,7 +68,7 @@ private:
 
 boost::int32_t testing_object::sm_count = 0;
 
-void test_object()
+BOOST_AUTO_TEST_CASE(test_object)
 {
     testing_object arg1;
     arg1.set_id("test1");
@@ -118,12 +118,12 @@ void test_object()
     }
 }
 
-void test_object_proxy()
+BOOST_AUTO_TEST_CASE(test_object_proxy)
 {
-	object_proxy proxy("testing_object");
+	object_proxy proxy("protean::object::testing_object");
 
-    testing_object obj1;
-    obj1.set_id("test1");
+	testing_object obj1;
+	obj1.set_id("test1");
 
 	variant params;
 	obj1.deflate(params);
@@ -138,6 +138,71 @@ void test_object_proxy()
 	// Proxy should have been converted to concrete object by as().
 	BOOST_CHECK(!v.is<object_proxy>());
 	BOOST_CHECK(v.is<testing_object>());
+}
+
+class a : public testing_object 
+{
+public:
+
+    std::string name () const { return "protean::a"; }
+
+    handle<object> clone() const
+    {
+        return handle<object>(new a(*this));
+    }
+}; 
+
+class b : public testing_object
+{
+public:
+
+    std::string name () const { return "protean::b"; }
+
+    handle<object> clone() const
+    {
+        return handle<object>(new b(*this));
+    }
+}; 
+
+class c : public b
+{
+public:
+
+    std::string name () const { return "protean::c"; }
+
+    handle<object> clone() const
+    {
+	   return handle<object>(new c(*this));
+    }
+}; 
+
+ 
+BOOST_AUTO_TEST_CASE(test_is_as) 
+{ 
+    a ai; 
+    b bi; 
+    c ci; 
+    variant va(ai), vb(bi), vc(ci); 
+  
+    BOOST_CHECK (!va.is<b>());
+    BOOST_CHECK (!vb.is<c>());
+
+    BOOST_CHECK (va.is<a> ()); 
+    BOOST_CHECK (vb.is<b> ()); 
+    BOOST_CHECK (vc.is<c> ()); 
+    BOOST_CHECK (vc.is<b> ()); 
+    BOOST_CHECK (vc.is<testing_object> ()); 
+    BOOST_CHECK (vc.is<object> ()); 
+ 
+    // was ai cloned? 
+    BOOST_CHECK (&va.as<a>()!=&ai); 
+
+    // don't slice 
+    const object & o0 = vc.as<c> (); 
+    BOOST_CHECK_EQUAL (typeid(o0).name (), typeid(c).name ()); 
+
+    const object & o1 = vc.as<object> (); 
+    BOOST_CHECK_EQUAL (typeid(o1).name (), typeid(c).name ()); 
 }
 
 BOOST_AUTO_TEST_SUITE_END()
