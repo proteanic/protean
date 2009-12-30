@@ -15,7 +15,7 @@
 #define BEGIN_VARIANT_CONTEXT                                                                           \
         try                                                                                             \
         {                                                                                               \
-	        BOOST_STATIC_ASSERT (true)
+          void
 #endif // BEGIN_VARIANT_CONTEXT
 
 #ifndef END_VARIANT_CONTEXT
@@ -29,5 +29,5 @@
         {                                                                                               \
             boost::throw_exception(variant_error(std::string("Unknown exception\n") + this->str()));    \
         }                                                                                               \
-        BOOST_STATIC_ASSERT (true)
+        void
 #endif // END_VARIANT_CONTEXT
