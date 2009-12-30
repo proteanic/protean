@@ -11,8 +11,8 @@
 #include <string>
 
 namespace protean {
-
-    template<typename T> class handle;
+ 
+    template<typename T> class PROTEAN_DLLEXPORT handle;
 
     namespace detail {
 
@@ -21,9 +21,15 @@ namespace protean {
         public:
             ref_counted();
             ref_counted(const ref_counted& rhs);
+  
+        // workaround for MSVC 2005 (maybe also needed for earlier MSVC versions?)
+        #if !defined(_MSC_VER) || (_MSC_VER > 1400)
         private:
-            size_t  m_ref_count;
+
             template <typename T> friend class protean::handle;
+        #endif
+        
+            size_t  m_ref_count;
         };
 
         inline ref_counted::ref_counted() :
