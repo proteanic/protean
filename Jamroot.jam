@@ -8,8 +8,8 @@
 # Put bjam on your path. Under Linux/Cygwin this can be done e.g. by
 # export PATH=${PATH}:/cygdrive/c/boost_1_41_0
 
-# Set BOOST_ROOT, under Linux/Cygwin this can be done e.g. by
-# export BOOST_ROOT c:/boost_1_41_0
+# Set BOOST_BUILD_PATH, under Linux/Cygwin this can be done e.g. by
+# export BOOST_BUILD_PATH c:/boost_1_41_0
 
 # Copy user-config.jam.example to user-config.jam and edit the
 # settings to match your system. You can also use environment
@@ -20,27 +20,23 @@
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
 
-import os ;
-
 include user-config.jam ;
 
-# bjam does not actually get as far as this if BOOST_ROOT is not set, but in case that changes
-if ! [ os.environ BOOST_ROOT ]
+import os ;
+
+if ! [ os.environ BOOST_BUILD_PATH ]
 {
-    EXIT Protean: BOOST_ROOT needs to be set to the toplevel directory of a Boost distribution, e.g. c:/boost_1_41_0 ;
+    EXIT Protean: BOOST_BUILD_PATH needs to be set to the toplevel directory of a Boost distribution, e.g. c:/boost_1_41_0 ;
 }
 
-# needed by module boost
-BOOST_BUILD_PATH ?= $(BOOST_ROOT) ;
-
+BOOSTROOT = [ os.environ BOOST_BUILD_PATH ] ;
 BOOST_INCLUDE ?= [ os.environ BOOST_INCLUDE ] ;
-BOOST_INCLUDE ?= [ os.environ BOOST_ROOT ] ;
+BOOST_INCLUDE ?= $(BOOSTROOT) ;
 BOOST_LIB ?= [ os.environ BOOST_LIB ] ;
 
 if ! $(BOOST_LIB)
 {
-    local BR = [ os.environ BOOST_ROOT ] ;
-    BOOST_LIB = $(BR)/stage/lib ;
+    BOOST_LIB = $(BOOSTROOT)/stage/lib ;
     ECHO Protean: BOOST_LIB defaults to $(BOOST_LIB) ;
 }
 
@@ -49,6 +45,7 @@ if ! $(BOOST_LIB)
     EXIT Protean: BOOST_LIB must be set ;
 }
 
+#fixme: this is being ignored ATM
 if ! $(BOOST_INCLUDE)
 {
     EXIT Protean: BOOST_INCLUDE must be set ;
@@ -59,29 +56,23 @@ XERCES_BINARY ?= [ os.environ XERCES_BINARY ] ;
 XERCES_LIBPATH ?= [ os.environ XERCES_LIBPATH ] ;
 XERCES_INCLUDE ?= [ os.environ XERCES_INCLUDE ] ;
 
-#using boost 
-#   : 1.41
-#   : <include>$(BOOST_INCLUDE) <library>$(BOOST_LIB)
-#;
-
-using testing ;
-import boost ;
-boost.use-project ;
-
-project : requirements
-    <toolset>gcc:<cxxflags>"-Wno-multichar"
-    <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
-;
-
-# backwards compatibility with old-style user-config.jam, to be removed 
-XERCES_LIBPATH ?= $(XERCES_LIB)/../Debug $(XERCES_LIB)/../Release ;
-
+ECHO env.BOOST_BUILD_PATH= [ os.environ BOOST_BUILD_PATH ] ;
 ECHO BOOST_INCLUDE=$(BOOST_INCLUDE) ;
 ECHO BOOST_LIB=$(BOOST_LIB) ;
 ECHO XERCES_INCLUDE=$(XERCES_INCLUDE) ;
 ECHO XERCES_LIBPATH=$(XERCES_LIBPATH) ;
 ECHO XERCES_BINARY=$(XERCES_BINARY) ;
 ECHO NO_XERCES=$(NO_XERCES) ;
+
+using testing ;
+import boost ;
+boost.use-project ;
+
+project : requirements
+    <toolset>gcc:<cxxflags>-Wno-multichar
+    <toolset>gcc:<cxxflags>-Wno-strict-aliasing
+    <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+;
 
 if $(XERCES_BINARY)
 {
@@ -109,7 +100,7 @@ DEPENDENTONXERCES =
 
 if $(NO_XERCES) 
 {
-   EXCLUDE = $(DEPENDENTONXERCES) ;
+   EXCLUDE += $(DEPENDENTONXERCES) ;
    ECHO Protean: Building without Xerces support because NO_XERCES is set ;
 }
 else
@@ -142,7 +133,6 @@ lib protean :
    <library-path>$(XERCES_LIBPATH)
    <library-path>$(BOOST_LIB)
    <include>.
-   <link>shared:<define>BOOST_ALL_DYN_LINK
    $(DLLEXPORTDEFINE)
 : : 
    <include>.
@@ -165,7 +155,7 @@ rule test-protean ( PROPERTIES * : NAME )
                 $(PROPERTIES)
                 # input files
             :    
-                <link>shared:<define>BOOST_ALL_DYN_LINK
+
             ] ;
 }
 

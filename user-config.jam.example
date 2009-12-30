@@ -12,7 +12,7 @@
 # - enclose any paths containing spaces in double quotes
 
 # more than one compiler can be used 
-# using msvc 9.0 ;
+# using msvc : 9.0 ;
 # using gcc ;
 
 # set this if you don't have Xerces or don't want XML support
@@ -27,13 +27,13 @@
 #    c:/xerces-c-3.0.1/Build/Win32/VC8/Debug ;
 
 # XERCES_BINARY is best left unset, but can be used to tell the
-# compiler precisely what library to use. It is similar to
-# e.g. ZLIB_BINARY used bby Boost. NB: be careful not to mix Debug and
-# Release libraries under Windows as everything will compile fine but
-# then crash when run 
+# compiler precisely what Xerces binary library to use. It is similar to
+# e.g. ZLIB_BINARY used by Boost. NB: be careful not to mix Debug and
+# Release libraries under Windows. If you do, everything will seem to compile
+# fine but then the code will crash unpredictably at runtime. 
 # XERCES_BINARY = xerces-c_3.lib ;
 
-# these have defaults based on BOOST_ROOT
+# these have defaults based on BOOST_BUILD_PATH (NB: they might not work ATM)
 # BOOST_INCLUDE = c:/boost_1_41_0 ;
 # BOOST_LIB = c:/boost_1_41_0/stage/lib ;
 
