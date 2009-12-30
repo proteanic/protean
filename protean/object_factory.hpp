@@ -48,7 +48,7 @@ namespace protean {
         instance_map_t m_instance_map;
     };
 
-    template<>
+    template<> PROTEAN_DLLEXPORT
     void object_factory::register_object<object_proxy>();
 
     template<class T>
