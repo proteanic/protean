@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(test_xml_object)
     iss2 << oss.str();
 
     object_factory factory;
-    factory.register_object<testing_object>(arg.name ());
+    factory.register_object<testing_object>();
     xml_reader reader2(iss2);
     reader2.set_factory(factory);
     reader2 >> v3;

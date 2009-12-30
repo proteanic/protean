@@ -9,6 +9,7 @@
 using boost::unit_test::test_suite;    
 
 #include <protean/variant.hpp>
+#include <protean/object_factory.hpp>
 using namespace protean;
 
 BOOST_AUTO_TEST_SUITE(object_suite);
@@ -203,6 +204,18 @@ BOOST_AUTO_TEST_CASE(test_is_as)
 
     const object & o1 = vc.as<object> (); 
     BOOST_CHECK_EQUAL (typeid(o1).name (), typeid(c).name ()); 
+}
+
+BOOST_AUTO_TEST_CASE(test_object_factory)
+{
+    object_factory f;
+    BOOST_CHECK_THROW (f.register_object<object_proxy>(), variant_error);
+    f.register_object<a> ();
+    std::string name = a().name ();
+
+    handle<object> x(f.create_instance(name)), y(f.create_instance(name));
+    BOOST_CHECK (x.is<a>());
+    BOOST_CHECK (&*x!=&*y);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

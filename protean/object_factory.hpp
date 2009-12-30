@@ -10,6 +10,8 @@
 #include <protean/variant_error.hpp>
 #include <protean/object.hpp>
 #include <protean/handle.hpp>
+#include <protean/variant.hpp>
+#include <protean/object_proxy.hpp>
 
 #include <boost/function.hpp>
 
@@ -35,8 +37,9 @@ namespace protean {
         void initialise();
         void shutdown();
 
-        template<typename TYPE>
-        void register_object(const std::string& name);
+        template<class T>
+        typename boost::enable_if<boost::is_base_of<object,T>, void>::type 
+        register_object();
 
         handle<object> create_instance(const std::string& name);
 
@@ -45,11 +48,14 @@ namespace protean {
         instance_map_t m_instance_map;
     };
 
+    template<>
+    void object_factory::register_object<object_proxy>();
+
     template<class T>
-    void object_factory::register_object(const std::string& name)
+    typename boost::enable_if<boost::is_base_of<object,T>, void>::type 
+    object_factory::register_object()
     {
-        std::string class_name(name);
-        insert(class_name, &handle<object>::create<T>);
+        insert(T().name(), &handle<object>::create<T>);
     }
 } // namespace protean
 
