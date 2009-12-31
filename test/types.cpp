@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE( pod_types )
 
     {
         variant v( long(0) );
-        BOOST_CHECK(v.is<variant::Int32>());
+        BOOST_CHECK(v.is<sizeof(long)==4?variant::Int32:variant::Int64>());
         BOOST_CHECK(v.is<long>());
         BOOST_CHECK_EQUAL(v.as<long>(), 0);
     }
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( pod_types )
 
     {
         variant v( 0ul );
-        BOOST_CHECK(v.is<variant::UInt32>());
+        BOOST_CHECK(v.is<sizeof(long)==4?variant::UInt32:variant::UInt64>());
         BOOST_CHECK(v.is<unsigned long>());
         BOOST_CHECK_EQUAL(v.as<unsigned long>(), 0u);
     }
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE( stl_types )
 {
     {
         variant v( size_t(0) );
-        BOOST_CHECK(v.is<variant::UInt32>());
+        BOOST_CHECK(v.is<sizeof(size_t)==4?variant::UInt32:variant::UInt64>());
         BOOST_CHECK(v.is<size_t>());
         BOOST_CHECK_EQUAL(v.as<size_t>(), 0u);
     }
