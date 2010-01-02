@@ -150,10 +150,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\dummy_iterator.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\exception_info.cpp"
 				>
 			</File>
