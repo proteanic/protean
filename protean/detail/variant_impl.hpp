@@ -195,6 +195,10 @@ namespace protean { namespace detail {
                 return enumToIndex_impl<TYPE_COUNT, typename boost::mpl::begin<mpl_types_info_by_enum>::type>::value(enumValue);
             }
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4702)
+#endif
             template<int N, typename ITER>
             struct enumToIndex_impl
             {
@@ -206,7 +210,9 @@ namespace protean { namespace detail {
                         return enumToIndex_impl<N-1, typename boost::mpl::next<ITER>::type>::value(enumValue);
                 }
             };
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
             template<typename ITER>
             struct enumToIndex_impl<0, ITER>
             {

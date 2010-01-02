@@ -10,6 +10,11 @@
 
 #include <string>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4512)
+#endif
+
 namespace protean {
 
     class PROTEAN_DLLEXPORT exception_info
@@ -32,5 +37,9 @@ namespace protean {
     };
 
 } // namespace protean
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // PROTEAN_EXCEPTION_INFO_HPP

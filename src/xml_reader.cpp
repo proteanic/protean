@@ -7,7 +7,15 @@
 #include <protean/xml_parser.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4512)
+#endif
 #include <boost/scope_exit.hpp>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>
 #include <boost/foreach.hpp>
@@ -39,13 +47,19 @@ namespace protean {
             // before xercesc::XMLPlatformUtils::Terminate is called so the order of
             // guard creation (and hence destruction) is important.
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4100 4512)
+#endif
             char terminate; // BOOST_SCOPE_EXIT will not accept an empty list under MSVC
             BOOST_SCOPE_EXIT ((&terminate))
             {
                 xercesc::XMLPlatformUtils::Terminate();
             }
             BOOST_SCOPE_EXIT_END
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
             boost::scoped_ptr<xercesc::SAX2XMLReaderImpl> parser( new xercesc::SAX2XMLReaderImpl() );
 
             parser->setContentHandler( &handler );
@@ -70,7 +84,7 @@ namespace protean {
 
             if (!m_external_schema.empty())
             {
-		scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
+	            scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
                 parser->setProperty( xercesc::XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, schema.get() );
             }
 

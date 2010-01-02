@@ -15,7 +15,7 @@ namespace boost
             if(dur.is_special())
             {
                 if(dur.is_neg_infinity())
-                    seed = -1;
+                    seed = static_cast<size_t>(-1);
                 else if(dur.is_pos_infinity())
                     seed = 1;
                 else if(dur.is_not_a_date_time())
@@ -43,7 +43,7 @@ namespace boost
             if(date.is_special())
             {
                 if(date.is_neg_infinity())
-                    seed = -2;
+                    seed = static_cast<size_t>(-2);
                 else if(date.is_pos_infinity())
                     seed = 2;
                 else if(date.is_not_a_date())

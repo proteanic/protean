@@ -14,7 +14,7 @@ namespace protean {
     {
     }
 
-    object::object(const object& rhs)
+    object::object(const object& /*rhs*/)
     {
     }
 

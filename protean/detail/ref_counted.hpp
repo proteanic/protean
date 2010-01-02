@@ -36,7 +36,7 @@ namespace protean {
             m_ref_count(0)
         {}
 
-        inline ref_counted::ref_counted(const ref_counted& rhs) :
+        inline ref_counted::ref_counted(const ref_counted& /*rhs*/) :
             m_ref_count(0)
         {}
 

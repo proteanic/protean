@@ -23,7 +23,7 @@ namespace protean {
     }
 
     xercesc::InputSource* stream_resolver::resolveEntity(
-        const XMLCh* const publicId,
+        const XMLCh* const /*publicId*/,
         const XMLCh* const systemId )
     {
         xercesc::InputSource* result = NULL;
@@ -70,8 +70,8 @@ namespace protean {
     }
 
     void sax_content_handler::startElement(
-            const XMLCh* const uri,
-            const XMLCh* const localname,
+            const XMLCh* const /*uri*/,
+            const XMLCh* const /*localname*/,
             const XMLCh* const qname,
             const xercesc::Attributes& attrs )
     {
@@ -241,9 +241,9 @@ namespace protean {
     }
 
     void sax_content_handler::endElement(
-        const XMLCh* const uri,
-        const XMLCh* const localname,
-        const XMLCh* const qname )
+        const XMLCh* const /*uri*/,
+        const XMLCh* const /*localname*/,
+        const XMLCh* const /*qname*/ )
     {
         try
         {
@@ -355,7 +355,7 @@ namespace protean {
 
     void sax_content_handler::characters(
         const XMLCh *const chars,
-        const XMLSize_t length )
+        const XMLSize_t /*length*/ )
     {
         try
         {
@@ -430,7 +430,7 @@ namespace protean {
 
     void sax_content_handler::comment(
         const XMLCh* const chars, 
-        const XMLSize_t length
+        const XMLSize_t /*length*/
     )
     {
         //will only enter when Preserve flag is specified.  Warning: dictionary will lexicographically sort contents (incl comments)
@@ -502,8 +502,8 @@ namespace protean {
     }
 
     void sax_content_handler::handleAttributesPSVI(
-        const XMLCh* const localName, 
-        const XMLCh* const uri, 
+        const XMLCh* const /*localName*/, 
+        const XMLCh* const /*uri*/, 
         xercesc::PSVIAttributeList* psviAttributes )
     {
         try
@@ -536,8 +536,8 @@ namespace protean {
     }
 
     void sax_content_handler::handleElementPSVI(
-        const XMLCh* const localName,
-        const XMLCh* const uri,
+        const XMLCh* const /*localName*/,
+        const XMLCh* const /*uri*/,
         xercesc::PSVIElement* elementInfo )
     {
         try
