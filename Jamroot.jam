@@ -15,7 +15,7 @@
 # settings to match your system. You can also use environment
 # variables if you prefer. The user-config file will take precedence
 # if both methods are used. You can just set NO_XERCES if you are in a
-# hurry as everything else has a reasonabe default.
+# hurry as everything else then has a reasonable default.
 
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
@@ -74,6 +74,17 @@ project : requirements
     <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 ;
 
+switch [ os.name ]
+{
+    case "CYGWIN" :
+        ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_BUILD_DLL ;
+
+    case "NT" :
+        ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_BUILD_DLL ;
+
+    case "LINUX" :
+}
+
 if $(XERCES_BINARY)
 {
     lib xerces : :  <name>$(XERCES_BINARY) <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
@@ -83,13 +94,20 @@ else
     switch [ os.name ]
     {
         case "CYGWIN" :
+            lib xerces : : <toolset>gcc <name>xerces-c <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            lib xerces : : <toolset>msvc <variant>debug <name>xerces-c_3D <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            lib xerces : : <toolset>msvc <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+ 
         case "NT" :
-            lib xerces : :  <variant>debug <name>xerces-c_3D <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
-            lib xerces : :  <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            lib xerces : : <variant>debug <name>xerces-c_3D <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            lib xerces : : <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
 
         case "LINUX" :
             lib pthread : : <name>pthread ;
             lib xerces : pthread/<link>shared : <name>xerces-c <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+
+        case * :
+            EXIT Protean: unknown os, please set either XERCES_BINARY or NO_XERCES ;
     }
 }
 
@@ -112,15 +130,6 @@ else
    }
 }
 
-switch [ os.name ]
-{
-    case "CYGWIN" :
-    case "NT" :
-        DLLEXPORTDEFINE = <link>shared:<define>PROTEAN_BUILD_DLL ;
-
-    case "LINUX" :
-}
-
 lib protean : 
    [ glob src/*.cpp : $(EXCLUDE) ]
    /boost//filesystem
@@ -133,33 +142,54 @@ lib protean :
    <library-path>$(XERCES_LIBPATH)
    <library-path>$(BOOST_LIB)
    <include>.
-   $(DLLEXPORTDEFINE)
+   $(ADDITIONAL_LIB_PROPERTIES)
 : : 
    <include>.
 ;
 
-rule test-protean ( PROPERTIES * : NAME )
+rule test-properties ( properties * )
+{
+    local result ;
+    if [ os.name ] = "CYGWIN" || [ os.name ] = "NT"
+    {
+       if  <link>shared in $(properties)
+       {
+          result += <define>PROTEAN_USE_DLL ;
+       }
+    }
+    return $(result) ;
+}
+
+
+rule test-protean ( properties * : name )
 {
     return [
             unit-test
-                $(NAME)
+                $(name)
             :
                 [ glob test/*.cpp : $(EXCLUDE) ]
                 protean
                 /boost//unit_test_framework
                 $(XERCES_BJAM_NAME)
-            : # command
-            : 
+            :
                 <library-path>$(XERCES_LIBPATH)
                 <library-path>$(BOOST_LIB)
-                $(PROPERTIES)
-                # input files
+                $(properties)
+            	<conditional>@test-properties
+            : 
             :    
-
             ] ;
 }
 
 test-protean <link>static <variant>debug : thetest0 ;
-test-protean <link>shared <variant>debug : thetest1 ;
 test-protean <link>static <variant>release : thetest2 ;
-test-protean <link>shared <variant>release : thetest3 ;
+
+if [ os.name ] != "CYGWIN"
+{
+    #Dynamic linking under Cygwin crashes g++ 3.4.4. The issue seems
+    #to be http://gcc.gnu.org/bugzilla/show_bug.cgi?id=23589
+
+    test-protean <link>shared <variant>debug : thetest1 ;
+    test-protean <link>shared <variant>release : thetest3 ;
+}
+
