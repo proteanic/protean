@@ -52,62 +52,85 @@ fi
 
 mkdir -p $ARCHIVES
 
-echo Getting boost ...
+#echo Getting boost ...
 [ -f $BOOST_DIST ] || (cd $ARCHIVES; wget "$BOOST_HTTP")
 [ -d $BOOST_DIR ] || tar -xzf ${BOOST_DIST}
 
-echo Getting xerces ...
+#echo Getting xerces ...
 [ -f $XERCES_DIST ] || (cd $ARCHIVES; wget "$XERCES_HTTP")
 [ -d $XERCES_DIR ] || tar -xzf $XERCES_DIST
 
-echo Getting zlib ...
+#echo Getting zlib ...
 [ -f $ZLIB_DIST ] || (cd $ARCHIVES; wget "$ZLIB_HTTP")
 [ -d $ZLIB_DIR ] || tar -xzf $ZLIB_DIST
 
 echo Getting protean ...
+#This needs to be at least one level deep.
 PROTEAN_CHECKOUT=checkout/protean
 if [ ! -d "$PROTEAN_CHECKOUT" ]; then
-     
-    #Any existing Protean checkout that stores this script probably caches
-    #a password, and might contain local changes that would confuse
-    #anyone relying on the revision in the filename being correct. It is
-    #easier to get a fresh copy than to decide if the exiting one would do.
 
+    #Any existing Protean checkout that stores this script is not used.      
     PARENT="`dirname "$PROTEAN_CHECKOUT"`"
     mkdir -p "$PARENT"
     echo Checking out Protean ...
     svn co "$PROTEAN_HTTP" "$PARENT"
+
 else
-    echo Using the existing Protean checkout in $PROTEAN_CHECKOUT
+
+cat <<EOF
+
+Using the existing Protean checkout in $PROTEAN_CHECKOUT . If this is
+not what you want (e.g. because it is corrupt after a previous run of
+the script was interrupted) you should delete $PROTEAN_CHECKOUT and
+re-run the script.
+
+EOF
+
 fi
 
 DIR="`dirname "$0"`"
 DIR="`cd "$DIR"; pwd`"
 
 if [ "$1" == package ]; then
-   
-   THIS=`basename "$0"`
-   [ -f $THIS ] || cp "$0" .   
-   VERSION=`svnversion $PROTEAN_CHECKOUT`
-   TARGET=protean_demo_distribution_rev${VERSION}.tar.gz
-   tar -cvzf $TARGET $ARCHIVES $PROTEAN_CHECKOUT $THIS
-   echo Wrote $TARGET
 
+   VERSION=`svnversion $PROTEAN_CHECKOUT`   
+   TARGET="protean_demo_distribution_rev${VERSION}"
+   mkdir "$TARGET"
+   cp -r "$ARCHIVES" "$PROTEAN_CHECKOUT" "$0" "$TARGET"
+   README=readme-tarball.txt
+   [ -f "$README" ] && cp "$README" "$TARGET/readme.txt"
+   TARGET_ARCHIVE="${TARGET}.tar.gz"
+   tar -cvzf "$TARGET_ARCHIVE" --owner 0 $TARGET
+   echo Wrote $TARGET_ARCHIVE, and left behind $TARGET
    exit 0
 fi
 
-if [ ! -d $BOOST_DIR ]; then
+if [ -f $BOOST_DIR/bjam ]; then
+
+   echo Using the existing $BOOST_DIR/bjam.
+   echo
+
+else
+
    cd "$BOOST_DIR"
    ./bootstrap.sh
    cd "$DIR"
+
 fi
 
 XERCES_INSTALL=$DIR/xerces-install
 cd $XERCES_DIR
-if [ ! -d "$XERCES_INSTALL" ]; then
+if [ -d "$XERCES_INSTALL" ]; then
+   
+   echo Using the existing Xerces installation in ${XERCES_INSTALL}.
+   echo
+
+else
+
    ./configure --prefix=${XERCES_INSTALL}
    make $J
    make install
+
 fi
 cd $DIR
 
@@ -130,6 +153,7 @@ EOF
 
 source settings.sh
 
+echo Running bjam to compile Protean and run the unit tests ...
 cd "$PROTEAN_CHECKOUT"
 if bjam $J; then
 
