@@ -43,16 +43,18 @@ namespace protean {
     private:
         explicit variant(const handle<object>& arg);
 
-        // workaround needed for g++ 3.4.4 (and earlier?)
-        template <int> struct dummy { dummy(int) {} };
-
     /* Assignment */
     /**************/
     public:
         variant& operator=(const variant &rhs);
 
         template<typename T>
-        variant& operator=(T value);
+        typename boost::enable_if<boost::is_pod<T>, variant&>::type
+        operator=(T value);
+
+        template<typename T>
+        typename boost::disable_if<boost::is_pod<T>, variant&>::type
+        operator=(const T& value);
 
         /* Destructor */
         /**************/
@@ -69,10 +71,10 @@ namespace protean {
 
         template<typename T> 
         typename boost::enable_if<boost::is_base_of<object,T>, bool>::type
-        is(dummy<1> d=0) const;
+        is() const;
 
         template<int N>
-        bool is(dummy<2> d=2) const;
+        bool is() const;
 
     /* Type casting */
     /****************/
@@ -83,11 +85,11 @@ namespace protean {
 
         template<typename T>
         typename boost::enable_if<boost::is_base_of<object,T>, const T&>::type
-        as(dummy<1> d=0) const;
+        as() const;
 
         template<typename T>
         typename boost::enable_if<boost::is_base_of<object,T>, T&>::type
-        as(dummy<2> d=0);
+        as();
 
     /* Collection interface */
     /************************/
@@ -184,14 +186,6 @@ namespace protean {
         friend class sax_content_handler;
         friend class binary_reader;
         friend class binary_writer;
-        template<typename T>
-        typename boost::enable_if<boost::is_pod<T>, variant&>::type
-        assignment_impl(T value, dummy<0> d=0);
-
-        template<typename T>
-        typename boost::disable_if<boost::is_pod<T>, variant&>::type
-        assignment_impl(const T& value);
-
     };
 
     struct const_iterator_traits

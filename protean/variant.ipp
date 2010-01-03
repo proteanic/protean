@@ -81,14 +81,8 @@ namespace protean {
     }
 
     template<typename T>
-    variant& variant::operator=(T value)
-    {
-        return assignment_impl(value);
-    }
-
-    template<typename T>
     typename boost::enable_if<boost::is_pod<T>, variant&>::type
-    variant::assignment_impl(T value, dummy<0>)
+    variant::operator=(T value)
     {
         variant(value).swap(*this);
         return *this;
@@ -96,7 +90,7 @@ namespace protean {
 
     template<typename T>
     typename boost::disable_if<boost::is_pod<T>, variant&>::type
-    variant::assignment_impl(const T& value)
+    variant::operator=(const T& value)
     {
         variant(value).swap(*this);
         return *this;
@@ -134,9 +128,8 @@ namespace protean {
     /*
      * variant::is
      */
-
     template<int N>
-    bool variant::is(dummy<2>) const
+    bool variant::is() const
     {
         return (m_type & N)!=0;
     }
@@ -156,7 +149,7 @@ namespace protean {
 
     template<typename T>
     typename boost::enable_if<boost::is_base_of<object,T>, bool>::type
-    variant::is(dummy<1>) const
+    variant::is() const
     {
         if (!is<Object>()) return false; 
         handle<object> o = m_value.get<Object>(); 
@@ -168,8 +161,8 @@ namespace protean {
         return false;
     }
 
-    template<> bool PROTEAN_DLLEXPORT variant::is<object>(dummy<1>) const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<object_proxy>(dummy<1>) const;
+    template<> bool PROTEAN_DLLEXPORT variant::is<object>() const;
+    template<> bool PROTEAN_DLLEXPORT variant::is<object_proxy>() const;
 
     /*
      * variant::as()
@@ -204,7 +197,7 @@ namespace protean {
 
     template<typename T>
     typename boost::enable_if<boost::is_base_of<object, T>, const T&>::type
-    variant::as(dummy<1>) const
+    variant::as() const
     {
         BEGIN_VARIANT_CONTEXT();
 
@@ -233,11 +226,11 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DLLEXPORT const object& variant::as<object>(dummy<1>) const;
+    template<> PROTEAN_DLLEXPORT const object& variant::as<object>() const;
 
     template<typename T>
     typename boost::enable_if<boost::is_base_of<object, T>, T&>::type
-    variant::as(dummy<2>)
+    variant::as()
     {
         BEGIN_VARIANT_CONTEXT();
 
@@ -259,7 +252,7 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DLLEXPORT object& variant::as<object>(dummy<2>);
+    template<> PROTEAN_DLLEXPORT object& variant::as<object>();
 
     template<typename T>
     variant make_object(const variant& params)

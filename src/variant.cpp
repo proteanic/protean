@@ -948,8 +948,8 @@ namespace protean {
     template<> bool variant::is<variant::time_t>()          const { return m_type==Time; }
     template<> bool variant::is<variant::date_time_t>()     const { return m_type==DateTime; }
     template<> bool variant::is<void*>()                    const { return m_type==Buffer; }
-    template<> bool variant::is<object>(dummy<1>)           const { return m_type==Object; }
-    template<> bool variant::is<object_proxy>(dummy<1>)     const
+    template<> bool variant::is<object>()                   const { return m_type==Object; }
+    template<> bool variant::is<object_proxy>()             const
     {
         return ( is<Object>() && m_value.get<Object>().is<object_proxy>() );
     }
@@ -1058,7 +1058,7 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> const object& variant::as<object>(dummy<1>) const
+    template<> const object& variant::as<object>() const
     {
         BEGIN_VARIANT_CONTEXT();
 
@@ -1069,7 +1069,7 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> object& variant::as<object>(dummy<2>)
+    template<> object& variant::as<object>()
     {
         BEGIN_VARIANT_CONTEXT();
 
