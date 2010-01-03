@@ -168,7 +168,7 @@ namespace protean {
 
     private:
         template <typename T>
-        PROTEAN_DLLEXPORT friend variant make_object(const variant& params);
+        friend variant make_object(const variant& params);
 
         friend variant make_any(const std::string& value);
 

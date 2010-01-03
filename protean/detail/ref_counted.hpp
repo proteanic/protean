@@ -12,7 +12,7 @@
 
 namespace protean {
  
-    template<typename T> class PROTEAN_DLLEXPORT handle;
+    template<typename T> class handle;
 
     namespace detail {
 

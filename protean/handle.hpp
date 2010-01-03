@@ -11,7 +11,7 @@
 namespace protean {
 
     template<typename T>
-    class PROTEAN_DLLEXPORT handle
+    class handle
     {
     public:
         handle();
