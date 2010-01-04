@@ -36,7 +36,7 @@ BOOST_LIB ?= [ os.environ BOOST_LIB ] ;
 
 if ! $(BOOST_LIB)
 {
-    BOOST_LIB = $(BOOSTROOT)/stage/lib ;
+    BOOST_LIB += $(BOOSTROOT)/stage/lib ;
     ECHO Protean: BOOST_LIB defaults to $(BOOST_LIB) ;
 }
 
@@ -74,13 +74,19 @@ project : requirements
     <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
 ;
 
+rule windows-additional-properties 
+{
+   ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_BUILD_DLL ;
+   ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>BOOST_ALL_DYN_LINK ;
+}
+
 switch [ os.name ]
 {
     case "CYGWIN" :
-        ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_BUILD_DLL ;
-
+        windows-additional-properties ;
+ 
     case "NT" :
-        ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_BUILD_DLL ;
+        windows-additional-properties ;
 
     case "LINUX" :
 }
@@ -161,11 +167,11 @@ rule test-properties ( properties * )
 }
 
 
-rule test-protean ( properties * : name )
+rule test-protean ( properties * )
 {
     return [
             unit-test
-                $(name)
+                protean-unit-test
             :
                 [ glob test/*.cpp : $(EXCLUDE) ]
                 protean
@@ -176,20 +182,21 @@ rule test-protean ( properties * : name )
                 <library-path>$(BOOST_LIB)
                 $(properties)
             	<conditional>@test-properties
+                <tag>@boost.tag_std
             : 
             :    
             ] ;
 }
 
-test-protean <link>static <variant>debug : thetest0 ;
-test-protean <link>static <variant>release : thetest2 ;
+test-protean <link>static <variant>debug ;
+test-protean <link>static <variant>release ;
 
 if [ os.name ] != "CYGWIN"
 {
     #Dynamic linking under Cygwin crashes g++ 3.4.4. The issue seems
     #to be http://gcc.gnu.org/bugzilla/show_bug.cgi?id=23589
 
-    test-protean <link>shared <variant>debug : thetest1 ;
-    test-protean <link>shared <variant>release : thetest3 ;
+    test-protean <link>shared <variant>debug ;
+    test-protean <link>shared <variant>release ;
 }
 
