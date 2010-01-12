@@ -1,30 +1,5 @@
 #!/bin/bash
 
-# Protean depends on Xerces and Boost. Boost in turn depends on
-# zlib. It is not difficult to install the prerequisites correctly,
-# but it is certainly tedious, especially if you just want to try
-# Protean. This script will download everything it needs to compile
-# Protean, compile it, and run the unit tests.
-
-# demo.sh              - compile Protean and run unit tests
-# demo.sh package      - make a tarball that can be compiled offline
-
-# environment variable PROCESSORS can be used to specify the number
-# of processors to be used when running make and bjam, e.g:
-# PROCESSORS=4 demo.sh
-
-# This script can run under Windows if started in a Cygwin window
-# (http://www.cygwin.com/). It uses g++ on all architectures, and also
-# requires subversion, make, wget and tar. If you want to use MSVC,
-# you can still use the script to download everything. Then you should
-# follow either the documentation or the quick-start instructions in
-# checkout/protean/Jamroot.jam. Once you have prepared the
-# environment, you will be able to invoke bjam from either a Windows
-# command prompt of from a Cygwin shell and build Protean using MSVC.
-# You can also use an MSVC project in checkout/protedan/project if you
-# would prefer to use the MSVC GUI
-
-
 ARCHIVES=archives
 
 BOOST_DIR=boost_1_41_0
@@ -34,39 +9,191 @@ BOOST_HTTP='http://downloads.sourceforge.net/project/boost/boost/1.41.0/boost_1_
 XERCES_DIR=xerces-c-3.0.1
 XERCES_DIST=${ARCHIVES}/${XERCES_DIR}.tar.gz
 XERCES_HTTP="http://mirror.ox.ac.uk/sites/rsync.apache.org/xerces/c/3/sources/xerces-c-3.0.1.tar.gz"
+XERCES_INSTALL_DIR=xerces-install
 
 ZLIB_DIR=zlib-1.2.3
 ZLIB_DIST=${ARCHIVES}/${ZLIB_DIR}.tar.gz
 ZLIB_HTTP="http://downloads.sourceforge.net/project/libpng/zlib/1.2.3/zlib-1.2.3.tar.gz?use_mirror=kent"
 
 PROTEAN_HTTP=https://protean.svn.sourceforge.net/svnroot/protean
+#PROTEAN_CHECKOUT needs to be at least one extra level deep, i.e. xyz/protean
+PROTEAN_CHECKOUT=checkout/protean
 
-PREREQUISITES="g++ svn tar make wget"
-if [ ! "which $PREREQUISITES" ]; then
-   echo At least one prerequisite not found
-   which $PREREQUISITES
-   exit 1
-fi
 
-[ -n "$PROCESSORS" ] && J="-j $PROCESSORS"
+function help ()
+{
+cat <<EOF
+Protean depends on Xerces and Boost. Boost in turn depends on
+zlib. It is not difficult to install the prerequisites correctly,
+but it is certainly tedious, especially if you just want to try
+Protean. This script will download everything it needs to compile
+Protean, compile it, and run the unit tests.
 
+Example command lines:
+
+demo.sh msvc 9.0         (9.0 and 9.0express *are* different)
+demo.sh msvc 9.0express  
+demo.sh gcc              (use default version of g++)
+demo.sh gcc 4            (will probably work under Cygwin)
+demo.sh gcc 4.3          (will work under Linux if gcc 4.3 installed)
+demo.sh package          (make a tarball that can be compiled offline)
+
+Environment variables:
+
+PROCESSORS - number of files to compile concurrently
+             (passed as -j to bjam and make)
+
+NO_XERCES  - Xerces is used by Protean or compiled if set
+             (useful for testing or if the compilation fails)
+
+http_proxy - e.g. squid.mynetwork.com:3128
+             (saves bandwidth if frequently rebuilding from scratch)
+
+This script can run under Windows if started in a Cygwin window
+(http://www.cygwin.com/). It requires subversion, make, wget and tar.
+You can use a MSVC project in checkout/protean/project after running
+the script if you prefer the MSVC GUI to the command line.
+
+Compiler support:
+
+MSVC : 8.0 and 9.0express are known to work under XP
+       8.0express and 9.0 are likely to work
+       10.0 not yet supported, but see comments on how to modify the script
+
+g++  : 3.3 or earlier are not supported as they don't cope with boost::mpl 
+       3.4.4 (maybe also earlier versions and 3.4.5) needs a workaround
+          that turned out to be ugly and broke compilation under MSVC. It is
+          svn diff -r75:76 https://protean.svn.sourceforge.net/svnroot/protean/protean
+       3.4.6 seems to work on some platforms, but there are known link
+          issues on others, e.g. see
+          http://gcc.gnu.org/bugzilla/show_bug.cgi?id=23589
+          http://gcc.gnu.org/bugzilla/show_bug.cgi?id=16276
+       4.0 and later are believed to work, 4.2.4 works 
+
+EOF
+exit 0
+}
+
+function check-prerequisites ()
+{
+   for exe in $0; do
+      local DUMMY=`which $exe`
+      if [ ! $? ]; then
+         echo $exe is required but does not appear on the path
+         exit 1
+      fi
+   done
+}
+
+function default-gcc-version ()
+{
+#    if [ "`uname -o`" = Cygwin ]; then
+#        PATTERN='\1'
+#    else
+#        PATTERN='\1.\2'
+#    fi
+#    # if this fails then just specify the gcc version by hand
+#    check-prerequisites g++ grep awk sed
+#    echo `g++ -v 2>&1 | grep "gcc version" | awk '{ print $3 }'` | sed 's/\([[:digit:]]*\).\([[:digit:]]*\).*/'"$PATTERN"/
+     g++ -v 2>&1 | grep "gcc version" | awk '{ print $3 }'
+}
+
+# sets several global variables ...
+function parse-command-line ()
+{
+case "$1" in
+    help|-help|-h)
+        help
+    ;;
+
+    package)
+        MAKE_DEMO_DISTRIBUTION=1
+    ;;
+
+    msvc)
+        COMPILER=msvc
+        COMPILER_VERSION=$2
+        case "$COMPILER_VERSION" in
+        
+            10.0|10.0express)
+                echo msvc 10 is not supported yet, but the chances are that
+                echo the only changes required are:
+                echo '- find the correct name for VS*COMNTOOLS (and put it where this was)'
+                echo - insist on NO_XERCES being set as there isn\'t a VC10
+                echo   project yet.
+            ;;
+       
+            9.0|9.0express)
+                MSVC_ENV='VS90COMNTOOLS'
+                XERCES_MSVC_VERSION=9
+            ;;
+      
+            8.0|8.0express)
+                MSVC_ENV='VS80COMNTOOLS'
+                XERCES_MSVC_VERSION=8
+            ;;
+      
+            *)
+                echo Unrecognised version of MSVC, try e.g. 8.0, 9.0, 9.0express
+                exit 1;;
+        esac
+        BJAM_TOOL="--toolset=${COMPILER}-${COMPILER_VERSION}"
+    ;;
+
+    gcc)
+        COMPILER=gcc
+        COMPILER_VERSION=$2
+
+        if [ -z "$COMPILER_VERSION" ]; then
+            COMPILER_VERSION=`default-gcc-version`
+            echo Default version of g++ is $COMPILER_VERSION
+            BJAM_TOOL="--toolset=gcc"
+        else
+            export CC=gcc-$COMPILER_VERSION
+            export CXX=g++-$COMPILER_VERSION
+            export CPP=cpp-$COMPILER_VERSION
+            export CXXCPP=$CPP
+            check-prerequisites $CC $CXX $CPP $CXXCPP
+            #BJAM_TOOL="--toolset=${COMPILER}-${COMPILER_VERSION}"
+        fi       
+    ;;
+
+    *)
+        echo First argument not understood.
+        echo
+        help 
+    ;;
+esac
+
+}
+
+function check_exists()
+{
+    if [ ! -f "$1" ]; then
+        echo Could not download $1
+        exit 1
+    fi
+}
+
+function get-archives ()
+{
 mkdir -p $ARCHIVES
 
 #echo Getting boost ...
 [ -f $BOOST_DIST ] || (cd $ARCHIVES; wget "$BOOST_HTTP")
+check_exists "$BOOST_DIST"
 [ -d $BOOST_DIR ] || tar -xzf ${BOOST_DIST}
 
 #echo Getting xerces ...
 [ -f $XERCES_DIST ] || (cd $ARCHIVES; wget "$XERCES_HTTP")
+check_exists "$XERCES_DIST"
 [ -d $XERCES_DIR ] || tar -xzf $XERCES_DIST
 
 #echo Getting zlib ...
 [ -f $ZLIB_DIST ] || (cd $ARCHIVES; wget "$ZLIB_HTTP")
+check_exists "$ZLIB_DIST"
 [ -d $ZLIB_DIR ] || tar -xzf $ZLIB_DIST
 
-echo Getting protean ...
-#This needs to be at least one level deep.
-PROTEAN_CHECKOUT=checkout/protean
 if [ ! -d "$PROTEAN_CHECKOUT" ]; then
 
     #Any existing Protean checkout that stores this script is not used.      
@@ -87,13 +214,10 @@ re-run the script.
 EOF
 
 fi
+}
 
-DIR="`dirname "$0"`"
-DIR="`cd "$DIR"; pwd`"
-
-if [ "$1" == package ]; then
-
-   VERSION=`svnversion $PROTEAN_CHECKOUT`   
+function make_demo_distribution {
+   VERSION=`svnversion "$PROTEAN_CHECKOUT"`   
    TARGET="protean_demo_distribution_rev${VERSION}"
    mkdir "$TARGET"
    cp -r "$ARCHIVES" "$PROTEAN_CHECKOUT" "$0" "$TARGET"
@@ -102,63 +226,153 @@ if [ "$1" == package ]; then
    TARGET_ARCHIVE="${TARGET}.tar.gz"
    tar -cvzf "$TARGET_ARCHIVE" --owner 0 $TARGET
    echo Wrote $TARGET_ARCHIVE, and left behind $TARGET
-   exit 0
-fi
+}
 
-if [ -f $BOOST_DIR/bjam ]; then
+function run_with_bat()
+{
+    batfile=$MSVC_ENV
+    dir=$1; shift
+    drive=`cygpath -m \`pwd\` | head -c 1` 
+    tmpfile="$TMP/tmp$$.bat"
+    echo "@echo off" > $tmpfile
+    echo "call \"%$batfile%vsvars32.bat\" >NUL:" >> $tmpfile
+    echo ${drive}: >> $tmpfile
+    echo cd `cygpath -w $dir` >> $tmpfile
+    #echo dir >> $tmpfile
+    echo call $* >> $tmpfile
+    cat $tmpfile
+    "`cygpath "$COMSPEC"`" /c "`cygpath -w "$tmpfile"`" "$@"
+    status=$?
+    rm -f $tmpfile
+    return $status
+}
 
-   echo Using the existing $BOOST_DIR/bjam.
-   echo
+function xerces_install_dir()
+{
+    local SUBDIR="${COMPILER}-${COMPILER_VERSION}"
+    local INSTALL="$DIR/$XERCES_INSTALL_DIR/$SUBDIR"
+    echo "$INSTALL"
+}
 
-else
+function set_xerces_dirs()
+{
+    case "$COMPILER" in
+        msvc)
+              XERCES_INCLUDE_DIR="$DIR/$XERCES_DIR/src"
+              XERCES_LIB_DIR="`xerces_install_dir`"
+        ;;
 
-   cd "$BOOST_DIR"
-   ./bootstrap.sh
-   cd "$DIR"
+        gcc)
+              XERCES_INCLUDE_DIR="`xerces_install_dir`/include"
+              XERCES_LIB_DIR="`xerces_install_dir`/lib"
+        ;;
 
-fi
+        *)
+              echo Compiler not recognised while figuring out the installation directory: $COMPILER
+              exit 1
+        ;;
+    esac
+}
 
-XERCES_INSTALL=$DIR/xerces-install
-cd $XERCES_DIR
-if [ -d "$XERCES_INSTALL" ]; then
-   
-   echo Using the existing Xerces installation in ${XERCES_INSTALL}.
-   echo
+function compile_xerces_using_msvc()
+{
+    local SUBDIR="VC${XERCES_MSVC_VERSION}"
+    local SOLUTION="${DIR}/${XERCES_DIR}/projects/Win32/${SUBDIR}/xerces-all/xerces-all.sln"
+    if [ ! -f "$SOLUTION" ]; then
+        echo Cannot find a Xerces project file, maybe the compiler version is wrong: $SOLUTION
+        exit 1
+    fi
 
-else
+    case "$COMPILER_VERSION" in
+        *express*) DEVENV=vcexpress ;;
+        *) DEVENV=devenv ;;
+    esac
 
-   ./configure --prefix=${XERCES_INSTALL}
-   make $J
-   make install
+    for CONF in Debug Release; do
+      run_with_bat "${DIR}/${XERCES_DIR}" $DEVENV `cygpath -w "$SOLUTION"` /build $CONF
+    done
 
-fi
-cd $DIR
+    local INSTALL="`xerces_install_dir`"
+    local BUILD="$DIR/$XERCES_DIR/Build/Win32/$SUBDIR"
+    mkdir -p "$INSTALL"
+    for EXT in dll lib; do
+       /usr/bin/find "$BUILD" -name \*.$EXT -exec cp {} "$INSTALL" \;
+    done
+}
 
-USER_CONFIG=${PROTEAN_CHECKOUT}/user-config.jam
-if [ ! -f "$USER_CONFIG" ]; then 
-cat > $USER_CONFIG <<EOF
-# see user-config.jam.examples
-using gcc ;
-EOF
+function compile_xerces_using_gcc()
+{
+    pushd "$DIR/$XERCES_DIR"
+    ./configure --prefix="`xerces_install_dir`"
+    make $J
+    make install
+    popd
+}
+
+function build_xerces()
+{
+    case "$COMPILER" in
+       msvc)
+              compile_xerces_using_msvc;;
+       gcc)
+              compile_xerces_using_gcc;;
+       *)
+              echo Unrecognised compiler $COMPILER when building Xerces
+              exit 1
+       ;;
+    esac
+}
+
+function build_bjam()
+{
+   #convenient in case the compiler has changed
+   rm -f $BOOST_DIR/bjam $BOOST_DIR/bjam.exe  
+
+   if [ "$COMPILER" = msvc ]; then
+       echo Running $CMD to build bjam
+       run_with_bat "${DIR}/${BOOST_DIR}" ".\\bootstrap.bat"
+
+       echo Compiling all of boost as a workaround for build problems ...
+       pushd "$BOOST_DIR"
+       run_with_bat "${DIR}/${BOOST_DIR}" bjam --build-type=complete --without-mpi "$BJAM_TOOL"
+       popd
+   else
+       pushd "$BOOST_DIR"
+       ./bootstrap.sh
+       popd
+   fi
+}
+
+function write_settings()
+{
+set_xerces_dirs
+
+local NEW_BUILD_PATH="$DIR/$BOOST_DIR"
+local NEW_XERCES_INCLUDE="$XERCES_INCLUDE_DIR"
+local NEW_XERCES_LIB="$XERCES_LIB_DIR"
+local NEW_ZLIB_SOURCE="$DIR/$ZLIB_DIR"
+
+if [ "$COMPILER" = msvc ]; then
+   NEW_BUILD_PATH=`cygpath -m "$NEW_BUILD_PATH"`
+   NEW_XERCES_INCLUDE=`cygpath -m "$NEW_XERCES_INCLUDE"`
+   NEW_XERCES_LIB=`cygpath -m "$NEW_XERCES_LIB"`
+   NEW_ZLIB_SOURCE=`cygpath -m "$NEW_ZLIB_SOURCE"`
 fi
 
 cat > settings.sh <<EOF
+# generated by $0 at `date`
 export PATH="$DIR/$BOOST_DIR":"\$PATH"
-export BOOST_BUILD_PATH="$DIR/$BOOST_DIR"
-export XERCES_INCLUDE="$XERCES_INSTALL/include"
-export XERCES_LIBPATH="$XERCES_INSTALL/lib"
-export ZLIB_SOURCE="$DIR/$ZLIB_DIR"
+export BOOST_BUILD_PATH="$NEW_BUILD_PATH"
+export XERCES_INCLUDE="$NEW_XERCES_INCLUDE"
+export XERCES_LIBPATH="$NEW_XERCES_LIB"
+export ZLIB_SOURCE="$NEW_ZLIB_SOURCE"
 export NO_BZIP2=1
 EOF
+}
 
-source settings.sh
-
-echo Running bjam to compile Protean and run the unit tests ...
-cd "$PROTEAN_CHECKOUT"
-if bjam $J; then
-
+function report_success()
+{
 cat <<EOF
-
 
 
 Done, everything has built fine and the unit tests pass. To explore
@@ -167,12 +381,13 @@ protean you can now try:
     source settings.sh
     cd $PROTEAN_CHECKOUT
     ... tweak some of the (as yet non-existent) examples ...
-    bjam
+    bjam $J "$BJAM_TOOL"
 
 EOF
+}
 
-else
-
+function report_failure()
+{
 cat <<EOF
 
 
@@ -184,12 +399,73 @@ checkout/protean/Jamroot.jam. If the attempt to build Xerces failed,
 you may want to try with NO_XERCES set.
 
 You can re-run the final stage of the build as follows:
-source settings.sh; cd $PROTEAN_CHECKOUT; bjam
+source settings.sh; cd $PROTEAN_CHECKOUT; bjam $J "$BJAM_TOOL"
 
 EOF
+}
 
+function backup ()
+{
+    if [ -f "$1" ]; then
+       local i=0
+       while [ -f "${1}.backup.$i" ]; do
+           i=$(( $i + 1 ))
+       done
+       echo mv "$1" "${1}.backup.$i"
+       mv "$1" "${1}.backup.$i"
+    fi 
+}
+
+function build_and_test_protean_and_exit()
+{
+  echo Running bjam to compile Protean and run the unit tests ...
+
+  local USER_CONFIG="${PROTEAN_CHECKOUT}/user-config.jam"
+
+  backup "$USER_CONFIG"
+
+  local TOOLSPEC
+
+  #bjam seems to use the wrong version of g++ unless it is specified
+  #in the jamfile (but the default version works fine)
+  if [ "$COMPILER" = gcc ] && [ ! -z "$CXX" ]; then
+     cat > "$USER_CONFIG" <<EOF
+        #see user-config.jam.examples
+        using gcc : $COMPILER_VERSION : $CXX ;
+EOF
+  elif [ "$COMPILER" = gcc ]; then
+     TOOLSPEC=
+  else
+     TOOLSPEC="$BJAM_TOOL"
+  fi
+
+  cd "$PROTEAN_CHECKOUT"
+  if bjam $J "$BJAM_TOOL"; then
+    report_success
+    exit 0
+  else
+    report_failure
+    exit 1
+  fi
+}
+
+if [ ! -z "$MAKE_DEMO_DISTRIBUTION" ]; then
+   make_demo_distribution
+   exit 0
 fi
 
+# there might be more, but won't be known until a bit later
+check-prerequisites svn tar make wget head awk
 
-cd "$DIR"
+[ -n "$PROCESSORS" ] && J="-j $PROCESSORS"
 
+DIR="`dirname "$0"`"
+DIR="`cd "$DIR"; pwd`"
+
+parse-command-line "$@"
+get-archives
+write_settings
+source settings.sh
+[ -z "$NO_XERCES" ] && build_xerces
+build_bjam
+build_and_test_protean_and_exit
