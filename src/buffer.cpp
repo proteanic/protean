@@ -7,14 +7,17 @@
 
 #include <boost/functional/hash.hpp>
 
+#include <cstring>
+#include <cstdlib>
+
 namespace protean { namespace detail {
 
     buffer::buffer(size_t size) :
         m_size(size),
         m_owned(true)
     {
-        m_data = malloc(size);
-        memset(m_data, 0, size);
+        m_data = std::malloc(size);
+        std::memset(m_data, 0, size);
     }
 
     buffer::buffer(void* data, size_t size, bool copy_data) :
@@ -23,8 +26,8 @@ namespace protean { namespace detail {
     {
         if (copy_data)
         {
-            m_data = malloc(size);
-            memcpy(m_data, data, size);
+            m_data = std::malloc(size);
+            std::memcpy(m_data, data, size);
         }
         else
         {
@@ -39,7 +42,7 @@ namespace protean { namespace detail {
         if (m_owned)
         {
             m_data = malloc(m_size);
-            memcpy(m_data, rhs.data(), m_size);
+            std::memcpy(m_data, rhs.data(), m_size);
         }
         else
         {
@@ -47,17 +50,17 @@ namespace protean { namespace detail {
         }
     }
 
-	buffer& buffer::operator=(const buffer& rhs)
-	{
-		buffer(rhs).swap(*this);
-		return *this;
-	}
+    buffer& buffer::operator=(const buffer& rhs)
+    {
+        buffer(rhs).swap(*this);
+        return *this;
+    }
 
     buffer::~buffer()
     {
         if (m_owned && m_data!=NULL)
         {
-            free(m_data);
+            std::free(m_data);
             m_data = NULL;
             m_size = 0;
         }
@@ -91,10 +94,10 @@ namespace protean { namespace detail {
         return boost::hash_range(char_array, char_array+m_size);
     }
 
-	void buffer::swap(buffer& rhs)
-	{
-		std::swap(m_size, rhs.m_size);
-		std::swap(m_data, rhs.m_data);
-	}
+    void buffer::swap(buffer& rhs)
+    {
+        std::swap(m_size, rhs.m_size);
+        std::swap(m_data, rhs.m_data);
+    }
 
 }} // namespace protean::detail

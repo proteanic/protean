@@ -7,10 +7,13 @@
 
 #include <boost/functional/hash.hpp>
 
+#include <cstring>
+#include <cstdlib>
+
 namespace protean { namespace detail {
 
     static const boost::uint64_t s_onStackMask    = 0x0000000000000001ull;
-    static const boost::uint64_t s_sizeMask        = 0x00000000000000FEull;
+    static const boost::uint64_t s_sizeMask       = 0x00000000000000FEull;
 
     string::string() :
         m_rawData(0)
@@ -22,7 +25,7 @@ namespace protean { namespace detail {
         m_rawData(0)
     {
         setStackFlag();
-        initialise(text, strlen(text));
+        initialise(text, std::strlen(text));
     }
 
     string::string(const char* text, size_t len) :
@@ -121,7 +124,7 @@ namespace protean { namespace detail {
         if (onStack())
             return getStackSize();
         else
-            return strlen(heapPointer());
+            return std::strlen(heapPointer());
     }
 
     bool string::empty() const
@@ -172,12 +175,12 @@ namespace protean { namespace detail {
     /*static*/ void* string::alignedMalloc(size_t size)
     {
         // malloc is guaranteed to have alignment suitable for any pod type in MSVC (we just need the lsb)
-        return ::malloc(size);
+        return std::malloc(size);
     }
 
     /*static*/ void string::alignedFree(void* ptr)
     {
-        ::free(ptr);
+        std::free(ptr);
     }
 
     int string::compare(const string& rhs) const
