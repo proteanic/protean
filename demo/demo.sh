@@ -76,9 +76,9 @@ exit 0
 
 function check-prerequisites ()
 {
-   for exe in $0; do
-      local DUMMY=`which $exe`
-      if [ ! $? ]; then
+   for exe in "$@"; do
+      which "$exe" 1>&- 2>&-
+      if [ "$?" != 0 ]; then
          echo $exe is required but does not appear on the path
          exit 1
       fi
@@ -463,9 +463,17 @@ DIR="`dirname "$0"`"
 DIR="`cd "$DIR"; pwd`"
 
 parse-command-line "$@"
+
 get-archives
+
+#do this before sourcing setttings. It puts the boost directory on the
+#path, and Cygwin will then inexplicably execute the install text file
+#in there despite it not having an execute permission 
+[ -z "$NO_XERCES" ] && build_xerces
+
 write_settings
 source settings.sh
-[ -z "$NO_XERCES" ] && build_xerces
+
 build_bjam
+
 build_and_test_protean_and_exit
