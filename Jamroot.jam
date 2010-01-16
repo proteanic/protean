@@ -166,12 +166,11 @@ rule test-properties ( properties * )
     return $(result) ;
 }
 
-
-rule test-protean ( properties * )
+rule test-protean ( properties * : name )
 {
     return [
             unit-test
-                protean-unit-test
+                protean-unit-tests-$(name)
             :
                 [ glob test/*.cpp : $(EXCLUDE) ]
                 protean
@@ -182,21 +181,18 @@ rule test-protean ( properties * )
                 <library-path>$(BOOST_LIB)
                 $(properties)
             	<conditional>@test-properties
-                <tag>@boost.tag_std
             : 
             :    
             ] ;
 }
 
-test-protean <link>static <variant>debug ;
-test-protean <link>static <variant>release ;
-
-if [ os.name ] != "CYGWIN"
+rule all-tests ( )
 {
-    #Dynamic linking under Cygwin crashes g++ 3.4.4. The issue seems
-    #to be http://gcc.gnu.org/bugzilla/show_bug.cgi?id=23589
-
-    test-protean <link>shared <variant>debug ;
-    test-protean <link>shared <variant>release ;
+    test-protean <link>static <variant>release : t1 ; 
+    test-protean <link>static <variant>debug : t2 ;
+    test-protean <link>shared <variant>release : t3 ;
+    test-protean <link>shared <variant>debug : t4 ;
 }
+
+all-tests ;
 
