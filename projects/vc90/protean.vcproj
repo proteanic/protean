@@ -276,6 +276,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\protean\version.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\protean\xml_defs.hpp"
 				>
 			</File>
