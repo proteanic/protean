@@ -10,7 +10,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4127 4702)
+#pragma warning(disable:4127 4251 4275 4702)
 #endif
 
 #include <boost/iostreams/filter/zlib.hpp>
