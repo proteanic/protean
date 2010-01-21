@@ -136,7 +136,15 @@ else
    }
 }
 
-lib protean : 
+rule protean_tag ( name : type ? : property-set )
+{
+   stdtag = [ boost.tag_std $(name) : $(type) : $(property-set) ] ;
+   stripped = [ MATCH "boost_(.*)" : $(stdtag) ] ;
+   return $(stripped) ;
+}
+
+lib protean 
+: 
    [ glob src/*.cpp : $(EXCLUDE) ]
    /boost//filesystem
    /boost//date_time
@@ -149,6 +157,7 @@ lib protean :
    <library-path>$(BOOST_LIB)
    <include>.
    $(ADDITIONAL_LIB_PROPERTIES)
+   <tag>@protean_tag
 : : 
    <include>.
 ;
