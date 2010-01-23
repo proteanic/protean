@@ -20,6 +20,8 @@
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
 
+PROTEAN_VERSION = 1_00 ;
+
 include user-config.jam ;
 
 import os ;
@@ -37,7 +39,11 @@ BOOST_LIB ?= [ os.environ BOOST_LIB ] ;
 if ! $(BOOST_LIB)
 {
     BOOST_LIB += $(BOOSTROOT)/stage/lib ;
-    ECHO Protean: BOOST_LIB defaults to $(BOOST_LIB) ;
+ 
+    if $(DEBUG_PATHS)
+    {
+       ECHO Protean: BOOST_LIB defaults to $(BOOST_LIB) ;
+    }
 }
 
 if ! $(BOOST_LIB)
@@ -56,13 +62,16 @@ XERCES_BINARY ?= [ os.environ XERCES_BINARY ] ;
 XERCES_LIBPATH ?= [ os.environ XERCES_LIBPATH ] ;
 XERCES_INCLUDE ?= [ os.environ XERCES_INCLUDE ] ;
 
-ECHO env.BOOST_BUILD_PATH= [ os.environ BOOST_BUILD_PATH ] ;
-ECHO BOOST_INCLUDE=$(BOOST_INCLUDE) ;
-ECHO BOOST_LIB=$(BOOST_LIB) ;
-ECHO XERCES_INCLUDE=$(XERCES_INCLUDE) ;
-ECHO XERCES_LIBPATH=$(XERCES_LIBPATH) ;
-ECHO XERCES_BINARY=$(XERCES_BINARY) ;
-ECHO NO_XERCES=$(NO_XERCES) ;
+if $(DEBUG_PATHS)
+{
+    ECHO env.BOOST_BUILD_PATH= [ os.environ BOOST_BUILD_PATH ] ;
+    ECHO BOOST_INCLUDE=$(BOOST_INCLUDE) ;
+    ECHO BOOST_LIB=$(BOOST_LIB) ;
+    ECHO XERCES_INCLUDE=$(XERCES_INCLUDE) ;
+    ECHO XERCES_LIBPATH=$(XERCES_LIBPATH) ;
+    ECHO XERCES_BINARY=$(XERCES_BINARY) ;
+    ECHO NO_XERCES=$(NO_XERCES) ;
+}
 
 using testing ;
 import boost ;
@@ -139,8 +148,9 @@ else
 rule protean_tag ( name : type ? : property-set )
 {
    stdtag = [ boost.tag_std $(name) : $(type) : $(property-set) ] ;
-   stripped = [ MATCH "boost_(.*)" : $(stdtag) ] ;
-   return $(stripped) ;
+   stripped = [ MATCH "boost_protean(.*)" : $(stdtag) ] ;
+   versioned = protean-$(PROTEAN_VERSION)$(stripped) ;
+   return $(versioned) ;
 }
 
 lib protean 
