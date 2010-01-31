@@ -205,13 +205,49 @@ rule test-protean ( properties * : name )
             ] ;
 }
 
-rule all-tests ( )
+install-libdir = build/lib ;
+install-includedir = build/include ;
+
+rule all-variants ( rulename )
 {
-    test-protean <link>static <variant>release : t1 ; 
-    test-protean <link>static <variant>debug : t2 ;
-    test-protean <link>shared <variant>release : t3 ;
-    test-protean <link>shared <variant>debug : t4 ;
+    $(rulename) <link>static <variant>release : t1 ; 
+    $(rulename) <link>static <variant>debug : t2 ;
+    $(rulename) <link>shared <variant>release : t3 ;
+    $(rulename) <link>shared <variant>debug : t4 ;
 }
 
-all-tests ;
+rule install-lib ( properties * : name )
+{
+    return [
+        install
+            install-$(name) 
+          : protean 
+          : <location>$(install-libdir)
+            #<install-dependencies>on
+            $(properties) 
+    ] ;
+}
+
+rule install-headers
+{
+    install 
+      headers
+    : [ glob-tree *.hpp : .svn ]
+    : <location>$(install-includedir) 
+      <install-source-root>protean
+    ;
+}
+
+rule install-protean
+{
+    install-headers ;
+    all-variants install-lib ;   
+}
+
+
+all-variants test-protean ;
+
+install-protean ;
+
+
 
