@@ -146,14 +146,6 @@ else
    }
 }
 
-#rule protean_tag ( name : type ? : property-set )
-#{
-#   stdtag = [ boost.tag_std $(name) : $(type) : $(property-set) ] ;
-#   stripped = [ MATCH "boost_protean(.*)" : $(stdtag) ] ;
-#   versioned = protean-$(PROTEAN_VERSION)$(stripped) ;
-#   return $(versioned) ;
-#}
-
 rule protean_tag ( name : type ? : property-set )
 {
    return [ common.format-name
@@ -238,10 +230,15 @@ rule install-lib ( properties * : name )
 
 rule install-headers
 {
+    all_headers = [ glob-tree *.hpp : .svn ] ;
+    protean_headers = [ MATCH protean/.* : $(all_headers) ] ;  
+  
     install 
       headers
-    : [ glob-tree *.hpp : .svn ]
-    : <location>$(install-includedir) 
+    : 
+      $(protean_headers)
+    : 
+      <location>$(install-includedir) 
       <install-source-root>protean
     ;
 }
@@ -256,6 +253,4 @@ rule install-protean
 all-variants test-protean ;
 
 install-protean ;
-
-
 
