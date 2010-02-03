@@ -29,9 +29,9 @@ BOOST_AUTO_TEST_CASE(traits_value)
 {
     typedef std::iterator_traits<variant::iterator>::value_type value;
     
-    variant v(static_cast<int32_t>(17));
+    variant v(static_cast<boost::int32_t>(17));
     value val = v;
-    BOOST_CHECK_EQUAL (val.as<int32_t>(),17);
+    BOOST_CHECK_EQUAL (val.as<boost::int32_t>(),17);
 }
 
 BOOST_AUTO_TEST_CASE(traits_ptr_ref)
@@ -40,14 +40,14 @@ BOOST_AUTO_TEST_CASE(traits_ptr_ref)
     typedef std::iterator_traits<variant::iterator>::pointer vptr;
     typedef std::iterator_traits<variant::iterator>::reference vref;
     
-    variant v(static_cast<int32_t>(1111));
+    variant v(static_cast<boost::int32_t>(1111));
     vref ref (v);
     vptr ptr = &v;
-    BOOST_CHECK_EQUAL (v.as<int32_t>(),1111);
-    ref = variant(static_cast<int32_t>(7));
-    BOOST_CHECK_EQUAL (v.as<int32_t>(),7);
-    *ptr = variant(static_cast<int32_t>(42));
-    BOOST_CHECK_EQUAL (v.as<int32_t>(),42);
+    BOOST_CHECK_EQUAL (v.as<boost::int32_t>(),1111);
+    ref = variant(static_cast<boost::int32_t>(7));
+    BOOST_CHECK_EQUAL (v.as<boost::int32_t>(),7);
+    *ptr = variant(static_cast<boost::int32_t>(42));
+    BOOST_CHECK_EQUAL (v.as<boost::int32_t>(),42);
 }
 
 BOOST_AUTO_TEST_CASE(traits_diff)
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(traits_diff)
 BOOST_AUTO_TEST_CASE(algorithms)
 {
    variant l(variant::List), l1=1;
-   variant v(static_cast<int32_t>(1111));
+   variant v(static_cast<boost::int32_t>(1111));
    l.push_back (v);
    l.push_back (v);
    std::copy(l.begin(), l.end(), std::back_inserter(l1));
