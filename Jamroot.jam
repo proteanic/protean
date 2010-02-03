@@ -25,6 +25,7 @@ PROTEAN_VERSION = 1_00 ;
 include user-config.jam ;
 
 import os ;
+import common ;
 
 if ! [ os.environ BOOST_BUILD_PATH ]
 {
@@ -145,12 +146,19 @@ else
    }
 }
 
+#rule protean_tag ( name : type ? : property-set )
+#{
+#   stdtag = [ boost.tag_std $(name) : $(type) : $(property-set) ] ;
+#   stripped = [ MATCH "boost_protean(.*)" : $(stdtag) ] ;
+#   versioned = protean-$(PROTEAN_VERSION)$(stripped) ;
+#   return $(versioned) ;
+#}
+
 rule protean_tag ( name : type ? : property-set )
 {
-   stdtag = [ boost.tag_std $(name) : $(type) : $(property-set) ] ;
-   stripped = [ MATCH "boost_protean(.*)" : $(stdtag) ] ;
-   versioned = protean-$(PROTEAN_VERSION)$(stripped) ;
-   return $(versioned) ;
+   return [ common.format-name
+        <base> <toolset> <threading> <runtime> -$(PROTEAN_VERSION) 
+        : $(name) : $(type) : $(property-set) ] ;
 }
 
 lib protean 
