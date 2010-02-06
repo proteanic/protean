@@ -6,9 +6,9 @@ BOOST_DIR=boost_1_41_0
 BOOST_DIST=${ARCHIVES}/${BOOST_DIR}.tar.gz
 BOOST_HTTP='http://downloads.sourceforge.net/project/boost/boost/1.41.0/boost_1_41_0.tar.gz?use_mirror=kent'
 
-XERCES_DIR=xerces-c-3.0.1
+XERCES_DIR=xerces-c-3.1.0
 XERCES_DIST=${ARCHIVES}/${XERCES_DIR}.tar.gz
-XERCES_HTTP="http://mirror.ox.ac.uk/sites/rsync.apache.org/xerces/c/3/sources/xerces-c-3.0.1.tar.gz"
+XERCES_HTTP="http://mirror.ox.ac.uk/sites/rsync.apache.org/xerces/c/3/sources/xerces-c-3.1.0.tar.gz"
 XERCES_INSTALL_DIR=xerces-install
 
 ZLIB_DIR=zlib-1.2.3
@@ -58,7 +58,7 @@ Compiler support:
 
 MSVC : 8.0 and 9.0express are known to work under XP
        8.0express and 9.0 are likely to work
-       10.0 not yet supported, but see comments on how to modify the script
+       10.0 preliminary support
 
 g++  : 3.3 or earlier are not supported as they don't cope with boost::mpl 
        3.4.4 (maybe also earlier versions and 3.4.5) needs a workaround
@@ -116,11 +116,12 @@ case "$1" in
         case "$COMPILER_VERSION" in
         
             10.0|10.0express)
-                echo msvc 10 is not supported yet, but the chances are that
-                echo the only changes required are:
-                echo '- find the correct name for VS*COMNTOOLS (and put it where this was)'
-                echo - insist on NO_XERCES being set as there isn\'t a VC10
-                echo   project yet.
+                MSVC_ENV='VS100COMNTOOLS'
+                XERCES_MSVC_VERSION=9
+                if [ -z "$NO_XERCES" ]; then
+                    echo Xerces does not have a MSVC10 project. I will try to use the MSVC9
+                    echo project, but it will probably fail to compile. Please set NO_XERCES if so.
+                fi
             ;;
        
             9.0|9.0express)
