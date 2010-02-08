@@ -177,12 +177,12 @@ namespace protean {
                     obj = new object_proxy(class_name);
                 }
 
-                value = variant(obj);
-
                 // read parameter dictionary
                 variant params;
                 read(params);
-                value.as<object>().inflate(params, version);
+                obj->inflate(params, version);
+
+                value = variant(obj);
         
                 break;
             }

@@ -80,22 +80,15 @@ BOOST_AUTO_TEST_CASE(test_object)
     BOOST_CHECK(v1.is<testing_object>());
     BOOST_CHECK(!v1.is<object_proxy>());
 
-    testing_object& arg2(v1.as<testing_object>());
+    const testing_object& arg2(v1.as<testing_object>());
     BOOST_CHECK_EQUAL(arg2.name(), arg1.name());
     BOOST_CHECK_EQUAL(arg2.id(), "test1");
 
     BOOST_CHECK_EQUAL(v1.as<testing_object>().count(), v1.as<testing_object>().count());
 
-    variant v2(v1);
-    BOOST_CHECK(v1.as<testing_object>().count()!=v2.as<testing_object>().count());
-
-    v2.as<testing_object>().set_id("test2");
-    BOOST_CHECK_EQUAL(v1.as<testing_object>().id(), "test1");
-    BOOST_CHECK_EQUAL(v2.as<testing_object>().id(), "test2");
-
+    const variant v2(v1);
     const variant v3(v1);
-    const variant v4(v1);
-    BOOST_CHECK(v3.as<testing_object>().count()==v4.as<testing_object>().count());
+    BOOST_CHECK(v2.as<testing_object>().count()==v3.as<testing_object>().count());
 
     testing_object arg4;
     BOOST_CHECK(arg1.compare(arg4)!=0);

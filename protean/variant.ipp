@@ -168,7 +168,7 @@ namespace protean {
      * variant::as()
      */
     template<typename T>
-    typename boost::disable_if<boost::is_base_of<object,T>, T>::type
+    typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T>>, T>::type
     variant::as() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -192,8 +192,23 @@ namespace protean {
     template<> PROTEAN_DLLEXPORT variant::date_t                variant::as<variant::date_t>()      const;
     template<> PROTEAN_DLLEXPORT variant::time_t                variant::as<variant::time_t>()      const;
     template<> PROTEAN_DLLEXPORT variant::date_time_t           variant::as<variant::date_time_t>() const;
-    template<> PROTEAN_DLLEXPORT void*                          variant::as<void*>()                const;
+    //template<> PROTEAN_DLLEXPORT const void*                    variant::as<void*>()                const;
     template<> PROTEAN_DLLEXPORT exception_info                 variant::as<exception_info>()       const;
+
+    template<typename T>
+    typename boost::enable_if<boost::is_pointer<T>, const T>::type
+    variant::as() const
+	{
+        BEGIN_VARIANT_CONTEXT();
+
+		CHECK_VARIANT_FUNCTION(Buffer, "as<" + typeid(T).name() + ">()");
+
+		const handle<detail::buffer>& obj(m_value.get<Buffer>());
+
+		return reinterpret_cast<const T>(m_value.get<Buffer>()->data());
+
+        END_VARIANT_CONTEXT();
+	}
 
     template<typename T>
     typename boost::enable_if<boost::is_base_of<object, T>, const T&>::type
@@ -227,32 +242,6 @@ namespace protean {
     }
 
     template<> PROTEAN_DLLEXPORT const object& variant::as<object>() const;
-
-    template<typename T>
-    typename boost::enable_if<boost::is_base_of<object, T>, T&>::type
-    variant::as()
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        const T& obj(static_cast<const variant*>(this)->as<T>());
-
-        handle<object>& base(m_value.get<Object>());
-
-        if (base.unique())
-        {
-            return const_cast<T&>(obj);
-        }
-        else
-        {
-            T* copy = new T(obj);
-            base = copy;
-            return *copy;
-        }
-
-        END_VARIANT_CONTEXT();
-    }
-
-    template<> PROTEAN_DLLEXPORT object& variant::as<object>();
 
     template<typename T>
     variant make_object(const variant& params)

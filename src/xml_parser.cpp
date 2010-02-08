@@ -310,11 +310,9 @@ namespace protean {
                     obj = new object_proxy(class_name);
                 }
 
-                variant v(obj);
+                obj->inflate(context->element()["params"], version);
 
-                v.as<object>().inflate(context->element()["params"], version);
-
-                context->element() = v;
+                context->element() = variant(obj);
             }
             else if ( context->m_type==variant::Buffer )
             {

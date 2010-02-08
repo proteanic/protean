@@ -68,10 +68,10 @@ namespace protean {
         m_value.set<DateTime>(arg);
     }
 
-    variant::variant(void* data, size_t size, bool copy_data) :
+    variant::variant(const void* data, size_t size) :
         m_type(Buffer)
     {
-        m_value.set<Buffer>(new detail::buffer(data, size, copy_data));
+        m_value.set<Buffer>(new detail::buffer(data, size));
     }
 
     variant::variant(const exception_info& arg) :
@@ -1036,17 +1036,6 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> void* variant::as<void*>() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Buffer, "as<void*>()");
-
-        return m_value.get<Buffer>()->data();
-
-        END_VARIANT_CONTEXT();
-    }
-
     template<> exception_info variant::as<exception_info>() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -1065,23 +1054,6 @@ namespace protean {
         CHECK_VARIANT_FUNCTION(Object, "as<object>()");
 
         return *m_value.get<Object>();
-
-        END_VARIANT_CONTEXT();
-    }
-
-    template<> object& variant::as<object>()
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Object, "as<object>()");
-
-        handle<object>& obj = m_value.get<Object>();
-
-        if (!obj.unique())
-        {
-            obj = obj->clone();
-        }
-        return *obj;
 
         END_VARIANT_CONTEXT();
     }
@@ -1245,9 +1217,9 @@ namespace protean {
                 {
                     oss << "Buffer(";
 
-                    if (as<void*>()!=NULL)
+					const unsigned char* byteArray(as<unsigned char*>());
+                    if (byteArray!=NULL)
                     {
-                        const unsigned char* byteArray(reinterpret_cast<const unsigned char*>(as<void*>()));
                         for(size_t i=0; i<size(); ++i)
                         {
                             if (i>0) oss << " ";

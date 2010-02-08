@@ -35,7 +35,7 @@ namespace protean {
         explicit variant(const date_t& arg);
         explicit variant(const time_t& arg);
         explicit variant(const date_time_t& arg);
-        explicit variant(void* data, size_t size, bool copy_data=true);
+        explicit variant(const void* data, size_t size);
         explicit variant(const exception_info& arg);
         explicit variant(const std::exception& arg);
         explicit variant(const object& arg);
@@ -80,16 +80,16 @@ namespace protean {
     /****************/
     public:
         template<typename T>
-        typename boost::disable_if<boost::is_base_of<object,T>, T>::type
+        typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T>>, T>::type
+        as() const;
+
+        template<typename T>
+        typename boost::enable_if<boost::is_pointer<T>, const T>::type
         as() const;
 
         template<typename T>
         typename boost::enable_if<boost::is_base_of<object,T>, const T&>::type
         as() const;
-
-        template<typename T>
-        typename boost::enable_if<boost::is_base_of<object,T>, T&>::type
-        as();
 
     /* Collection interface */
     /************************/

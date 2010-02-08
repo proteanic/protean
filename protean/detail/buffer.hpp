@@ -18,7 +18,7 @@ namespace protean { namespace detail {
     {
     public:
         buffer(size_t size);
-        buffer(void* data, size_t size, bool copy_data);
+        buffer(const void* data, size_t size);
         buffer(const buffer& rhs);
 		buffer& operator=(const buffer& rhs);
         ~buffer();
@@ -34,7 +34,6 @@ namespace protean { namespace detail {
     private:
         size_t  m_size;
         void*   m_data;
-        bool    m_owned;
     };
 
 }} // namespace protean::detail

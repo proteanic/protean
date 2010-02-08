@@ -13,41 +13,24 @@
 namespace protean { namespace detail {
 
     buffer::buffer(size_t size) :
-        m_size(size),
-        m_owned(true)
+        m_size(size)
     {
         m_data = std::malloc(size);
         std::memset(m_data, 0, size);
     }
 
-    buffer::buffer(void* data, size_t size, bool copy_data) :
-        m_size(size),
-        m_owned(copy_data)
+    buffer::buffer(const void* data, size_t size) :
+        m_size(size)
     {
-        if (copy_data)
-        {
-            m_data = std::malloc(size);
-            std::memcpy(m_data, data, size);
-        }
-        else
-        {
-            m_data = data;
-        }
+        m_data = std::malloc(size);
+        std::memcpy(m_data, data, size);
     }
 
     buffer::buffer(const buffer& rhs) :
-        m_size(rhs.size()),
-        m_owned(rhs.m_owned)
+        m_size(rhs.size())
     {
-        if (m_owned)
-        {
-            m_data = malloc(m_size);
-            std::memcpy(m_data, rhs.data(), m_size);
-        }
-        else
-        {
-            m_data = rhs.data();
-        }
+        m_data = malloc(m_size);
+        std::memcpy(m_data, rhs.data(), m_size);
     }
 
     buffer& buffer::operator=(const buffer& rhs)
@@ -58,12 +41,9 @@ namespace protean { namespace detail {
 
     buffer::~buffer()
     {
-        if (m_owned && m_data!=NULL)
-        {
-            std::free(m_data);
-            m_data = NULL;
-            m_size = 0;
-        }
+        std::free(m_data);
+        m_data = NULL;
+        m_size = 0;
     }
 
     void* buffer::data() const
