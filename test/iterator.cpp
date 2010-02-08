@@ -25,6 +25,39 @@ BOOST_AUTO_TEST_CASE(const_iterator)
 }
 #endif
 
+BOOST_AUTO_TEST_CASE(iterator_assign)
+{
+    variant v1(variant::List);
+	v1.push_back(variant(1.0));
+
+    variant::iterator i(v1.begin());
+	variant::iterator i1(i);
+	variant::iterator i2;
+	i2 = i;
+
+    BOOST_CHECK(i==i);
+    BOOST_CHECK(i1==i);
+    BOOST_CHECK(i2==i);
+
+    BOOST_CHECK(i==v1.begin());
+    BOOST_CHECK(i1==v1.begin());
+    BOOST_CHECK(i2==v1.begin());
+
+    BOOST_CHECK(i!=v1.end());
+    BOOST_CHECK(i1!=v1.end());
+    BOOST_CHECK(i2!=v1.end());
+
+	++i;
+
+    BOOST_CHECK(i==i);
+    BOOST_CHECK(i1!=i);
+    BOOST_CHECK(i2!=i);
+
+    BOOST_CHECK(i==v1.end());
+    BOOST_CHECK(i1==v1.begin());
+    BOOST_CHECK(i2==v1.begin());
+}
+
 BOOST_AUTO_TEST_CASE(traits_value)
 {
     typedef std::iterator_traits<variant::iterator>::value_type value;

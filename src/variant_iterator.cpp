@@ -31,7 +31,7 @@ namespace protean {
     template<typename ITERATOR_TRAITS>
     const variant_iterator<ITERATOR_TRAITS>& variant_iterator<ITERATOR_TRAITS>::operator=(const variant_iterator<ITERATOR_TRAITS>& rhs)
     {
-        m_iterator = rhs.m_iterator;
+        m_iterator.reset(rhs.m_iterator->clone());
         return *this;
     }
 
