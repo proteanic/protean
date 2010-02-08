@@ -230,15 +230,15 @@ rule install-lib ( properties * : name )
 
 rule install-headers
 {
-    all_headers = [ glob-tree *.hpp : .svn ] ;
-    protean_headers = [ MATCH protean/.* : $(all_headers) ] ;  
-  
+    all_headers = [ glob-tree *.hpp : .svn ] [ glob-tree *.ipp : .svn ] ;
+    protean_headers = [ MATCH (protean/.*) : $(all_headers) ] ;  
+
     install 
       headers
     : 
       $(protean_headers)
     : 
-      <location>$(install-includedir) 
+      <location>$(install-includedir)/protean
       <install-source-root>protean
     ;
 }
