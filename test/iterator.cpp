@@ -90,10 +90,9 @@ BOOST_AUTO_TEST_CASE(traits_diff)
     BOOST_CHECK (l.end () == zero + l.begin ());
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(algorithms)
 {
-   variant l(variant::List), l1=1;
+   variant l(variant::List), l1(variant::List);
    variant v(static_cast<boost::int32_t>(1111));
    l.push_back (v);
    l.push_back (v);
@@ -101,6 +100,5 @@ BOOST_AUTO_TEST_CASE(algorithms)
    BOOST_CHECK_EQUAL(true,std::equal (l.begin(), l.end(), l1.begin()));
    BOOST_CHECK_EQUAL(l1.size(),2);
 }
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()

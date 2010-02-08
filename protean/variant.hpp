@@ -18,6 +18,15 @@ namespace protean {
         typedef boost::posix_time::time_duration    time_t;
         typedef boost::posix_time::ptime            date_time_t;
 
+		typedef variant								value_type;
+		typedef value_type*							pointer;
+		typedef const value_type*					const_pointer;
+		typedef value_type&							reference;
+		typedef const value_type&					const_reference;
+
+		typedef size_t								difference_type;
+		typedef std::bidirectional_iterator_tag		iterator_category;
+
     /* Construction */
     /****************/
     public:
@@ -196,7 +205,7 @@ namespace protean {
         typedef std::list<std::pair<std::string, variant> >::const_iterator bag_iterator_type;
         typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::const_iterator timeseries_iterator_type;
         typedef const variant* tuple_iterator_type;
-        typedef size_t difference_type;
+        typedef variant::difference_type difference_type;
     };
 
     struct iterator_traits
@@ -207,7 +216,7 @@ namespace protean {
         typedef std::list<std::pair<std::string, variant> >::iterator bag_iterator_type;
         typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::iterator timeseries_iterator_type;
         typedef variant* tuple_iterator_type;
-        typedef size_t difference_type;
+		typedef variant::difference_type difference_type;
     };
 
     variant make_any(const std::string& value);
