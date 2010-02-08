@@ -50,9 +50,9 @@ namespace protean { namespace detail {
         {
             --m_iterator;
         }
-        bool equal(const BASE* rhs) const
+        bool equal(const variant_const_iterator_base* rhs) const
         {
-            const list_iterator_interface * cast_rhs = dynamic_cast<const list_iterator_interface *>(rhs);
+            const list_iterator_interface<const_iterator_traits>* cast_rhs = dynamic_cast<const list_iterator_interface<const_iterator_traits>*>(rhs);
             if (cast_rhs==NULL)
             {
                 boost::throw_exception(variant_error("Unable to convert iterator to list iterator"));

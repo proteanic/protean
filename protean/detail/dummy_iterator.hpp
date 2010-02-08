@@ -43,10 +43,11 @@ namespace protean { namespace detail {
         {
             boost::throw_exception(variant_error("Attempt to decrement dummy iterator"));
         }
-        bool equal(const BASE *rhs) const
+        bool equal(const variant_const_iterator_base *rhs) const
         {
-            const dummy_iterator_interface<ITERATOR_TRAITS>* cast_rhs =
-                dynamic_cast<const dummy_iterator_interface<ITERATOR_TRAITS>*>(rhs);
+            const dummy_iterator_interface<const_iterator_traits>* cast_rhs =
+                dynamic_cast<const dummy_iterator_interface<const_iterator_traits>*>(rhs);
+
             if (cast_rhs==NULL)
             {
                 boost::throw_exception(variant_error("Unable to convert iterator to dummy iterator"));

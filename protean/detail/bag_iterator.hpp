@@ -25,7 +25,6 @@ namespace protean { namespace detail {
         typedef typename ITERATOR_TRAITS::value_type& reference_type;
         typedef typename ITERATOR_TRAITS::bag_iterator_type iterator_type;
         typedef typename BASE::date_time_t date_time_t;
-
     public:
         bag_iterator_interface(const iterator_type &iterator) :
             m_iterator( iterator )
@@ -51,9 +50,9 @@ namespace protean { namespace detail {
         {
             --m_iterator;
         }
-        bool equal(const BASE *rhs) const
+        bool equal(const variant_const_iterator_base* rhs) const
         {
-            const bag_iterator_interface* cast_rhs = dynamic_cast<const bag_iterator_interface*>(rhs);
+            const bag_iterator_interface<const_iterator_traits>* cast_rhs = dynamic_cast<const bag_iterator_interface<const_iterator_traits>*>(rhs);
             if (cast_rhs==NULL)
             {
                 boost::throw_exception(variant_error("Unable to convert iterator to bag iterator"));

@@ -41,7 +41,7 @@ namespace protean {
         virtual const date_time_t& time() const = 0;
         virtual void increment() = 0;
         virtual void decrement() = 0;
-        virtual bool equal(const variant_iterator_interface *rhs) const = 0;
+        virtual bool equal(const variant_iterator_interface<const_iterator_traits> *rhs) const = 0;
         virtual variant_iterator_interface* clone() = 0;
         virtual variant_iterator_interface<const_iterator_traits>* to_const() const = 0;
     };
@@ -97,7 +97,7 @@ namespace protean {
 
         void decrement();
 
-        bool equal(const variant_iterator<ITERATOR_TRAITS>& other) const;
+        bool equal(const variant_iterator<const_iterator_traits>& other) const;
 
         reference_type dereference() const;
 
@@ -122,7 +122,7 @@ namespace protean {
     template<typename OTHER_TRAITS>
     const variant_iterator<ITERATOR_TRAITS>& variant_iterator<ITERATOR_TRAITS>::operator=(const variant_iterator<OTHER_TRAITS>& rhs)
     {
-        m_iterator.reset( rhs.iterator()->to_const() );
+        m_iterator.reset(rhs.iterator()->to_const());
         return *this;
     }
 

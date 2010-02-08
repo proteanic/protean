@@ -65,7 +65,13 @@ namespace protean {
         return m_iterator->value();
     }
 
-    template<typename ITERATOR_TRAITS>
+	template<typename ITERATOR_TRAITS>
+    bool variant_iterator<ITERATOR_TRAITS>::equal(const variant_iterator<const_iterator_traits>& rhs) const
+	{
+		return m_iterator->equal(rhs.iterator());
+	}
+
+	template<typename ITERATOR_TRAITS>
     void variant_iterator<ITERATOR_TRAITS>::increment()
     {
         if (!m_iterator)
@@ -83,17 +89,6 @@ namespace protean {
             boost::throw_exception(variant_error("Attempt to access invalid iterator"));
         }
         m_iterator->decrement();
-    }
-
-    template<typename ITERATOR_TRAITS>
-    bool variant_iterator<ITERATOR_TRAITS>::equal(const variant_iterator<ITERATOR_TRAITS>& other) const
-    {
-        if (!m_iterator || !other.m_iterator)
-        {
-            boost::throw_exception(variant_error("Attempt to access invalid iterator"));
-        }
-
-        return m_iterator->equal(other.m_iterator.get());
     }
 
     template<typename ITERATOR_TRAITS>

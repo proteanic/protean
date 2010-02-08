@@ -11,7 +11,6 @@ using namespace protean;
 
 BOOST_AUTO_TEST_SUITE(iterator_suite);
 
-#if 0
 BOOST_AUTO_TEST_CASE(const_iterator)
 {
     variant v1(variant::List);
@@ -23,7 +22,6 @@ BOOST_AUTO_TEST_CASE(const_iterator)
     BOOST_CHECK(i==ci);
     BOOST_CHECK(ci==i);
 }
-#endif
 
 BOOST_AUTO_TEST_CASE(iterator_assign)
 {
