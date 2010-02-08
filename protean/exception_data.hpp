@@ -17,16 +17,16 @@
 
 namespace protean {
 
-    class PROTEAN_DLLEXPORT exception_info
+    class PROTEAN_DLLEXPORT exception_data
     {
     public:
-        exception_info(const std::string& type, const std::string& message);
-        exception_info(const std::exception& e);
+        exception_data(const std::string& type, const std::string& message);
+        exception_data(const std::exception& e);
 
         const std::string& type() const;
         const std::string& message() const;
 
-        int compare(const exception_info& rhs) const;
+        int compare(const exception_data& rhs) const;
         size_t hash() const;
 
         static std::string format(const char* class_name);

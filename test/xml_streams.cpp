@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(test_xml_primitives)
 
 BOOST_AUTO_TEST_CASE(test_xml_exception)
 {
-    exception_info arg("test_exception", "test message");
+    exception_data arg("test_exception", "test message");
     variant v1(arg);
 
     std::ostringstream oss;

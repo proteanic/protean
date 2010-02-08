@@ -285,7 +285,7 @@ namespace protean {
             {
                 const std::string type_str(context->element()["type"].as<std::string>());
                 const std::string message(context->element()["message"].as<std::string>());
-                context->element() = exception_info(type_str, message);
+                context->element() = exception_data(type_str, message);
             }
             else if ( context->m_type==variant::Object )
             {

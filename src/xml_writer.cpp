@@ -292,7 +292,7 @@ namespace protean {
                 start_tag();
                 start_content();
 
-                exception_info e(node.as<exception_info>());
+                exception_data e(node.as<exception_data>());
 
                 push("type");
                 write_node( variant(e.type()) );

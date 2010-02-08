@@ -193,7 +193,7 @@ namespace protean {
     template<> PROTEAN_DLLEXPORT variant::time_t                variant::as<variant::time_t>()      const;
     template<> PROTEAN_DLLEXPORT variant::date_time_t           variant::as<variant::date_time_t>() const;
     //template<> PROTEAN_DLLEXPORT const void*                    variant::as<void*>()                const;
-    template<> PROTEAN_DLLEXPORT exception_info                 variant::as<exception_info>()       const;
+    template<> PROTEAN_DLLEXPORT exception_data                 variant::as<exception_data>()       const;
 
     template<typename T>
     typename boost::enable_if<boost::is_pointer<T>, const T>::type

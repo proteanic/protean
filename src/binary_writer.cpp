@@ -140,7 +140,7 @@ namespace protean {
                 break;
             case variant::Exception:
             {
-                const exception_info e( value.as<exception_info>() );
+                const exception_data e( value.as<exception_data>() );
                 write(e.type());
                 write(e.message());
                 break;

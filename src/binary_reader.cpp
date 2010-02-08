@@ -191,7 +191,7 @@ namespace protean {
                 std::string type, message;
                 read(type);
                 read(message);
-                value = exception_info(type, message);
+                value = exception_data(type, message);
                 break;
             }
             case variant::None:

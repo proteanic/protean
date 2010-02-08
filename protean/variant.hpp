@@ -45,7 +45,7 @@ namespace protean {
         explicit variant(const time_t& arg);
         explicit variant(const date_time_t& arg);
         explicit variant(const void* data, size_t size);
-        explicit variant(const exception_info& arg);
+        explicit variant(const exception_data& arg);
         explicit variant(const std::exception& arg);
         explicit variant(const object& arg);
 

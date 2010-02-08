@@ -17,7 +17,7 @@
 #include <protean/variant_error.hpp>
 
 #include <protean/detail/string.hpp>
-#include <protean/exception_info.hpp>
+#include <protean/exception_data.hpp>
 #include <protean/object.hpp>
 #include <protean/detail/buffer.hpp>
 #include <protean/detail/collection.hpp>
@@ -94,7 +94,7 @@ namespace protean {
             detail::tagged_type<TimeSeries,         detail::timeseries,                 detail::alloc_new,          boost::mpl::string<'Time','Seri','es'> >,
             detail::tagged_type<Tuple,              detail::tuple,                      detail::alloc_new,          boost::mpl::string<'Tupl','e'> >,
             detail::tagged_type<Buffer,             handle<detail::buffer>,             detail::alloc_placement,    boost::mpl::string<'Buff','er'> >,
-            detail::tagged_type<Exception,          exception_info,                     detail::alloc_new,          boost::mpl::string<'Exce','ptio','n'> >
+            detail::tagged_type<Exception,          exception_data,                     detail::alloc_new,          boost::mpl::string<'Exce','ptio','n'> >
         > variant_impl_t;
         
         variant_impl_t m_value;

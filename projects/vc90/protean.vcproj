@@ -150,7 +150,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\exception_info.cpp"
+				RelativePath="..\..\src\exception_data.cpp"
 				>
 			</File>
 			<File
@@ -232,7 +232,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\protean\exception_info.hpp"
+				RelativePath="..\..\protean\exception_data.hpp"
 				>
 			</File>
 			<File

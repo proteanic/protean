@@ -74,7 +74,7 @@ namespace protean {
         m_value.set<Buffer>(new detail::buffer(data, size));
     }
 
-    variant::variant(const exception_info& arg) :
+    variant::variant(const exception_data& arg) :
         m_type(Exception)
     {
         m_value.set<Exception>(arg);
@@ -83,7 +83,7 @@ namespace protean {
     variant::variant(const std::exception& arg) :
         m_type(Exception)
     {
-        m_value.set<Exception>(exception_info(arg));
+        m_value.set<Exception>(exception_data(arg));
     }
 
     variant::variant(const object& arg) :
@@ -1036,11 +1036,11 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> exception_info variant::as<exception_info>() const
+    template<> exception_data variant::as<exception_data>() const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Exception, "as<variant::exception_info>()");
+        CHECK_VARIANT_FUNCTION(Exception, "as<variant::exception_data>()");
 
         return m_value.get<Exception>();
 
@@ -1259,7 +1259,7 @@ namespace protean {
             }
             case Exception:
             {
-                const exception_info& x(m_value.get<Exception>());
+                const exception_data& x(m_value.get<Exception>());
                 oss << x.type() << "('" << x.message() << "')";
                 break;
             }
