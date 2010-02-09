@@ -111,7 +111,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libboost_unit_test_framework-$(CompilerFlag)-$(BuildFlag)-1_40.lib"
 				SubSystem="1"
 			/>
 			<Tool
@@ -157,6 +156,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\test\iterator.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\test\list.cpp"
 					>
 				</File>
@@ -173,11 +176,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\xml_streams.cpp"
+					RelativePath="..\..\test\types.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\types.cpp"
+					RelativePath="..\..\test\xml_streams.cpp"
 					>
 				</File>
 			</Filter>
