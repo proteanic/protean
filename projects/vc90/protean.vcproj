@@ -39,6 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				PreprocessorDefinitions="PROTEAN_SOURCE"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -91,6 +92,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				PreprocessorDefinitions="PROTEAN_SOURCE"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -380,6 +382,14 @@
 				</File>
 				<File
 					RelativePath="..\..\protean\detail\variant_macros_undef.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="config"
+				>
+				<File
+					RelativePath="..\..\protean\config\auto_link.hpp"
 					>
 				</File>
 			</Filter>

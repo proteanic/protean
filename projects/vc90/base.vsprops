@@ -17,7 +17,7 @@
 	/>
 	<Tool
 		Name="VCLibrarianTool"
-		OutputFile="&quot;$(OutDir)$(ProjectName)-$(InstructionSetFlag).lib&quot;"
+		OutputFile="&quot;$(OutDir)libprotean-$(CompilerFlag)-$(BuildFlag)-1_00.lib&quot;"
 	/>
 	<Tool
 		Name="VCLinkerTool"
