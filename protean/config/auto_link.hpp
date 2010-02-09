@@ -52,7 +52,7 @@
 
 #endif
 
-#ifdef PROTEAN_LIB_PREFIX
+#if defined(PROTEAN_LIB_PREFIX)
 #   undef PROTEAN_LIB_PREFIX
 #endif
 #if defined(PROTEAN_LIB_NAME)
