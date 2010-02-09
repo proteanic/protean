@@ -27,12 +27,12 @@ Protean, compile it, and run the unit tests.
 
 Example command lines:
 
-demo.sh msvc 9.0         (9.0 and 9.0express *are* different)
-demo.sh msvc 9.0express  
-demo.sh gcc              (use default version of g++)
-demo.sh gcc 4            (will probably work under Cygwin)
-demo.sh gcc 4.3          (will work under Linux if gcc 4.3 installed)
-demo.sh package          (make a tarball that can be compiled offline)
+build.sh msvc 9.0         (9.0 and 9.0express *are* different)
+build.sh msvc 9.0express  
+build.sh gcc              (use default version of g++)
+build.sh gcc 4            (will probably work under Cygwin)
+build.sh gcc 4.3          (will work under Linux if gcc 4.3 installed)
+build.sh package          (make a tarball that can be compiled offline)
 
 Environment variables:
 
@@ -219,7 +219,7 @@ function set_xerces_dirs()
 {
     case "$COMPILER" in
         msvc)
-              XERCES_INCLUDE_DIR="$DIR/$XERCES_DIR/src"
+              XERCES_INCLUDE_DIR="$DIR/$THIRDPARTY/$XERCES_DIR/src"
               XERCES_LIB_DIR="`xerces_install_dir`"
         ;;
 
