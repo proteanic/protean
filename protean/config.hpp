@@ -20,9 +20,9 @@
 #   define PROTEAN_DECL
 #endif
 
-#if !defined(PROTEAN_SOURCE)
+#if !defined(PROTEAN_SOURCE) && !defined(PROTEAN_NO_AUTOLINK)
 #   define PROTEAN_LIB_NAME protean
-//#   include <protean/config/auto_link.hpp>
+#   include <protean/config/auto_link.hpp>
 #endif
 
 #endif // PROTEAN_CONFIG_HPP
