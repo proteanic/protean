@@ -52,4 +52,20 @@
 
 #endif
 
+#ifdef PROTEAN_LIB_PREFIX
+#   undef PROTEAN_LIB_PREFIX
+#endif
+#if defined(PROTEAN_LIB_NAME)
+#   undef PROTEAN_LIB_NAME
+#endif
+#if defined(PROTEAN_LIB_TOOLSET)
+#   undef PROTEAN_LIB_TOOLSET
+#endif
+#if defined(PROTEAN_LIB_THREAD_OPT)
+#   undef PROTEAN_LIB_THREAD_OPT
+#endif
+#if defined(PROTEAN_LIB_RT_OPT)
+#   undef PROTEAN_LIB_RT_OPT
+#endif
+
 #endif // PROTEAN_CONFIG_AUTO_LINK_HPP
