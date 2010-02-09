@@ -6,12 +6,23 @@
 #ifndef PROTEAN_CONFIG_HPP
 #define PROTEAN_CONFIG_HPP
 
-#if defined(PROTEAN_BUILD_DLL) //Build dll
-#    define PROTEAN_DLLEXPORT __declspec(dllexport)
-#elif defined(PROTEAN_USE_DLL) //Use dll
-#    define PROTEAN_DLLEXPORT __declspec(dllimport)
+#include <protean/version.hpp>
+
+#if defined(PROTEAN_DYN_LINK)
+#if defined(PROTEAN_SOURCE)
+#   define PROTEAN_DECL __declspec(dllexport)
 #else
-#    define PROTEAN_DLLEXPORT
+#   define PROTEAN_DECL __declspec(dllimport)
+#endif
+#endif
+
+#ifndef PROTEAN_DECL
+#   define PROTEAN_DECL
+#endif
+
+#if !defined(PROTEAN_SOURCE)
+#   define PROTEAN_LIB_NAME protean
+//#   include <protean/config/auto_link.hpp>
 #endif
 
 #endif // PROTEAN_CONFIG_HPP

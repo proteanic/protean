@@ -16,7 +16,7 @@ namespace protean {
 
     namespace detail {
 
-        class PROTEAN_DLLEXPORT ref_counted
+        class PROTEAN_DECL ref_counted
         {
         public:
             ref_counted();

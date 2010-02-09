@@ -21,7 +21,7 @@ namespace protean {
     class object_factory;
     class variant;
 
-    class PROTEAN_DLLEXPORT xml_reader
+    class PROTEAN_DECL xml_reader
     {
     public:
         enum enum_flag_t { None=0, Preserve=1, CreateProxy=2 };
@@ -45,7 +45,7 @@ namespace protean {
 
         entity_stream_map_t m_entities;
 
-        friend PROTEAN_DLLEXPORT xml_reader& operator>>(xml_reader& reader, variant& variant);
+        friend PROTEAN_DECL xml_reader& operator>>(xml_reader& reader, variant& variant);
     };
 
 } // namespace protean

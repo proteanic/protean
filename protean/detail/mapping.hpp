@@ -18,7 +18,7 @@ namespace protean {
 
     namespace detail {
 
-        class PROTEAN_DLLEXPORT mapping : public collection
+        class PROTEAN_DECL mapping : public collection
         {
         public:
             virtual variant& insert(const std::string &key, const variant& value) = 0;

@@ -118,7 +118,7 @@ namespace protean { namespace detail {
     {};
 
     template<BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(VARIANT_MAX_ARITY, class T, boost::blank)>
-    class PROTEAN_DLLEXPORT variant_impl : protected alloc_storage
+    class PROTEAN_DECL variant_impl : protected alloc_storage
     {
         typedef boost::mpl::VARIANT_VEC_TYPE<BOOST_PP_ENUM_PARAMS(VARIANT_MAX_ARITY, T)> mpl_types;
         typedef variant_impl<BOOST_PP_ENUM_PARAMS(VARIANT_MAX_ARITY, T)>     self;

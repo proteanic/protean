@@ -20,7 +20,7 @@ namespace protean { namespace detail {
         typename ITERATOR_TRAITS
       , typename BASE=variant_iterator_interface<ITERATOR_TRAITS>
     >
-    class PROTEAN_DLLEXPORT timeseries_iterator_interface : public BASE
+    class PROTEAN_DECL timeseries_iterator_interface : public BASE
     {
         typedef typename ITERATOR_TRAITS::value_type& reference_type;
         typedef typename ITERATOR_TRAITS::timeseries_iterator_type iterator_type;

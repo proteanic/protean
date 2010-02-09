@@ -13,7 +13,7 @@
 
 namespace protean {
     
-    class PROTEAN_DLLEXPORT binary_writer
+    class PROTEAN_DECL binary_writer
     {
     public:
         enum enum_flag_t { None=0, Compress=1 };
@@ -48,7 +48,7 @@ namespace protean {
         void setup();
         void close();
 
-        friend PROTEAN_DLLEXPORT binary_writer& operator<<(binary_writer& writer, const variant& v);
+        friend PROTEAN_DECL binary_writer& operator<<(binary_writer& writer, const variant& v);
     };
 
 } // namespace protean

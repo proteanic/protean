@@ -17,7 +17,7 @@
 
 namespace protean { namespace detail {
 
-    class PROTEAN_DLLEXPORT timeseries : public collection
+    class PROTEAN_DECL timeseries : public collection
     {
         typedef boost::posix_time::ptime date_time_t;
         typedef std::vector< std::pair<date_time_t, variant> > container_t;

@@ -17,7 +17,7 @@
 
 namespace protean {
 
-    class PROTEAN_DLLEXPORT exception_data
+    class PROTEAN_DECL exception_data
     {
     public:
         exception_data(const std::string& type, const std::string& message);

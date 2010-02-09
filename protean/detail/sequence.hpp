@@ -17,7 +17,7 @@ namespace protean {
 
     namespace detail {
 
-        class PROTEAN_DLLEXPORT sequence : public collection
+        class PROTEAN_DECL sequence : public collection
         {
         public:
             virtual const variant& at(size_t index) const = 0;

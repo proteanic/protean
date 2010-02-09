@@ -27,7 +27,7 @@ namespace protean {
     struct iterator_traits;
 
     template <typename ITERATOR_TRAITS>
-    class PROTEAN_DLLEXPORT variant_iterator_interface
+    class PROTEAN_DECL variant_iterator_interface
     {
     public:
         typedef boost::posix_time::ptime date_time_t;
@@ -50,7 +50,7 @@ namespace protean {
     typedef variant_iterator_interface<iterator_traits> variant_iterator_base;
 
     template <typename ITERATOR_TRAITS>
-    class PROTEAN_DLLEXPORT variant_iterator :
+    class PROTEAN_DECL variant_iterator :
         public boost::iterator_facade<
                 variant_iterator<ITERATOR_TRAITS>
               , typename ITERATOR_TRAITS::value_type

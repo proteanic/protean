@@ -17,7 +17,7 @@ namespace protean {
     class variant;
     template<typename T> class handle;
 
-    class PROTEAN_DLLEXPORT object : public detail::ref_counted
+    class PROTEAN_DECL object : public detail::ref_counted
     {
     public:
         object();

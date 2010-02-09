@@ -110,20 +110,20 @@ namespace protean {
         }
     }
     // std::string -> TARGET
-    template<> PROTEAN_DLLEXPORT bool variant::lexical_cast<bool>(const std::string& arg);
-    template<> PROTEAN_DLLEXPORT float variant::lexical_cast<float>(const std::string& arg);
-    template<> PROTEAN_DLLEXPORT double variant::lexical_cast<double>(const std::string& arg);
-    template<> PROTEAN_DLLEXPORT variant::date_t variant::lexical_cast<variant::date_t>(const std::string& arg);
-    template<> PROTEAN_DLLEXPORT variant::time_t variant::lexical_cast<variant::time_t>(const std::string& arg);
-    template<> PROTEAN_DLLEXPORT variant::date_time_t variant::lexical_cast<variant::date_time_t>(const std::string& arg);
+    template<> PROTEAN_DECL bool variant::lexical_cast<bool>(const std::string& arg);
+    template<> PROTEAN_DECL float variant::lexical_cast<float>(const std::string& arg);
+    template<> PROTEAN_DECL double variant::lexical_cast<double>(const std::string& arg);
+    template<> PROTEAN_DECL variant::date_t variant::lexical_cast<variant::date_t>(const std::string& arg);
+    template<> PROTEAN_DECL variant::time_t variant::lexical_cast<variant::time_t>(const std::string& arg);
+    template<> PROTEAN_DECL variant::date_time_t variant::lexical_cast<variant::date_time_t>(const std::string& arg);
 
     // SOURCE -> std::string
-    template<> PROTEAN_DLLEXPORT std::string variant::lexical_cast<std::string>(const bool& arg);
-    template<> PROTEAN_DLLEXPORT std::string variant::lexical_cast<std::string>(const float& arg);
-    template<> PROTEAN_DLLEXPORT std::string variant::lexical_cast<std::string>(const double& arg);
-    template<> PROTEAN_DLLEXPORT std::string variant::lexical_cast<std::string>(const variant::date_t& arg);
-    template<> PROTEAN_DLLEXPORT std::string variant::lexical_cast<std::string>(const variant::time_t& arg);
-    template<> PROTEAN_DLLEXPORT std::string variant::lexical_cast<std::string>(const variant::date_time_t& arg);
+    template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const bool& arg);
+    template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const float& arg);
+    template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const double& arg);
+    template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const variant::date_t& arg);
+    template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const variant::time_t& arg);
+    template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const variant::date_time_t& arg);
 
     /*
      * variant::is
@@ -140,12 +140,12 @@ namespace protean {
     {
         return m_type==type_to_enum<T>::value; 
     }
-    template<> bool PROTEAN_DLLEXPORT variant::is<std::string>()                    const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<bool>()                           const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<variant::date_t>()                const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<variant::time_t>()                const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<variant::date_time_t>()           const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<void*>()                          const;
+    template<> bool PROTEAN_DECL variant::is<std::string>()                    const;
+    template<> bool PROTEAN_DECL variant::is<bool>()                           const;
+    template<> bool PROTEAN_DECL variant::is<variant::date_t>()                const;
+    template<> bool PROTEAN_DECL variant::is<variant::time_t>()                const;
+    template<> bool PROTEAN_DECL variant::is<variant::date_time_t>()           const;
+    template<> bool PROTEAN_DECL variant::is<void*>()                          const;
 
     template<typename T>
     typename boost::enable_if<boost::is_base_of<object,T>, bool>::type
@@ -161,8 +161,8 @@ namespace protean {
         return false;
     }
 
-    template<> bool PROTEAN_DLLEXPORT variant::is<object>() const;
-    template<> bool PROTEAN_DLLEXPORT variant::is<object_proxy>() const;
+    template<> bool PROTEAN_DECL variant::is<object>() const;
+    template<> bool PROTEAN_DECL variant::is<object_proxy>() const;
 
     /*
      * variant::as()
@@ -187,13 +187,13 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DLLEXPORT std::string                    variant::as<std::string>()          const;
-    template<> PROTEAN_DLLEXPORT bool                           variant::as<bool>()                 const;
-    template<> PROTEAN_DLLEXPORT variant::date_t                variant::as<variant::date_t>()      const;
-    template<> PROTEAN_DLLEXPORT variant::time_t                variant::as<variant::time_t>()      const;
-    template<> PROTEAN_DLLEXPORT variant::date_time_t           variant::as<variant::date_time_t>() const;
-    //template<> PROTEAN_DLLEXPORT const void*                    variant::as<void*>()                const;
-    template<> PROTEAN_DLLEXPORT exception_data                 variant::as<exception_data>()       const;
+    template<> PROTEAN_DECL std::string                    variant::as<std::string>()          const;
+    template<> PROTEAN_DECL bool                           variant::as<bool>()                 const;
+    template<> PROTEAN_DECL variant::date_t                variant::as<variant::date_t>()      const;
+    template<> PROTEAN_DECL variant::time_t                variant::as<variant::time_t>()      const;
+    template<> PROTEAN_DECL variant::date_time_t           variant::as<variant::date_time_t>() const;
+    //template<> PROTEAN_DECL const void*                    variant::as<void*>()                const;
+    template<> PROTEAN_DECL exception_data                 variant::as<exception_data>()       const;
 
     template<typename T>
     typename boost::enable_if<boost::is_pointer<T>, const T>::type
@@ -241,7 +241,7 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DLLEXPORT const object& variant::as<object>() const;
+    template<> PROTEAN_DECL const object& variant::as<object>() const;
 
     template<typename T>
     variant make_object(const variant& params)

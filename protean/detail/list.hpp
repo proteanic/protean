@@ -18,7 +18,7 @@
 
 namespace protean { namespace detail {
     
-    class PROTEAN_DLLEXPORT list : public sequence
+    class PROTEAN_DECL list : public sequence
     {
         typedef std::vector<variant> container_t;
     public:

@@ -41,7 +41,7 @@ namespace protean {
         return citr->second();
     }
 
-    template<> PROTEAN_DLLEXPORT
+    template<> PROTEAN_DECL
     void object_factory::register_object<object_proxy>()
     {
         boost::throw_exception (variant_error("Cannot register an object proxy"));

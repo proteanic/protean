@@ -11,7 +11,7 @@
 
 namespace protean {
 
-    class PROTEAN_DLLEXPORT variant : public variant_base
+    class PROTEAN_DECL variant : public variant_base
     {
     public:
         typedef boost::gregorian::date              date_t;

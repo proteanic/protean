@@ -14,7 +14,7 @@
 
 namespace protean { namespace detail {
     
-    class PROTEAN_DLLEXPORT buffer : public detail::ref_counted
+    class PROTEAN_DECL buffer : public detail::ref_counted
     {
     public:
         buffer(size_t size);

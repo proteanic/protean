@@ -16,7 +16,7 @@
 
 namespace protean { namespace detail {
 
-    class PROTEAN_DLLEXPORT dictionary : public mapping
+    class PROTEAN_DECL dictionary : public mapping
     {
         typedef std::map<std::string, variant> container_t;
 

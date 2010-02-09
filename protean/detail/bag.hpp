@@ -17,7 +17,7 @@
 
 namespace protean { namespace detail {
 
-    class PROTEAN_DLLEXPORT bag : public mapping
+    class PROTEAN_DECL bag : public mapping
     {
         typedef std::list<std::pair<std::string, variant> > container_type;
 

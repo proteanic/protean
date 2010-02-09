@@ -27,7 +27,7 @@ namespace protean {
 
     template<typename T> class handle;
 
-    class PROTEAN_DLLEXPORT object_factory
+    class PROTEAN_DECL object_factory
     {
     public:
         typedef boost::function<handle<object>()> create_fn_t;
@@ -48,7 +48,7 @@ namespace protean {
         instance_map_t m_instance_map;
     };
 
-    template<> PROTEAN_DLLEXPORT
+    template<> PROTEAN_DECL
     void object_factory::register_object<object_proxy>();
 
     template<class T>

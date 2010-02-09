@@ -20,7 +20,7 @@ namespace protean {
 
     static const std::string xml_default_element = "Variant";
 
-    class PROTEAN_DLLEXPORT xml_writer
+    class PROTEAN_DECL xml_writer
     {
     public:
         enum enum_flag_t { None=0, Preserve=1, NoHeader=2 };
@@ -62,7 +62,7 @@ namespace protean {
         std::stack<element_info> m_stack;
         int m_flags;
 
-        friend PROTEAN_DLLEXPORT xml_writer& operator<<(xml_writer& writer, const variant& variant);
+        friend PROTEAN_DECL xml_writer& operator<<(xml_writer& writer, const variant& variant);
     };
 
 } // namespace protean

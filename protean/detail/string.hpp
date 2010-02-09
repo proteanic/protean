@@ -13,7 +13,7 @@
 
 namespace protean { namespace detail {
 
-    class PROTEAN_DLLEXPORT string
+    class PROTEAN_DECL string
     {
     public:
         string();

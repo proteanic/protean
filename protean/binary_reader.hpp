@@ -15,7 +15,7 @@ namespace protean {
 
     class object_factory;
     
-    class PROTEAN_DLLEXPORT binary_reader
+    class PROTEAN_DECL binary_reader
     {
     public:
         enum enum_flag_t { None=0, CreateProxy=1 };
@@ -55,7 +55,7 @@ namespace protean {
         void setup();
         void close();
 
-        friend PROTEAN_DLLEXPORT binary_reader& operator>>(binary_reader& reader, variant& v);
+        friend PROTEAN_DECL binary_reader& operator>>(binary_reader& reader, variant& v);
     };
 
 } // namespace protean

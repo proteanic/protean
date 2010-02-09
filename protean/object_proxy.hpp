@@ -13,7 +13,7 @@
 
 namespace protean {
 
-    class PROTEAN_DLLEXPORT object_proxy : public object
+    class PROTEAN_DECL object_proxy : public object
     {
     public:
         object_proxy(const std::string& class_name);

@@ -12,7 +12,7 @@
 
 namespace protean { namespace detail {
 
-    class PROTEAN_DLLEXPORT collection
+    class PROTEAN_DECL collection
     {
     public:
         virtual ~collection() { }

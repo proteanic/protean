@@ -11,7 +11,7 @@
 
 namespace protean { namespace detail {
 
-    class PROTEAN_DLLEXPORT tuple : public sequence
+    class PROTEAN_DECL tuple : public sequence
     {
     public:
         tuple(size_t size);

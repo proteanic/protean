@@ -33,7 +33,7 @@
 
 namespace protean {
 
-    class PROTEAN_DLLEXPORT variant_base
+    class PROTEAN_DECL variant_base
     {
     public:
 
