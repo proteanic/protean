@@ -1,3 +1,8 @@
+#  (C) Copyright Johan Ditmar, Karel Hruda, Paul O'Neill & Luke Stedman 2009.
+#  Use, modification and distribution are subject to the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#  http://www.boost.org/LICENSE_1_0.txt).
+
 ##############################################################################
 # This file can be copied to user-config.jam and customised to match 
 # your computer. Environment variables can be used instead, see the
@@ -32,9 +37,5 @@
 # Release libraries under Windows. If you do, everything will seem to compile
 # fine but then the code will crash unpredictably at runtime. 
 # XERCES_BINARY = xerces-c_3.lib ;
-
-# these have defaults based on BOOST_BUILD_PATH (NB: they might not work ATM)
-# BOOST_INCLUDE = c:/boost_1_41_0 ;
-# BOOST_LIB = c:/boost_1_41_0/stage/lib ;
 
 ##############################################################################

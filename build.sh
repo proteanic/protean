@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#  (C) Copyright Johan Ditmar, Karel Hruda, Paul O'Neill & Luke Stedman 2009.
+#  Use, modification and distribution are subject to the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#  http://www.boost.org/LICENSE_1_0.txt).
+
 THIRDPARTY=thirdparty
 ARCHIVES=${THIRDPARTY}/archives
 
@@ -83,14 +88,6 @@ function check-prerequisites ()
 
 function default-gcc-version ()
 {
-#    if [ "`uname -o`" = Cygwin ]; then
-#        PATTERN='\1'
-#    else
-#        PATTERN='\1.\2'
-#    fi
-#    # if this fails then just specify the gcc version by hand
-#    check-prerequisites g++ grep awk sed
-#    echo `g++ -v 2>&1 | grep "gcc version" | awk '{ print $3 }'` | sed 's/\([[:digit:]]*\).\([[:digit:]]*\).*/'"$PATTERN"/
      g++ -v 2>&1 | grep "gcc version" | awk '{ print $3 }'
 }
 

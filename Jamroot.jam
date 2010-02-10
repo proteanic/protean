@@ -1,22 +1,32 @@
-# Quickstart:
+#  (C) Copyright Johan Ditmar, Karel Hruda, Paul O'Neill & Luke Stedman 2009.
+#  Use, modification and distribution are subject to the Boost Software License,
+#  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#  http://www.boost.org/LICENSE_1_0.txt).
 
+# Quickstart: Run build.sh. You may need to install Cygwin first if
+# using Windows (www.cygwin.com). This may take a long time, but you
+# will be able to invoke bjam directly for subsequent builds. The
+# command line to use will be shown just before build.sh terminates.
+
+# Slower start:
+#
 # Install Boost. You will need iostreams with zlib support. You should
-# specify --build-type=complete
-
+# specify --build-type=complete if using Windows
+#
 # Install Xerces (optional)
-
+#
 # Put bjam on your path. Under Linux/Cygwin this can be done e.g. by
 # export PATH=${PATH}:/cygdrive/c/boost_1_41_0
-
+#
 # Set BOOST_BUILD_PATH, under Linux/Cygwin this can be done e.g. by
 # export BOOST_BUILD_PATH c:/boost_1_41_0
-
+#
 # Copy user-config.jam.example to user-config.jam and edit the
 # settings to match your system. You can also use environment
 # variables if you prefer. The user-config file will take precedence
 # if both methods are used. You can just set NO_XERCES if you are in a
 # hurry as everything else then has a reasonable default.
-
+#
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
 
@@ -33,29 +43,16 @@ if ! [ os.environ BOOST_BUILD_PATH ]
 }
 
 BOOSTROOT = [ os.environ BOOST_BUILD_PATH ] ;
-BOOST_INCLUDE ?= [ os.environ BOOST_INCLUDE ] ;
 BOOST_INCLUDE ?= $(BOOSTROOT) ;
-BOOST_LIB ?= [ os.environ BOOST_LIB ] ;
 
 if ! $(BOOST_LIB)
 {
     BOOST_LIB += $(BOOSTROOT)/stage/lib ;
- 
-    if $(DEBUG_PATHS)
-    {
-       ECHO Protean: BOOST_LIB defaults to $(BOOST_LIB) ;
-    }
 }
 
 if ! $(BOOST_LIB)
 {
     EXIT Protean: BOOST_LIB must be set ;
-}
-
-#fixme: this is being ignored ATM
-if ! $(BOOST_INCLUDE)
-{
-    EXIT Protean: BOOST_INCLUDE must be set ;
 }
 
 NO_XERCES ?= [ os.environ NO_XERCES ] ;
@@ -66,7 +63,6 @@ XERCES_INCLUDE ?= [ os.environ XERCES_INCLUDE ] ;
 if $(DEBUG_PATHS)
 {
     ECHO env.BOOST_BUILD_PATH= [ os.environ BOOST_BUILD_PATH ] ;
-    ECHO BOOST_INCLUDE=$(BOOST_INCLUDE) ;
     ECHO BOOST_LIB=$(BOOST_LIB) ;
     ECHO XERCES_INCLUDE=$(XERCES_INCLUDE) ;
     ECHO XERCES_LIBPATH=$(XERCES_LIBPATH) ;
@@ -86,7 +82,7 @@ project : requirements
 
 rule windows-additional-properties 
 {
-   ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_BUILD_DLL ;
+   ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>PROTEAN_DYN_LINK ;
    ADDITIONAL_LIB_PROPERTIES += <link>shared:<define>BOOST_ALL_DYN_LINK ;
 }
 
@@ -167,6 +163,7 @@ lib protean
    <library-path>$(BOOST_LIB)
    <include>.
    $(ADDITIONAL_LIB_PROPERTIES)
+   <define>PROTEAN_SOURCE
    <tag>@protean_tag
 : : 
    <include>.
@@ -179,7 +176,7 @@ rule test-properties ( properties * )
     {
        if  <link>shared in $(properties)
        {
-          result += <define>PROTEAN_USE_DLL ;
+          result += <define>PROTEAN_DYN_LINK ;
        }
     }
     return $(result) ;
