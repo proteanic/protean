@@ -89,7 +89,7 @@ namespace protean {
     /****************/
     public:
         template<typename T>
-        typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T>>, T>::type
+        typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T> >, T>::type
         as() const;
 
         template<typename T>
@@ -195,28 +195,6 @@ namespace protean {
         friend class sax_content_handler;
         friend class binary_reader;
         friend class binary_writer;
-    };
-
-    struct const_iterator_traits
-    {
-        typedef const variant value_type;
-        typedef std::vector<variant>::const_iterator list_iterator_type;
-        typedef std::map<std::string, variant>::const_iterator dictionary_iterator_type;
-        typedef std::list<std::pair<std::string, variant> >::const_iterator bag_iterator_type;
-        typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::const_iterator timeseries_iterator_type;
-        typedef const variant* tuple_iterator_type;
-        typedef variant::difference_type difference_type;
-    };
-
-    struct iterator_traits
-    {
-        typedef variant value_type;
-        typedef std::vector<variant>::iterator list_iterator_type;
-        typedef std::map<std::string, variant>::iterator dictionary_iterator_type;
-        typedef std::list<std::pair<std::string, variant> >::iterator bag_iterator_type;
-        typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::iterator timeseries_iterator_type;
-        typedef variant* tuple_iterator_type;
-		typedef variant::difference_type difference_type;
     };
 
     variant make_any(const std::string& value);

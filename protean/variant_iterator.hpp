@@ -26,6 +26,29 @@ namespace protean {
     struct const_iterator_traits;
     struct iterator_traits;
 
+    struct const_iterator_traits
+    {
+        typedef const variant value_type;
+        typedef std::vector<variant>::const_iterator list_iterator_type;
+        typedef std::map<std::string, variant>::const_iterator dictionary_iterator_type;
+        typedef std::list<std::pair<std::string, variant> >::const_iterator bag_iterator_type;
+        typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::const_iterator timeseries_iterator_type;
+        typedef const variant* tuple_iterator_type;
+        typedef size_t difference_type;
+    };
+
+    struct iterator_traits
+    {
+        typedef variant value_type;
+        typedef std::vector<variant>::iterator list_iterator_type;
+        typedef std::map<std::string, variant>::iterator dictionary_iterator_type;
+        typedef std::list<std::pair<std::string, variant> >::iterator bag_iterator_type;
+        typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::iterator timeseries_iterator_type;
+        typedef variant* tuple_iterator_type;
+        typedef size_t difference_type;
+    };
+
+
     template <typename ITERATOR_TRAITS>
     class PROTEAN_DECL variant_iterator_interface
     {

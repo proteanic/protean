@@ -168,7 +168,7 @@ namespace protean {
      * variant::as()
      */
     template<typename T>
-    typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T>>, T>::type
+    typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T> >, T>::type
     variant::as() const
     {
         BEGIN_VARIANT_CONTEXT();
