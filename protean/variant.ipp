@@ -205,7 +205,7 @@ namespace protean {
 
 		const handle<detail::buffer>& obj(m_value.get<Buffer>());
 
-		return reinterpret_cast<const T>(m_value.get<Buffer>()->data());
+		return reinterpret_cast<const T>(obj->data());
 
         END_VARIANT_CONTEXT();
 	}
