@@ -24,8 +24,8 @@
 # Copy user-config.jam.example to user-config.jam and edit the
 # settings to match your system. You can also use environment
 # variables if you prefer. The user-config file will take precedence
-# if both methods are used. You can just set NO_XERCES if you are in a
-# hurry as everything else then has a reasonable default.
+# if both methods are used. You can just set NO_XERCES to 1 if you are
+# in a hurry as everything else then has a reasonable default.
 #
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
@@ -59,6 +59,15 @@ NO_XERCES ?= [ os.environ NO_XERCES ] ;
 XERCES_BINARY ?= [ os.environ XERCES_BINARY ] ;
 XERCES_LIBPATH ?= [ os.environ XERCES_LIBPATH ] ;
 XERCES_INCLUDE ?= [ os.environ XERCES_INCLUDE ] ;
+
+
+if $(NO_XERCES)
+{
+    if ! $(NO_XERCES) in 0 1
+    {
+        ECHO "warning: NO_XERCES should be either '0' or '1'" ;
+    }       
+}
 
 if $(DEBUG_PATHS)
 {
@@ -128,7 +137,7 @@ DEPENDENTONXERCES =
    protean/xml_reader.hpp protean/xml_parser.hpp protean/xml_writer.hpp protean/xml_defs.hpp
 ;
 
-if $(NO_XERCES) 
+if $(NO_XERCES) = 1 
 {
    EXCLUDE += $(DEPENDENTONXERCES) ;
    ECHO Protean: Building without Xerces support because NO_XERCES is set ;
@@ -138,7 +147,7 @@ else
    XERCES_BJAM_NAME = xerces ;
    if ! $(XERCES_INCLUDE)
    {
-        EXIT Protean: XERCES_INCLUDE needs to be set if NO_XERCES is not ;
+        EXIT Protean: XERCES_INCLUDE needs to be set if NO_XERCES is not 1 ;
    }
 }
 
