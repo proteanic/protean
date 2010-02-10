@@ -24,8 +24,8 @@ namespace protean {
 		typedef value_type&							reference;
 		typedef const value_type&					const_reference;
 
-		typedef size_t								difference_type;
-		typedef std::bidirectional_iterator_tag		iterator_category;
+        typedef const_iterator_traits::difference_type  difference_type;
+		typedef std::bidirectional_iterator_tag         iterator_category;
 
     /* Construction */
     /****************/

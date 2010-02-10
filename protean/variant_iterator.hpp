@@ -23,8 +23,6 @@
 namespace protean {
 
     class variant;
-    struct const_iterator_traits;
-    struct iterator_traits;
 
     struct const_iterator_traits
     {
