@@ -111,6 +111,9 @@ namespace protean {
         static std::string enum_to_string(enum_type_t type);
         static enum_type_t string_to_enum(const std::string& type);
 
+		int compare(enum_type_t type, const variant_base& rhs) const;
+		size_t hash(enum_type_t type) const;
+
     private:
         friend class xml_reader;
         friend class xml_writer;

@@ -1,4 +1,5 @@
 #include <protean/variant.hpp>
+#include <protean/detail/hash.hpp>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -184,6 +185,134 @@ namespace protean {
     variant_base::enum_type_t variant_base::string_to_enum(const std::string& type)
     {
         return static_cast<variant_base::enum_type_t>(variant_impl_t::string_to_enum(type));
+    }
+
+    template<typename T>
+    static int compare_using_less(const T& lhs, const T& rhs)
+    {
+        if (lhs==lhs)
+        {
+            return 0;
+        }
+        else
+        {
+            return lhs<rhs ? -1 : 1;
+        }
+    }
+
+    int variant_base::compare(enum_type_t type, const variant_base& rhs) const
+    {
+        // structures are of same type
+        switch (type)
+        {
+			case None:
+				return 0;
+			case Any:
+				return m_value.get<Any>().compare(rhs.m_value.get<Any>());
+			case String:
+				return m_value.get<String>().compare(rhs.m_value.get<String>());
+			case Int32:
+				return compare_using_less(m_value.get<Int32>(), rhs.m_value.get<Int32>());
+			case UInt32:
+				return compare_using_less(m_value.get<UInt32>(), rhs.m_value.get<UInt32>());
+			case Int64:
+				return compare_using_less(m_value.get<Int64>(), rhs.m_value.get<Int64>());
+			case UInt64:
+				return compare_using_less(m_value.get<UInt64>(), rhs.m_value.get<UInt64>());
+			case Float:
+				return compare_using_less(m_value.get<Float>(), rhs.m_value.get<Float>());
+			case Double:
+				return compare_using_less(m_value.get<Double>(), rhs.m_value.get<Double>());
+			case Boolean:
+				if ( m_value.get<Boolean>()==rhs.m_value.get<Boolean>() )
+					return 0;
+				else if ( m_value.get<Boolean>() )
+					return 1;
+				else
+					return -1;
+				break;
+			case Date:
+				return compare_using_less(m_value.get<Date>(), rhs.m_value.get<Date>());
+			case Time:
+				return compare_using_less(m_value.get<Time>(), rhs.m_value.get<Time>());
+			case DateTime:
+				return compare_using_less(m_value.get<DateTime>(), rhs.m_value.get<DateTime>());
+			case Buffer:
+				return m_value.get<Buffer>()->compare(*rhs.m_value.get<Buffer>());
+			case List:
+			case Tuple:
+			case Dictionary:
+			case Bag:
+			case TimeSeries:
+				return m_value.get<Collection>().compare(rhs.m_value.get<Collection>());
+			case Exception:
+				return m_value.get<Exception>().compare(rhs.m_value.get<Exception>());
+			case Object:
+				return m_value.get<Object>()->compare(*rhs.m_value.get<Object>());
+				break;
+			default:
+				boost::throw_exception(variant_error("Unrecognised variant type " + enum_to_string(type)));
+		}
+    }
+
+    size_t variant_base::hash(enum_type_t type) const
+    {
+        switch (type)
+        {
+            case None:
+                return 0;
+            case Any:
+				return boost::hash<std::string>()(m_value.get<Any>().value());
+            case String:
+                return boost::hash<std::string>()(m_value.get<String>().value());
+            case Int32:
+				return boost::hash<boost::int32_t>()(m_value.get<Int32>());
+            case UInt32:
+                return boost::hash<boost::uint32_t>()(m_value.get<UInt32>());
+            case Int64:
+                return boost::hash<boost::int64_t>()(m_value.get<Int64>());
+            case UInt64:
+                return boost::hash<boost::uint64_t>()(m_value.get<UInt64>());
+            case Float:
+                return boost::hash<float>()(m_value.get<Float>());
+            case Double:
+                return boost::hash<double>()(m_value.get<Double>());
+            case Boolean:
+                return boost::hash<bool>()(m_value.get<Boolean>());
+            case Date:
+                return boost::hash<boost::gregorian::date>()(m_value.get<Date>());
+            case Time:
+                return boost::hash<boost::posix_time::time_duration>()(m_value.get<Time>());
+            case DateTime:
+                return boost::hash<boost::posix_time::ptime>()(m_value.get<DateTime>());
+            case List:
+            case Dictionary:
+            case Bag:
+            case TimeSeries:
+            {
+                return m_value.get<Collection>().hash();
+            }
+            case Buffer:
+            {
+                return m_value.get<Buffer>()->hash();
+            }
+            case Tuple:
+            {
+                return m_value.get<Tuple>().hash();
+            }
+            case Exception:
+            {
+                return m_value.get<Exception>().hash();
+            }
+            case Object:
+            {
+                return m_value.get<Object>()->hash();
+            }
+            default:
+            {
+                boost::throw_exception(variant_error("Unrecognised variant type"));
+            }
+        }
     }
 
 } // namespace protean

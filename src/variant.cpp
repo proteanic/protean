@@ -7,11 +7,9 @@
 #include <boost/regex.hpp>
 #include <boost/format.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/functional/hash.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <protean/variant.hpp>
-#include <protean/detail/hash.hpp>
 
 #include <protean/detail/dummy_iterator.hpp>
 
@@ -159,65 +157,15 @@ namespace protean {
         }
     }
 
-    int variant::compare( const variant& rhs ) const
+    int variant::compare(const variant& rhs) const
     {
-        if ( m_type == rhs.type() )
+        if (m_type == rhs.type())
         {
-            // structures are of same type
-            switch (m_type)
-            {
-            case None:
-                return 0;
-            case Any:
-                return m_value.get<Any>().compare(rhs.m_value.get<Any>());
-            case String:
-                return m_value.get<String>().compare(rhs.m_value.get<String>());
-            case Int32:
-                return compare_using_less(m_value.get<Int32>(), rhs.m_value.get<Int32>());
-            case UInt32:
-                return compare_using_less(m_value.get<UInt32>(), rhs.m_value.get<UInt32>());
-            case Int64:
-                return compare_using_less(m_value.get<Int64>(), rhs.m_value.get<Int64>());
-            case UInt64:
-                return compare_using_less(m_value.get<UInt64>(), rhs.m_value.get<UInt64>());
-            case Float:
-                return compare_using_less(m_value.get<Float>(), rhs.m_value.get<Float>());
-            case Double:
-                return compare_using_less(m_value.get<Double>(), rhs.m_value.get<Double>());
-            case Boolean:
-                if ( m_value.get<Boolean>()==rhs.m_value.get<Boolean>() )
-                    return 0;
-                else if ( m_value.get<Boolean>() )
-                    return 1;
-                else
-                    return -1;
-                break;
-            case Date:
-                return compare_using_less(m_value.get<Date>(), rhs.m_value.get<Date>());
-            case Time:
-                return compare_using_less(m_value.get<Time>(), rhs.m_value.get<Time>());
-            case DateTime:
-                return compare_using_less(m_value.get<DateTime>(), rhs.m_value.get<DateTime>());
-            case Buffer:
-                return m_value.get<Buffer>()->compare(*rhs.m_value.get<Buffer>());
-            case List:
-            case Tuple:
-            case Dictionary:
-            case Bag:
-            case TimeSeries:
-                return m_value.get<Collection>().compare(rhs.m_value.get<Collection>());
-            case Exception:
-                return m_value.get<Exception>().compare(rhs.m_value.get<Exception>());
-            case Object:
-                return m_value.get<Object>()->compare(*rhs.m_value.get<Object>());
-                break;
-            default:
-                boost::throw_exception(variant_error("Unrecognised variant type " + enum_to_string(m_type)));
-            }
+			return variant_base::compare(m_type, rhs);
         }
         else
         {
-             return compare_using_less(m_type, rhs.type());
+			return m_type<rhs.type() ? -1 : 1;
         }
     }
 
@@ -1289,84 +1237,10 @@ namespace protean {
 
     size_t variant::hash() const
     {
-        size_t seed = 0;
+		size_t seed = boost::hash<size_t>()(m_type);
+		boost::hash_combine(seed, variant_base::hash(m_type));
 
-        boost::hash_combine(seed, type());
-
-        switch ( type() )
-        {
-            case None:
-                break;
-            case Any:
-                boost::hash_combine(seed, m_value.get<Any>().value());
-                break;
-            case String:
-                boost::hash_combine(seed, m_value.get<String>().value());
-                break;
-            case Int32:
-                boost::hash_combine(seed, m_value.get<Int32>());
-                break;
-            case UInt32:
-                boost::hash_combine(seed, m_value.get<UInt32>());
-                break;
-            case Int64:
-                boost::hash_combine(seed, m_value.get<Int64>());
-                break;
-            case UInt64:
-                boost::hash_combine(seed, m_value.get<UInt64>());
-                break;
-            case Float:
-                boost::hash_combine(seed, m_value.get<Float>());
-                break;
-            case Double:
-                boost::hash_combine(seed, m_value.get<Double>());
-                break;
-            case Boolean:
-                boost::hash_combine(seed, m_value.get<Boolean>());
-                break;
-            case Date:
-                boost::hash_combine(seed, m_value.get<Date>());
-                break;
-            case Time:
-                boost::hash_combine(seed, m_value.get<Time>());
-                break;
-            case DateTime:
-                boost::hash_combine(seed, m_value.get<DateTime>());
-                break;
-            case List:
-            case Dictionary:
-            case Bag:
-            case TimeSeries:
-            {
-                boost::hash_combine(seed, m_value.get<Collection>().hash());
-                break;
-            }
-            case Buffer:
-            {
-                boost::hash_combine(seed, m_value.get<Buffer>()->hash());
-                break;
-            }
-            case Tuple:
-            {
-                boost::hash_combine(seed, m_value.get<Tuple>().hash());
-                break;
-            }
-            case Exception:
-            {
-                boost::hash_combine(seed, m_value.get<Exception>().hash());
-                break;
-            }
-            case Object:
-            {
-                boost::hash_combine(seed, m_value.get<Object>()->hash());
-                break;
-            }
-            default:
-            {
-                boost::throw_exception(variant_error("Unrecognised variant type"));
-            }
-        }
-        return seed;
+		return seed;
     }
 
     std::size_t hash_value(const variant& value)
