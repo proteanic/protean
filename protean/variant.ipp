@@ -168,7 +168,7 @@ namespace protean {
      * variant::as()
      */
     template<typename T>
-    typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T> >, T>::type
+    typename boost::enable_if<variant::return_value<T>, T>::type
     variant::as() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -187,31 +187,29 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DECL std::string                    variant::as<std::string>()          const;
-    template<> PROTEAN_DECL bool                           variant::as<bool>()                 const;
-    template<> PROTEAN_DECL variant::date_t                variant::as<variant::date_t>()      const;
-    template<> PROTEAN_DECL variant::time_t                variant::as<variant::time_t>()      const;
-    template<> PROTEAN_DECL variant::date_time_t           variant::as<variant::date_time_t>() const;
-    //template<> PROTEAN_DECL const void*                    variant::as<void*>()                const;
-    template<> PROTEAN_DECL exception_data                 variant::as<exception_data>()       const;
+    template<> PROTEAN_DECL std::string                 variant::as<std::string>()              const;
+    template<> PROTEAN_DECL bool                        variant::as<bool>()                     const;
+    template<> PROTEAN_DECL variant::date_t             variant::as<variant::date_t>()          const;
+    template<> PROTEAN_DECL variant::time_t             variant::as<variant::time_t>()          const;
+    template<> PROTEAN_DECL variant::date_time_t        variant::as<variant::date_time_t>()     const;
 
     template<typename T>
-    typename boost::enable_if<boost::is_pointer<T>, const T>::type
+    typename boost::enable_if<variant::return_pointer<T>, const T>::type
     variant::as() const
-	{
+    {
         BEGIN_VARIANT_CONTEXT();
 
-		CHECK_VARIANT_FUNCTION(Buffer, "as<" + typeid(T).name() + ">()");
+        CHECK_VARIANT_FUNCTION(Buffer, "as<" + typeid(T).name() + ">()");
 
-		const handle<detail::buffer>& obj(m_value.get<Buffer>());
+        const handle<detail::buffer>& obj(m_value.get<Buffer>());
 
-		return reinterpret_cast<const T>(obj->data());
+        return reinterpret_cast<const T>(obj->data());
 
         END_VARIANT_CONTEXT();
-	}
+    }
 
     template<typename T>
-    typename boost::enable_if<boost::is_base_of<object, T>, const T&>::type
+    typename boost::enable_if<variant::return_reference<T>, const T&>::type
     variant::as() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -226,7 +224,7 @@ namespace protean {
         }
         else if (obj.is<object_proxy>())
         {
-            // Coerce the StreamableProxy into T
+            // Coerce the object proxy into T
             T* casted = new T();
             casted->coerce(*obj.as<object_proxy>());
 
@@ -241,7 +239,8 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> PROTEAN_DECL const object& variant::as<object>() const;
+    template<> PROTEAN_DECL const exception_data&       variant::as<exception_data>()           const;
+    template<> PROTEAN_DECL const object&               variant::as<object>()                   const;
 
     template<typename T>
     variant make_object(const variant& params)

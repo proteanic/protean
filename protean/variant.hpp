@@ -18,14 +18,14 @@ namespace protean {
         typedef boost::posix_time::time_duration    time_t;
         typedef boost::posix_time::ptime            date_time_t;
 
-		typedef variant								value_type;
-		typedef value_type*							pointer;
-		typedef const value_type*					const_pointer;
-		typedef value_type&							reference;
-		typedef const value_type&					const_reference;
+        typedef variant                             value_type;
+        typedef value_type*                         pointer;
+        typedef const value_type*                   const_pointer;
+        typedef value_type&                         reference;
+        typedef const value_type&                   const_reference;
 
         typedef const_iterator_traits::difference_type  difference_type;
-		typedef std::bidirectional_iterator_tag         iterator_category;
+        typedef std::bidirectional_iterator_tag         iterator_category;
 
     /* Construction */
     /****************/
@@ -88,16 +88,43 @@ namespace protean {
     /* Type casting */
     /****************/
     public:
+
+        // as<T*>() -> const T*
         template<typename T>
-        typename boost::disable_if<boost::mpl::or_<boost::is_pointer<T>, boost::is_base_of<object,T> >, T>::type
+        struct return_pointer :
+            boost::is_pointer<T>::type
+        {};
+
+        // as<T>() -> const T&
+        template<typename T>
+        struct return_reference :
+            boost::mpl::or_<
+                boost::is_same<exception_data, T>,
+                boost::is_base_of<object,T>
+            >::type
+        {};
+
+        // as<T>() -> T
+        template<typename T>
+        struct return_value :
+            boost::mpl::not_<
+                boost::mpl::or_<
+                    return_pointer<T>,
+                    return_reference<T>
+                >
+            >::type
+        {};
+
+        template<typename T>
+        typename boost::enable_if<return_value<T>, T>::type
         as() const;
 
         template<typename T>
-        typename boost::enable_if<boost::is_pointer<T>, const T>::type
+        typename boost::enable_if<return_pointer<T>, const T>::type
         as() const;
 
         template<typename T>
-        typename boost::enable_if<boost::is_base_of<object,T>, const T&>::type
+        typename boost::enable_if<return_reference<T>, const T&>::type
         as() const;
 
     /* Collection interface */

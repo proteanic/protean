@@ -984,7 +984,7 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
-    template<> exception_data variant::as<exception_data>() const
+    template<> const exception_data& variant::as<exception_data>() const
     {
         BEGIN_VARIANT_CONTEXT();
 
@@ -1207,7 +1207,7 @@ namespace protean {
             }
             case Exception:
             {
-                const exception_data& x(m_value.get<Exception>());
+                const exception_data& x(as<exception_data>());
                 oss << x.type() << "('" << x.message() << "')";
                 break;
             }
