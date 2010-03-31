@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\typed_array.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\variant.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			</File>
 			<File
 				RelativePath="..\..\protean\object_proxy.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\protean\typed_array.hpp"
 				>
 			</File>
 			<File

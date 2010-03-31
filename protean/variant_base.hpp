@@ -33,6 +33,8 @@
 
 namespace protean {
 
+    class typed_array;
+
     class PROTEAN_DECL variant_base
     {
     public:
@@ -60,6 +62,7 @@ namespace protean {
             Exception               = 0x00040000,
             TimeSeries              = 0x00080000,
             Object                  = 0x00100000,
+            Array                   = 0x00200000,
 
             // The following enums represent groupings of variants
             Integer                 = Boolean | Int32 | UInt32 | Int64 | UInt64,
@@ -94,7 +97,8 @@ namespace protean {
             detail::tagged_type<TimeSeries,         detail::timeseries,                 detail::alloc_new,          boost::mpl::string<'Time','Seri','es'> >,
             detail::tagged_type<Tuple,              detail::tuple,                      detail::alloc_new,          boost::mpl::string<'Tupl','e'> >,
             detail::tagged_type<Buffer,             handle<detail::buffer>,             detail::alloc_placement,    boost::mpl::string<'Buff','er'> >,
-            detail::tagged_type<Exception,          exception_data,						detail::alloc_new,			boost::mpl::string<'Exce','ptio','n'> >
+            detail::tagged_type<Exception,          exception_data,						detail::alloc_new,			boost::mpl::string<'Exce','ptio','n'> >,
+            detail::tagged_type<Array,              handle<typed_array>,				detail::alloc_placement,	boost::mpl::string<'Arra','y'> >
         > variant_impl_t;
         
         variant_impl_t m_value;
@@ -128,3 +132,7 @@ namespace protean {
 } // namespace protean
 
 #endif // PROTEAN_VARIANT_BASE_HPP
+
+#include <protean/variant_ref.hpp>
+#include <protean/typed_array.hpp>
+

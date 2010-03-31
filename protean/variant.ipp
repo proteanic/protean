@@ -240,6 +240,7 @@ namespace protean {
     }
 
     template<> PROTEAN_DECL const exception_data&       variant::as<exception_data>()           const;
+    template<> PROTEAN_DECL const typed_array&          variant::as<typed_array>()              const;
     template<> PROTEAN_DECL const object&               variant::as<object>()                   const;
 
     template<typename T>

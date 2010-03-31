@@ -124,6 +124,9 @@ namespace protean {
                 case Exception:
                     m_value.set<Exception>(rhs.m_value.get<Exception>());
                     break;
+                case Array:
+                    m_value.set<Array>(rhs.m_value.get<Array>());
+                    break;
 				default:
 					boost::throw_exception(variant_error(std::string("Attempt to copy unknown variant type ") + enum_to_string(type)));
             }
@@ -181,6 +184,9 @@ namespace protean {
                     break;
                 case Exception:
                     m_value.destroy<Exception>();
+                    break;
+                case Array:
+                    m_value.destroy<Array>();
                     break;
 				default:
 					boost::throw_exception(variant_error(std::string("Attempt to destruct unknown variant type ") + enum_to_string(type)));
@@ -260,6 +266,9 @@ namespace protean {
 			case Object:
 				return m_value.get<Object>()->compare(*rhs.m_value.get<Object>());
 				break;
+			case Array:
+				return m_value.get<Array>()->compare(*rhs.m_value.get<Array>());
+				break;
 			default:
 				boost::throw_exception(variant_error("Unrecognised variant type " + enum_to_string(type)));
 		}
@@ -317,6 +326,10 @@ namespace protean {
             case Object:
             {
                 return m_value.get<Object>()->hash();
+            }
+            case Array:
+            {
+                return m_value.get<Array>()->hash();
             }
             default:
             {

@@ -97,6 +97,18 @@ namespace protean {
         m_value.set<Object>(arg);
     }
 
+    variant::variant(const typed_array& arg) :
+        m_type(Array)
+    {
+        m_value.set<Array>(new typed_array(arg));
+    }
+
+    variant::variant(const handle<typed_array>& arg) :
+        m_type(Array)
+    {
+        m_value.set<Array>(arg);
+    }
+
     variant::variant(const variant_ref& arg) :
         variant_base(arg.m_type, *arg.m_value),
         m_type(arg.m_type)
@@ -1008,6 +1020,17 @@ namespace protean {
         END_VARIANT_CONTEXT();
     }
 
+    template<> const typed_array& variant::as<typed_array>() const
+    {
+        BEGIN_VARIANT_CONTEXT();
+
+        CHECK_VARIANT_FUNCTION(Array, "as<variant::typed_array>()");
+
+        return *m_value.get<Array>();
+
+        END_VARIANT_CONTEXT();
+    }
+
     template<> const object& variant::as<object>() const
     {
         BEGIN_VARIANT_CONTEXT();
@@ -1239,6 +1262,30 @@ namespace protean {
                     oss << obj->name() << "(\n";
                     oss << params.str(false, indent + tab);
                     oss << "\n" << indent;
+                }
+                break;
+            }
+            case Array:
+            {
+                const typed_array& a(as<typed_array>());
+
+                if (summarise)
+                {
+                    oss << "Array(size=" << a.size() << ", type=" << enum_to_string(a.type()) << ")";
+                }
+                else
+                {
+                    oss << "Array(\n";
+                    for (size_t i=0; i<a.size();)
+                    {
+                        oss << variant(a[i]).str(false, indent + tab);
+                        if (++i!=a.size())
+                        {
+                            oss << ",";
+                        }
+                        oss << "\n";
+                    }
+                    oss << indent << ")";
                 }
                 break;
             }

@@ -51,12 +51,14 @@ namespace protean {
         explicit variant(const exception_data& arg);
         explicit variant(const std::exception& arg);
         explicit variant(const object& arg);
+        explicit variant(const typed_array& arg);
 
         explicit variant(const variant_ref& arg);
         explicit variant(const variant_cref& arg);
 
     private:
         explicit variant(const handle<object>& arg);
+        explicit variant(const handle<typed_array>& arg);
 
     /* Assignment */
     /**************/
@@ -106,6 +108,7 @@ namespace protean {
         struct return_reference :
             boost::mpl::or_<
                 boost::is_same<exception_data, T>,
+                boost::is_same<typed_array, T>,
                 boost::is_base_of<object,T>
             >::type
         {};

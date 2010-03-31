@@ -13,6 +13,7 @@ namespace protean {
 
     class variant;
     class variant_cref;
+    class typed_array;
     
     // mutable reference
     class PROTEAN_DECL variant_ref
@@ -34,6 +35,7 @@ namespace protean {
     private:
         friend class variant;
         friend class variant_cref;
+        friend class typed_array;
 
         variant_base*               m_value;
         variant_base::enum_type_t   m_type;
@@ -60,6 +62,7 @@ namespace protean {
 
     private:
         friend class variant;
+        friend class typed_array;
 
         const variant_base*         m_value;
         variant_base::enum_type_t   m_type;
