@@ -23,20 +23,20 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
 
     for (size_t i=0; i<5; ++i)
     {
-        BOOST_CHECK(variant(a1[i]).as<std::string>().empty());
+        BOOST_CHECK(a1[i].as<std::string>().empty());
     }
 
-    a1[0] = variant("s1");
-    a1[1] = variant("s2");
-    a1[2] = variant("s3");
-    a1[3] = variant("s4");
-    a1[4] = variant("s5");
+    a1[0] = "s1";
+    a1[1] = "s2";
+    a1[2] = "s3";
+    a1[3] = "s4";
+    a1[4] = "s5";
 
-    BOOST_CHECK_EQUAL(variant(a1[0]).as<std::string>(), "s1");
-    BOOST_CHECK_EQUAL(variant(a1[1]).as<std::string>(), "s2");
-    BOOST_CHECK_EQUAL(variant(a1[2]).as<std::string>(), "s3");
-    BOOST_CHECK_EQUAL(variant(a1[3]).as<std::string>(), "s4");
-    BOOST_CHECK_EQUAL(variant(a1[4]).as<std::string>(), "s5");
+    BOOST_CHECK_EQUAL(a1[0].as<std::string>(), "s1");
+    BOOST_CHECK_EQUAL(a1[1].as<std::string>(), "s2");
+    BOOST_CHECK_EQUAL(a1[2].as<std::string>(), "s3");
+    BOOST_CHECK_EQUAL(a1[3].as<std::string>(), "s4");
+    BOOST_CHECK_EQUAL(a1[4].as<std::string>(), "s5");
 
     typed_array a2(5, variant("s6"));
     BOOST_REQUIRE_EQUAL(a1.size(), 5);
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
 
     for (size_t i=0; i<5; ++i)
     {
-        BOOST_CHECK_EQUAL(variant(a2[i]).as<std::string>(), "s6");
+        BOOST_CHECK_EQUAL(a2[i].as<std::string>(), "s6");
     }
 
     // check comparison
@@ -52,16 +52,18 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
     BOOST_CHECK_EQUAL(a2.compare(a2), 0);
     BOOST_CHECK_EQUAL(a1.compare(a2), -1);
     BOOST_CHECK_EQUAL(a2.compare(a1), 1);
+
+    BOOST_CHECK_THROW(a1[0] = 0, variant_error);
 }
 
 BOOST_AUTO_TEST_CASE(test_array_variant)
 {
     typed_array a1(5, variant::String);
-    a1[0] = variant("s1");
-    a1[1] = variant("s2");
-    a1[2] = variant("s3");
-    a1[3] = variant("s4");
-    a1[4] = variant("s5");
+    a1[0] = "s1";
+    a1[1] = "s2";
+    a1[2] = "s3";
+    a1[3] = "s4";
+    a1[4] = "s5";
 
     typed_array a2(5, variant("s6"));
 
@@ -72,16 +74,16 @@ BOOST_AUTO_TEST_CASE(test_array_variant)
     BOOST_CHECK(v2.is<variant::Array>());
 
     const typed_array& a3(v1.as<typed_array>());
-    BOOST_CHECK_EQUAL(variant(a3[0]).as<std::string>(), "s1");
-    BOOST_CHECK_EQUAL(variant(a3[1]).as<std::string>(), "s2");
-    BOOST_CHECK_EQUAL(variant(a3[2]).as<std::string>(), "s3");
-    BOOST_CHECK_EQUAL(variant(a3[3]).as<std::string>(), "s4");
-    BOOST_CHECK_EQUAL(variant(a3[4]).as<std::string>(), "s5");
+    BOOST_CHECK_EQUAL(a3[0].as<std::string>(), "s1");
+    BOOST_CHECK_EQUAL(a3[1].as<std::string>(), "s2");
+    BOOST_CHECK_EQUAL(a3[2].as<std::string>(), "s3");
+    BOOST_CHECK_EQUAL(a3[3].as<std::string>(), "s4");
+    BOOST_CHECK_EQUAL(a3[4].as<std::string>(), "s5");
 
     const typed_array& a4(v2.as<typed_array>());
     for (size_t i=0; i<5; ++i)
     {
-        BOOST_CHECK_EQUAL(variant(a4[i]).as<std::string>(), "s6");
+        BOOST_CHECK_EQUAL(a4[i].as<std::string>(), "s6");
     }
 
     BOOST_CHECK_EQUAL(v1.compare(v1), 0);

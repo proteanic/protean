@@ -40,22 +40,6 @@ namespace protean {
         return *this;
     }
 
-    variant_ref& variant_ref::operator=(const variant& rhs)
-    {
-        if (rhs.type()!=m_type)
-        {
-            boost::throw_exception(variant_error((boost::format("Attempt to assign variant of type %s to reference of type %s")
-                % variant::enum_to_string(rhs.type())
-                % variant::enum_to_string(m_type)
-            ).str()));
-        }
-
-        m_value->destroy(m_type);
-        m_value->assign(m_type, rhs);
-
-        return *this;
-    }
-
     variant_ref::operator bool() const
     {
         return m_value!=NULL;

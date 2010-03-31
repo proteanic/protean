@@ -338,4 +338,9 @@ namespace protean {
         }
     }
 
+    void variant_base::swap(variant_base& rhs)
+    {
+        m_value.swap(rhs.m_value);
+    }
+
 } // namespace protean
