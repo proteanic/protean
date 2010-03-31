@@ -40,6 +40,17 @@ namespace protean {
 		void swap(typed_array& rhs);
 
     private:
+        variant_base& at(size_t n);
+        const variant_base& at(size_t n) const;
+
+    private:
+        friend class xml_reader;
+        friend class xml_writer;
+        friend class sax_content_handler;
+        friend class binary_reader;
+        friend class binary_writer;
+
+    private:
         boost::uint32_t             m_size;
         variant_base*               m_data;
         variant_base::enum_type_t   m_type;

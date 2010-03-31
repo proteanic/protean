@@ -203,15 +203,31 @@ namespace protean {
                 value = variant(s).up_cast();
                 break;
             }
+            case variant::Array:
+            {
+                boost::uint32_t size;
+                read(size);
+                boost::uint32_t array_type;
+                read(array_type);
+
+                handle<typed_array> a(new typed_array(size, static_cast<variant::enum_type_t>(array_type)));
+                for (boost::uint32_t i=0; i<size; ++i)
+                {
+                    variant v;
+                    read_value(static_cast<variant::enum_type_t>(array_type), v);
+                    a->at(i).swap(v);
+                }
+                value = a;
+                break;
+            }
 	    default:	    
-	        boost::throw_exception (
-                    variant_error ("Case exhaustion: " + variant::enum_to_string (type)));	    
+	        boost::throw_exception(variant_error("Case exhaustion: " + variant::enum_to_string(type)));	    
         }
     }
 
     void binary_reader::read(variant& value)
     {
-        boost::int32_t type = variant::None;
+        boost::uint32_t type = variant::None;
         read(type);
         read_value(static_cast<variant::enum_type_t>(type), value);
     }

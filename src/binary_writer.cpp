@@ -24,7 +24,7 @@ namespace protean {
 
     void binary_writer::write_value(const variant& value)
     {
-        switch( value.type() )
+        switch(value.type())
         {
             case variant::Double:
                 write(value.as<double>());
@@ -140,21 +140,33 @@ namespace protean {
                 break;
             case variant::Exception:
             {
-                const exception_data e( value.as<exception_data>() );
+                const exception_data& e(value.as<exception_data>());
                 write(e.type());
                 write(e.message());
                 break;
             }
+            case variant::Array:
+            {
+                const typed_array& a(value.as<typed_array>());
+                write(static_cast<boost::uint32_t>(a.size()));
+                write(static_cast<boost::uint32_t>(a.type()));
+
+                for(size_t n(0); n!=a.size(); ++n)
+                {
+                    write_value(variant(a[n]));
+                }
+                break;
+            }
+
 	    default:
- 	        boost::throw_exception (
-		    variant_error ("Case exhaustion: " + variant::enum_to_string (value.type ()))); 
+ 	        boost::throw_exception(variant_error ("Case exhaustion: " + variant::enum_to_string(value.type()))); 
 	 
         }
     }
 
     void binary_writer::write(const variant& value)
     {
-        write(static_cast<boost::int32_t>(value.type()));
+        write(static_cast<boost::uint32_t>(value.type()));
         write_value( value );
     }
 

@@ -8,11 +8,12 @@
 
 #include <boost/functional/hash.hpp>
 #include <boost/bind.hpp>
+#include <boost/cast.hpp>
 
 namespace protean {
 
     typed_array::typed_array(size_t size, variant_base::enum_type_t type) :
-        m_size(size),
+        m_size(boost::numeric_cast<boost::uint32_t>(size)),
         m_type(type)
     {
         m_data = new variant_base[m_size];
@@ -23,7 +24,7 @@ namespace protean {
     }
 
     typed_array::typed_array(size_t size, const variant& init) :
-        m_size(size),
+        m_size(boost::numeric_cast<boost::uint32_t>(size)),
         m_type(init.type())
     {
         m_data = new variant_base[m_size];
@@ -107,21 +108,30 @@ namespace protean {
 
     variant_ref typed_array::operator[](size_t n)
     {
-        if ( n>=m_size )
-        {
-            boost::throw_exception(variant_error((boost::format("Index %u is out of range for Array of size %u") % n % m_size).str()));
-        }
-        return variant_ref(&m_data[n], m_type);
+        return variant_ref(&at(n), m_type);
     }
 
     variant_cref typed_array::operator[](size_t n) const
     {
-        if ( n>=m_size )
+        return variant_cref(&at(n), m_type);
+    }
+
+    variant_base& typed_array::at(size_t n)
+    {
+        if (n>=m_size)
         {
             boost::throw_exception(variant_error((boost::format("Index %u is out of range for Array of size %u") % n % m_size).str()));
         }
-        return variant_cref(&m_data[n], m_type);
+        return m_data[n];
     }
 
+    const variant_base& typed_array::at(size_t n) const
+    {
+        if (n>=m_size)
+        {
+            boost::throw_exception(variant_error((boost::format("Index %u is out of range for Array of size %u") % n % m_size).str()));
+        }
+        return m_data[n];
+    }
 
 } // namespace protean

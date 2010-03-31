@@ -346,4 +346,30 @@ BOOST_AUTO_TEST_CASE(test_binary_object)
     BOOST_CHECK(v1.compare(v3)==0);
 }
 
+BOOST_AUTO_TEST_CASE(test_binary_array)
+{
+    typed_array a1(5, variant::String);
+    a1[0] = "s1";
+    a1[1] = "s2";
+    a1[2] = "s3";
+    a1[3] = "s4";
+    a1[4] = "s5";
+
+    variant v1(a1);
+
+    std::ostringstream oss;
+    binary_writer writer(oss);
+    writer << v1;
+
+    variant v2;
+    std::stringstream iss;
+    iss << oss.str();
+    binary_reader reader(iss);
+    reader >> v2;
+
+    std::cout << v2.str();
+
+    BOOST_CHECK(v1.compare(v2)==0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
