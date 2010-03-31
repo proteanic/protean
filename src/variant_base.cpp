@@ -12,6 +12,11 @@ namespace protean {
     // not sure if this method should try and default construct any type.. maybe the collections would do..
     variant_base::variant_base(enum_type_t type, size_t size)
     {
+        initialise(type, size);
+    }
+
+    void variant_base::initialise(enum_type_t type, size_t size)
+    {
         if ((type & Number)!=0)
         {
             m_value.set<UInt64>(0);
@@ -63,6 +68,11 @@ namespace protean {
     }
 
     variant_base::variant_base(enum_type_t type, const variant_base& rhs)
+    {
+        assign(type, rhs);
+    }
+
+    void variant_base::assign(enum_type_t type, const variant_base& rhs)
     {
         if ((type & Number)!=0)
         {

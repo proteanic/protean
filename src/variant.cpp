@@ -12,6 +12,7 @@
 #include <protean/variant.hpp>
 
 #include <protean/detail/dummy_iterator.hpp>
+#include <protean/variant_ref.hpp>
 
 #include <protean/detail/variant_macros_define.hpp>
 
@@ -94,6 +95,18 @@ namespace protean {
         m_type(Object)
     {
         m_value.set<Object>(arg);
+    }
+
+    variant::variant(const variant_ref& arg) :
+        variant_base(arg.m_type, *arg.m_value),
+        m_type(arg.m_type)
+    {
+    }
+
+    variant::variant(const variant_cref& arg) :
+        variant_base(arg.m_type, *arg.m_value),
+        m_type(arg.m_type)
+    {
     }
 
     variant::variant(const variant& rhs) :

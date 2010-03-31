@@ -11,6 +11,9 @@
 
 namespace protean {
 
+    class variant_ref;
+    class variant_cref;
+
     class PROTEAN_DECL variant : public variant_base
     {
     public:
@@ -48,6 +51,9 @@ namespace protean {
         explicit variant(const exception_data& arg);
         explicit variant(const std::exception& arg);
         explicit variant(const object& arg);
+
+        explicit variant(const variant_ref& arg);
+        explicit variant(const variant_cref& arg);
 
     private:
         explicit variant(const handle<object>& arg);

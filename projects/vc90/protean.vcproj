@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\variant_ref.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\xml_parser.cpp"
 				>
 			</File>
@@ -275,6 +279,10 @@
 			</File>
 			<File
 				RelativePath="..\..\protean\variant_iterator.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\protean\variant_ref.hpp"
 				>
 			</File>
 			<File

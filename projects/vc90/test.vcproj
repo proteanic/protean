@@ -180,6 +180,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\test\variant_ref.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\test\xml_streams.cpp"
 					>
 				</File>

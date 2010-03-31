@@ -108,6 +108,9 @@ namespace protean {
 
         void swap(variant_base& rhs);
 
+        void initialise(enum_type_t type, size_t size);
+        void assign(enum_type_t type, const variant_base& rhs);
+
         static std::string enum_to_string(enum_type_t type);
         static enum_type_t string_to_enum(const std::string& type);
 
