@@ -39,8 +39,11 @@ namespace protean {
         else
         {
             boost::filesystem::path full_path = boost::filesystem::complete(boost::filesystem::path(name, boost::filesystem::native), m_entity_path);
-            scoped_xmlch full_path_str( xercesc::XMLString::transcode( full_path.native_directory_string().c_str() ) );
-            result = new xercesc::LocalFileInputSource(full_path_str.get());
+            if (boost::filesystem::exists(full_path))
+            {
+                scoped_xmlch full_path_str( xercesc::XMLString::transcode(full_path.native_directory_string().c_str()) );
+                result = new xercesc::LocalFileInputSource(full_path_str.get());
+            }
         }
         return result;
     }
