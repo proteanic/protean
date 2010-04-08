@@ -238,5 +238,6 @@ namespace protean {
 } // namespace protean
 
 #include <protean/variant.ipp>
+#include <protean/variant_ref.ipp>
 
 #endif // PROTEAN_VARIANT_HPP
