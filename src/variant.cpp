@@ -794,7 +794,7 @@ namespace protean {
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Primitive, "down_cast()");
+        CHECK_VARIANT_FUNCTION(Any, "down_cast()");
 
         if ( type==Any )
         {

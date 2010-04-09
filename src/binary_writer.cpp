@@ -143,6 +143,8 @@ namespace protean {
                 const exception_data& e(value.as<exception_data>());
                 write(e.type());
                 write(e.message());
+                write(e.source());
+                write(e.stack());
                 break;
             }
             case variant::Array:

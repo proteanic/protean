@@ -302,6 +302,16 @@ namespace protean {
                 write_node( variant(e.message()) );
                 pop();
 
+                if (!e.source().empty())
+                {
+                    write_node( variant(e.source()) );
+                }
+
+                if (!e.stack().empty())
+                {
+                    write_node( variant(e.stack()) );
+                }
+
                 end_content();
                 end_tag();
                 break;

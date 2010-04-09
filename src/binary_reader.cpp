@@ -188,10 +188,12 @@ namespace protean {
             }
             case variant::Exception:
             {
-                std::string type, message;
+                std::string type, message, source, stack;
                 read(type);
                 read(message);
-                value = exception_data(type, message);
+                read(source);
+                read(stack);
+                value = exception_data(type, message, source, stack);
                 break;
             }
             case variant::None:

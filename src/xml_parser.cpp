@@ -154,6 +154,10 @@ namespace protean {
                     // Exception and Object are serialised using a Dictionary
                     context->m_element = &parentContext->element().insert(element_name, variant(), variant::ReturnItem);
                     break;
+                case variant::Array:
+                    // Arrays are serialised using a Tuple
+                    context->m_element = &parentContext->element()[parentContext->num_row++];
+                    break;
                 default:
                     boost::throw_exception(variant_error(std::string("Unrecognised variant type: ") + variant::enum_to_string(parentContext->m_type)));
                 }
@@ -286,9 +290,23 @@ namespace protean {
             }
             else if ( context->m_type==variant::Exception )
             {
-                const std::string type_str(context->element()["type"].as<std::string>());
-                const std::string message(context->element()["message"].as<std::string>());
-                context->element() = exception_data(type_str, message);
+                std::string type_str, message_str, source_str, stack_str;
+
+                type_str = context->element()["type"].as<std::string>();
+
+                message_str = context->element()["message"].as<std::string>();
+
+                if (context->element().has_key("source"))
+                {
+                    source_str = context->element()["source"].as<std::string>();
+                }
+
+                if (context->element().has_key("stack"))
+                {
+                    stack_str = context->element()["stack"].as<std::string>();
+                }
+
+                context->element() = exception_data(type_str, message_str, source_str, stack_str);
             }
             else if ( context->m_type==variant::Object )
             {

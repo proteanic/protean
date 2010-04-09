@@ -21,10 +21,14 @@ namespace protean {
     {
     public:
         exception_data(const std::string& type, const std::string& message);
+        exception_data(const std::string& type, const std::string& message, const std::string& source);
+        exception_data(const std::string& type, const std::string& message, const std::string& source, const std::string& stack);
         exception_data(const std::exception& e);
 
         const std::string& type() const;
         const std::string& message() const;
+        const std::string& source() const;
+        const std::string& stack() const;
 
         int compare(const exception_data& rhs) const;
         size_t hash() const;
@@ -34,6 +38,8 @@ namespace protean {
     private:
         const std::string m_type;
         const std::string m_message;
+        const std::string m_source;
+        const std::string m_stack;
     };
 
 } // namespace protean
