@@ -102,16 +102,16 @@ namespace protean {
             }
             else
             {
-                boost::shared_ptr<element_info> parentContext(m_stack.top());
+                boost::shared_ptr<element_info> parent_context(m_stack.top());
 
-                switch( parentContext->m_type )
+                switch(parent_context->m_type)
                 {
                 case variant::Any:
                     // untyped elements with children are assumed
                     // to be bags
-                    parentContext->m_type = variant::Bag;
-                    parentContext->element() = variant(variant::Bag);
-                    context->m_element = &parentContext->element().insert(element_name, variant(), variant::ReturnItem);
+                    parent_context->m_type = variant::Bag;
+                    parent_context->element() = variant(variant::Bag);
+                    context->m_element = &parent_context->element().insert(element_name, variant(), variant::ReturnItem);
                     break;
                 case variant::None:
                 case variant::String:
@@ -128,21 +128,21 @@ namespace protean {
                 case variant::Buffer:
                     boost::throw_exception(variant_error("Unexpected start element"));
                 case variant::List:
-                    context->m_element = &parentContext->element().push_back(variant(), variant::ReturnItem);
+                    context->m_element = &parent_context->element().push_back(variant(), variant::ReturnItem);
                     break;
                 case variant::Dictionary:
                 case variant::Bag:
-                    context->m_element = &parentContext->element().insert(element_name, variant(), variant::ReturnItem);
+                    context->m_element = &parent_context->element().insert(element_name, variant(), variant::ReturnItem);
                     break;
                 case variant::Tuple:
-                    context->m_element = &parentContext->element()[parentContext->num_row++];
+                    context->m_element = &parent_context->element()[parent_context->num_row++];
                     break;
                 case variant::TimeSeries:
                     if ( context->attributes().has_key("time") )
                     {
                         variant::date_time_t time = context->attributes()["time"].as<variant::date_time_t>();
                         context->attributes().remove("time");
-                        context->m_element = &parentContext->element().push_back(time, variant(), variant::ReturnItem);
+                        context->m_element = &parent_context->element().push_back(time, variant(), variant::ReturnItem);
                     }
                     else
                     {
@@ -152,14 +152,14 @@ namespace protean {
                 case variant::Exception:
                 case variant::Object:
                     // Exception and Object are serialised using a Dictionary
-                    context->m_element = &parentContext->element().insert(element_name, variant(), variant::ReturnItem);
+                    context->m_element = &parent_context->element().insert(element_name, variant(), variant::ReturnItem);
                     break;
                 case variant::Array:
                     // Arrays are serialised using a Tuple
-                    context->m_element = &parentContext->element()[parentContext->num_row++];
+                    context->m_element = &parent_context->element()[parent_context->num_row++];
                     break;
                 default:
-                    boost::throw_exception(variant_error(std::string("Unrecognised variant type: ") + variant::enum_to_string(parentContext->m_type)));
+                    boost::throw_exception(variant_error(std::string("Unrecognised variant type: ") + variant::enum_to_string(parent_context->m_type)));
                 }
             }
 
