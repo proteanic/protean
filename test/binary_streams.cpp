@@ -346,28 +346,42 @@ BOOST_AUTO_TEST_CASE(test_binary_object)
     BOOST_CHECK(v1.compare(v3)==0);
 }
 
-BOOST_AUTO_TEST_CASE(test_binary_array)
+BOOST_AUTO_TEST_CASE(test_binary_simple_array)
 {
-    typed_array a1(5, variant::String);
+    typed_array a1(3, variant::String);
     a1[0] = "s1";
     a1[1] = "s2";
     a1[2] = "s3";
-    a1[3] = "s4";
-    a1[4] = "s5";
 
     variant v1(a1);
 
-    std::ostringstream oss;
-    binary_writer writer(oss);
+    std::stringstream ss;
+    binary_writer writer(ss);
     writer << v1;
 
     variant v2;
-    std::stringstream iss;
-    iss << oss.str();
-    binary_reader reader(iss);
+    binary_reader reader(ss);
     reader >> v2;
 
-    std::cout << v2.str();
+    BOOST_CHECK(v1.compare(v2)==0);
+}
+
+BOOST_AUTO_TEST_CASE(test_binary_complex_array)
+{
+    typed_array a1(3, variant::Dictionary);
+    a1[0] = variant(variant::Dictionary).insert("a", variant(1)).insert("b", variant(2));
+    a1[1] = variant(variant::Dictionary).insert("b", variant(3)).insert("c", variant(4));
+    a1[2] = variant(variant::Dictionary).insert("d", variant(5)).insert("e", variant(6));
+
+    variant v1(a1);
+
+    std::stringstream ss;
+    binary_writer writer(ss);
+    writer << v1;
+
+    variant v2;
+    binary_reader reader(ss);
+    reader >> v2;
 
     BOOST_CHECK(v1.compare(v2)==0);
 }

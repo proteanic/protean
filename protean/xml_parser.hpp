@@ -149,11 +149,13 @@ namespace protean {
         {
         public:
             element_info() :
-                m_type(variant::None),
-                m_attributes(variant::Bag),
+                m_type(variant::Any),
+                m_typed(false),
+                m_attributes(variant::Bag), // a bag to preserve ordering
                 m_element(NULL),
-                num_rows(0),
-                num_row(0)
+                m_num_rows(0),
+                m_num_row(0),
+                m_item_type(variant::None)
             {}
         public:
             variant& attributes()        { return m_attributes; }
@@ -163,10 +165,14 @@ namespace protean {
             variant::enum_type_t    m_type;
             variant                 m_attributes;
             variant*                m_element;
+            bool                    m_typed;
 
-            // used for serialising tuples
-            size_t                num_rows;
-            size_t                num_row;
+            // used for serialising tuples and arrays
+            size_t                  m_num_rows;
+            size_t                  m_num_row;
+
+            // used for arrays
+            variant::enum_type_t    m_item_type;
 
             friend class sax_content_handler;
         };

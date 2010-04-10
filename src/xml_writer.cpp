@@ -100,49 +100,13 @@ namespace protean {
         indent();
     }
 
-    void xml_writer::write_node(const variant& node)
+    void xml_writer::write_value(const variant& node)
     {
         try
         {
             element_info& context = m_stack.top();
-            variant::enum_type_t type = node.type();    
-            check_invalid_chars(context.m_name);
 
-            if(context.m_name=="__comment__")
-            {
-                if((m_flags & Preserve)!=0)
-                {
-                    if( type==variant::String )
-                    {
-                        indent();
-                        m_os << "<!--" << node.as<std::string>() << "-->\n";
-                        return;
-                    }
-                    else
-                    {
-                        boost::throw_exception(variant_error("Comment type must be a variant String"));
-                    }        
-                }
-                else
-                    return;
-            }
-
-            if ((m_flags & Preserve)!=0)
-            {
-                if ((type & variant::Mapping)!=0)
-                {
-                    if (node.has_key("__attrs__"))
-                    {
-                        context.m_attributes = node["__attrs__"];
-                    }
-                }
-            }
-            else
-            {
-                context.m_attributes.insert("variant", variant(variant::enum_to_string(type)));
-            }
-            
-            switch( type )
+            switch(node.type())
             {
             case variant::None:
             {
@@ -316,10 +280,84 @@ namespace protean {
                 end_tag();
                 break;
             }
-	    default:
- 	        boost::throw_exception (
-		    variant_error ("Case exhaustion: " + variant::enum_to_string (type))); 
+            case variant::Array:
+            {
+                const typed_array& a(node.as<typed_array>());
+                context.m_attributes.insert("size", variant(a.size()));
+                context.m_attributes.insert("type", variant(variant::enum_to_string(a.type())));
+                start_tag();
+
+                start_content();
+
+                for (size_t i=0; i<a.size(); ++i)
+                {
+                    push();
+                    write_value(variant(a[i]));
+                    pop();
+                }
+
+                end_content();
+
+                end_tag();
+                break;
             }
+	        default:
+ 	            boost::throw_exception(variant_error("Case exhaustion: " + variant::enum_to_string(node.type()))); 
+            }
+        }
+        catch (const std::exception &e)
+        {
+            boost::throw_exception(variant_error(e.what()));
+        }
+        catch (...)
+        {
+            boost::throw_exception(variant_error("Unhandled Exception"));
+        }
+    }
+
+    void xml_writer::write_node(const variant& node)
+    {
+        try
+        {
+            element_info& context = m_stack.top();
+            variant::enum_type_t type = node.type();    
+            check_invalid_chars(context.m_name);
+
+            if(context.m_name=="__comment__")
+            {
+                if((m_flags & Preserve)!=0)
+                {
+                    if( type==variant::String )
+                    {
+                        indent();
+                        m_os << "<!--" << node.as<std::string>() << "-->\n";
+                        return;
+                    }
+                    else
+                    {
+                        boost::throw_exception(variant_error("Comment type must be a variant String"));
+                    }        
+                }
+                else
+                    return;
+            }
+
+            if ((m_flags & Preserve)!=0)
+            {
+                if ((type & variant::Mapping)!=0)
+                {
+                    if (node.has_key("__attrs__"))
+                    {
+                        context.m_attributes = node["__attrs__"];
+                    }
+                }
+            }
+            else
+            {
+                context.m_attributes.insert("variant", variant(variant::enum_to_string(type)));
+            }
+
+            write_value(node);
         }
         catch (const std::exception &e)
         {

@@ -493,4 +493,44 @@ BOOST_AUTO_TEST_CASE(test_xml_preserve)
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
+BOOST_AUTO_TEST_CASE(test_xml_simple_array)
+{
+    typed_array a1(3, variant::String);
+    a1[0] = "s1";
+    a1[1] = "s2";
+    a1[2] = "s3";
+
+    variant v1(a1);
+
+    std::stringstream ss;
+    xml_writer writer(ss);
+    writer << v1;
+
+    variant v2;
+    xml_reader reader(ss);
+    reader >> v2;
+
+    BOOST_CHECK(v1.compare(v2)==0);
+}
+
+BOOST_AUTO_TEST_CASE(test_xml_complex_array)
+{
+    typed_array a1(3, variant::Dictionary);
+    a1[0] = variant(variant::Dictionary).insert("a", variant(1)).insert("b", variant(2));
+    a1[1] = variant(variant::Dictionary).insert("b", variant(3)).insert("c", variant(4));
+    a1[2] = variant(variant::Dictionary).insert("d", variant(5)).insert("e", variant(6));
+
+    variant v1(a1);
+
+    std::stringstream ss;
+    xml_writer writer(ss);
+    writer << v1;
+
+    variant v2;
+    xml_reader reader(ss);
+    reader >> v2;
+
+    BOOST_CHECK(v1.compare(v2)==0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

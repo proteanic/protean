@@ -31,6 +31,7 @@ namespace protean {
         void write_header();
         void write_instructions(const variant& instructions);
         void write_node(const variant& node);
+        void write_value(const variant& node);
         void start_tag();
         void end_tag();
         void indent();
@@ -57,7 +58,7 @@ namespace protean {
             {
             }
             std::string m_name;
-            variant        m_attributes;
+            variant     m_attributes;
         };
         std::stack<element_info> m_stack;
         int m_flags;

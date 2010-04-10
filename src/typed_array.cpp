@@ -53,6 +53,11 @@ namespace protean {
 
     typed_array::~typed_array()
     {
+        for (size_t i=0; i<m_size; ++i)
+        {
+            m_data[i].destroy(m_type);
+        }
+
         delete[] m_data;
         m_data = NULL;
         m_size = 0;

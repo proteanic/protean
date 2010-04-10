@@ -11,6 +11,11 @@
 #include <protean/binary_defs.hpp>
 #include <protean/variant.hpp>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
 namespace protean {
 
     class object_factory;
@@ -59,5 +64,9 @@ namespace protean {
     };
 
 } // namespace protean
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // PROTEAN_BINARY_READER_HPP

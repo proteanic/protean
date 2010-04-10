@@ -11,6 +11,11 @@
 #include <protean/binary_defs.hpp>
 #include <protean/variant.hpp>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
 namespace protean {
     
     class PROTEAN_DECL binary_writer
@@ -52,5 +57,9 @@ namespace protean {
     };
 
 } // namespace protean
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // PROTEAN_BINARY_WRITER_HPP

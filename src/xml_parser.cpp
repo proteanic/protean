@@ -86,6 +86,7 @@ namespace protean {
 
             get_attributes(attrs, context->attributes());
 
+            boost::shared_ptr<element_info> parent_context;
             if (m_stack.empty())
             {
                 if ((m_flags & xml_reader::Preserve)!=0)
@@ -102,16 +103,19 @@ namespace protean {
             }
             else
             {
-                boost::shared_ptr<element_info> parent_context(m_stack.top());
+                parent_context = m_stack.top();
 
                 switch(parent_context->m_type)
                 {
                 case variant::Any:
-                    // untyped elements with children are assumed
-                    // to be bags
-                    parent_context->m_type = variant::Bag;
-                    parent_context->element() = variant(variant::Bag);
-                    context->m_element = &parent_context->element().insert(element_name, variant(), variant::ReturnItem);
+                    if (!parent_context->m_typed)
+                    {
+                        // untyped elements with children are assumed
+                        // to be bags
+                        parent_context->m_type = variant::Bag;
+                        parent_context->element() = variant(variant::Bag);
+                        context->m_element = &parent_context->element().insert(element_name, variant(), variant::ReturnItem);
+                    }
                     break;
                 case variant::None:
                 case variant::String:
@@ -135,7 +139,7 @@ namespace protean {
                     context->m_element = &parent_context->element().insert(element_name, variant(), variant::ReturnItem);
                     break;
                 case variant::Tuple:
-                    context->m_element = &parent_context->element()[parent_context->num_row++];
+                    context->m_element = &parent_context->element()[parent_context->m_num_row++];
                     break;
                 case variant::TimeSeries:
                     if ( context->attributes().has_key("time") )
@@ -156,7 +160,7 @@ namespace protean {
                     break;
                 case variant::Array:
                     // Arrays are serialised using a Tuple
-                    context->m_element = &parent_context->element()[parent_context->num_row++];
+                    context->m_element = &parent_context->element()[parent_context->m_num_row++];
                     break;
                 default:
                     boost::throw_exception(variant_error(std::string("Unrecognised variant type: ") + variant::enum_to_string(parent_context->m_type)));
@@ -165,25 +169,38 @@ namespace protean {
 
             m_stack.push(context);
 
-            if ( context->attributes().has_key("variant") )
+            // infer type from 'variant' attribute
+            if (context->attributes().has_key("variant"))
             {
-                const std::string &type_str = context->attributes()["variant"].as<std::string>();
+                const std::string& type_str = context->attributes()["variant"].as<std::string>();
                 context->m_type = variant::string_to_enum(type_str);
+                context->m_typed = true;
                 context->attributes().remove("variant");
             }
-            else
+
+            // infer type from parent (Array only)
+            if (parent_context && parent_context->m_type==variant::Array)
             {
-                context->m_type = variant::Any;
+                if (!context->m_typed)
+                {
+                    context->m_type = parent_context->m_item_type;
+                    context->m_typed = true;
+                }
+                else if (context->m_type!=parent_context->m_item_type)
+                {
+                    boost::throw_exception(variant_error("Type of array does not match type of child element"));
+                }
             }
 
-            switch( context->m_type )
+            switch(context->m_type)
             {
                 case variant::Any:
-                    // any untyped elements with attributes are converted into bags
-                    if ( !context->attributes().empty() )
+                    if (!context->m_typed && !context->attributes().empty())
                     {
-                        context->m_type=variant::Bag;
-                        context->element() = variant( variant::Bag );
+                        // untyped elements with attributes are assumed
+                        // to be bags
+                        context->m_type = variant::Bag;
+                        context->element() = variant(variant::Bag);
                     }
                     break;
                 case variant::None:
@@ -215,14 +232,38 @@ namespace protean {
                 {
                     if (context->attributes().has_key("size"))
                     {
-                        context->num_rows = context->attributes()["size"].as<size_t>();
+                        context->m_num_rows = context->attributes()["size"].as<size_t>();
                         context->attributes().remove("size");
                     }
                     else
                     {
                         boost::throw_exception(variant_error("Missing 'size' attribute for Tuple variant"));
                     }
-                    context->element() = variant(variant::Tuple, context->num_rows);
+                    context->element() = variant(variant::Tuple, context->m_num_rows);
+                    break;
+                }
+                case variant::Array:
+                {
+                    if (context->attributes().has_key("size"))
+                    {
+                        context->m_num_rows = context->attributes()["size"].as<size_t>();
+                        context->attributes().remove("size");
+                    }
+                    else
+                    {
+                        boost::throw_exception(variant_error("Missing 'size' attribute for Array variant"));
+                    }
+                    if (context->attributes().has_key("type"))
+                    {
+                        const std::string& type_str = context->attributes()["type"].as<std::string>();
+                        context->m_item_type = variant::string_to_enum(type_str);
+                        context->attributes().remove("type");
+                    }
+                    else
+                    {
+                        boost::throw_exception(variant_error("Missing 'type' attribute for Array variant"));
+                    }
+                    context->element() = variant(variant::Tuple, context->m_num_rows);
                     break;
                 }
                 default:
@@ -352,6 +393,15 @@ namespace protean {
                     context->element() = variant(NULL, 0);
                 }
             }
+            else if ( context->m_type==variant::Array )
+            {
+                typed_array a(context->m_num_rows, context->m_item_type);
+                for (size_t i=0; i<context->m_num_rows; ++i)
+                {
+                    a.at(i).swap(context->element()[i]);
+                }
+                context->element() = a;
+            }
             m_stack.pop();
         }
         catch(const std::exception &e)
@@ -408,16 +458,15 @@ namespace protean {
             case variant::TimeSeries:
             case variant::Exception:
             case variant::Object:
+            case variant::Array:
                 if (!is_ws(chars))
                 {
                     boost::throw_exception(variant_error("Unexpected characters encountered"));
                 };
                 break;
-	    default:
-	        
-	        boost::throw_exception (
-                    variant_error ("Case exhaustion: " + variant::enum_to_string (context->m_type))); 
-	    }
+	        default:
+	            boost::throw_exception(variant_error("Case exhaustion: " + variant::enum_to_string(context->m_type))); 
+	        }
         }
         catch(const std::exception &e)
         {
@@ -568,19 +617,14 @@ namespace protean {
 
             boost::shared_ptr<element_info> context(m_stack.top());
 
-            variant::enum_type_t type = derived_from_type(elementInfo->getTypeDefinition());
-
-            if (type!=variant::Any)
+            if (!context->m_typed)
             {
-                if (context->m_type==variant::Any)
+                variant::enum_type_t schema_type = derived_from_type(elementInfo->getTypeDefinition());
+
+                if (schema_type!=variant::Any)
                 {
-                    context->m_type = type;
-                }
-                else if (type!=context->m_type)
-                {
-                    boost::throw_exception(variant_error(
-                        std::string("Document and schema specify incompatible variant types (") +
-                        variant::enum_to_string(context->m_type) + variant::enum_to_string(type) + ")"));
+                    context->m_type = schema_type;
+                    context->m_typed = true;
                 }
             }
         }
