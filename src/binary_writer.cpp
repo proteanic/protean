@@ -3,7 +3,10 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#include <boost/config/warning_disable.hpp>
+#ifdef _MSC_VER
+#pragma warning(disable:4503 4996)
+#endif
+
 #include <protean/binary_writer.hpp>
 #include <protean/variant.hpp>
 

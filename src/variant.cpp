@@ -1224,6 +1224,17 @@ namespace protean {
             {
                 const exception_data& x(as<exception_data>());
                 oss << x.type() << "('" << x.message() << "')";
+
+                if (!x.source().empty())
+                {
+                    oss << " in: " << x.source();
+                }
+
+                if (!x.stack().empty())
+                {
+                    oss << "\n" << x.stack();
+                }
+
                 break;
             }
             case Object:
