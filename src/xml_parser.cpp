@@ -327,7 +327,7 @@ namespace protean {
 
             if ( (context->m_type & variant::Primitive)!=0 )
             {
-                context->element() = make_any(context->m_data).down_cast(context->m_type);
+                context->element() = variant(context->m_data).change_type(context->m_type);
             }
             else if ( context->m_type==variant::Exception )
             {
@@ -709,7 +709,7 @@ namespace protean {
             // make sure we remove any schema related attributes
             if (name.find("xsi")==std::string::npos)
             {
-                result.insert(name, make_any(value));
+                result.insert(name, variant(value).change_type(variant::Any));
             }
         }
     }
@@ -726,7 +726,7 @@ namespace protean {
             variant::enum_type_t type = derived_from_type(attr->getTypeDefinition());
             if (attrs.has_key(name))
             {
-                attrs[name] = attrs[name].down_cast(type);
+                attrs[name] = attrs[name].change_type(type);
             }
         }
     }

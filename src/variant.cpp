@@ -151,17 +151,10 @@ namespace protean {
     {
         if ((type & Primitive)==0 || !rhs.is<Primitive>())
         {
-            boost::throw_exception(variant_error("Unable to cast from " + enum_to_string(rhs.type()) + " to " + enum_to_string(type)));
+            boost::throw_exception(variant_error("Unable to convert " + enum_to_string(rhs.type()) + " to " + enum_to_string(type)));
         }
 
-		if (type==rhs.type())
-		{
-            variant(rhs).swap(*this);
-		}
-        else
-        {
-            rhs.up_cast().down_cast(type).swap(*this);
-        }
+        rhs.change_type(type).swap(*this);
     }
 
     variant::~variant()
@@ -459,7 +452,7 @@ namespace protean {
 
         BOOST_FOREACH(const variant& i, nodes)
         {
-            if (pred_key.empty() || (i.is<Mapping>() && i.has_key(pred_key) && i.at(pred_key).up_cast().as<std::string>()==pred_val))
+            if (pred_key.empty() || (i.is<Mapping>() && i.has_key(pred_key) && i.at(pred_key).change_type(String).as<std::string>()==pred_val))
             {
                 select_impl(i, tail, result);
             }
@@ -790,124 +783,110 @@ namespace protean {
         return boost::posix_time::to_iso_extended_string(arg);
     }
 
-    variant variant::down_cast(enum_type_t type) const
+    variant variant::change_type(enum_type_t type) const
     {
         BEGIN_VARIANT_CONTEXT();
 
-        CHECK_VARIANT_FUNCTION(Any, "down_cast()");
+        CHECK_VARIANT_FUNCTION(Primitive, "change_type()");
 
-        if ( type==Any )
+        if ((type & Primitive)==0)
+        {
+            boost::throw_exception(
+                variant_error("Attempt to convert primitive variant to non-primitive type (" + enum_to_string(m_type) + " -> " + enum_to_string(type) + ")")
+            );
+        }
+
+        if (type==m_type)
         {
             return *this;
         }
-        else if ( (type & Primitive)!=0 )
-        {
-            std::string data = as<std::string>();
 
-            variant result;
-            switch ( type )
-            {
-            case String:
-                result = data;
-                break;
-            case Int32:
-                result = lexical_cast<boost::int32_t>( data );
-                break;
-            case UInt32:
-                result = lexical_cast<boost::uint32_t>( data );
-                break;
-            case Int64:
-                result = lexical_cast<boost::int64_t>( data );
-                break;
-            case UInt64:
-                result = lexical_cast<boost::uint64_t>( data );
-                break;
-            case Float:
-                result = lexical_cast<float>( data );
-                break;
-            case Double:
-                result = lexical_cast<double>( data );
-                break;
-            case Boolean:
-                result = lexical_cast<bool>( data );
-                break;
-            case Date:
-                result = lexical_cast<date_t>( data );
-                break;
-            case Time:
-                result = lexical_cast<time_t>( data );
-                break;
-            case DateTime:
-                result = lexical_cast<date_time_t>( data );
-                break;
-             default:
-                boost::throw_exception(variant_error("Unrecognised variant type"));
-            }
-            return result;
-        }
-        else
+        std::string value_as_string;
+
+        switch (m_type)
         {
-            boost::throw_exception(variant_error(std::string("Attempt to cast Any variant to non-primitive type ") + enum_to_string(type)));
+        case Any:
+        case String:
+            value_as_string = as<std::string>();
+            break;
+        case Int32:
+            value_as_string = lexical_cast<std::string>(m_value.get<Int32>());
+            break;
+        case UInt32:
+            value_as_string = lexical_cast<std::string>(m_value.get<UInt32>());
+            break;
+        case Int64:
+            value_as_string = lexical_cast<std::string>(m_value.get<Int64>());
+            break;
+        case UInt64:
+            value_as_string = lexical_cast<std::string>(m_value.get<UInt64>());
+            break;
+        case Float:
+            value_as_string = lexical_cast<std::string>(m_value.get<Float>());
+            break;
+        case Double:
+            value_as_string = (boost::format("%|.20|") % m_value.get<Double>() ).str();
+            break;
+        case Boolean:
+            value_as_string = lexical_cast<std::string>(m_value.get<Boolean>());
+            break;
+        case Date:
+            value_as_string = lexical_cast<std::string>(m_value.get<Date>());
+            break;
+        case Time:
+            value_as_string = lexical_cast<std::string>(m_value.get<Time>());
+            break;
+        case DateTime:
+            value_as_string = lexical_cast<std::string>(m_value.get<DateTime>());
+            break;
+        default:
+            boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(m_type)));
         }
 
-        END_VARIANT_CONTEXT();
-    }
+        variant result;
 
-    variant variant::up_cast() const
-    {
-        BEGIN_VARIANT_CONTEXT();
-
-        CHECK_VARIANT_FUNCTION(Primitive, "up_cast()");
-
-        if ( m_type==Any )
+        switch (type)
         {
-            return *this;
+        case Any:
+        case String:
+            result = value_as_string;
+            result.m_type = type;
+            break;
+        case Int32:
+            result = lexical_cast<boost::int32_t>(value_as_string);
+            break;
+        case UInt32:
+            result = lexical_cast<boost::uint32_t>(value_as_string);
+            break;
+        case Int64:
+            result = lexical_cast<boost::int64_t>(value_as_string);
+            break;
+        case UInt64:
+            result = lexical_cast<boost::uint64_t>(value_as_string);
+            break;
+        case Float:
+            result = lexical_cast<float>(value_as_string);
+            break;
+        case Double:
+            result = lexical_cast<double>(value_as_string);
+            break;
+        case Boolean:
+            result = lexical_cast<bool>(value_as_string);
+            break;
+        case Date:
+            result = lexical_cast<date_t>(value_as_string);
+            break;
+        case Time:
+            result = lexical_cast<time_t>(value_as_string);
+            break;
+        case DateTime:
+            result = lexical_cast<date_time_t>(value_as_string);
+            break;
+         default:
+             boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(type)));
         }
-        else
-        {
-            std::string data;
 
-            switch ( m_type )
-            {
-            case String:
-                data = as<std::string>();
-                break;
-            case Int32:
-                data = lexical_cast<std::string>( m_value.get<Int32>() );
-                break;
-            case UInt32:
-                data = lexical_cast<std::string>( m_value.get<UInt32>() );
-                break;
-            case Int64:
-                data = lexical_cast<std::string>( m_value.get<Int64>() );
-                break;
-            case UInt64:
-                data = lexical_cast<std::string>( m_value.get<UInt64>() );
-                break;
-            case Float:
-                data = lexical_cast<std::string>( m_value.get<Float>() );
-                break;
-            case Double:
-                data = (boost::format("%|.20|") % m_value.get<Double>() ).str();
-                break;
-            case Boolean:
-                data = lexical_cast<std::string>( m_value.get<Boolean>() );
-                break;
-            case Date:
-                data = lexical_cast<std::string>( m_value.get<Date>() );
-                break;
-            case Time:
-                data = lexical_cast<std::string>( m_value.get<Time>() );
-                break;
-            case DateTime:
-                data = lexical_cast<std::string>( m_value.get<DateTime>() );
-                break;
-             default:
-                boost::throw_exception(variant_error("Unrecognised variant type"));
-            }
-
-            return make_any(data);
-        }
+        return result;
 
         END_VARIANT_CONTEXT();
     }
@@ -1071,7 +1050,7 @@ namespace protean {
             case Date:
             case Time:
             case DateTime:
-                oss << up_cast().as<std::string>();
+                oss << change_type(String).as<std::string>();
                 break;
             case List:
             {
@@ -1306,13 +1285,6 @@ namespace protean {
     std::size_t hash_value(const variant& value)
     {
         return value.hash();
-    }
-
-    variant make_any(const std::string& value)
-    {
-        variant result(variant::Any);
-        result.m_value.set<variant::Any>(detail::string(value.c_str(), value.size()));
-        return result;
     }
 
 } // namespace protean

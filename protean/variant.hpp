@@ -73,8 +73,11 @@ namespace protean {
         typename boost::disable_if<boost::is_pod<T>, variant&>::type
         operator=(const T& value);
 
-        /* Destructor */
-        /**************/
+        void swap(variant& rhs);
+
+    /* Destructor */
+    /**************/
+    public:
         ~variant();
 
     /* Type inspection */
@@ -135,6 +138,8 @@ namespace protean {
         template<typename T>
         typename boost::enable_if<return_reference<T>, const T&>::type
         as() const;
+
+        variant change_type(enum_type_t type) const;
 
     /* Collection interface */
     /************************/
@@ -201,21 +206,13 @@ namespace protean {
         template<typename TARGET, typename SOURCE>
         static TARGET lexical_cast(const SOURCE& toCast);
 
-
-        void swap(variant& rhs);
-
         size_t hash() const;
-
-        variant down_cast(enum_type_t type) const;
-        variant up_cast() const;
 
         std::string str(bool summarise=false, const std::string& indent="") const;
 
     private:
         template <typename T>
         friend variant make_object(const variant& params);
-
-        friend variant make_any(const std::string& value);
 
         friend size_t hash_value(const variant& value);
 
@@ -232,8 +229,6 @@ namespace protean {
         friend class binary_reader;
         friend class binary_writer;
     };
-
-    variant make_any(const std::string& value);
 
 } // namespace protean
 

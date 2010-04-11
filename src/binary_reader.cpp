@@ -202,7 +202,8 @@ namespace protean {
             {
                 std::string s;
                 read(s);
-                value = variant(s).up_cast();
+                value = variant(s);
+                value.m_type = variant::Any;
                 break;
             }
             case variant::Array:

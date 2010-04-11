@@ -37,11 +37,11 @@ namespace protean {
         void set_factory(object_factory& factory);
 
     private:
-        std::istream&        m_is;
-        int                    m_flags;
-        std::string            m_entity_path;
-        std::string            m_external_schema;
-        object_factory*        m_factory;
+        std::istream&       m_is;
+        int                 m_flags;
+        std::string         m_entity_path;
+        std::string         m_external_schema;
+        object_factory*     m_factory;
 
         entity_stream_map_t m_entities;
 
