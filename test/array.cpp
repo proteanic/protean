@@ -56,6 +56,37 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
     BOOST_CHECK_THROW(a1[0] = 0, variant_error);
 }
 
+BOOST_AUTO_TEST_CASE(test_array_iterators)
+{
+    typed_array a1(3, variant::String);
+    BOOST_REQUIRE_EQUAL(a1.size(), 3);
+    BOOST_REQUIRE_EQUAL(a1.type(), variant::String);
+
+    typed_array::iterator it1(a1.begin());
+    *it1 = "s1";
+    ++it1;
+    *it1 = "s2";
+    ++it1;
+    *it1 = "s3";
+    ++it1;
+
+    BOOST_CHECK(it1==a1.end());
+
+    BOOST_CHECK_EQUAL(a1[0].as<std::string>(), "s1");
+    BOOST_CHECK_EQUAL(a1[1].as<std::string>(), "s2");
+    BOOST_CHECK_EQUAL(a1[2].as<std::string>(), "s3");
+
+    typed_array::const_iterator it2(a1.begin());
+    BOOST_CHECK_EQUAL(it2->as<std::string>(), "s1");
+    ++it2;
+    BOOST_CHECK_EQUAL(it2->as<std::string>(), "s2");
+    ++it2;
+    BOOST_CHECK_EQUAL(it2->as<std::string>(), "s3");
+    ++it2;
+
+    BOOST_CHECK(it2==a1.end());
+}
+
 BOOST_AUTO_TEST_CASE(test_array_variant)
 {
     typed_array a1(5, variant::String);

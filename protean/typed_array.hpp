@@ -11,6 +11,8 @@
 #include <protean/detail/ref_counted.hpp>
 #include <protean/variant_base.hpp>
 
+#include <protean/array_iterator.hpp>
+
 namespace protean {
 
     class variant;
@@ -38,6 +40,14 @@ namespace protean {
         size_t hash() const;
 
 		void swap(typed_array& rhs);
+
+        typedef array_iterator<array_const_iterator_traits> const_iterator;
+        typedef array_iterator<array_iterator_traits> iterator;
+
+        const_iterator begin() const;
+        const_iterator end() const;
+        iterator begin();
+        iterator end();
 
     private:
         variant_base& at(size_t n);

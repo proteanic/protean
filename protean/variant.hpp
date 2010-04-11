@@ -8,6 +8,9 @@
 
 #include <protean/config.hpp>
 #include <protean/variant_base.hpp>
+#include <protean/variant_ref.hpp>
+#include <protean/array_iterator.hpp>
+#include <protean/typed_array.hpp>
 
 namespace protean {
 

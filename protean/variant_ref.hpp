@@ -13,6 +13,7 @@ namespace protean {
 
     class variant;
     class variant_cref;
+    template<typename> class array_iterator;
     class typed_array;
     
     // mutable reference
@@ -29,7 +30,7 @@ namespace protean {
         variant_ref& operator=(const variant_ref& rhs);
 
         template<typename T>
-        variant_ref& operator=(const T& rhs);
+        const variant_ref& operator=(const T& rhs) const;
 
         template<typename T>
         T as() const;
@@ -39,6 +40,7 @@ namespace protean {
     private:
         friend class variant;
         friend class variant_cref;
+        template <typename> friend class array_iterator;
         friend class typed_array;
 
         variant_base*               m_value;
@@ -69,12 +71,12 @@ namespace protean {
 
     private:
         friend class variant;
+        template <typename> friend class array_iterator;
         friend class typed_array;
 
         const variant_base*         m_value;
         variant_base::enum_type_t   m_type;
     };
-
 
 } // namespace protean
 

@@ -9,7 +9,7 @@
 namespace protean
 {
     template<typename T>
-    variant_ref& variant_ref::operator=(const T& rhs)
+    const variant_ref& variant_ref::operator=(const T& rhs) const
     {
         variant tmp(rhs);
 

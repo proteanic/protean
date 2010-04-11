@@ -121,6 +121,26 @@ namespace protean {
         return variant_cref(&at(n), m_type);
     }
 
+    typed_array::const_iterator typed_array::begin() const
+    {
+        return const_iterator(m_data, m_type);
+    }
+
+    typed_array::const_iterator typed_array::end() const
+    {
+        return const_iterator(m_data+size(), m_type);
+    }
+
+    typed_array::iterator typed_array::begin()
+    {
+        return iterator(m_data, m_type);
+    }
+
+    typed_array::iterator typed_array::end()
+    {
+        return iterator(m_data+size(), m_type);
+    }
+
     variant_base& typed_array::at(size_t n)
     {
         if (n>=m_size)

@@ -122,7 +122,6 @@ namespace protean {
         }
     }
 
-  
     template<typename ITERATOR_TRAITS>
     const variant_iterator_interface<ITERATOR_TRAITS> *
         variant_iterator<ITERATOR_TRAITS>::iterator() const

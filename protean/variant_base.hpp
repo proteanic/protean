@@ -133,6 +133,4 @@ namespace protean {
 
 #endif // PROTEAN_VARIANT_BASE_HPP
 
-#include <protean/variant_ref.hpp>
-#include <protean/typed_array.hpp>
 
