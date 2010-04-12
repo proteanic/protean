@@ -22,7 +22,7 @@ namespace protean { namespace detail {
     >
     class PROTEAN_DECL list_iterator_interface : public BASE
     {
-        typedef typename ITERATOR_TRAITS::value_type& reference_type;
+        typedef typename ITERATOR_TRAITS::value_type& reference;
         typedef typename ITERATOR_TRAITS::list_iterator_type iterator_type;
         typedef typename BASE::date_time_t date_time_t;
     public:
@@ -34,7 +34,7 @@ namespace protean { namespace detail {
         {
             boost::throw_exception(variant_error("Attempt to call key() on List iterator"));
         }
-        reference_type value() const
+        reference value() const
         {
             return *m_iterator;
         }

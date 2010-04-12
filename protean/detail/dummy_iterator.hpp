@@ -16,7 +16,7 @@ namespace protean { namespace detail {
     >
     class PROTEAN_DECL dummy_iterator_interface : public BASE
     {
-        typedef typename ITERATOR_TRAITS::value_type& reference_type;
+        typedef typename ITERATOR_TRAITS::value_type& reference;
         typedef typename BASE::date_time_t date_time_t;
 
     public:
@@ -27,7 +27,7 @@ namespace protean { namespace detail {
         {
             boost::throw_exception(variant_error("Attempt to dereference dummy iterator"));
         }
-        reference_type value() const
+        reference value() const
         {
             boost::throw_exception(variant_error("Attempt to dereference dummy iterator"));
         }

@@ -52,13 +52,13 @@ namespace protean {
     {
     public:
         typedef boost::posix_time::ptime date_time_t;
-        typedef typename ITERATOR_TRAITS::value_type& reference_type;
+        typedef typename ITERATOR_TRAITS::value_type& reference;
 
     public:
         virtual ~variant_iterator_interface() { }
         
         virtual const std::string& key() const = 0;
-        virtual reference_type value() const = 0;
+        virtual reference value() const = 0;
         virtual const date_time_t& time() const = 0;
         virtual void increment() = 0;
         virtual void decrement() = 0;
@@ -78,7 +78,6 @@ namespace protean {
               , boost::bidirectional_traversal_tag
             >
     {
-        typedef typename ITERATOR_TRAITS::value_type& reference_type;
         typedef typename variant_iterator_interface<ITERATOR_TRAITS>::date_time_t date_time_t;
 
     public:
@@ -105,7 +104,7 @@ namespace protean {
 
         const std::string& key() const;
 
-        reference_type value() const;
+        reference value() const;
 
         const date_time_t& time() const;
 
@@ -120,12 +119,11 @@ namespace protean {
 
         bool equal(const variant_iterator<const_iterator_traits>& other) const;
 
-        reference_type dereference() const;
+        reference dereference() const;
 
         void advance(difference_type n);
 
         const variant_iterator_interface<ITERATOR_TRAITS>* iterator() const;
-
 
         boost::shared_ptr<variant_iterator_interface<ITERATOR_TRAITS> > m_iterator;
     };

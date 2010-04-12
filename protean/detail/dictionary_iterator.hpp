@@ -22,7 +22,7 @@ namespace protean { namespace detail {
     >
     class PROTEAN_DECL dictionary_iterator_interface : public BASE
     {
-        typedef typename ITERATOR_TRAITS::value_type& reference_type;
+        typedef typename ITERATOR_TRAITS::value_type& reference;
         typedef typename ITERATOR_TRAITS::dictionary_iterator_type iterator_type;
         typedef typename BASE::date_time_t date_time_t;
 
@@ -39,7 +39,7 @@ namespace protean { namespace detail {
         {
             boost::throw_exception(variant_error("Attempt to call time() on dictionary iterator"));
         }
-        reference_type value() const
+        reference value() const
         {
             return m_iterator->second;
         }
