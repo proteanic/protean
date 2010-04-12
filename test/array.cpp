@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
     BOOST_CHECK_THROW(variant v(variant::Array), variant_error);
 
     typed_array a1(5, variant::String);
-    BOOST_REQUIRE_EQUAL(a1.size(), 5);
+    BOOST_REQUIRE_EQUAL(a1.size(), 5u);
     BOOST_REQUIRE_EQUAL(a1.type(), variant::String);
 
     for (size_t i=0; i<5; ++i)
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
     BOOST_CHECK_EQUAL(a1[4].as<std::string>(), "s5");
 
     typed_array a2(5, variant("s6"));
-    BOOST_REQUIRE_EQUAL(a1.size(), 5);
+    BOOST_REQUIRE_EQUAL(a1.size(), 5u);
     BOOST_REQUIRE_EQUAL(a1.type(), variant::String);
 
     for (size_t i=0; i<5; ++i)
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(test_array_basic)
 BOOST_AUTO_TEST_CASE(test_array_iterators)
 {
     typed_array a1(3, variant::String);
-    BOOST_REQUIRE_EQUAL(a1.size(), 3);
+    BOOST_REQUIRE_EQUAL(a1.size(), 3u);
     BOOST_REQUIRE_EQUAL(a1.type(), variant::String);
 
     typed_array::iterator it1(a1.begin());

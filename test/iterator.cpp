@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(algorithms)
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
-   BOOST_CHECK_EQUAL(l1.size(),2);
+   BOOST_CHECK_EQUAL(l1.size(),2u);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
