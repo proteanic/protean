@@ -150,9 +150,9 @@ namespace protean {
         public:
             element_info() :
                 m_type(variant::Any),
-                m_typed(false),
                 m_attributes(variant::Bag), // a bag to preserve ordering
                 m_element(NULL),
+                m_typed(false),
                 m_num_rows(0),
                 m_num_row(0),
                 m_item_type(variant::None)
