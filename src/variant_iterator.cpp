@@ -56,7 +56,7 @@ namespace protean {
     }
 
     template<typename ITERATOR_TRAITS>
-    typename variant_iterator<ITERATOR_TRAITS>::reference variant_iterator<ITERATOR_TRAITS>::value() const
+    typename ITERATOR_TRAITS::value_type & variant_iterator<ITERATOR_TRAITS>::value() const
     {
         if (!m_iterator)
         {
@@ -92,7 +92,7 @@ namespace protean {
     }
 
     template<typename ITERATOR_TRAITS>
-    typename variant_iterator<ITERATOR_TRAITS>::reference variant_iterator<ITERATOR_TRAITS>::dereference() const
+    typename ITERATOR_TRAITS::value_type & variant_iterator<ITERATOR_TRAITS>::dereference() const
     {
         if (!m_iterator)
         {

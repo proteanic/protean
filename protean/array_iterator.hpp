@@ -72,12 +72,12 @@ namespace protean {
 
         bool equal(const array_iterator<array_const_iterator_traits>& other) const;
 
-        reference dereference() const;
+        typename ITERATOR_TRAITS::value_type & dereference() const;
 
         void advance(difference_type n);
 
     private:
-        typename boost::remove_const<value_type>::type m_ref;
+        typename boost::remove_const<typename ITERATOR_TRAITS::value_type>::type m_ref;
     };
 
     // Copy constructor definitions

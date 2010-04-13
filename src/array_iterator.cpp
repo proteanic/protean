@@ -63,7 +63,7 @@ namespace protean {
     }
 
     template<typename ITERATOR_TRAITS>
-    typename array_iterator<ITERATOR_TRAITS>::reference array_iterator<ITERATOR_TRAITS>::dereference() const
+    typename ITERATOR_TRAITS::value_type & array_iterator<ITERATOR_TRAITS>::dereference() const
     {
         if (!m_ref)
         {

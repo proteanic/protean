@@ -104,7 +104,7 @@ namespace protean {
 
         const std::string& key() const;
 
-        reference value() const;
+        typename ITERATOR_TRAITS::value_type & value() const;
 
         const date_time_t& time() const;
 
@@ -119,7 +119,7 @@ namespace protean {
 
         bool equal(const variant_iterator<const_iterator_traits>& other) const;
 
-        reference dereference() const;
+        typename ITERATOR_TRAITS::value_type & dereference() const;
 
         void advance(difference_type n);
 
