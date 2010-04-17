@@ -4,5 +4,5 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #undef CHECK_VARIANT_FUNCTION
-#undef BEGIN_VARIANT_CONTEXT
-#undef END_VARIANT_CONTEXT 
+#undef BEGIN_TRANSLATE_ERROR
+#undef END_TRANSLATE_ERROR 

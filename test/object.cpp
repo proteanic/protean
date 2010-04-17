@@ -132,6 +132,9 @@ BOOST_AUTO_TEST_CASE(test_object_proxy)
 	// Proxy should have been converted to concrete object by as().
 	BOOST_CHECK(!v.is<object_proxy>());
 	BOOST_CHECK(v.is<testing_object>());
+
+    // Can't convert real objects into proxy objects
+	BOOST_CHECK_THROW(v.as<object_proxy>(), variant_error);
 }
 
 class a : public testing_object 

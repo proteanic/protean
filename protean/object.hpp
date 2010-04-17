@@ -20,26 +20,21 @@ namespace protean {
     class PROTEAN_DECL object : public detail::ref_counted
     {
     public:
-        object();
-        object(const object& rhs);
         virtual ~object();
 
-        template<typename TYPE>
-        static object create();
-
+    // abstract interface that must be implemented by all variant objects
+    public:
         virtual std::string name() const = 0;
+        virtual int version() const = 0;
+        virtual void deflate(variant& params) const = 0;
+        virtual void inflate(const variant& params, int version) = 0;
+        virtual handle<object> clone() const = 0;
 
     public:
         void coerce(const object& rhs);
 
         int compare(const object& rhs) const;
         size_t hash() const;
-
-    public:
-        virtual int version() const = 0;
-        virtual void deflate(variant& params) const = 0;
-        virtual void inflate(const variant& params, int version) = 0;
-        virtual handle<object> clone() const = 0;
     };
 
 } // namespace protean

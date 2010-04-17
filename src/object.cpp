@@ -10,14 +10,6 @@
 
 namespace protean {
 
-    object::object()
-    {
-    }
-
-    object::object(const object& /*rhs*/)
-    {
-    }
-
     object::~object()
     {
     }

@@ -171,7 +171,7 @@ namespace protean {
     typename boost::enable_if<variant::return_value<T>, T>::type
     variant::as() const
     {
-        BEGIN_VARIANT_CONTEXT();
+        BEGIN_TRANSLATE_ERROR();
 
         CHECK_VARIANT_FUNCTION(Any | type_to_enum<T>::value, "as<" + typeid(T).name() + ">()")
 
@@ -184,7 +184,7 @@ namespace protean {
             return m_value.get<type_to_enum<T>::value>();
         }
 
-        END_VARIANT_CONTEXT();
+        END_TRANSLATE_ERROR();
     }
 
     template<> PROTEAN_DECL std::string                 variant::as<std::string>()              const;
@@ -197,7 +197,7 @@ namespace protean {
     typename boost::enable_if<variant::return_pointer<T>, const T>::type
     variant::as() const
     {
-        BEGIN_VARIANT_CONTEXT();
+        BEGIN_TRANSLATE_ERROR();
 
         CHECK_VARIANT_FUNCTION(Buffer, "as<" + typeid(T).name() + ">()");
 
@@ -205,14 +205,14 @@ namespace protean {
 
         return reinterpret_cast<const T>(obj->data());
 
-        END_VARIANT_CONTEXT();
+        END_TRANSLATE_ERROR();
     }
 
     template<typename T>
     typename boost::enable_if<variant::return_reference<T>, const T&>::type
     variant::as() const
     {
-        BEGIN_VARIANT_CONTEXT();
+        BEGIN_TRANSLATE_ERROR();
 
         CHECK_VARIANT_FUNCTION(Object, "as<" + typeid(T).name() + ">()")
 
@@ -236,9 +236,9 @@ namespace protean {
             boost::throw_exception(variant_error(std::string("Attempt to coerce ") + typeid(*obj).name() + " into object of type " + typeid(T).name()));
         }
 
-        END_VARIANT_CONTEXT();
+        END_TRANSLATE_ERROR();
     }
-
+    
     template<> PROTEAN_DECL const exception_data&       variant::as<exception_data>()           const;
     template<> PROTEAN_DECL const typed_array&          variant::as<typed_array>()              const;
     template<> PROTEAN_DECL const object&               variant::as<object>()                   const;

@@ -13,6 +13,8 @@
 
 namespace protean {
 
+    class variant;
+
     class PROTEAN_DECL object_proxy : public object
     {
     public:
@@ -25,7 +27,10 @@ namespace protean {
         handle<object> clone() const;
 
     private:
-        std::string m_class_name;
+        friend class variant;
+        object_proxy();
+
+        std::string    m_class_name;
         int            m_version;
         variant        m_params;
     };

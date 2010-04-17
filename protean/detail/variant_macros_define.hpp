@@ -11,15 +11,15 @@
     }
 #endif // CHECK_VARIANT_FUNCTION
 
-#ifndef BEGIN_VARIANT_CONTEXT
-#define BEGIN_VARIANT_CONTEXT                                                                           \
+#ifndef BEGIN_TRANSLATE_ERROR
+#define BEGIN_TRANSLATE_ERROR                                                                           \
         try                                                                                             \
         {                                                                                               \
           void
-#endif // BEGIN_VARIANT_CONTEXT
+#endif // BEGIN_TRANSLATE_ERROR
 
-#ifndef END_VARIANT_CONTEXT
-#define END_VARIANT_CONTEXT                                                                             \
+#ifndef END_TRANSLATE_ERROR
+#define END_TRANSLATE_ERROR                                                                             \
         }                                                                                               \
         catch(std::exception& e)                                                                        \
         {                                                                                               \
@@ -30,4 +30,4 @@
             boost::throw_exception(variant_error(std::string("Unknown exception\n") + this->str()));    \
         }                                                                                               \
         void
-#endif // END_VARIANT_CONTEXT
+#endif // END_TRANSLATE_ERROR
