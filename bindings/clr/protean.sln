@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protean", "protean.vcproj", "{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test\test.vcproj", "{A4CA40A3-12DD-4D0E-8D3F-F36698BA75BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA} = {20E7BAA3-B05D-4375-8051-1E813FAE2EEA}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Debug|Win32.Build.0 = Debug|Win32
+		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Release|Win32.ActiveCfg = Release|Win32
+		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Release|Win32.Build.0 = Release|Win32
+		{A4CA40A3-12DD-4D0E-8D3F-F36698BA75BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4CA40A3-12DD-4D0E-8D3F-F36698BA75BE}.Debug|Win32.Build.0 = Debug|Win32
+		{A4CA40A3-12DD-4D0E-8D3F-F36698BA75BE}.Release|Win32.ActiveCfg = Release|Win32
+		{A4CA40A3-12DD-4D0E-8D3F-F36698BA75BE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
