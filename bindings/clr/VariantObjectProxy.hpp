@@ -9,7 +9,7 @@
 #include "Variant.hpp"
 #include "IVariantObject.hpp"
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	[System::Reflection::DefaultMember("ClassName")]
 	public ref class VariantObjectProxy : public IVariantObject
@@ -43,6 +43,6 @@ namespace protean { namespace clr {
 		protean::object_proxy*	m_proxy;
 	};
 
-}}
+}} // Protean::CLR
 
 #endif // PROTEAN_CLR_VARIANT_OBJECT_PROXY_HPP

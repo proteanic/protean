@@ -8,7 +8,7 @@
 
 #include <protean/exception_data.hpp>
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	[System::Reflection::DefaultMember("Message")]
 	public ref class ExceptionInfo
@@ -53,6 +53,6 @@ namespace protean { namespace clr {
 		protean::exception_data*	m_exception_info;
 	};
 
-}}
+}} // Protean::CLR
 
 #endif //PROTEAN_CLR_EXCEPTION_INFO_HPP

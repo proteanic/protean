@@ -10,7 +10,7 @@
 #include "BinaryReader.hpp"
 #include "VariantException.hpp"
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
     BinaryReader::BinaryReader(System::IO::Stream^ stream) :
 		m_stream(new boost::iostreams::stream<stream_type>(stream))
@@ -40,4 +40,4 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
 	}
 
-}} // protean::clr
+}} // Protean::CLR

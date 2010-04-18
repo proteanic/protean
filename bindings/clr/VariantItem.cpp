@@ -6,7 +6,7 @@
 #include "VariantItem.hpp"
 #include "VariantException.hpp"
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	VariantItem::VariantItem(Variant^ value) :
 		m_type(EnumType::Sequence),
@@ -72,4 +72,4 @@ namespace protean { namespace clr {
 		}
 	}
 
-}} // protean::clr
+}} // Protean::CLR

@@ -7,7 +7,7 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	VariantObjectProxy::VariantObjectProxy(System::String^ className)
 	{
@@ -76,4 +76,4 @@ namespace protean { namespace clr {
 		return gcnew System::String(m_proxy->name().c_str());
 	}
 
-}} // protean::clr
+}} // Protean::CLR

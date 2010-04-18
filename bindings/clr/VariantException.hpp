@@ -8,15 +8,15 @@
 
 #include <protean/exception_data.hpp>
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
-    ref class VariantException : public System::ApplicationException
+    public ref class VariantException : public System::ApplicationException
     {
     public:
         VariantException(System::String^ message);
     };
 
-}}
+}} // Protean::CLR
 
 #ifndef BEGIN_TRANSLATE_ERROR
 #define BEGIN_TRANSLATE_ERROR                                                                           \

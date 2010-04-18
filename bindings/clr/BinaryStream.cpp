@@ -9,7 +9,7 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	template<typename Category>
 	BinaryStream<Category>::BinaryStream(System::IO::Stream^ stream) :
@@ -40,4 +40,4 @@ namespace protean { namespace clr {
 	template BinaryStream<boost::iostreams::source_tag>;
 	template BinaryStream<boost::iostreams::sink_tag>;
 
-}} // protean::clr
+}} // Protean::CLR

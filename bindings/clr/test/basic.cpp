@@ -8,7 +8,7 @@
 
 using boost::unit_test::test_suite;    
 
-using namespace protean::clr;
+using namespace Protean::CLR;
 
 BOOST_AUTO_TEST_SUITE(clr_suite);
 

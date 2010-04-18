@@ -12,7 +12,7 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	Variant::Variant() :
 		m_variant(new protean::variant()),
@@ -840,4 +840,5 @@ namespace protean { namespace clr {
 
 		END_TRANSLATE_ERROR();
 	}
-}} // protean::clr
+
+}} // Protean::CLR

@@ -10,7 +10,7 @@
 #include "XMLWriter.hpp"
 #include "VariantException.hpp"
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
     XMLWriter::XMLWriter(System::IO::TextWriter^ writer) :
 		m_writer(new boost::iostreams::stream<TextWriter>(writer))
@@ -43,4 +43,4 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
 	}
 
-}} // protean::clr
+}} // Protean::CLR

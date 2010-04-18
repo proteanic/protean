@@ -10,7 +10,7 @@
 #include "BinaryWriter.hpp"
 #include "VariantException.hpp"
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
     BinaryWriter::BinaryWriter(System::IO::Stream^ stream) :
         m_stream(new boost::iostreams::stream<stream_type>(stream))
@@ -43,4 +43,4 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-}} // protean::clr
+}} // Protean::CLR

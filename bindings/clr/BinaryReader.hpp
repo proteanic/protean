@@ -13,7 +13,7 @@
 
 #include <protean/binary_reader.hpp>
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	public ref class BinaryReader
 	{
@@ -31,6 +31,7 @@ namespace protean { namespace clr {
 	private:
 		boost::iostreams::stream<stream_type>* m_stream;
 	};
-}}
+
+}} // Protean::CLR
 
 #endif //PROTEAN_CLR_BINARY_READER_HPP

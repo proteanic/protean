@@ -10,7 +10,7 @@
 #include "XMLReader.hpp"
 #include "VariantException.hpp"
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	XMLReader::XMLReader(System::IO::TextReader^ reader) :
 		m_reader(new boost::iostreams::stream<TextReader>(reader))
@@ -41,4 +41,4 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-}} // protean::clr
+}} // Protean::CLR

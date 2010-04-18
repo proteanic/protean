@@ -13,7 +13,7 @@
 
 #include <protean/binary_writer.hpp>
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	public ref class BinaryWriter
 	{
@@ -39,6 +39,7 @@ namespace protean { namespace clr {
 		boost::iostreams::stream<stream_type>* m_stream;
         EnumFlag m_flags;
 	};
-}}
+
+}} // Protean::CLR
 
 #endif // PROTEAN_CLR_BINARY_WRITER_HPP

@@ -10,7 +10,7 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
     ExceptionInfo::ExceptionInfo(System::String^ type, System::String^ message)
     {
@@ -122,4 +122,4 @@ namespace protean { namespace clr {
 		return gcnew System::String(oss.str().c_str());
 	}
 
-}} // protean::clr
+}} // Protean::CLR

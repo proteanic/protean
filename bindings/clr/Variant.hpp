@@ -8,7 +8,7 @@
 
 #include <protean/variant.hpp>
 
-namespace protean { namespace clr {
+namespace Protean { namespace CLR {
 
 	interface class IVariantObject;
 	ref class VariantObjectProxy;
