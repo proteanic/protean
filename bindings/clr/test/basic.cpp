@@ -12,11 +12,12 @@ using namespace protean::clr;
 
 BOOST_AUTO_TEST_SUITE(clr_suite);
 
-BOOST_AUTO_TEST_CASE(test_clr_basic)
+BOOST_AUTO_TEST_CASE(test_clr_string)
 {
-    protean::clr::Variant^ v = gcnew Variant(gcnew System::String("hello"));
+    Variant^ v = gcnew Variant(gcnew System::String("test string"));
 
-    System::Console::WriteLine(v->ToString());
+    BOOST_CHECK(v->Is(Variant::EnumType::String));
+    BOOST_CHECK(v->AsString()->Equals(gcnew System::String("test string")));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
