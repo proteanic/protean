@@ -8,7 +8,7 @@
 
 #include "Variant.hpp"
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	public ref class VariantItem 
 	{
@@ -49,6 +49,6 @@ namespace Protean { namespace CLR {
 		Variant^			m_value;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif // PROTEAN_CLR_VARIANT_ITEM_HPP

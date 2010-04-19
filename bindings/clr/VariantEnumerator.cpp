@@ -7,7 +7,7 @@
 #include "VariantItem.hpp"
 #include "VariantException.hpp"
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
     VariantEnumerator::VariantEnumerator(Variant^ parent) :
 		m_parent(parent),
@@ -111,4 +111,4 @@ namespace Protean { namespace CLR {
         END_TRANSLATE_ERROR();
 	}
 
-}} // Protean::CLR
+}} // protean::clr

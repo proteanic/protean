@@ -5,11 +5,11 @@
 
 #include "VariantException.hpp"
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
     VariantException::VariantException(System::String^ message)
         : System::ApplicationException(message)
     {
     }
 
-}} // Protean::CLR
+}} // protean::clr

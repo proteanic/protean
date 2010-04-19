@@ -7,15 +7,15 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	VariantObjectProxy::VariantObjectProxy(System::String^ className)
 	{
-        System::IntPtr className_ip = Marshal::StringToHGlobalAnsi(className);
+        System::IntPtr className_handle = Marshal::StringToHGlobalAnsi(className);
 
         try
         {
-            const char* className_str = static_cast<const char*>(className_ip.ToPointer());
+            const char* className_str = static_cast<const char*>(className_handle.ToPointer());
 		    m_proxy = new protean::object_proxy(className_str);
         }
         catch(System::Exception^)
@@ -24,7 +24,7 @@ namespace Protean { namespace CLR {
         }
         finally
         {
-            Marshal::FreeHGlobal(className_ip);
+            Marshal::FreeHGlobal(className_handle);
         }
 	}
 
@@ -76,4 +76,4 @@ namespace Protean { namespace CLR {
 		return gcnew System::String(m_proxy->name().c_str());
 	}
 
-}} // Protean::CLR
+}} // protean::clr

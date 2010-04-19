@@ -11,7 +11,7 @@
 
 #include <protean/xml_writer.hpp>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	public ref class XMLWriter
 	{
@@ -35,6 +35,6 @@ namespace Protean { namespace CLR {
 		boost::iostreams::stream<TextWriter>* m_writer;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif // PROTEAN_CLR_XML_WRITER_HPP

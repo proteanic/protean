@@ -11,7 +11,7 @@
 #include <iostream>
 #include <boost/iostreams/stream.hpp>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	class TextReader
 	{
@@ -28,7 +28,7 @@ namespace Protean { namespace CLR {
 		gcroot<System::IO::TextReader^>	m_reader;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif //PROTEAN_CLR_TEXT_READER_HPP
 

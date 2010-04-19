@@ -9,7 +9,7 @@
 #include <vcclr.h>
 #include <iostream>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	template<typename Category>
 	class BinaryStream
@@ -27,6 +27,6 @@ namespace Protean { namespace CLR {
 		gcroot<System::IO::Stream^>		m_stream;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif // PROTEAN_CLR_BINARY_STREAM_HPP

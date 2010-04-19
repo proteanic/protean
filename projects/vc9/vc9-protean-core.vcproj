@@ -59,6 +59,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkLibraryDependencies="true"
 				AdditionalDependencies="xerces-c_3D.lib"
 				OutputFile="$(OutDir)\protean-vc90-mt-gd-1_01.dll"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"

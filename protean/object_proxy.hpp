@@ -11,6 +11,11 @@
 #include <protean/object.hpp>
 #include <protean/handle.hpp>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4251)
+#endif
+
 namespace protean {
 
     class variant;
@@ -36,5 +41,9 @@ namespace protean {
     };
 
 } // namespace protean
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // PROTEAN_OBJECT_PROXY_HPP

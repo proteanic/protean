@@ -11,7 +11,7 @@
 
 #include <protean/xml_reader.hpp>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	public ref class XMLReader
 	{ 
@@ -26,6 +26,6 @@ namespace Protean { namespace CLR {
 		boost::iostreams::stream<TextReader>* m_reader;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif // PROTEAN_CLR_XML_READER_HPP

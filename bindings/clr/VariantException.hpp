@@ -8,7 +8,7 @@
 
 #include <protean/exception_data.hpp>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
     public ref class VariantException : public System::ApplicationException
     {
@@ -16,7 +16,7 @@ namespace Protean { namespace CLR {
         VariantException(System::String^ message);
     };
 
-}} // Protean::CLR
+}} // protean::clr
 
 #ifndef BEGIN_TRANSLATE_ERROR
 #define BEGIN_TRANSLATE_ERROR                                                                           \

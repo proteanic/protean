@@ -10,26 +10,26 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
     ExceptionInfo::ExceptionInfo(System::String^ type, System::String^ message)
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ip_type = Marshal::StringToHGlobalAnsi(type);
-        System::IntPtr ip_message = Marshal::StringToHGlobalAnsi(message);
+        System::IntPtr type_handle = Marshal::StringToHGlobalAnsi(type);
+        System::IntPtr message_handle = Marshal::StringToHGlobalAnsi(message);
 
         try
         {
-            const char* type = static_cast<const char*>(ip_type.ToPointer());
-            const char* message = static_cast<const char*>(ip_message.ToPointer());
+            const char* type = static_cast<const char*>(type_handle.ToPointer());
+            const char* message = static_cast<const char*>(message_handle.ToPointer());
 
 		    m_exception_info = new protean::exception_data(type, message);
         }
         finally
         {
-            Marshal::FreeHGlobal(ip_type);
-            Marshal::FreeHGlobal(ip_message);
+            Marshal::FreeHGlobal(type_handle);
+            Marshal::FreeHGlobal(message_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -39,26 +39,26 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ip_type = Marshal::StringToHGlobalAnsi(type);
-        System::IntPtr ip_message = Marshal::StringToHGlobalAnsi(message);
-        System::IntPtr ip_source = Marshal::StringToHGlobalAnsi(source);
-        System::IntPtr ip_stack = Marshal::StringToHGlobalAnsi(stack);
+        System::IntPtr type_handle = Marshal::StringToHGlobalAnsi(type);
+        System::IntPtr message_handle = Marshal::StringToHGlobalAnsi(message);
+        System::IntPtr source_handle = Marshal::StringToHGlobalAnsi(source);
+        System::IntPtr stack_handle = Marshal::StringToHGlobalAnsi(stack);
 
         try
         {
-            const char* type = static_cast<const char*>(ip_type.ToPointer());
-            const char* message = static_cast<const char*>(ip_message.ToPointer());
-            const char* source = static_cast<const char*>(ip_source.ToPointer());
-            const char* stack = static_cast<const char*>(ip_stack.ToPointer());
+            const char* type = static_cast<const char*>(type_handle.ToPointer());
+            const char* message = static_cast<const char*>(message_handle.ToPointer());
+            const char* source = static_cast<const char*>(source_handle.ToPointer());
+            const char* stack = static_cast<const char*>(stack_handle.ToPointer());
 
 		    m_exception_info = new protean::exception_data(type, message, source, stack);
         }
         finally
         {
-            Marshal::FreeHGlobal(ip_type);
-            Marshal::FreeHGlobal(ip_message);
-            Marshal::FreeHGlobal(ip_source);
-            Marshal::FreeHGlobal(ip_stack);
+            Marshal::FreeHGlobal(type_handle);
+            Marshal::FreeHGlobal(message_handle);
+            Marshal::FreeHGlobal(source_handle);
+            Marshal::FreeHGlobal(stack_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -122,4 +122,4 @@ namespace Protean { namespace CLR {
 		return gcnew System::String(oss.str().c_str());
 	}
 
-}} // Protean::CLR
+}} // protean::clr

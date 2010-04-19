@@ -5,7 +5,7 @@
 
 #include "TextReader.hpp"
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	TextReader::TextReader(System::IO::TextReader^ reader) :
 		m_reader(reader)
@@ -25,4 +25,4 @@ namespace Protean { namespace CLR {
 		return count;
 	}
 
-}} // Protean::CLR
+}} // protean::clr

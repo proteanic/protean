@@ -8,7 +8,7 @@
 
 #include "Variant.hpp"
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	public ref class VariantEnumerator :
 		public System::Collections::IEnumerator
@@ -41,6 +41,6 @@ namespace Protean { namespace CLR {
 		protean::variant::iterator*	m_itEnd;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif // PROTEAN_CLR_VARIANT_ENUMERATOR_HPP

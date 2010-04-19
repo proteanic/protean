@@ -556,50 +556,50 @@
 			UniqueIdentifier="{A7BCAFB2-B03D-4ba2-9D8A-DCCDEC9DA949}"
 			>
 			<File
-				RelativePath="..\..\test\master.cpp"
+				RelativePath="..\..\test\core\master.cpp"
 				>
 			</File>
 			<Filter
 				Name="suites"
 				>
 				<File
-					RelativePath="..\..\test\test_array.cpp"
+					RelativePath="..\..\test\core\test_array.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_binary_streams.cpp"
+					RelativePath="..\..\test\core\test_binary_streams.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_iterator.cpp"
+					RelativePath="..\..\test\core\test_iterator.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_list.cpp"
+					RelativePath="..\..\test\core\test_list.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_number.cpp"
+					RelativePath="..\..\test\core\test_number.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_object.cpp"
+					RelativePath="..\..\test\core\test_object.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_string.cpp"
+					RelativePath="..\..\test\core\test_string.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_types.cpp"
+					RelativePath="..\..\test\core\test_types.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_variant_ref.cpp"
+					RelativePath="..\..\test\core\test_variant_ref.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\test\test_xml_streams.cpp"
+					RelativePath="..\..\test\core\test_xml_streams.cpp"
 					>
 				</File>
 			</Filter>

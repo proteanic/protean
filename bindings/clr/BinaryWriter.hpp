@@ -13,7 +13,7 @@
 
 #include <protean/binary_writer.hpp>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	public ref class BinaryWriter
 	{
@@ -40,6 +40,6 @@ namespace Protean { namespace CLR {
         EnumFlag m_flags;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif // PROTEAN_CLR_BINARY_WRITER_HPP

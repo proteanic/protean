@@ -12,7 +12,7 @@
 
 using namespace System::Runtime::InteropServices;
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	Variant::Variant() :
 		m_variant(new protean::variant()),
@@ -49,20 +49,16 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ip_arg = Marshal::StringToHGlobalAnsi(arg);
+        System::IntPtr arg_handle = Marshal::StringToHGlobalAnsi(arg);
 
         try
         {
-            const char* arg_str = static_cast<const char*>(ip_arg.ToPointer());
+            const char* arg_str = static_cast<const char*>(arg_handle.ToPointer());
 		    m_variant = new protean::variant(arg_str);
-        }
-        catch(System::Exception^)
-        {
-            throw;
         }
         finally
         {
-            Marshal::FreeHGlobal(ip_arg);
+            Marshal::FreeHGlobal(arg_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -206,30 +202,26 @@ namespace Protean { namespace CLR {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ip_type = Marshal::StringToHGlobalAnsi(arg->GetType()->ToString());
-        System::IntPtr ip_message = Marshal::StringToHGlobalAnsi(arg->Message);
-        System::IntPtr ip_source = Marshal::StringToHGlobalAnsi(arg->Source);
-        System::IntPtr ip_stack = Marshal::StringToHGlobalAnsi(arg->StackTrace);
+        System::IntPtr type_handle = Marshal::StringToHGlobalAnsi(arg->GetType()->ToString());
+        System::IntPtr message_handle = Marshal::StringToHGlobalAnsi(arg->Message);
+        System::IntPtr source_handle = Marshal::StringToHGlobalAnsi(arg->Source);
+        System::IntPtr stack_handle = Marshal::StringToHGlobalAnsi(arg->StackTrace);
 
         try
         {
-            const char* type = static_cast<const char*>(ip_type.ToPointer());
-            const char* message = static_cast<const char*>(ip_message.ToPointer());
-            const char* source = static_cast<const char*>(ip_source.ToPointer());
-            const char* stack = static_cast<const char*>(ip_stack.ToPointer());
+            const char* type = static_cast<const char*>(type_handle.ToPointer());
+            const char* message = static_cast<const char*>(message_handle.ToPointer());
+            const char* source = static_cast<const char*>(source_handle.ToPointer());
+            const char* stack = static_cast<const char*>(stack_handle.ToPointer());
 
             m_variant = new protean::variant(protean::exception_data(type, message, source, stack));
         }
-        catch(System::Exception^)
-        {
-            throw;
-        }
         finally
         {
-            Marshal::FreeHGlobal(ip_type);
-            Marshal::FreeHGlobal(ip_message);
-            Marshal::FreeHGlobal(ip_source);
-            Marshal::FreeHGlobal(ip_stack);
+            Marshal::FreeHGlobal(type_handle);
+            Marshal::FreeHGlobal(message_handle);
+            Marshal::FreeHGlobal(source_handle);
+            Marshal::FreeHGlobal(stack_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -388,13 +380,13 @@ namespace Protean { namespace CLR {
 		}
 		else
 		{
-            System::IntPtr ip_className = Marshal::StringToHGlobalAnsi(newObj->ClassName);
+            System::IntPtr className_handle = Marshal::StringToHGlobalAnsi(newObj->ClassName);
 
-            const char* className = static_cast<const char*>(ip_className.ToPointer());
+            const char* className = static_cast<const char*>(className_handle.ToPointer());
     		std::ostringstream oss;
 			oss << "Attempt to coerce object of type '" << obj.name() << "' into '" << className << "'.";
 
-            Marshal::FreeHGlobal(ip_className);
+            Marshal::FreeHGlobal(className_handle);
 
 			throw gcnew VariantException(gcnew System::String(oss.str().c_str()));
 		}
@@ -408,9 +400,7 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-		const protean::object& obj(m_variant->as<protean::object>());
-
-		return gcnew VariantObjectProxy(dynamic_cast<const protean::object_proxy&>(obj));
+		return gcnew VariantObjectProxy(m_variant->as<protean::object_proxy>());
 
         END_TRANSLATE_ERROR();
 	}
@@ -437,20 +427,16 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ip_key = Marshal::StringToHGlobalAnsi(key);
+        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
 
         try
         {
-            const char* keyStr = static_cast<const char*>(ip_key.ToPointer());
-		    return m_variant->has_key(keyStr);
-        }
-        catch(System::Exception^)
-        {
-            throw;
+            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
+		    return m_variant->has_key(key_str);
         }
         finally
         {
-            Marshal::FreeHGlobal(ip_key);
+            Marshal::FreeHGlobal(key_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -460,20 +446,16 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ipKey = Marshal::StringToHGlobalAnsi(key);
+        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
 
         try
         {
-            const char* keyStr = static_cast<const char*>(ipKey.ToPointer());
-            m_variant->insert(keyStr, value->get_internals());
-        }
-        catch(System::Exception^)
-        {
-            throw;
+            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
+            m_variant->insert(key_str, value->get_internals());
         }
         finally
         {
-            Marshal::FreeHGlobal(ipKey);
+            Marshal::FreeHGlobal(key_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -483,20 +465,16 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ipKey = Marshal::StringToHGlobalAnsi(key);
+        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
 
         try
         {
-            const char* keyStr = static_cast<const char*>(ipKey.ToPointer());
-            m_variant->remove(keyStr);
-        }
-        catch(System::Exception^)
-        {
-            throw;
+            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
+            m_variant->remove(key_str);
         }
         finally
         {
-            Marshal::FreeHGlobal(ipKey);
+            Marshal::FreeHGlobal(key_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -537,20 +515,16 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ipKey = Marshal::StringToHGlobalAnsi(key);
+        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
 
         try
         {
-            const char* keyStr = static_cast<const char*>(ipKey.ToPointer());
-		    return gcnew Variant(&m_variant->at(keyStr));
-        }
-        catch(System::Exception^)
-        {
-            throw;
+            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
+		    return gcnew Variant(&m_variant->at(key_str));
         }
         finally
         {
-            Marshal::FreeHGlobal(ipKey);
+            Marshal::FreeHGlobal(key_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -560,20 +534,16 @@ namespace Protean { namespace CLR {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr ipKey = Marshal::StringToHGlobalAnsi(key);
+        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
 
         try
         {
-            const char* keyStr = static_cast<const char*>(ipKey.ToPointer());
-		    m_variant->at(keyStr) = value->get_internals();
-        }
-        catch(System::Exception^)
-        {
-            throw;
+            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
+		    m_variant->at(key_str) = value->get_internals();
         }
         finally
         {
-            Marshal::FreeHGlobal(ipKey);
+            Marshal::FreeHGlobal(key_handle);
         }
 
         END_TRANSLATE_ERROR();
@@ -841,4 +811,4 @@ namespace Protean { namespace CLR {
 		END_TRANSLATE_ERROR();
 	}
 
-}} // Protean::CLR
+}} // protean::clr

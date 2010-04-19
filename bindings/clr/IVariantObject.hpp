@@ -6,7 +6,7 @@
 #ifndef PROTEAN_CLR_IVARIANT_OBJECT_HPP
 #define PROTEAN_CLR_IVARIANT_OBJECT_HPP
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	public interface class IVariantObject
 	{
@@ -25,6 +25,6 @@ namespace Protean { namespace CLR {
 		virtual void Inflate(Variant^ params, System::UInt32 version);
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif //PROTEAN_CLR_IVARIANT_OBJECT_HPP

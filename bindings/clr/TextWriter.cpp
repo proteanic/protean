@@ -5,7 +5,7 @@
 
 #include "TextWriter.hpp"
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	TextWriter::TextWriter(System::IO::TextWriter^ writer) :
 		m_writer(writer)
@@ -18,4 +18,4 @@ namespace Protean { namespace CLR {
 		return n;
 	}
 
-}} // Protean::CLR
+}} // protean::clr

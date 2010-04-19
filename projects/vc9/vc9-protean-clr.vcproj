@@ -63,6 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkLibraryDependencies="true"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -499,7 +500,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_3.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;"
+				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;;&quot;$(XERCES_LIB_PATH)&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>

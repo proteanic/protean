@@ -12,7 +12,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4512)
+#pragma warning(disable:4512 4251)
 #endif
 
 namespace protean {

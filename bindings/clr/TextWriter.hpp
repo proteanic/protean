@@ -11,7 +11,7 @@
 #include <iostream>
 #include <boost/iostreams/stream.hpp>
 
-namespace Protean { namespace CLR {
+namespace protean { namespace clr {
 
 	class TextWriter
 	{
@@ -28,7 +28,7 @@ namespace Protean { namespace CLR {
 		gcroot<System::IO::TextWriter^>	m_writer;
 	};
 
-}} // Protean::CLR
+}} // protean::clr
 
 #endif //PROTEAN_CLR_TEXT_WRITER_HPP
 
