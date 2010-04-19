@@ -12,6 +12,7 @@
     <AssemblyName>vc9-test-protean-clr</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+	<BaseIntermediateOutputPath>.\vc9-test-protean-clr\$(Platform)\$(Configuration)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
     <DebugSymbols>true</DebugSymbols>
