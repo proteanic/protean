@@ -61,7 +61,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="true"
 				AdditionalDependencies="xerces-c_3D.lib"
-				OutputFile="$(OutDir)\clr-protean-$(CompilerFlag)-mt-gd-$(VersionString).dll"
+				OutputFile="$(OutDir)\protean-$(CompilerFlag)-mt-gd-$(VersionString).dll"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"
 			/>
 			<Tool
@@ -194,7 +194,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_3.lib"
-				OutputFile="$(OutDir)\clr-protean-$CompilerFlag)-mt-$(VersionString).dll"
+				OutputFile="$(OutDir)\protean-$CompilerFlag)-mt-$(VersionString).dll"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"
 			/>
 			<Tool
