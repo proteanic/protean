@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9-protean-core", "vc9\vc9-protean-core.vcproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9-protean", "vc9\vc9-protean.vcproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9-test-protean-core", "vc9\vc9-test-protean-core.vcproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9-test-protean", "vc9\vc9-test-protean.vcproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF} = {AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}
 	EndProjectSection

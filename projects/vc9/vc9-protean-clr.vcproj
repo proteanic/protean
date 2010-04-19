@@ -24,7 +24,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -64,6 +64,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="true"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -97,7 +98,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -137,6 +138,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB64_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -170,7 +172,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="0"
@@ -209,6 +211,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -241,7 +244,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -282,6 +285,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB64_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -314,7 +318,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -353,6 +357,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -386,7 +391,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -426,6 +431,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB64_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -459,7 +465,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -499,6 +505,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_3.lib"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB_PATH)&quot;;&quot;$(XERCES_LIB_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -531,7 +538,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -571,6 +578,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\protean-clr.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(BOOST_LIB64_PATH)&quot;"
 				GenerateDebugInformation="true"
@@ -607,6 +615,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath="..\..\bindings\clr\AssemblyInfo.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\..\..\bindings\clr\BinaryReader.cpp"
 				>

@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="vc9-test-protean-core"
+	Name="vc9-test-protean"
 	ProjectGUID="{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
 	RootNamespace="test"
 	Keyword="Win32Proj"
@@ -24,7 +24,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -60,6 +60,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies=""
+				OutputFile="&quot;$(OutDir)\test-protean-$(CompilerFlag)-mt-gd-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"
 				SubSystem="1"
 			/>
@@ -90,7 +91,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -126,6 +127,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-protean-$(CompilerFlag)-mt-gd-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
@@ -157,7 +159,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -192,6 +194,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-protean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"
 				SubSystem="1"
 			/>
@@ -222,7 +225,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -258,6 +261,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-protean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
@@ -289,7 +293,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -324,6 +328,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-gd-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH)"
 				SubSystem="1"
 			/>
@@ -354,7 +359,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -390,6 +395,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-gd-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH);$(XERCES_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
@@ -421,7 +427,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -455,6 +461,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB_PATH)"
 				SubSystem="1"
 			/>
@@ -485,7 +492,7 @@
 			OutputDirectory="$(SolutionDir)..\build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -520,6 +527,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
 				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
