@@ -6,6 +6,10 @@
 #ifndef PROTEAN_VERSION_HPP
 #define PROTEAN_VERSION_HPP
 
+#define PROTEAN_MAJOR_VERSION 1
+#define PROTEAN_MINOR_VERSION 1
+#define PROTEAN_PATCH_VERSION 0
+
 //
 //  PROTEAN_VERSION % 100 is the patch level
 //  PROTEAN_VERSION / 100 % 1000 is the minor version

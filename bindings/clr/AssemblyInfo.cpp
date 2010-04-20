@@ -1,5 +1,7 @@
 #include <protean/version.hpp>
 
+#include <boost/preprocessor.hpp>
+
 using namespace System::Reflection;
 using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
@@ -29,8 +31,14 @@ using namespace System::Runtime::InteropServices;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("1.1.0.0")];
-[assembly:AssemblyFileVersionAttribute("1.1.0.0")];
+#define PROTEAN_ASSEMBLY_VERSION \
+	BOOST_PP_STRINGIZE(PROTEAN_MAJOR_VERSION) ## "." ## BOOST_PP_STRINGIZE(PROTEAN_MINOR_VERSION) ## ".*"
+
+#define PROTEAN_ASSEMBLY_FILE_VERSION \
+	BOOST_PP_STRINGIZE(PROTEAN_MAJOR_VERSION) ## "." ## BOOST_PP_STRINGIZE(PROTEAN_MINOR_VERSION) ## BOOST_PP_STRINGIZE(PROTEAN_PATCH_VERSION) ## ".0"
+
+[assembly:AssemblyVersionAttribute(PROTEAN_ASSEMBLY_VERSION)];
+[assembly:AssemblyFileVersionAttribute(PROTEAN_ASSEMBLY_FILE_VERSION)];
 
 [assembly:ComVisible(false)];
 
