@@ -5,6 +5,10 @@
 
 #include "TextReader.hpp"
 
+using namespace System::Runtime::InteropServices;
+
+using namespace System::Text;
+
 namespace protean { namespace clr {
 
 	TextReader::TextReader(System::IO::TextReader^ reader) :
@@ -16,11 +20,13 @@ namespace protean { namespace clr {
 	{
 		array<System::Char>^ chars = gcnew array<System::Char>(static_cast<int>(n));
 
+		pin_ptr<System::Char> ptr = &chars[0];
+
 		int count = m_reader->Read(chars, 0, (int)n);
 
-        pin_ptr<System::Char> chars_ptr = &(chars[0]);
+		ASCIIEncoding^ ascii = gcnew ASCIIEncoding();
 
-		strncpy_s(str, count, reinterpret_cast<char*>(chars_ptr), count);
+		return ascii->GetBytes(reinterpret_cast<wchar_t*>(ptr), count, reinterpret_cast<unsigned char*>(str), count);
 
 		return count;
 	}

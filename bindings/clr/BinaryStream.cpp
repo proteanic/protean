@@ -23,7 +23,10 @@ namespace protean { namespace clr {
 		array<System::Byte>^ byteBuffer = gcnew array<System::Byte>(static_cast<int>(n));
 
 		int count = m_stream->Read(byteBuffer, 0, (int)n);
-		Marshal::Copy(byteBuffer, 0, (System::IntPtr)bytes, count);
+
+		pin_ptr<System::Byte> ptr = &byteBuffer[0];
+
+		memcpy(bytes, reinterpret_cast<const char*>(ptr), count);
 
 		return count;
 	}

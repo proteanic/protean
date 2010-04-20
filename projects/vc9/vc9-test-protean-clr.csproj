@@ -93,7 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\test\bindings\clr\TestTypes.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\..\test\bindings\clr\AssemblyInfo.cs" />
+    <Compile Include="..\..\test\bindings\clr\TestBinaryStreams.cs" />
+    <Compile Include="..\..\test\bindings\clr\TestXMLStreams.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vc9-protean-clr.vcproj">
