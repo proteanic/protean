@@ -12,7 +12,7 @@
     <AssemblyName>test-protean-clr</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <BaseIntermediateOutputPath>.\vc9-test-protean-clr\$(Platform)\$(Configuration)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>.\vc10-test-protean-clr\$(Platform)\$(Configuration)\</BaseIntermediateOutputPath>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -104,7 +104,7 @@
   <ItemGroup>
     <ProjectReference Include="vc10-protean-clr.vcxproj">
       <Project>{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}</Project>
-      <Name>vc9-protean-clr</Name>
+      <Name>vc10-protean-clr</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
