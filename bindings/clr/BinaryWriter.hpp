@@ -36,7 +36,7 @@ namespace protean { namespace clr {
         void Write(Variant^ v, EnumFlag flags);
 
 	private:
-		boost::iostreams::stream<stream_type>* m_stream;
+		std::ostream* m_stream;
         EnumFlag m_flags;
 	};
 

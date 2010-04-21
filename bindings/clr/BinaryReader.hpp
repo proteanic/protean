@@ -29,7 +29,7 @@ namespace protean { namespace clr {
 		Variant^ Read();
 
 	private:
-		boost::iostreams::stream<stream_type>* m_stream;
+		std::istream* m_stream;
 	};
 
 }} // protean::clr

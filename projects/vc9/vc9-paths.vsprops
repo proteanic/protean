@@ -8,11 +8,11 @@
     <!-- These variables are system-specific -->
 	<UserMacro
 		Name="BOOST_ROOT"
-		Value="C:/Development/Simulation/3rd party/boost-1_42/"
+		Value="MyBoostRoot"
 	/>
 	<UserMacro
 		Name="XERCES_ROOT"
-		Value="C:/Development/Simulation/3rd party/xerces-3_0_1/"
+		Value="MyXercesRoot"
 	/>
 
     <!-- sub directories relative to root paths defined above -->
@@ -34,18 +34,18 @@
 	/>
 	<UserMacro
 		Name="XERCES_LIB_PATH"
-		Value="$(XERCES_ROOT)vc90/lib/"
+		Value="$(XERCES_ROOT)lib/"
 	/>
 	<UserMacro
 		Name="XERCES_LIB64_PATH"
-		Value="$(XERCES_ROOT)vc90/lib64/"
+		Value="$(XERCES_ROOT)lib64/"
 	/>
 	<UserMacro
 		Name="XERCES_BIN_PATH"
-		Value="$(XERCES_ROOT)vc90/bin/"
+		Value="$(XERCES_ROOT)bin/"
 	/>
 	<UserMacro
 		Name="XERCES_BIN64_PATH"
-		Value="$(XERCES_ROOT)vc90/bin64/"
+		Value="$(XERCES_ROOT)bin64/"
 	/>    
 </VisualStudioPropertySheet>

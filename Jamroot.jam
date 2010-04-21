@@ -133,7 +133,7 @@ else
 }
 
 DEPENDENTONXERCES =
-   src/xml_reader.cpp src/xml_parser.cpp src/xml_writer.cpp test/xml_streams.cpp 
+   src/xml_reader.cpp src/xml_parser.cpp src/xml_writer.cpp test/core/xml_streams.cpp 
    protean/xml_reader.hpp protean/xml_parser.hpp protean/xml_writer.hpp protean/xml_defs.hpp
 ;
 
@@ -197,7 +197,7 @@ rule test-protean ( properties * : name )
             unit-test
                 protean-unit-tests-$(name)
             :
-                [ glob test/*.cpp : $(EXCLUDE) ]
+                [ glob test/core/*.cpp : $(EXCLUDE) ]
                 protean
                 /boost//unit_test_framework
                 $(XERCES_BJAM_NAME)

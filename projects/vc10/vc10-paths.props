@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
-    <BOOST_ROOT>C:/dev/ext/boost_1_42_0/</BOOST_ROOT>
-    <XERCES_ROOT>C:/dev/ext/xerces-c-3.0.1-x86-windows-vc-9.0</XERCES_ROOT>
+    <BOOST_ROOT>MyBoostRoot</BOOST_ROOT>
+    <XERCES_ROOT>MyXercesRoot</XERCES_ROOT>
     <BOOST_INCLUDE_PATH>$(BOOST_ROOT)</BOOST_INCLUDE_PATH>
     <BOOST_LIB_PATH>$(BOOST_ROOT)lib/</BOOST_LIB_PATH>
     <BOOST_LIB64_PATH>$(BOOST_ROOT)lib64/</BOOST_LIB64_PATH>
     <XERCES_INCLUDE_PATH>$(XERCES_ROOT)include/</XERCES_INCLUDE_PATH>
-    <XERCES_LIB_PATH>$(XERCES_ROOT)vc100/lib/</XERCES_LIB_PATH>
-    <XERCES_LIB64_PATH>$(XERCES_ROOT)vc100/lib64/</XERCES_LIB64_PATH>
-    <XERCES_BIN_PATH>$(XERCES_ROOT)vc100/bin/</XERCES_BIN_PATH>
-    <XERCES_BIN64_PATH>$(XERCES_ROOT)vc100/bin64/</XERCES_BIN64_PATH>
+    <XERCES_LIB_PATH>$(XERCES_ROOT)lib/</XERCES_LIB_PATH>
+    <XERCES_LIB64_PATH>$(XERCES_ROOT)lib64/</XERCES_LIB64_PATH>
+    <XERCES_BIN_PATH>$(XERCES_ROOT)bin/</XERCES_BIN_PATH>
+    <XERCES_BIN64_PATH>$(XERCES_ROOT)bin64/</XERCES_BIN64_PATH>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
