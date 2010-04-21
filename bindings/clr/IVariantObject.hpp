@@ -8,22 +8,22 @@
 
 namespace protean { namespace clr {
 
-	public interface class IVariantObject
-	{
-	public:
-		property System::String^ ClassName
-		{
-			virtual System::String^ get();
-		}
-		property System::UInt32 Version
-		{
-			virtual System::UInt32 get();
-		}
+    public interface class IVariantObject
+    {
+    public:
+        property System::String^ ClassName
+        {
+            virtual System::String^ get();
+        }
+        property System::UInt32 Version
+        {
+            virtual System::UInt32 get();
+        }
 
-		virtual Variant^ Deflate();
+        virtual Variant^ Deflate();
 
-		virtual void Inflate(Variant^ params, System::UInt32 version);
-	};
+        virtual void Inflate(Variant^ params, System::UInt32 version);
+    };
 
 }} // protean::clr
 

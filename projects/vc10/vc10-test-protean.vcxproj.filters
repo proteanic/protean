@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\test\core\master.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_array.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_xml_streams.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_binary_streams.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_iterator.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_list.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_number.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_object.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_string.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_types.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\core\test_variant_ref.cpp">
+      <Filter>Source Files\suites</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{79edc871-09fe-444f-9170-4ead80360757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\suites">
+      <UniqueIdentifier>{9cead648-e8be-460a-b04b-80441460696b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

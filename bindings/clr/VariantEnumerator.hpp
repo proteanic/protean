@@ -10,36 +10,36 @@
 
 namespace protean { namespace clr {
 
-	public ref class VariantEnumerator :
-		public System::Collections::IEnumerator
-	{
-	internal:
-		enum class EnumState
-		{
-			ResetState,
-			InUseState,
-			PastEndState
-		};
-	public:
-		VariantEnumerator(Variant^ parent);
-		~VariantEnumerator();
-		!VariantEnumerator();
+    public ref class VariantEnumerator :
+        public System::Collections::IEnumerator
+    {
+    internal:
+        enum class EnumState
+        {
+            ResetState,
+            InUseState,
+            PastEndState
+        };
+    public:
+        VariantEnumerator(Variant^ parent);
+        ~VariantEnumerator();
+        !VariantEnumerator();
 
-		virtual bool MoveNext();
+        virtual bool MoveNext();
 
-		virtual void Reset();
+        virtual void Reset();
 
-		virtual property System::Object^ Current
-		{
-			System::Object^ get();
-		}
+        virtual property System::Object^ Current
+        {
+            System::Object^ get();
+        }
 
-	private:
-		Variant^					m_parent;
-		EnumState					m_currentState;
-		protean::variant::iterator*	m_itCurrent;
-		protean::variant::iterator*	m_itEnd;
-	};
+    private:
+        Variant^                    m_parent;
+        EnumState                    m_currentState;
+        protean::variant::iterator*    m_itCurrent;
+        protean::variant::iterator*    m_itEnd;
+    };
 
 }} // protean::clr
 

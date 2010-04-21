@@ -11,9 +11,15 @@
 #include <map>
 #include <string>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4512 4251)
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable:4512 4251)
+#endif
+
+#if defined(_MSC_VER)
+#if defined(PROTEAN_SOURCE) || (!defined(PROTEAN_DYN_LINK) && !defined(PROTEAN_NO_AUTOLINK))
+#    pragma comment(lib, XERCES_BINARY ".lib")
+#endif
 #endif
 
 namespace protean {
@@ -50,8 +56,8 @@ namespace protean {
 
 } // namespace protean
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #endif // PROTEAN_XML_READER_HPP

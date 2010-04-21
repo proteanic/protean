@@ -13,20 +13,20 @@
 
 namespace protean { namespace clr {
 
-	class TextWriter
-	{
-	public:
-		typedef char char_type;
-		typedef boost::iostreams::sink_tag category;
+    class TextWriter
+    {
+    public:
+        typedef char char_type;
+        typedef boost::iostreams::sink_tag category;
 
-	public:
-		TextWriter(System::IO::TextWriter^ writer);
+    public:
+        TextWriter(System::IO::TextWriter^ writer);
 
-		std::streamsize write(const char* s, std::streamsize n);
+        std::streamsize write(const char* s, std::streamsize n);
 
-	private:
-		gcroot<System::IO::TextWriter^>	m_writer;
-	};
+    private:
+        gcroot<System::IO::TextWriter^>    m_writer;
+    };
 
 }} // protean::clr
 

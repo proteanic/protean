@@ -11,21 +11,21 @@
 
 namespace protean { namespace clr {
 
-	template<typename Category>
-	class BinaryStream
-	{
-	public:
-		typedef char char_type;
-		typedef Category category;
+    template<typename Category>
+    class BinaryStream
+    {
+    public:
+        typedef char char_type;
+        typedef Category category;
 
-		BinaryStream(System::IO::Stream^ stream);
+        BinaryStream(System::IO::Stream^ stream);
 
-		std::streamsize read(char* s, std::streamsize n);
-		std::streamsize write(const char* s, std::streamsize n);
+        std::streamsize read(char* s, std::streamsize n);
+        std::streamsize write(const char* s, std::streamsize n);
 
-	private:
-		gcroot<System::IO::Stream^>		m_stream;
-	};
+    private:
+        gcroot<System::IO::Stream^>        m_stream;
+    };
 
 }} // protean::clr
 

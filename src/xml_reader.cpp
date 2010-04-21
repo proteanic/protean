@@ -7,13 +7,13 @@
 #include <protean/xml_parser.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4512)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4512)
 #endif
 #include <boost/scope_exit.hpp>
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #include <boost/scoped_ptr.hpp>
@@ -47,9 +47,9 @@ namespace protean {
             // before xercesc::XMLPlatformUtils::Terminate is called so the order of
             // guard creation (and hence destruction) is important.
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4100 4512)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4100 4512)
 #endif
             char terminate; // BOOST_SCOPE_EXIT will not accept an empty list under MSVC
             BOOST_SCOPE_EXIT ((&terminate))
@@ -57,8 +57,8 @@ namespace protean {
                 xercesc::XMLPlatformUtils::Terminate();
             }
             BOOST_SCOPE_EXIT_END
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
             boost::scoped_ptr<xercesc::SAX2XMLReaderImpl> parser( new xercesc::SAX2XMLReaderImpl() );
 
@@ -136,3 +136,4 @@ namespace protean {
         return reader;
     }
 } // namespace protean
+

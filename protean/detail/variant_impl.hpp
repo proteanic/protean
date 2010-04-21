@@ -27,9 +27,9 @@
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum_params_with_a_default.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4251)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4251)
 #endif
 
 #ifndef VARIANT_MAX_ARITY
@@ -195,9 +195,9 @@ namespace protean { namespace detail {
                 return enumToIndex_impl<TYPE_COUNT, typename boost::mpl::begin<mpl_types_info_by_enum>::type>::value(enumValue);
             }
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4702)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4702)
 #endif
             template<int N, typename ITER>
             struct enumToIndex_impl
@@ -210,8 +210,8 @@ namespace protean { namespace detail {
                         return enumToIndex_impl<N-1, typename boost::mpl::next<ITER>::type>::value(enumValue);
                 }
             };
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
             template<typename ITER>
             struct enumToIndex_impl<0, ITER>
@@ -279,7 +279,7 @@ namespace protean { namespace detail {
         template<int N>
         const typename getType<N>::type& get() const
         {
-	    // g++ will fail if this is done on one line
+            // g++ will fail if this is done on one line
             typedef typename getStorage<N>::type storage;
             typedef typename getType<N>::type thetype;
             return storage::template get<thetype>(*this);
@@ -321,8 +321,8 @@ namespace protean { namespace detail {
 
 }} // namespace protean::detail
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #endif // PROTEAN_DETAIL_VARIANT_IMPL_HPP

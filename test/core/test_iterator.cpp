@@ -26,12 +26,12 @@ BOOST_AUTO_TEST_CASE(const_iterator)
 BOOST_AUTO_TEST_CASE(iterator_assign)
 {
     variant v1(variant::List);
-	v1.push_back(variant(1.0));
+    v1.push_back(variant(1.0));
 
     variant::iterator i(v1.begin());
-	variant::iterator i1(i);
-	variant::iterator i2;
-	i2 = i;
+    variant::iterator i1(i);
+    variant::iterator i2;
+    i2 = i;
 
     BOOST_CHECK(i==i);
     BOOST_CHECK(i1==i);
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(iterator_assign)
     BOOST_CHECK(i1!=v1.end());
     BOOST_CHECK(i2!=v1.end());
 
-	++i;
+    ++i;
 
     BOOST_CHECK(i==i);
     BOOST_CHECK(i1!=i);
@@ -98,13 +98,13 @@ BOOST_AUTO_TEST_CASE(algorithms)
    l.push_back (v);
    std::copy(l.begin(), l.end(), std::back_inserter(l1));
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4996)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4996)
 #endif
    BOOST_CHECK_EQUAL(true,std::equal (l.begin(), l.end(), l1.begin()));
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
    BOOST_CHECK_EQUAL(l1.size(),2u);
 }

@@ -10,48 +10,48 @@
 
 namespace protean { namespace clr {
 
-	[System::Reflection::DefaultMember("Message")]
-	public ref class ExceptionInfo
-	{
-	public:
-		ExceptionInfo(System::String^ type, System::String^ message);
+    [System::Reflection::DefaultMember("Message")]
+    public ref class ExceptionInfo
+    {
+    public:
+        ExceptionInfo(System::String^ type, System::String^ message);
         ExceptionInfo(System::String^ type, System::String^ message, System::String^ source, System::String^ stack);
 
-		~ExceptionInfo();
-		!ExceptionInfo();
+        ~ExceptionInfo();
+        !ExceptionInfo();
 
-		property System::String^ Type
+        property System::String^ Type
         {
             System::String^ get();
         }
 
-		property System::String^ Message
+        property System::String^ Message
         {
             System::String^ get();
         }
 
-		property System::String^ Source
+        property System::String^ Source
         {
             System::String^ get();
         }
 
-		property System::String^ Stack
+        property System::String^ Stack
         {
             System::String^ get();
         }
 
-		
-		virtual System::String^ ToString() override;
+        
+        virtual System::String^ ToString() override;
 
-	internal:
+    internal:
 
-		explicit ExceptionInfo(const protean::exception_data& rhs);
+        explicit ExceptionInfo(const protean::exception_data& rhs);
 
-		protean::exception_data&    get_internals();
+        protean::exception_data&    get_internals();
 
-	private:
-		protean::exception_data*	m_exception_info;
-	};
+    private:
+        protean::exception_data*    m_exception_info;
+    };
 
 }} // protean::clr
 

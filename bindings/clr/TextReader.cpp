@@ -11,24 +11,24 @@ using namespace System::Text;
 
 namespace protean { namespace clr {
 
-	TextReader::TextReader(System::IO::TextReader^ reader) :
-		m_reader(reader)
-	{
-	}
+    TextReader::TextReader(System::IO::TextReader^ reader) :
+        m_reader(reader)
+    {
+    }
 
-	std::streamsize TextReader::read(char* str, std::streamsize n)
-	{
-		array<System::Char>^ chars = gcnew array<System::Char>(static_cast<int>(n));
+    std::streamsize TextReader::read(char* str, std::streamsize n)
+    {
+        array<System::Char>^ chars = gcnew array<System::Char>(static_cast<int>(n));
 
-		pin_ptr<System::Char> ptr = &chars[0];
+        pin_ptr<System::Char> ptr = &chars[0];
 
-		int count = m_reader->Read(chars, 0, (int)n);
+        int count = m_reader->Read(chars, 0, (int)n);
 
-		ASCIIEncoding^ ascii = gcnew ASCIIEncoding();
+        ASCIIEncoding^ ascii = gcnew ASCIIEncoding();
 
-		return ascii->GetBytes(reinterpret_cast<wchar_t*>(ptr), count, reinterpret_cast<unsigned char*>(str), count);
+        return ascii->GetBytes(reinterpret_cast<wchar_t*>(ptr), count, reinterpret_cast<unsigned char*>(str), count);
 
-		return count;
-	}
+        return count;
+    }
 
 }} // protean::clr

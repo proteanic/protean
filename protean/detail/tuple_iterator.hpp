@@ -47,7 +47,7 @@ namespace protean { namespace detail {
         bool equal(const variant_const_iterator_base *rhs) const
         {
             const tuple_iterator_interface<const_iterator_traits>* cast_rhs =
-				dynamic_cast<const tuple_iterator_interface<const_iterator_traits>*>(rhs);
+                dynamic_cast<const tuple_iterator_interface<const_iterator_traits>*>(rhs);
 
             if (cast_rhs==NULL)
             {

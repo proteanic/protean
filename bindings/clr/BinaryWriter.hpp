@@ -15,30 +15,30 @@
 
 namespace protean { namespace clr {
 
-	public ref class BinaryWriter
-	{
-	private:
-		typedef BinaryStream<boost::iostreams::sink_tag> stream_type;
-	public:
+    public ref class BinaryWriter
+    {
+    private:
+        typedef BinaryStream<boost::iostreams::sink_tag> stream_type;
+    public:
 
-		enum class EnumFlag
-		{
-			None        = protean::binary_writer::None,
+        enum class EnumFlag
+        {
+            None        = protean::binary_writer::None,
             Compress    = protean::binary_writer::Compress
         };
 
-		BinaryWriter(System::IO::Stream^ stream);
+        BinaryWriter(System::IO::Stream^ stream);
 
-		~BinaryWriter();
-		!BinaryWriter();
+        ~BinaryWriter();
+        !BinaryWriter();
 
-		void Write(Variant^ v);
+        void Write(Variant^ v);
         void Write(Variant^ v, EnumFlag flags);
 
-	private:
-		std::ostream* m_stream;
+    private:
+        std::ostream* m_stream;
         EnumFlag m_flags;
-	};
+    };
 
 }} // protean::clr
 

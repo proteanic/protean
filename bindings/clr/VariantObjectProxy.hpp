@@ -11,37 +11,37 @@
 
 namespace protean { namespace clr {
 
-	[System::Reflection::DefaultMember("ClassName")]
-	public ref class VariantObjectProxy : public IVariantObject
-	{
-	public:
-		VariantObjectProxy(System::String^ classname);
-		~VariantObjectProxy();
-		!VariantObjectProxy();
+    [System::Reflection::DefaultMember("ClassName")]
+    public ref class VariantObjectProxy : public IVariantObject
+    {
+    public:
+        VariantObjectProxy(System::String^ classname);
+        ~VariantObjectProxy();
+        !VariantObjectProxy();
 
-		property System::String^ ClassName 
-		{
-			virtual System::String^ get();
-		}
-		property System::UInt32 Version
-		{
-			virtual System::UInt32 get();
-		}
-		
-		virtual void Inflate(Variant^ params, System::UInt32 version);
-		
-		virtual Variant^ Deflate();
+        property System::String^ ClassName 
+        {
+            virtual System::String^ get();
+        }
+        property System::UInt32 Version
+        {
+            virtual System::UInt32 get();
+        }
+        
+        virtual void Inflate(Variant^ params, System::UInt32 version);
+        
+        virtual Variant^ Deflate();
 
-		virtual System::String^ ToString() override;
+        virtual System::String^ ToString() override;
 
-	internal:
-		VariantObjectProxy(const protean::object_proxy& arg);
+    internal:
+        VariantObjectProxy(const protean::object_proxy& arg);
 
-		protean::object_proxy& get_internals();
+        protean::object_proxy& get_internals();
 
-	private:
-		protean::object_proxy*	m_proxy;
-	};
+    private:
+        protean::object_proxy*    m_proxy;
+    };
 
 }} // protean::clr
 

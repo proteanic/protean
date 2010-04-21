@@ -21,8 +21,16 @@
 #endif
 
 #if !defined(PROTEAN_SOURCE) && !defined(PROTEAN_NO_AUTOLINK)
-#   define PROTEAN_LIB_NAME protean
+#   define PROTEAN_LIB_NAME "protean"
 #   include <protean/config/auto_link.hpp>
+#endif
+
+#if !defined(XERCES_BINARY)
+#if defined(_DEBUG)
+#   define XERCES_BINARY "xerces-c_3D"
+#else
+#   define XERCES_BINARY "xerces-c_3"
+#endif
 #endif
 
 #endif // PROTEAN_CONFIG_HPP

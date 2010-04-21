@@ -20,7 +20,7 @@ namespace protean { namespace detail {
         buffer(size_t size);
         buffer(const void* data, size_t size);
         buffer(const buffer& rhs);
-		buffer& operator=(const buffer& rhs);
+        buffer& operator=(const buffer& rhs);
         ~buffer();
 
         void*  data() const;
@@ -29,7 +29,7 @@ namespace protean { namespace detail {
         int compare(const buffer& rhs) const;
         size_t hash() const;
 
-		void swap(buffer& rhs);
+        void swap(buffer& rhs);
 
     private:
         size_t  m_size;

@@ -13,20 +13,20 @@
 
 namespace protean { namespace clr {
 
-	class TextReader
-	{
-	public:
-		typedef char char_type;
-		typedef boost::iostreams::source_tag category;
+    class TextReader
+    {
+    public:
+        typedef char char_type;
+        typedef boost::iostreams::source_tag category;
 
-	public:
-		TextReader(System::IO::TextReader^ reader);
+    public:
+        TextReader(System::IO::TextReader^ reader);
 
-		std::streamsize read(char* str, std::streamsize n);
+        std::streamsize read(char* str, std::streamsize n);
 
-	private:
-		gcroot<System::IO::TextReader^>	m_reader;
-	};
+    private:
+        gcroot<System::IO::TextReader^>    m_reader;
+    };
 
 }} // protean::clr
 

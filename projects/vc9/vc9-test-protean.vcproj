@@ -128,7 +128,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="&quot;$(OutDir)\test-protean-$(CompilerFlag)-mt-gd-$(VersionString).exe&quot;"
-				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH)"
+				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH);$(XERCES_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
 			/>
@@ -262,7 +262,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="&quot;$(OutDir)\test-protean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
-				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH)"
+				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH);$(XERCES_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
 			/>
@@ -329,7 +329,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-gd-$(VersionString).exe&quot;"
-				AdditionalLibraryDirectories="$(BOOST_LIB_PATH)"
+				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"
 				SubSystem="1"
 			/>
 			<Tool
@@ -462,7 +462,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
-				AdditionalLibraryDirectories="$(BOOST_LIB_PATH)"
+				AdditionalLibraryDirectories="$(BOOST_LIB_PATH);$(XERCES_LIB_PATH)"
 				SubSystem="1"
 			/>
 			<Tool
@@ -528,7 +528,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="&quot;$(OutDir)\test-libprotean-$(CompilerFlag)-mt-$(VersionString).exe&quot;"
-				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH)"
+				AdditionalLibraryDirectories="$(BOOST_LIB64_PATH);$(XERCES_LIB64_PATH)"
 				SubSystem="1"
 				TargetMachine="17"
 			/>

@@ -8,16 +8,16 @@
 
 #include <protean/config.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4127 4251 4275 4702)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4127 4251 4275 4702)
 #endif
 
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 namespace protean {

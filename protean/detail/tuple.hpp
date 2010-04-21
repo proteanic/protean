@@ -16,7 +16,7 @@ namespace protean { namespace detail {
     public:
         tuple(size_t size);
         tuple(const tuple& rhs);
-		tuple& operator=(const tuple& rhs);
+        tuple& operator=(const tuple& rhs);
         ~tuple();
 
         int compare(const collection& rhs) const;
@@ -29,7 +29,7 @@ namespace protean { namespace detail {
         bool empty() const;
         void clear();
 
-		void swap(tuple& rhs);
+        void swap(tuple& rhs);
 
         variant_const_iterator_base* begin() const;
         variant_const_iterator_base* end() const;

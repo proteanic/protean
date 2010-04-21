@@ -13,18 +13,18 @@
 
 namespace protean { namespace clr {
 
-	public ref class XMLReader
-	{ 
-	public:
-		XMLReader(System::IO::TextReader^ reader);
-		~XMLReader();
-		!XMLReader();
+    public ref class XMLReader
+    { 
+    public:
+        XMLReader(System::IO::TextReader^ reader);
+        ~XMLReader();
+        !XMLReader();
 
-		Variant^ Read();
+        Variant^ Read();
 
-	private:
-		boost::iostreams::stream<TextReader>* m_reader;
-	};
+    private:
+        boost::iostreams::stream<TextReader>* m_reader;
+    };
 
 }} // protean::clr
 

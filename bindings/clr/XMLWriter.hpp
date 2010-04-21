@@ -13,27 +13,27 @@
 
 namespace protean { namespace clr {
 
-	public ref class XMLWriter
-	{
-	public:
+    public ref class XMLWriter
+    {
+    public:
         enum class EnumFlag
-		{
-			None        = protean::xml_writer::None,
+        {
+            None        = protean::xml_writer::None,
             Preserve    = protean::xml_writer::Preserve,
             NoHeader    = protean::xml_writer::NoHeader
         };
 
-		XMLWriter(System::IO::TextWriter^ writer);
+        XMLWriter(System::IO::TextWriter^ writer);
 
-		~XMLWriter();
-		!XMLWriter();
+        ~XMLWriter();
+        !XMLWriter();
 
         void Write(Variant^ v);
-		void Write(Variant^ v, EnumFlag flags);
+        void Write(Variant^ v, EnumFlag flags);
 
-	private:
-		boost::iostreams::stream<TextWriter>* m_writer;
-	};
+    private:
+        boost::iostreams::stream<TextWriter>* m_writer;
+    };
 
 }} // protean::clr
 

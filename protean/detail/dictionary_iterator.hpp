@@ -9,9 +9,9 @@
 #include <protean/config.hpp>
 #include <protean/variant_error.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4251)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4251)
 #endif
 
 namespace protean { namespace detail {
@@ -54,7 +54,7 @@ namespace protean { namespace detail {
         bool equal(const variant_const_iterator_base *rhs) const
         {
             const dictionary_iterator_interface<const_iterator_traits>* cast_rhs =
-				dynamic_cast<const dictionary_iterator_interface<const_iterator_traits>*>(rhs);
+                dynamic_cast<const dictionary_iterator_interface<const_iterator_traits>*>(rhs);
 
             if (cast_rhs==NULL)
             {
@@ -84,8 +84,8 @@ namespace protean { namespace detail {
 
 }} // namespace protean::detail
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #endif // PROTEAN_DETAIL_DICTIONARY_ITERATOR_HPP

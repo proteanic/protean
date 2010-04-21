@@ -97,8 +97,8 @@ namespace protean {
             detail::tagged_type<TimeSeries,         detail::timeseries,                 detail::alloc_new,          boost::mpl::string<'Time','Seri','es'> >,
             detail::tagged_type<Tuple,              detail::tuple,                      detail::alloc_new,          boost::mpl::string<'Tupl','e'> >,
             detail::tagged_type<Buffer,             handle<detail::buffer>,             detail::alloc_placement,    boost::mpl::string<'Buff','er'> >,
-            detail::tagged_type<Exception,          exception_data,						detail::alloc_new,			boost::mpl::string<'Exce','ptio','n'> >,
-            detail::tagged_type<Array,              handle<typed_array>,				detail::alloc_placement,	boost::mpl::string<'Arra','y'> >
+            detail::tagged_type<Exception,          exception_data,                     detail::alloc_new,          boost::mpl::string<'Exce','ptio','n'> >,
+            detail::tagged_type<Array,              handle<typed_array>,                detail::alloc_placement,    boost::mpl::string<'Arra','y'> >
         > variant_impl_t;
         
         variant_impl_t m_value;
@@ -118,8 +118,8 @@ namespace protean {
         static std::string enum_to_string(enum_type_t type);
         static enum_type_t string_to_enum(const std::string& type);
 
-		int compare(enum_type_t type, const variant_base& rhs) const;
-		size_t hash(enum_type_t type) const;
+        int compare(enum_type_t type, const variant_base& rhs) const;
+        size_t hash(enum_type_t type) const;
 
     private:
         friend class xml_reader;

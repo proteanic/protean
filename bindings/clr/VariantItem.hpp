@@ -10,44 +10,44 @@
 
 namespace protean { namespace clr {
 
-	public ref class VariantItem 
-	{
-		enum class EnumType
-		{
-			Sequence,
-			Mapping,
-			TimeSeries
-		};
+    public ref class VariantItem 
+    {
+        enum class EnumType
+        {
+            Sequence,
+            Mapping,
+            TimeSeries
+        };
 
-	public:
-		VariantItem(Variant^ value);
-		VariantItem(System::String^ name, Variant^ value);
-		VariantItem(System::DateTime index, Variant^ value);
+    public:
+        VariantItem(Variant^ value);
+        VariantItem(System::String^ name, Variant^ value);
+        VariantItem(System::DateTime index, Variant^ value);
 
-	public:
+    public:
 
-		property System::String^ Key
-		{
-			System::String^ get();
-		}
-		property System::DateTime Time
-		{
-			System::DateTime get();
-		}
-		property Variant^ Value
-		{
-			Variant^ get();
-			void set(Variant^ value);
-		}
-	
-		virtual System::String^ ToString() override;
+        property System::String^ Key
+        {
+            System::String^ get();
+        }
+        property System::DateTime Time
+        {
+            System::DateTime get();
+        }
+        property Variant^ Value
+        {
+            Variant^ get();
+            void set(Variant^ value);
+        }
+    
+        virtual System::String^ ToString() override;
 
-	private:
-		EnumType			m_type;
-		System::String^		m_name;
-		System::DateTime 	m_index;
-		Variant^			m_value;
-	};
+    private:
+        EnumType            m_type;
+        System::String^        m_name;
+        System::DateTime     m_index;
+        Variant^            m_value;
+    };
 
 }} // protean::clr
 

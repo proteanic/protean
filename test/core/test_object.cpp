@@ -114,27 +114,27 @@ BOOST_AUTO_TEST_CASE(test_object)
 
 BOOST_AUTO_TEST_CASE(test_object_proxy)
 {
-	object_proxy proxy("protean::object::testing_object");
+    object_proxy proxy("protean::object::testing_object");
 
-	testing_object obj1;
-	obj1.set_id("test1");
+    testing_object obj1;
+    obj1.set_id("test1");
 
-	variant params;
-	obj1.deflate(params);
-	proxy.inflate(params, 1);
+    variant params;
+    obj1.deflate(params);
+    proxy.inflate(params, 1);
 
-	variant v(proxy);
-	BOOST_CHECK(v.is<object_proxy>());
-	BOOST_CHECK(v.is<testing_object>());
+    variant v(proxy);
+    BOOST_CHECK(v.is<object_proxy>());
+    BOOST_CHECK(v.is<testing_object>());
 
-	testing_object obj2(v.as<testing_object>());
+    testing_object obj2(v.as<testing_object>());
 
-	// Proxy should have been converted to concrete object by as().
-	BOOST_CHECK(!v.is<object_proxy>());
-	BOOST_CHECK(v.is<testing_object>());
+    // Proxy should have been converted to concrete object by as().
+    BOOST_CHECK(!v.is<object_proxy>());
+    BOOST_CHECK(v.is<testing_object>());
 
     // Can't convert real objects into proxy objects
-	BOOST_CHECK_THROW(v.as<object_proxy>(), variant_error);
+    BOOST_CHECK_THROW(v.as<object_proxy>(), variant_error);
 }
 
 class a : public testing_object 
@@ -169,7 +169,7 @@ public:
 
     handle<object> clone() const
     {
-	   return handle<object>(new c(*this));
+       return handle<object>(new c(*this));
     }
 }; 
 

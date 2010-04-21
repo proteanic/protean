@@ -3,8 +3,8 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifdef _MSC_VER
-#pragma warning(disable:4996)
+#if defined(_MSC_VER)
+#    pragma warning(disable:4996)
 #endif
 
 #include "BinaryWriter.hpp"
@@ -14,12 +14,12 @@ namespace protean { namespace clr {
 
     BinaryWriter::BinaryWriter(System::IO::Stream^ stream) :
         m_stream(new boost::iostreams::stream<stream_type>(stream))
-	{
-	}
+    {
+    }
 
     BinaryWriter::~BinaryWriter()
     {
-		this->!BinaryWriter();
+        this->!BinaryWriter();
     }
 
     BinaryWriter::!BinaryWriter()
@@ -28,17 +28,17 @@ namespace protean { namespace clr {
     }
 
     void BinaryWriter::Write(Variant^ v)
-	{
+    {
         Write(v, EnumFlag::None);
     }
 
     void BinaryWriter::Write(Variant^ v, EnumFlag flags)
-	{
+    {
         BEGIN_TRANSLATE_ERROR();
 
         protean::binary_writer writer(*m_stream, static_cast<protean::binary_writer::enum_flag_t>(flags));
-		writer << v->get_internals();
-		m_stream->flush();
+        writer << v->get_internals();
+        m_stream->flush();
 
         END_TRANSLATE_ERROR();
     }

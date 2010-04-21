@@ -179,11 +179,11 @@ namespace protean {
     {
         if (m_type == rhs.type())
         {
-			return variant_base::compare(m_type, rhs);
+            return variant_base::compare(m_type, rhs);
         }
         else
         {
-			return m_type<rhs.type() ? -1 : 1;
+            return m_type<rhs.type() ? -1 : 1;
         }
     }
 
@@ -1180,7 +1180,7 @@ namespace protean {
                 {
                     oss << "Buffer(";
 
-					const unsigned char* byteArray(as<unsigned char*>());
+                    const unsigned char* byteArray(as<unsigned char*>());
                     if (byteArray!=NULL)
                     {
                         for(size_t i=0; i<size(); ++i)
@@ -1287,10 +1287,10 @@ namespace protean {
 
     size_t variant::hash() const
     {
-		size_t seed = boost::hash<size_t>()(m_type);
-		boost::hash_combine(seed, variant_base::hash(m_type));
+        size_t seed = boost::hash<size_t>()(m_type);
+        boost::hash_combine(seed, variant_base::hash(m_type));
 
-		return seed;
+        return seed;
     }
 
     std::size_t hash_value(const variant& value)

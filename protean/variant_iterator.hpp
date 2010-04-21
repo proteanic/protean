@@ -15,9 +15,9 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4251)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4251)
 #endif
 
 namespace protean {
@@ -147,8 +147,8 @@ namespace protean {
 
 } // protean
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #endif // PROTEAN_VARIANT_ITERATOR_HPP

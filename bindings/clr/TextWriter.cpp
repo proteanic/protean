@@ -7,15 +7,15 @@
 
 namespace protean { namespace clr {
 
-	TextWriter::TextWriter(System::IO::TextWriter^ writer) :
-		m_writer(writer)
-	{
-	}
+    TextWriter::TextWriter(System::IO::TextWriter^ writer) :
+        m_writer(writer)
+    {
+    }
 
-	std::streamsize TextWriter::write(const char* s, std::streamsize n)
-	{
-		m_writer->Write(gcnew System::String(s, 0, static_cast<int>(n)));
-		return n;
-	}
+    std::streamsize TextWriter::write(const char* s, std::streamsize n)
+    {
+        m_writer->Write(gcnew System::String(s, 0, static_cast<int>(n)));
+        return n;
+    }
 
 }} // protean::clr

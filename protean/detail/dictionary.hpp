@@ -9,9 +9,9 @@
 #include <protean/config.hpp>
 #include <protean/detail/mapping.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4251)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4251)
 #endif
 
 namespace protean { namespace detail {
@@ -45,8 +45,8 @@ namespace protean { namespace detail {
 
 }} // namespace protean::detail
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #endif // PROTEAN_DETAIL_DICTIONARY_HPP

@@ -36,6 +36,6 @@
 # e.g. ZLIB_BINARY used by Boost. NB: be careful not to mix Debug and
 # Release libraries under Windows. If you do, everything will seem to compile
 # fine but then the code will crash unpredictably at runtime. 
-# XERCES_BINARY = xerces-c_3.lib ;
+# XERCES_BINARY = xerces-c_3 ;
 
 ##############################################################################

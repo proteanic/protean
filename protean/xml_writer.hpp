@@ -11,9 +11,9 @@
 
 #include <stack>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4512 4251)
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4512 4251)
 #endif
 
 namespace protean {
@@ -68,8 +68,8 @@ namespace protean {
 
 } // namespace protean
 
-#ifdef _MSC_VER
-#pragma warning(pop)
+#if defined(_MSC_VER)
+#    pragma warning(pop)
 #endif
 
 #endif // PROTEAN_XML_WRITER_HPP

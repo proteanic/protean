@@ -36,13 +36,13 @@ namespace protean {
         return *this;
     }
 
-	template<typename ITERATOR_TRAITS>
+    template<typename ITERATOR_TRAITS>
     bool array_iterator<ITERATOR_TRAITS>::equal(const array_iterator<array_const_iterator_traits>& rhs) const
-	{
-		return m_ref==rhs.m_ref;
-	}
+    {
+        return m_ref==rhs.m_ref;
+    }
 
-	template<typename ITERATOR_TRAITS>
+    template<typename ITERATOR_TRAITS>
     void array_iterator<ITERATOR_TRAITS>::increment()
     {
         if (!m_ref)

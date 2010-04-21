@@ -26,7 +26,7 @@ namespace protean {
         typed_array(size_t size, const variant& init);
 
         typed_array(const typed_array& rhs);
-		typed_array& operator=(const typed_array& rhs);
+        typed_array& operator=(const typed_array& rhs);
 
         ~typed_array();
 
@@ -39,7 +39,7 @@ namespace protean {
         int compare(const typed_array& rhs) const;
         size_t hash() const;
 
-		void swap(typed_array& rhs);
+        void swap(typed_array& rhs);
 
         typedef array_iterator<array_const_iterator_traits> const_iterator;
         typedef array_iterator<array_iterator_traits> iterator;
