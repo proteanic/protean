@@ -28,6 +28,8 @@ namespace protean { namespace clr {
 
 		Variant^ Read();
 
+		static Variant^ FromBytes(array<System::Byte>^ bytes);
+
 	private:
 		std::istream* m_stream;
 	};

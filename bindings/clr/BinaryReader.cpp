@@ -40,4 +40,19 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
 	}
 
+	Variant^ BinaryReader::FromBytes(array<System::Byte>^ bytes)
+	{
+	    Variant^ result = gcnew Variant();
+
+		std::stringstream ss;
+
+		pin_ptr<System::Byte> ptr = &bytes[0];
+		ss.write(reinterpret_cast<const char*>(ptr), bytes->Length);
+
+	    protean::binary_reader reader(ss);
+	    reader >> result->get_internals();
+
+		return result;
+	}
+
 }} // protean::clr

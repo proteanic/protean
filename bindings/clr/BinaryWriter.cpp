@@ -10,6 +10,8 @@
 #include "BinaryWriter.hpp"
 #include "VariantException.hpp"
 
+using namespace System::Runtime::InteropServices;
+
 namespace protean { namespace clr {
 
     BinaryWriter::BinaryWriter(System::IO::Stream^ stream) :
@@ -42,5 +44,27 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
+	array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v)
+	{
+		return BinaryWriter::ToBytes(v, EnumFlag::None);
+	}
+
+	array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v, EnumFlag flags)
+	{
+        BEGIN_TRANSLATE_ERROR();
+
+		std::ostringstream oss;
+        protean::binary_writer writer(oss, static_cast<protean::binary_writer::enum_flag_t>(flags));
+		writer << v->get_internals();
+
+		array<System::Byte>^ result = gcnew array<System::Byte>(static_cast<int>(oss.str().size()));
+		Marshal::Copy((System::IntPtr)const_cast<char*>(oss.str().c_str()), result, 0, static_cast<int>(oss.str().size()));
+	
+		return result;
+
+        END_TRANSLATE_ERROR();
+	}
+
 
 }} // protean::clr

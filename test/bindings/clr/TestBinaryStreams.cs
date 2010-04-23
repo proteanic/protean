@@ -21,11 +21,17 @@ namespace protean
             public class TestBinaryStreams
             {
                 [Test]
-                public void TestDictionary()
+                public void TestStreams()
                 {
-                    Variant input = new Variant(Variant.EnumType.Dictionary);
-                    input.Add("key1", new Variant("value1"));
-                    input.Add("key2", new Variant("value2"));
+                    Variant dict = new Variant(Variant.EnumType.Dictionary);
+                    dict.Add("key1", new Variant("value1"));
+                    dict.Add("key2", new Variant("value2"));
+
+                    Variant input = new Variant(Variant.EnumType.List);
+                    for (int i = 0; i < 10000; ++i)
+                    {
+                        input.Add(dict);
+                    }
 
                     System.IO.MemoryStream istream = new System.IO.MemoryStream();
                     BinaryWriter writer = new BinaryWriter(istream);
@@ -34,6 +40,25 @@ namespace protean
                     System.IO.MemoryStream ostream = new System.IO.MemoryStream(istream.GetBuffer());
                     BinaryReader reader = new BinaryReader(ostream);
                     Variant output = reader.Read();
+
+                    Assert.True(input.Equals(output));
+                }
+
+                [Test]
+                public void TestBytes()
+                {
+                    Variant dict = new Variant(Variant.EnumType.Dictionary);
+                    dict.Add("key1", new Variant("value1"));
+                    dict.Add("key2", new Variant("value2"));
+
+                    Variant input = new Variant(Variant.EnumType.List);
+                    for (int i = 0; i < 10000; ++i)
+                    {
+                        input.Add(dict);
+                    }
+
+                    byte[] bytes = BinaryWriter.ToBytes(input);
+                    Variant output = BinaryReader.FromBytes(bytes);
 
                     Assert.True(input.Equals(output));
                 }
