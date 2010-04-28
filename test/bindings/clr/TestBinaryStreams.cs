@@ -34,12 +34,17 @@ namespace protean
                     }
 
                     System.IO.MemoryStream istream = new System.IO.MemoryStream();
-                    BinaryWriter writer = new BinaryWriter(istream);
-                    writer.Write(input);
+                    using(BinaryWriter writer = new BinaryWriter(istream))
+                    {
+                        writer.Write(input);
+                    }
 
+                    Variant output;
                     System.IO.MemoryStream ostream = new System.IO.MemoryStream(istream.GetBuffer());
-                    BinaryReader reader = new BinaryReader(ostream);
-                    Variant output = reader.Read();
+                    using (BinaryReader reader = new BinaryReader(ostream))
+                    {
+                        output = reader.Read();
+                    }
 
                     Assert.True(input.Equals(output));
                 }

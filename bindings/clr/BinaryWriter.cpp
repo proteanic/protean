@@ -38,9 +38,18 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        protean::binary_writer writer(*m_stream, static_cast<protean::binary_writer::enum_flag_t>(flags));
-        writer << v->get_internals();
-        m_stream->flush();
+		GCHandle handle = GCHandle::Alloc(v);
+
+		try
+		{
+			protean::binary_writer writer(*m_stream, static_cast<protean::binary_writer::enum_flag_t>(flags));
+			writer << v->get_internals();
+			m_stream->flush();
+		}
+		finally
+		{
+			handle.Free();
+		}
 
         END_TRANSLATE_ERROR();
     }
@@ -54,14 +63,23 @@ namespace protean { namespace clr {
 	{
         BEGIN_TRANSLATE_ERROR();
 
-		std::ostringstream oss;
-        protean::binary_writer writer(oss, static_cast<protean::binary_writer::enum_flag_t>(flags));
-		writer << v->get_internals();
+		GCHandle handle = GCHandle::Alloc(v);
 
-		array<System::Byte>^ result = gcnew array<System::Byte>(static_cast<int>(oss.str().size()));
-		Marshal::Copy((System::IntPtr)const_cast<char*>(oss.str().c_str()), result, 0, static_cast<int>(oss.str().size()));
-	
-		return result;
+		try
+		{
+			std::ostringstream oss;
+			protean::binary_writer writer(oss, static_cast<protean::binary_writer::enum_flag_t>(flags));
+			writer << v->get_internals();
+
+			array<System::Byte>^ result = gcnew array<System::Byte>(static_cast<int>(oss.str().size()));
+			Marshal::Copy((System::IntPtr)const_cast<char*>(oss.str().c_str()), result, 0, static_cast<int>(oss.str().size()));
+		
+			return result;
+		}
+		finally
+		{
+			handle.Free();
+		}
 
         END_TRANSLATE_ERROR();
 	}

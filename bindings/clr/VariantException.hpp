@@ -33,6 +33,10 @@ namespace protean { namespace clr {
         {                                                                                               \
             throw gcnew VariantException(gcnew System::String(e.what()));                               \
         }                                                                                               \
+		catch(System::Exception^)																		\
+        {                                                                                               \
+            throw;																						\
+        }                                                                                               \
         catch(...)                                                                                      \
         {                                                                                               \
             throw gcnew VariantException(gcnew System::String("Unhandled Exception."));                 \
