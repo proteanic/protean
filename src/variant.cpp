@@ -1280,7 +1280,7 @@ namespace protean {
                 break;
             }
             default:
-                boost::throw_exception(variant_error("Unrecognised variant type"));
+                oss << "UNKNOWN";
         }
         return oss.str();
     }

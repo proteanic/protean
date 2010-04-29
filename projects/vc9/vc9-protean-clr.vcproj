@@ -698,6 +698,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\bindings\clr\StringTranslator.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\..\..\bindings\clr\TextReader.hpp"
 				>
 			</File>

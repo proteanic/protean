@@ -85,7 +85,7 @@ namespace protean { namespace clr {
 
         if(m_currentState==EnumState::InUseState)
         {
-            Variant^ localValue = gcnew Variant(&m_itCurrent->value());
+            Variant^ localValue = gcnew Variant(m_itCurrent->value());
             if (m_parent->get_internals().is<protean::variant::Mapping>())
             {
                 System::String^ localName = gcnew System::String(m_itCurrent->key().c_str());

@@ -5,10 +5,9 @@
 
 #include "ExceptionInfo.hpp"
 #include "VariantException.hpp"
+#include "StringTranslator.hpp"
 
 #include <sstream>
-
-using namespace System::Runtime::InteropServices;
 
 namespace protean { namespace clr {
 
@@ -16,50 +15,24 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr type_handle = Marshal::StringToHGlobalAnsi(type);
-        System::IntPtr message_handle = Marshal::StringToHGlobalAnsi(message);
+		std::string type_str(StringTranslator(type).c_str());
+		std::string message_str(StringTranslator(message).c_str());
 
-        try
-        {
-            const char* type = static_cast<const char*>(type_handle.ToPointer());
-            const char* message = static_cast<const char*>(message_handle.ToPointer());
-
-            m_exception_info = new protean::exception_data(type, message);
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(type_handle);
-            Marshal::FreeHGlobal(message_handle);
-        }
+        m_exception_info = new protean::exception_data(type_str, message_str);
 
         END_TRANSLATE_ERROR();
-    }
+	}
 
     ExceptionInfo::ExceptionInfo(System::String^ type, System::String^ message, System::String^ source, System::String^ stack)
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr type_handle = Marshal::StringToHGlobalAnsi(type);
-        System::IntPtr message_handle = Marshal::StringToHGlobalAnsi(message);
-        System::IntPtr source_handle = Marshal::StringToHGlobalAnsi(source);
-        System::IntPtr stack_handle = Marshal::StringToHGlobalAnsi(stack);
+		std::string type_str(StringTranslator(type).c_str());
+		std::string message_str(StringTranslator(message).c_str());
+		std::string source_str(StringTranslator(source).c_str());
+		std::string stack_str(StringTranslator(stack).c_str());
 
-        try
-        {
-            const char* type = static_cast<const char*>(type_handle.ToPointer());
-            const char* message = static_cast<const char*>(message_handle.ToPointer());
-            const char* source = static_cast<const char*>(source_handle.ToPointer());
-            const char* stack = static_cast<const char*>(stack_handle.ToPointer());
-
-            m_exception_info = new protean::exception_data(type, message, source, stack);
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(type_handle);
-            Marshal::FreeHGlobal(message_handle);
-            Marshal::FreeHGlobal(source_handle);
-            Marshal::FreeHGlobal(stack_handle);
-        }
+        m_exception_info = new protean::exception_data(type_str, message_str, source_str, stack_str);
 
         END_TRANSLATE_ERROR();
     }

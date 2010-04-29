@@ -9,25 +9,23 @@
 #include "VariantObjectProxy.hpp"
 #include "ExceptionInfo.hpp"
 #include "VariantException.hpp"
+#include "StringTranslator.hpp"
 
 using namespace System::Runtime::InteropServices;
 
 namespace protean { namespace clr {
 
     Variant::Variant() :
-        m_variant(new protean::variant()),
-        m_reference(false)
-    {
+        m_variant(new protean::variant())
+	{
     }
 
     Variant::Variant(Variant^ arg) :
-        m_reference(false),
         m_variant(new protean::variant(arg->get_internals()))
     {
     }
 
-    Variant::Variant(EnumType type) :
-        m_reference(false)
+    Variant::Variant(EnumType type)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -35,8 +33,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(bool arg) :
-        m_reference(false)
+    Variant::Variant(bool arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -44,27 +41,17 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(System::String^ arg) :
-        m_reference(false)
+    Variant::Variant(System::String^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr arg_handle = Marshal::StringToHGlobalAnsi(arg);
+		std::string arg_str(StringTranslator(arg).c_str());
 
-        try
-        {
-            const char* arg_str = static_cast<const char*>(arg_handle.ToPointer());
-            m_variant = new protean::variant(arg_str);
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(arg_handle);
-        }
+		m_variant = new protean::variant(arg_str);
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(System::Int32 arg) :
-        m_reference(false)
+    Variant::Variant(System::Int32 arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -72,8 +59,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(System::UInt32 arg) :
-        m_reference(false)
+    Variant::Variant(System::UInt32 arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -81,8 +67,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(System::Int64 arg) :
-        m_reference(false)
+    Variant::Variant(System::Int64 arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -90,8 +75,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(System::UInt64 arg) :
-        m_reference(false)
+    Variant::Variant(System::UInt64 arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -100,8 +84,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(float arg) :
-        m_reference(false)
+    Variant::Variant(float arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -110,8 +93,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(double arg) :
-        m_reference(false)
+    Variant::Variant(double arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -120,8 +102,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(System::TimeSpan arg) :
-        m_reference(false)
+    Variant::Variant(System::TimeSpan arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -131,8 +112,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(System::DateTime arg) :
-        m_reference(false)
+    Variant::Variant(System::DateTime arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -144,8 +124,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(System::DateTime arg, bool ignoreTime) :
-        m_reference(false)
+    Variant::Variant(System::DateTime arg, bool ignoreTime)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -163,8 +142,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
-    Variant::Variant(array<System::Byte>^ arg) :
-        m_reference(false)
+    Variant::Variant(array<System::Byte>^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -174,8 +152,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(IVariantObject^ arg) :
-        m_reference(false)
+    Variant::Variant(IVariantObject^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -187,8 +164,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(VariantObjectProxy^ arg) :
-        m_reference(false)
+    Variant::Variant(VariantObjectProxy^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -197,38 +173,21 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(System::Exception^ arg) :
-        m_reference(false)
+    Variant::Variant(System::Exception^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr type_handle = Marshal::StringToHGlobalAnsi(arg->GetType()->ToString());
-        System::IntPtr message_handle = Marshal::StringToHGlobalAnsi(arg->Message);
-        System::IntPtr source_handle = Marshal::StringToHGlobalAnsi(arg->Source);
-        System::IntPtr stack_handle = Marshal::StringToHGlobalAnsi(arg->StackTrace);
+		std::string type_str(StringTranslator(arg->GetType()->ToString()).c_str());
+		std::string message_str(StringTranslator(arg->Message).c_str());
+		std::string source_str(StringTranslator(arg->Source).c_str());
+		std::string stack_str(StringTranslator(arg->StackTrace).c_str());
 
-        try
-        {
-            const char* type = static_cast<const char*>(type_handle.ToPointer());
-            const char* message = static_cast<const char*>(message_handle.ToPointer());
-            const char* source = static_cast<const char*>(source_handle.ToPointer());
-            const char* stack = static_cast<const char*>(stack_handle.ToPointer());
-
-            m_variant = new protean::variant(protean::exception_data(type, message, source, stack));
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(type_handle);
-            Marshal::FreeHGlobal(message_handle);
-            Marshal::FreeHGlobal(source_handle);
-            Marshal::FreeHGlobal(stack_handle);
-        }
+		m_variant = new protean::variant(protean::exception_data(type_str, message_str, source_str, stack_str));
 
         END_TRANSLATE_ERROR();
     }
 
-    Variant::Variant(ExceptionInfo^ arg) :
-        m_reference(false)
+    Variant::Variant(ExceptionInfo^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -244,10 +203,7 @@ namespace protean { namespace clr {
 
     Variant::!Variant()
     {
-        if (!m_reference)
-        {
-            delete m_variant;
-        }
+		delete m_variant;
     }
 
     bool Variant::Is(EnumType type)
@@ -376,17 +332,24 @@ namespace protean { namespace clr {
         {
             protean::variant params;
             obj.deflate(params);
-            newObj->Inflate(gcnew Variant(params), obj.version());
+
+			Variant^ clrParams = gcnew Variant(params);
+
+			try
+			{
+				newObj->Inflate(clrParams, obj.version());
+			}
+			finally
+			{
+				delete clrParams;
+			}
         }
         else
         {
-            System::IntPtr className_handle = Marshal::StringToHGlobalAnsi(newObj->ClassName);
+			std::string className_str(StringTranslator(newObj->ClassName).c_str());
 
-            const char* className = static_cast<const char*>(className_handle.ToPointer());
             std::ostringstream oss;
-            oss << "Attempt to coerce object of type '" << obj.name() << "' into '" << className << "'.";
-
-            Marshal::FreeHGlobal(className_handle);
+			oss << "Attempt to coerce object of type '" << obj.name() << "' into '" << className_str << "'.";
 
             throw gcnew VariantException(gcnew System::String(oss.str().c_str()));
         }
@@ -427,17 +390,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
+		std::string key_str(StringTranslator(key).c_str());
 
-        try
-        {
-            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
-            return m_variant->has_key(key_str);
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(key_handle);
-        }
+        return m_variant->has_key(key_str);
 
         END_TRANSLATE_ERROR();
     }
@@ -446,17 +401,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
+		std::string key_str(StringTranslator(key).c_str());
 
-        try
-        {
-            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
-            m_variant->insert(key_str, value->get_internals());
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(key_handle);
-        }
+		m_variant->insert(key_str, value->get_internals());
 
         END_TRANSLATE_ERROR();
     }
@@ -465,17 +412,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
+		std::string key_str(StringTranslator(key).c_str());
 
-        try
-        {
-            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
-            m_variant->remove(key_str);
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(key_handle);
-        }
+        m_variant->remove(key_str);
 
         END_TRANSLATE_ERROR();
     }
@@ -515,17 +454,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
+		std::string key_str(StringTranslator(key).c_str());
 
-        try
-        {
-            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
-            return gcnew Variant(&m_variant->at(key_str));
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(key_handle);
-        }
+		return gcnew Variant(m_variant->at(key_str));
 
         END_TRANSLATE_ERROR();
     }
@@ -534,17 +465,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        System::IntPtr key_handle = Marshal::StringToHGlobalAnsi(key);
+		std::string key_str(StringTranslator(key).c_str());
 
-        try
-        {
-            const char* key_str = static_cast<const char*>(key_handle.ToPointer());
-            m_variant->at(key_str) = value->get_internals();
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(key_handle);
-        }
+		m_variant->at(key_str) = value->get_internals();
 
         END_TRANSLATE_ERROR();
     }
@@ -553,7 +476,7 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        return gcnew Variant(&m_variant->at(index));
+        return gcnew Variant(m_variant->at(index));
 
         END_TRANSLATE_ERROR();
     }
@@ -580,7 +503,16 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        return gcnew System::String(m_variant->str().c_str());
+        return ToString(false);
+
+        END_TRANSLATE_ERROR();
+    }
+
+    System::String^ Variant::ToString(bool summarise)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        return gcnew System::String(m_variant->str(summarise).c_str());
 
         END_TRANSLATE_ERROR();
     }

@@ -134,6 +134,8 @@ namespace protean { namespace clr {
 
 		virtual System::String^ ToString() override;
 
+		System::String^ ToString(bool summarise);
+
 		virtual System::Collections::IEnumerator^ GetEnumerator();
 
         property EnumType Type { EnumType get(); }
@@ -173,22 +175,13 @@ namespace protean { namespace clr {
 		}
 
 		// rhs will be copied
-		explicit Variant(const protean::variant& rhs) :
-			m_reference(false)
+		explicit Variant(const protean::variant& rhs)
 		{
 			m_variant = new protean::variant(rhs);
 		}
 
-		// rhs will not be copied, the created variant is a reference
-		explicit Variant(protean::variant* rhs) :
-			m_reference(true)
-		{
-			m_variant = rhs;
-		}
-
 	private:
 		protean::variant*	m_variant;
-		bool m_reference;
 	};
 
 }}

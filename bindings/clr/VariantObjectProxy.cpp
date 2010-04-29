@@ -4,29 +4,21 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include "VariantObjectProxy.hpp"
-
-using namespace System::Runtime::InteropServices;
+#include "VariantException.hpp"
+#include "StringTranslator.hpp"
 
 namespace protean { namespace clr {
 
     VariantObjectProxy::VariantObjectProxy(System::String^ className)
     {
-        System::IntPtr className_handle = Marshal::StringToHGlobalAnsi(className);
+        BEGIN_TRANSLATE_ERROR();
 
-        try
-        {
-            const char* className_str = static_cast<const char*>(className_handle.ToPointer());
-            m_proxy = new protean::object_proxy(className_str);
-        }
-        catch(System::Exception^)
-        {
-            throw;
-        }
-        finally
-        {
-            Marshal::FreeHGlobal(className_handle);
-        }
-    }
+		std::string className_str(StringTranslator(className).c_str());
+
+        m_proxy = new protean::object_proxy(className_str);
+
+        END_TRANSLATE_ERROR();	
+	}
 
     VariantObjectProxy::VariantObjectProxy(const protean::object_proxy& arg) :
         m_proxy(new protean::object_proxy(arg))
@@ -35,7 +27,11 @@ namespace protean { namespace clr {
 
     VariantObjectProxy::~VariantObjectProxy()
     {
+        BEGIN_TRANSLATE_ERROR();
+
         this->!VariantObjectProxy();
+
+        END_TRANSLATE_ERROR();	
     }
 
     VariantObjectProxy::!VariantObjectProxy()
@@ -45,35 +41,59 @@ namespace protean { namespace clr {
 
     System::String^ VariantObjectProxy::ClassName::get()
     {
+        BEGIN_TRANSLATE_ERROR();
+
         return gcnew System::String(m_proxy->name().c_str());
+
+        END_TRANSLATE_ERROR();	
     }
 
     System::UInt32 VariantObjectProxy::Version::get()
     {
+        BEGIN_TRANSLATE_ERROR();
+
         return m_proxy->version();
+
+        END_TRANSLATE_ERROR();	
     }
 
     Variant^ VariantObjectProxy::Deflate()
     {
-        protean::variant params;
+        BEGIN_TRANSLATE_ERROR();
+
+		protean::variant params;
         m_proxy->deflate(params);
 
         return gcnew Variant(params);
+
+        END_TRANSLATE_ERROR();	
     }
 
     void VariantObjectProxy::Inflate(Variant^ params, System::UInt32 version)
     {    
+        BEGIN_TRANSLATE_ERROR();
+
         m_proxy->inflate(params->get_internals(), version);
+
+        END_TRANSLATE_ERROR();	
     }
 
     protean::object_proxy& VariantObjectProxy::get_internals()
     {
+        BEGIN_TRANSLATE_ERROR();
+
         return *m_proxy;
+
+        END_TRANSLATE_ERROR();	
     }
 
     System::String^ VariantObjectProxy::ToString()
     {
+        BEGIN_TRANSLATE_ERROR();
+
         return gcnew System::String(m_proxy->name().c_str());
+
+        END_TRANSLATE_ERROR();	
     }
 
 }} // protean::clr
