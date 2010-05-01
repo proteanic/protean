@@ -308,6 +308,8 @@
     <ClInclude Include="..\..\bindings\clr\BinaryWriter.hpp" />
     <ClInclude Include="..\..\bindings\clr\ExceptionInfo.hpp" />
     <ClInclude Include="..\..\bindings\clr\IVariantObject.hpp" />
+    <ClInclude Include="..\..\bindings\clr\StringTranslator.hpp" />
+    <ClInclude Include="..\..\bindings\clr\StrongReference.hpp" />
     <ClInclude Include="..\..\bindings\clr\TextReader.hpp" />
     <ClInclude Include="..\..\bindings\clr\TextWriter.hpp" />
     <ClInclude Include="..\..\bindings\clr\Variant.hpp" />
