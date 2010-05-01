@@ -10,14 +10,13 @@
 #include "ExceptionInfo.hpp"
 #include "VariantException.hpp"
 #include "StringTranslator.hpp"
-
-using namespace System::Runtime::InteropServices;
+#include "StrongReference.hpp"
 
 namespace protean { namespace clr {
 
     Variant::Variant() :
         m_variant(new protean::variant())
-	{
+    {
     }
 
     Variant::Variant(Variant^ arg) :
@@ -45,9 +44,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string arg_str(StringTranslator(arg).c_str());
+        std::string arg_str(StringTranslator(arg).c_str());
 
-		m_variant = new protean::variant(arg_str);
+        m_variant = new protean::variant(arg_str);
 
         END_TRANSLATE_ERROR();
     }
@@ -177,12 +176,12 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string type_str(StringTranslator(arg->GetType()->ToString()).c_str());
-		std::string message_str(StringTranslator(arg->Message).c_str());
-		std::string source_str(StringTranslator(arg->Source).c_str());
-		std::string stack_str(StringTranslator(arg->StackTrace).c_str());
+        std::string type_str(StringTranslator(arg->GetType()->ToString()).c_str());
+        std::string message_str(StringTranslator(arg->Message).c_str());
+        std::string source_str(StringTranslator(arg->Source).c_str());
+        std::string stack_str(StringTranslator(arg->StackTrace).c_str());
 
-		m_variant = new protean::variant(protean::exception_data(type_str, message_str, source_str, stack_str));
+        m_variant = new protean::variant(protean::exception_data(type_str, message_str, source_str, stack_str));
 
         END_TRANSLATE_ERROR();
     }
@@ -203,12 +202,14 @@ namespace protean { namespace clr {
 
     Variant::!Variant()
     {
-		delete m_variant;
+        delete m_variant;
     }
 
     bool Variant::Is(EnumType type)
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return (m_variant->type() & static_cast<protean::variant::enum_type_t>(type))!=0;
 
@@ -219,6 +220,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return gcnew System::String(m_variant->as<std::string>().c_str());
 
         END_TRANSLATE_ERROR();
@@ -226,6 +229,8 @@ namespace protean { namespace clr {
     bool Variant::AsBoolean()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return m_variant->as<bool>();
 
@@ -235,6 +240,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return m_variant->as<boost::int32_t>();
 
         END_TRANSLATE_ERROR();
@@ -242,6 +249,8 @@ namespace protean { namespace clr {
     System::UInt32 Variant::AsUInt32()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return m_variant->as<boost::uint32_t>();
 
@@ -251,6 +260,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return m_variant->as<boost::int64_t>();
 
         END_TRANSLATE_ERROR();
@@ -258,6 +269,8 @@ namespace protean { namespace clr {
     System::UInt64 Variant::AsUInt64()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return m_variant->as<boost::uint64_t>();
 
@@ -267,6 +280,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return m_variant->as<float>();
 
         END_TRANSLATE_ERROR();
@@ -275,6 +290,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return m_variant->as<double>();
 
         END_TRANSLATE_ERROR();
@@ -282,6 +299,8 @@ namespace protean { namespace clr {
     System::DateTime Variant::AsDate()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         protean::variant::date_t date(m_variant->as<protean::variant::date_t>());
         return System::DateTime(date.year(), date.month(), date.day());
@@ -292,6 +311,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         protean::variant::time_t t(m_variant->as<protean::variant::time_t>());
         return System::TimeSpan(t.hours(), t.minutes(), t.seconds());
 
@@ -301,6 +322,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         protean::variant::date_time_t dt(m_variant->as<protean::variant::date_time_t>());
         return System::DateTime(dt.date().year(), dt.date().month(), dt.date().day(), dt.time_of_day().hours(), dt.time_of_day().minutes(), dt.time_of_day().seconds() );
 
@@ -309,6 +332,8 @@ namespace protean { namespace clr {
     array<System::Byte>^ Variant::AsBuffer()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         array<System::Byte>^ local = gcnew array<System::Byte>(static_cast<int>(m_variant->size()));
         pin_ptr<System::Byte> pLocal(&local[0]);
@@ -324,6 +349,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         const protean::object& obj(m_variant->as<protean::object>());
 
         T newObj = gcnew T();
@@ -333,23 +360,23 @@ namespace protean { namespace clr {
             protean::variant params;
             obj.deflate(params);
 
-			Variant^ clrParams = gcnew Variant(params);
+            Variant^ clrParams = gcnew Variant(params);
 
-			try
-			{
-				newObj->Inflate(clrParams, obj.version());
-			}
-			finally
-			{
-				delete clrParams;
-			}
+            try
+            {
+                newObj->Inflate(gcnew Variant(params), obj.version());
+            }
+            finally
+            {
+                delete clrParams;
+            }
         }
         else
         {
-			std::string className_str(StringTranslator(newObj->ClassName).c_str());
+            std::string className_str(StringTranslator(newObj->ClassName).c_str());
 
             std::ostringstream oss;
-			oss << "Attempt to coerce object of type '" << obj.name() << "' into '" << className_str << "'.";
+            oss << "Attempt to coerce object of type '" << obj.name() << "' into '" << className_str << "'.";
 
             throw gcnew VariantException(gcnew System::String(oss.str().c_str()));
         }
@@ -363,6 +390,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return gcnew VariantObjectProxy(m_variant->as<protean::object_proxy>());
 
         END_TRANSLATE_ERROR();
@@ -371,6 +400,8 @@ namespace protean { namespace clr {
     ExceptionInfo^ Variant::AsException()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return gcnew ExceptionInfo(m_variant->as<protean::exception_data>());
 
@@ -381,6 +412,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+        STRONG_REFERENCE(value);
+
         m_variant->push_back(value->get_internals());
 
         END_TRANSLATE_ERROR();
@@ -390,7 +424,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string key_str(StringTranslator(key).c_str());
+        STRONG_REFERENCE(this);
+
+        std::string key_str(StringTranslator(key).c_str());
 
         return m_variant->has_key(key_str);
 
@@ -401,9 +437,12 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string key_str(StringTranslator(key).c_str());
+        STRONG_REFERENCE(this);
+        STRONG_REFERENCE(value);
 
-		m_variant->insert(key_str, value->get_internals());
+        std::string key_str(StringTranslator(key).c_str());
+
+        m_variant->insert(key_str, value->get_internals());
 
         END_TRANSLATE_ERROR();
     }
@@ -412,7 +451,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string key_str(StringTranslator(key).c_str());
+        STRONG_REFERENCE(this);
+
+        std::string key_str(StringTranslator(key).c_str());
 
         m_variant->remove(key_str);
 
@@ -422,6 +463,8 @@ namespace protean { namespace clr {
     void Variant::Add(System::DateTime index, Variant^ value)
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         protean::variant::date_t date(index.Date.Year, index.Date.Month, index.Date.Month);
         protean::variant::time_t time(index.TimeOfDay.Hours, index.TimeOfDay.Minutes, index.TimeOfDay.Seconds);
@@ -436,6 +479,8 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         return static_cast<int>(m_variant->size());
 
         END_TRANSLATE_ERROR();
@@ -444,6 +489,8 @@ namespace protean { namespace clr {
     bool Variant::Empty::get()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return m_variant->empty();
 
@@ -454,9 +501,11 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string key_str(StringTranslator(key).c_str());
+        STRONG_REFERENCE(this);
 
-		return gcnew Variant(m_variant->at(key_str));
+        std::string key_str(StringTranslator(key).c_str());
+
+        return gcnew Variant(m_variant->at(key_str));
 
         END_TRANSLATE_ERROR();
     }
@@ -465,9 +514,12 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string key_str(StringTranslator(key).c_str());
+        STRONG_REFERENCE(this);
+        STRONG_REFERENCE(value);
 
-		m_variant->at(key_str) = value->get_internals();
+        std::string key_str(StringTranslator(key).c_str());
+
+        m_variant->at(key_str) = value->get_internals();
 
         END_TRANSLATE_ERROR();
     }
@@ -475,6 +527,8 @@ namespace protean { namespace clr {
     Variant^ Variant::Item::get(System::UInt32 index)
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return gcnew Variant(m_variant->at(index));
 
@@ -485,18 +539,25 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+        STRONG_REFERENCE(this);
+
         m_variant->at(index) = value->get_internals();
 
         END_TRANSLATE_ERROR();
     }
 
-    System::Collections::IEnumerator^ Variant::GetEnumerator()
+    System::Collections::Generic::IEnumerator<VariantItem^>^ Variant::GetEnumerator_Generic()
     {
         BEGIN_TRANSLATE_ERROR();
 
         return gcnew VariantEnumerator(this);
 
         END_TRANSLATE_ERROR();
+    }
+        
+    System::Collections::IEnumerator^ Variant::GetEnumerator_NonGeneric()
+    {
+        return GetEnumerator_Generic();
     }
 
     System::String^ Variant::ToString()
@@ -511,6 +572,8 @@ namespace protean { namespace clr {
     System::String^ Variant::ToString(bool summarise)
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return gcnew System::String(m_variant->str(summarise).c_str());
 
@@ -531,6 +594,8 @@ namespace protean { namespace clr {
     Variant::EnumType Variant::Type::get()
     {
         BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
 
         return static_cast<Variant::EnumType>(m_variant->type());
 
@@ -664,20 +729,34 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        array<System::Type^>^types = gcnew array<System::Type^>(1);
-        types[0] = Variant::typeid;
+        array<System::Type^>^ types = gcnew array<System::Type^>(1);
 
-        System::Reflection::MethodInfo^ conversionMethod = conversionType->GetMethod("op_Implicit", types);
-
-        if (conversionMethod==nullptr)
+        try
         {
-            return nullptr;
-        }
-        
-        array<System::Object^>^args = gcnew array<System::Object^>(1);
-        args[0] = this;
+            types[0] = Variant::typeid;
+            System::Reflection::MethodInfo^ conversionMethod = conversionType->GetMethod("op_Implicit", types);
 
-        return conversionMethod->Invoke(nullptr, args);
+            if (conversionMethod==nullptr)
+            {
+                return nullptr;
+            }
+
+            array<System::Object^>^ args = gcnew array<System::Object^>(1);
+
+            try
+            {
+                args[0] = this;
+                return conversionMethod->Invoke(nullptr, args);
+            }
+            finally
+            {
+                delete args;
+            }
+        }
+        finally
+        {
+            delete types;
+        }
 
         END_TRANSLATE_ERROR();
     }
@@ -725,20 +804,23 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    System::Int32 Variant::CompareTo(Variant^ obj)
+    System::Int32 Variant::CompareTo(Variant^ value)
     {
         BEGIN_TRANSLATE_ERROR();
 
-        return get_internals().compare(obj->get_internals());
+        STRONG_REFERENCE(this);
+        STRONG_REFERENCE(value);
+
+        return get_internals().compare(value->get_internals());
 
         END_TRANSLATE_ERROR();
     }
 
-    bool Variant::Equals(Variant^ obj)
+    bool Variant::Equals(Variant^ value)
     {
         BEGIN_TRANSLATE_ERROR();
 
-        return CompareTo(obj)==0;
+        return CompareTo(value)==0;
 
         END_TRANSLATE_ERROR();
     }

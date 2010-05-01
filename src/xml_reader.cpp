@@ -84,7 +84,7 @@ namespace protean {
 
             if (!m_external_schema.empty())
             {
-	            scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
+                scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
                 parser->setProperty( xercesc::XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, schema.get() );
             }
 

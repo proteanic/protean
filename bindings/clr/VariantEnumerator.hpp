@@ -11,7 +11,7 @@
 namespace protean { namespace clr {
 
     public ref class VariantEnumerator :
-        public System::Collections::IEnumerator
+        public System::Collections::Generic::IEnumerator<VariantItem^>
     {
     internal:
         enum class EnumState
@@ -29,16 +29,21 @@ namespace protean { namespace clr {
 
         virtual void Reset();
 
-        virtual property System::Object^ Current
-        {
-            System::Object^ get();
+        property VariantItem^ Current_Generic
+        {                
+            virtual VariantItem^ get() sealed = System::Collections::Generic::IEnumerator<VariantItem^>::Current::get;
         }
 
+        property System::Object^ Current_NonGeneric
+        {                
+            virtual System::Object^ get() sealed = System::Collections::IEnumerator::Current::get;
+        }
+  
     private:
         Variant^                    m_parent;
-        EnumState                    m_currentState;
-        protean::variant::iterator*    m_itCurrent;
-        protean::variant::iterator*    m_itEnd;
+        EnumState                   m_currentState;
+        protean::variant::iterator* m_itCurrent;
+        protean::variant::iterator* m_itEnd;
     };
 
 }} // protean::clr

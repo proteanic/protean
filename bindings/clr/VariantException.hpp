@@ -33,9 +33,9 @@ namespace protean { namespace clr {
         {                                                                                               \
             throw gcnew VariantException(gcnew System::String(e.what()));                               \
         }                                                                                               \
-		catch(System::Exception^)																		\
+        catch(System::Exception^)                                                                        \
         {                                                                                               \
-            throw;																						\
+            throw;                                                                                        \
         }                                                                                               \
         catch(...)                                                                                      \
         {                                                                                               \

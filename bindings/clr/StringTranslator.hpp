@@ -10,27 +10,27 @@
 
 namespace protean { namespace clr {
 
-	using namespace System::Runtime::InteropServices;
+    using namespace System::Runtime::InteropServices;
 
-	class StringTranslator : boost::noncopyable
-	{
-	public:
-		StringTranslator(System::String^ str)
-		{
-			m_handle = Marshal::StringToHGlobalAnsi(str);
-		}
-		~StringTranslator()
-		{
-			Marshal::FreeHGlobal(m_handle);
-		}
-		char* c_str()
-		{
-			return static_cast<char*>(m_handle.ToPointer());
-		}
+    class StringTranslator : boost::noncopyable
+    {
+    public:
+        StringTranslator(System::String^ str)
+        {
+            m_handle = Marshal::StringToHGlobalAnsi(str);
+        }
+        ~StringTranslator()
+        {
+            Marshal::FreeHGlobal(m_handle);
+        }
+        char* c_str()
+        {
+            return static_cast<char*>(m_handle.ToPointer());
+        }
 
-	private:
-		System::IntPtr m_handle;
-	};
+    private:
+        System::IntPtr m_handle;
+    };
 
 }} //protean::clr
 

@@ -15,22 +15,22 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string type_str(StringTranslator(type).c_str());
-		std::string message_str(StringTranslator(message).c_str());
+        std::string type_str(StringTranslator(type).c_str());
+        std::string message_str(StringTranslator(message).c_str());
 
         m_exception_info = new protean::exception_data(type_str, message_str);
 
         END_TRANSLATE_ERROR();
-	}
+    }
 
     ExceptionInfo::ExceptionInfo(System::String^ type, System::String^ message, System::String^ source, System::String^ stack)
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string type_str(StringTranslator(type).c_str());
-		std::string message_str(StringTranslator(message).c_str());
-		std::string source_str(StringTranslator(source).c_str());
-		std::string stack_str(StringTranslator(stack).c_str());
+        std::string type_str(StringTranslator(type).c_str());
+        std::string message_str(StringTranslator(message).c_str());
+        std::string source_str(StringTranslator(source).c_str());
+        std::string stack_str(StringTranslator(stack).c_str());
 
         m_exception_info = new protean::exception_data(type_str, message_str, source_str, stack_str);
 

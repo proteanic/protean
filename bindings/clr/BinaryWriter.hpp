@@ -35,8 +35,8 @@ namespace protean { namespace clr {
         void Write(Variant^ v);
         void Write(Variant^ v, EnumFlag flags);
 
-		static array<System::Byte>^ ToBytes(Variant^ v, EnumFlag flags);
-		static array<System::Byte>^ ToBytes(Variant^ v);
+        static array<System::Byte>^ ToBytes(Variant^ v, EnumFlag flags);
+        static array<System::Byte>^ ToBytes(Variant^ v);
 
     private:
         std::ostream* m_stream;

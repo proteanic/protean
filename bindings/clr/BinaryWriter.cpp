@@ -9,8 +9,7 @@
 
 #include "BinaryWriter.hpp"
 #include "VariantException.hpp"
-
-using namespace System::Runtime::InteropServices;
+#include "StrongReference.hpp"
 
 namespace protean { namespace clr {
 
@@ -38,51 +37,38 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		GCHandle handle = GCHandle::Alloc(v);
+        STRONG_REFERENCE(this);
+        STRONG_REFERENCE(v);
 
-		try
-		{
-			protean::binary_writer writer(*m_stream, static_cast<protean::binary_writer::enum_flag_t>(flags));
-			writer << v->get_internals();
-			m_stream->flush();
-		}
-		finally
-		{
-			handle.Free();
-		}
+        protean::binary_writer writer(*m_stream, static_cast<protean::binary_writer::enum_flag_t>(flags));
+        writer << v->get_internals();
+        m_stream->flush();
 
         END_TRANSLATE_ERROR();
     }
 
-	array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v)
-	{
-		return BinaryWriter::ToBytes(v, EnumFlag::None);
-	}
+    array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v)
+    {
+        return BinaryWriter::ToBytes(v, EnumFlag::None);
+    }
 
-	array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v, EnumFlag flags)
-	{
+    array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v, EnumFlag flags)
+    {
         BEGIN_TRANSLATE_ERROR();
 
-		GCHandle handle = GCHandle::Alloc(v);
+        STRONG_REFERENCE(v);
 
-		try
-		{
-			std::ostringstream oss;
-			protean::binary_writer writer(oss, static_cast<protean::binary_writer::enum_flag_t>(flags));
-			writer << v->get_internals();
+        std::ostringstream oss;
+        protean::binary_writer writer(oss, static_cast<protean::binary_writer::enum_flag_t>(flags));
+        writer << v->get_internals();
 
-			array<System::Byte>^ result = gcnew array<System::Byte>(static_cast<int>(oss.str().size()));
-			Marshal::Copy((System::IntPtr)const_cast<char*>(oss.str().c_str()), result, 0, static_cast<int>(oss.str().size()));
-		
-			return result;
-		}
-		finally
-		{
-			handle.Free();
-		}
+        array<System::Byte>^ result = gcnew array<System::Byte>(static_cast<int>(oss.str().size()));
+        Marshal::Copy((System::IntPtr)const_cast<char*>(oss.str().c_str()), result, 0, static_cast<int>(oss.str().size()));
+    
+        return result;
 
         END_TRANSLATE_ERROR();
-	}
+    }
 
 
 }} // protean::clr

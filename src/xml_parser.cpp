@@ -464,9 +464,9 @@ namespace protean {
                     boost::throw_exception(variant_error("Unexpected characters encountered"));
                 };
                 break;
-	        default:
-	            boost::throw_exception(variant_error("Case exhaustion: " + variant::enum_to_string(context->m_type))); 
-	        }
+            default:
+                boost::throw_exception(variant_error("Case exhaustion: " + variant::enum_to_string(context->m_type))); 
+            }
         }
         catch(const std::exception &e)
         {

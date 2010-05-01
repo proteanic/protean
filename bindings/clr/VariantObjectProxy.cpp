@@ -6,6 +6,7 @@
 #include "VariantObjectProxy.hpp"
 #include "VariantException.hpp"
 #include "StringTranslator.hpp"
+#include "StrongReference.hpp"
 
 namespace protean { namespace clr {
 
@@ -13,12 +14,12 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		std::string className_str(StringTranslator(className).c_str());
+        std::string className_str(StringTranslator(className).c_str());
 
         m_proxy = new protean::object_proxy(className_str);
 
-        END_TRANSLATE_ERROR();	
-	}
+        END_TRANSLATE_ERROR();
+    }
 
     VariantObjectProxy::VariantObjectProxy(const protean::object_proxy& arg) :
         m_proxy(new protean::object_proxy(arg))
@@ -27,12 +28,8 @@ namespace protean { namespace clr {
 
     VariantObjectProxy::~VariantObjectProxy()
     {
-        BEGIN_TRANSLATE_ERROR();
-
         this->!VariantObjectProxy();
-
-        END_TRANSLATE_ERROR();	
-    }
+	}
 
     VariantObjectProxy::!VariantObjectProxy()
     {
@@ -43,39 +40,47 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
+		STRONG_REFERENCE(this);
+
         return gcnew System::String(m_proxy->name().c_str());
 
-        END_TRANSLATE_ERROR();	
+        END_TRANSLATE_ERROR();    
     }
 
     System::UInt32 VariantObjectProxy::Version::get()
     {
         BEGIN_TRANSLATE_ERROR();
 
-        return m_proxy->version();
+		STRONG_REFERENCE(this);
 
-        END_TRANSLATE_ERROR();	
+		return m_proxy->version();
+
+        END_TRANSLATE_ERROR();    
     }
 
     Variant^ VariantObjectProxy::Deflate()
     {
         BEGIN_TRANSLATE_ERROR();
 
+		STRONG_REFERENCE(this);
+
 		protean::variant params;
         m_proxy->deflate(params);
 
         return gcnew Variant(params);
 
-        END_TRANSLATE_ERROR();	
+        END_TRANSLATE_ERROR();    
     }
 
     void VariantObjectProxy::Inflate(Variant^ params, System::UInt32 version)
     {    
         BEGIN_TRANSLATE_ERROR();
 
-        m_proxy->inflate(params->get_internals(), version);
+		STRONG_REFERENCE(this);
 
-        END_TRANSLATE_ERROR();	
+		m_proxy->inflate(params->get_internals(), version);
+
+        END_TRANSLATE_ERROR();    
     }
 
     protean::object_proxy& VariantObjectProxy::get_internals()
@@ -84,16 +89,18 @@ namespace protean { namespace clr {
 
         return *m_proxy;
 
-        END_TRANSLATE_ERROR();	
+        END_TRANSLATE_ERROR();    
     }
 
     System::String^ VariantObjectProxy::ToString()
     {
         BEGIN_TRANSLATE_ERROR();
 
-        return gcnew System::String(m_proxy->name().c_str());
+		STRONG_REFERENCE(this);
 
-        END_TRANSLATE_ERROR();	
+		return gcnew System::String(m_proxy->name().c_str());
+
+        END_TRANSLATE_ERROR();    
     }
 
 }} // protean::clr

@@ -15,24 +15,24 @@
 
 namespace protean { namespace clr {
 
-	public ref class BinaryReader
-	{
-	private:
-		typedef BinaryStream<boost::iostreams::source_tag> stream_type;
+    public ref class BinaryReader
+    {
+    private:
+        typedef BinaryStream<boost::iostreams::source_tag> stream_type;
 
-	public:
-		BinaryReader(System::IO::Stream^ stream);
+    public:
+        BinaryReader(System::IO::Stream^ stream);
 
-		~BinaryReader();
-		!BinaryReader();
+        ~BinaryReader();
+        !BinaryReader();
 
-		Variant^ Read();
+        Variant^ Read();
 
-		static Variant^ FromBytes(array<System::Byte>^ bytes);
+        static Variant^ FromBytes(array<System::Byte>^ bytes);
 
-	private:
-		std::istream* m_stream;
-	};
+    private:
+        std::istream* m_stream;
+    };
 
 }} // protean::clr
 

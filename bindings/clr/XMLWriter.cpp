@@ -13,13 +13,13 @@
 namespace protean { namespace clr {
 
     XMLWriter::XMLWriter(System::IO::TextWriter^ writer) :
-		m_writer(new boost::iostreams::stream<TextWriter>(writer))
-	{
-	}
+        m_writer(new boost::iostreams::stream<TextWriter>(writer))
+    {
+    }
 
     XMLWriter::~XMLWriter()
     {
-		this->!XMLWriter();
+        this->!XMLWriter();
     }
 
     XMLWriter::!XMLWriter()
@@ -28,19 +28,19 @@ namespace protean { namespace clr {
     }
 
     void XMLWriter::Write(Variant^ v)
-	{
+    {
         Write(v, EnumFlag::None);
     }
 
     void XMLWriter::Write(Variant^ v, EnumFlag flags)
-	{
+    {
         BEGIN_TRANSLATE_ERROR();
 
-		protean::xml_writer writer(*m_writer, static_cast<protean::xml_writer::enum_flag_t>(flags));
-		writer << v->get_internals();
-		m_writer->flush();
+        protean::xml_writer writer(*m_writer, static_cast<protean::xml_writer::enum_flag_t>(flags));
+        writer << v->get_internals();
+        m_writer->flush();
 
         END_TRANSLATE_ERROR();
-	}
+    }
 
 }} // protean::clr

@@ -9,17 +9,18 @@
 
 #include "BinaryReader.hpp"
 #include "VariantException.hpp"
+#include "StrongReference.hpp"
 
 namespace protean { namespace clr {
 
     BinaryReader::BinaryReader(System::IO::Stream^ stream) :
-		m_stream(new boost::iostreams::stream<stream_type>(stream))
-	{
-	}
+        m_stream(new boost::iostreams::stream<stream_type>(stream))
+    {
+    }
 
     BinaryReader::~BinaryReader()
     {
-		this->!BinaryReader();
+        this->!BinaryReader();
     }
 
     BinaryReader::!BinaryReader()
@@ -28,31 +29,37 @@ namespace protean { namespace clr {
     }
 
     Variant^ BinaryReader::Read()
-	{
+    {
         BEGIN_TRANSLATE_ERROR();
 
-	    Variant^ result = gcnew Variant();
-	    protean::binary_reader reader(*m_stream);
-	    reader >> result->get_internals();
+        STRONG_REFERENCE(this);
 
-	    return result;
+        Variant^ result = gcnew Variant();
+        protean::binary_reader reader(*m_stream);
+        reader >> result->get_internals();
+
+        return result;
 
         END_TRANSLATE_ERROR();
-	}
+    }
 
-	Variant^ BinaryReader::FromBytes(array<System::Byte>^ bytes)
-	{
-	    Variant^ result = gcnew Variant();
+    Variant^ BinaryReader::FromBytes(array<System::Byte>^ bytes)
+    {
+        BEGIN_TRANSLATE_ERROR();
 
-		std::stringstream ss;
+        Variant^ result = gcnew Variant();
 
-		pin_ptr<System::Byte> ptr = &bytes[0];
-		ss.write(reinterpret_cast<const char*>(ptr), bytes->Length);
+        std::stringstream ss;
 
-	    protean::binary_reader reader(ss);
-	    reader >> result->get_internals();
+        pin_ptr<System::Byte> ptr = &bytes[0];
+        ss.write(reinterpret_cast<const char*>(ptr), bytes->Length);
 
-		return result;
-	}
+        protean::binary_reader reader(ss);
+        reader >> result->get_internals();
+
+        return result;
+
+        END_TRANSLATE_ERROR();
+    }
 
 }} // protean::clr

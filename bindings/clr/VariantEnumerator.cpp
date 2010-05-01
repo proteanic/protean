@@ -79,7 +79,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    System::Object^ VariantEnumerator::Current::get()
+    VariantItem^ VariantEnumerator::Current_Generic::get()
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -109,6 +109,11 @@ namespace protean { namespace clr {
         }
 
         END_TRANSLATE_ERROR();
+    }
+
+    System::Object^ VariantEnumerator::Current_NonGeneric::get()
+    {
+        return Current_Generic;
     }
 
 }} // protean::clr

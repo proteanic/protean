@@ -422,7 +422,7 @@ BOOST_AUTO_TEST_CASE(test_xml_validation)
     variant v1;
     xml_reader reader1(iss);
     reader1.set_external_schema("my_schema");
-	reader1.add_entity_stream("my_schema", xdr_ss);
+    reader1.add_entity_stream("my_schema", xdr_ss);
 
     reader1 >> v1;
 
