@@ -9,6 +9,11 @@
 #include "BinaryStream.hpp"
 #include "Variant.hpp"
 
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4244)
+#endif
+
 #include <boost/iostreams/stream.hpp>
 
 #include <protean/binary_reader.hpp>
@@ -35,5 +40,9 @@ namespace protean { namespace clr {
     };
 
 }} // protean::clr
+
+#if defined(_MSC_VER)
+#    pragma warning(pop)
+#endif
 
 #endif //PROTEAN_CLR_BINARY_READER_HPP

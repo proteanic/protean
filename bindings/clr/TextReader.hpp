@@ -9,6 +9,12 @@
 #include <vcclr.h>
 
 #include <iostream>
+
+#if defined(_MSC_VER)
+#    pragma warning(push)
+#    pragma warning(disable:4244)
+#endif
+
 #include <boost/iostreams/stream.hpp>
 
 namespace protean { namespace clr {
@@ -29,6 +35,10 @@ namespace protean { namespace clr {
     };
 
 }} // protean::clr
+
+#if defined(_MSC_VER)
+#    pragma warning(pop)
+#endif
 
 #endif //PROTEAN_CLR_TEXT_READER_HPP
 
