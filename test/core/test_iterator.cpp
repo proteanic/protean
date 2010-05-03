@@ -1,3 +1,7 @@
+#if defined(_MSC_VER)
+#    pragma warning(disable:4996)
+#endif
+
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test.hpp>  
 
@@ -98,14 +102,8 @@ BOOST_AUTO_TEST_CASE(algorithms)
    l.push_back (v);
    std::copy(l.begin(), l.end(), std::back_inserter(l1));
 
-#if defined(_MSC_VER)
-#    pragma warning(push)
-#    pragma warning(disable:4996)
-#endif
    BOOST_CHECK_EQUAL(true,std::equal (l.begin(), l.end(), l1.begin()));
-#if defined(_MSC_VER)
-#    pragma warning(pop)
-#endif
+
    BOOST_CHECK_EQUAL(l1.size(),2u);
 }
 
