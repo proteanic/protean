@@ -395,7 +395,7 @@ namespace protean {
         for ( it=context.m_attributes.begin(); it!=end; ++it )
         {
             check_invalid_chars(it.key());
-            m_os << ' ' << it.key() << "=\"" << it.value().change_type(variant::String).as<std::string>() << '"';
+            m_os << ' ' << it.key() << "=\"" << escape_chars(it.value().change_type(variant::String).as<std::string>()) << '"';
         }
         m_os << '>';
     }
