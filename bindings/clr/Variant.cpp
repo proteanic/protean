@@ -32,6 +32,16 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
+	Variant::Variant(EnumType type, System::UInt32 size)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        m_variant = new protean::variant((protean::variant::enum_type_t)type, size);
+
+        END_TRANSLATE_ERROR();
+    }
+
     Variant::Variant(bool arg)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -40,6 +50,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
     Variant::Variant(System::String^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -50,6 +61,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
     Variant::Variant(System::Int32 arg)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -58,6 +70,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
     Variant::Variant(System::UInt32 arg)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -66,6 +79,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
     Variant::Variant(System::Int64 arg)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -74,6 +88,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
     Variant::Variant(System::UInt64 arg)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -141,6 +156,7 @@ namespace protean { namespace clr {
 
         END_TRANSLATE_ERROR();
     }
+
     Variant::Variant(array<System::Byte>^ arg)
     {
         BEGIN_TRANSLATE_ERROR();
