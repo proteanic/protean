@@ -70,6 +70,15 @@ namespace protean
 
                     Variant MissingValue = v["missing key"];
                 }
+
+                [Test]
+                public void TestDateTime()
+                {
+                    DateTime datetime = new DateTime(2010, 5, 7, 9, 34, 1);
+                    Variant v = new Variant(datetime);
+
+                    Assert.AreEqual(datetime, v.AsDateTime());
+                }
             }
         }
     }

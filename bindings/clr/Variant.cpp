@@ -376,11 +376,14 @@ namespace protean { namespace clr {
             protean::variant params;
             obj.deflate(params);
 
-            Variant^ clrParams = gcnew Variant(params);
+            Variant^ clrParams = gcnew Variant();
+
+			// do a swap to save copying data
+			clrParams->get_internals().swap(params);
 
             try
             {
-                newObj->Inflate(gcnew Variant(params), obj.version());
+                newObj->Inflate(clrParams, obj.version());
             }
             finally
             {
@@ -482,7 +485,7 @@ namespace protean { namespace clr {
 
         STRONG_REFERENCE(this);
 
-        protean::variant::date_t date(index.Date.Year, index.Date.Month, index.Date.Month);
+        protean::variant::date_t date(index.Date.Year, index.Date.Month, index.Date.Day);
         protean::variant::time_t time(index.TimeOfDay.Hours, index.TimeOfDay.Minutes, index.TimeOfDay.Seconds);
         protean::variant::date_time_t dateTime(date,time);
 
