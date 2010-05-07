@@ -109,6 +109,7 @@ switch [ os.name ]
 if $(XERCES_BINARY)
 {
     lib xerces : :  <name>$(XERCES_BINARY) <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+    ADDIONAL_LIB_PROPERTIES += <define>XERCES_BINARY=$(XERCES_BINARY) ;
 }
 else
 {
@@ -118,14 +119,17 @@ else
             lib xerces : : <toolset>gcc <name>xerces-c <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
             lib xerces : : <toolset>msvc <variant>debug <name>xerces-c_3D <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
             lib xerces : : <toolset>msvc <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            ADDITIONAL_LIB_PROPERTIES += <include>$(XERCES_INCLUDE) <search>$(XERCES_LIB) ;
  
         case "NT" :
             lib xerces : : <variant>debug <name>xerces-c_3D <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
             lib xerces : : <variant>release <name>xerces-c_3 <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            ADDITIONAL_LIB_PROPERTIES += <include>$(XERCES_INCLUDE) <search>$(XERCES_LIB) ;
 
         case "LINUX" :
             lib pthread : : <name>pthread ;
             lib xerces : pthread/<link>shared : <name>xerces-c <search>$(XERCES_LIBPATH) : : <include>$(XERCES_INCLUDE) ;
+            XERCES_BJAM_NAME = xerces ;
 
         case * :
             EXIT Protean: unknown os, please set either XERCES_BINARY or NO_XERCES ;
@@ -133,18 +137,20 @@ else
 }
 
 DEPENDENTONXERCES =
-   src/xml_reader.cpp src/xml_parser.cpp src/xml_writer.cpp test/core/xml_streams.cpp 
+   src/xml_reader.cpp src/xml_parser.cpp src/xml_writer.cpp test/core/test_xml_streams.cpp 
    protean/xml_reader.hpp protean/xml_parser.hpp protean/xml_writer.hpp protean/xml_defs.hpp
 ;
 
 if $(NO_XERCES) = 1 
 {
    EXCLUDE += $(DEPENDENTONXERCES) ;
+   ADDIONAL_LIB_PROPERTIES += <define>NO_XERCES ;
    ECHO Protean: Building without Xerces support because NO_XERCES is set ;
 }
 else
 {
-   XERCES_BJAM_NAME = xerces ;
+   XERCES_NAME_FOR_UNIT_TESTS = xerces ;
+
    if ! $(XERCES_INCLUDE)
    {
         EXIT Protean: XERCES_INCLUDE needs to be set if NO_XERCES is not 1 ;
@@ -200,11 +206,10 @@ rule test-protean ( properties * : name )
                 [ glob test/core/*.cpp : $(EXCLUDE) ]
                 protean
                 /boost//unit_test_framework
-                $(XERCES_BJAM_NAME)
+                $(XERCES_NAME_FOR_UNIT_TESTS)
             :
                 <library-path>$(XERCES_LIBPATH)
                 <library-path>$(BOOST_LIB)
-                $(properties)
             	<conditional>@test-properties
             : 
             :    
