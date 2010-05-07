@@ -24,7 +24,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -91,7 +91,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -158,7 +158,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -224,7 +224,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -291,7 +291,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -351,7 +351,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -412,7 +412,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -472,7 +472,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
