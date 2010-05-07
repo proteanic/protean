@@ -130,7 +130,7 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        protean::variant::date_t date(arg.Date.Year, arg.Date.Month, arg.Date.Month);
+        protean::variant::date_t date(arg.Date.Year, arg.Date.Month, arg.Date.Day);
         protean::variant::time_t time(arg.TimeOfDay.Hours, arg.TimeOfDay.Minutes, arg.TimeOfDay.Seconds);
         protean::variant::date_time_t dateTime(date, time);
         m_variant = new protean::variant(dateTime);
