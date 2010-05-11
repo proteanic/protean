@@ -565,6 +565,32 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
+	Variant^ Variant::Range(System::String^ key)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
+
+        std::string key_str(StringTranslator(key).c_str());
+
+		return gcnew Variant(m_variant->range(key_str));
+
+        END_TRANSLATE_ERROR();
+    }
+
+	Variant^ Variant::Select(System::String^ path)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        STRONG_REFERENCE(this);
+
+        std::string path_str(StringTranslator(path).c_str());
+
+		return gcnew Variant(m_variant->select(path_str));
+
+        END_TRANSLATE_ERROR();
+    }
+
     System::Collections::Generic::IEnumerator<VariantItem^>^ Variant::GetEnumerator_Generic()
     {
         BEGIN_TRANSLATE_ERROR();
@@ -623,131 +649,77 @@ namespace protean { namespace clr {
 
     System::TypeCode Variant::GetTypeCode()
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return System::TypeCode::Object;
-
-        END_TRANSLATE_ERROR();
     }
 
     bool Variant::ToBoolean(System::IFormatProvider^ /*provider*/ )
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsBoolean();
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Byte Variant::ToByte(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToByte");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Char Variant::ToChar(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToChar");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     System::DateTime Variant::ToDateTime(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsDateTime();
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Decimal Variant::ToDecimal(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToDecimal");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     double Variant::ToDouble(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsDouble();
-
-        END_TRANSLATE_ERROR();
     }
 
     short Variant::ToInt16(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToInt16");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     int Variant::ToInt32(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsInt32();
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Int64 Variant::ToInt64(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsInt64();
-
-        END_TRANSLATE_ERROR();
     }
 
     signed char Variant::ToSByte(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToSByte");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     float Variant::ToSingle(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToSingle");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     System::String^ Variant::ToString(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsString();
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Object^ Variant::ToType(System::Type^ conversionType, System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         array<System::Type^>^ types = gcnew array<System::Type^>(1);
 
         try
@@ -776,42 +748,26 @@ namespace protean { namespace clr {
         {
             delete types;
         }
-
-        END_TRANSLATE_ERROR();
     }
 
     System::UInt16 Variant::ToUInt16(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         throw gcnew VariantException("Variant does not support ToUInt16");
         return 0;
-
-        END_TRANSLATE_ERROR();
     }
 
     System::UInt32 Variant::ToUInt32(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsUInt32();
-
-        END_TRANSLATE_ERROR();
     }
 
     System::UInt64 Variant::ToUInt64(System::IFormatProvider^ /*provider*/)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return AsUInt64();
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Int32 Variant::CompareTo(Object^ obj)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         if (obj->GetType()==Variant::typeid)
         {
             Variant^ temp = dynamic_cast<Variant^>(obj);
@@ -819,8 +775,6 @@ namespace protean { namespace clr {
             return CompareTo(temp);
         }
         throw gcnew System::ArgumentException("Object is not a Variant");
-
-        END_TRANSLATE_ERROR();
     }
 
     System::Int32 Variant::CompareTo(Variant^ value)
@@ -837,11 +791,7 @@ namespace protean { namespace clr {
 
     bool Variant::Equals(Variant^ value)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         return CompareTo(value)==0;
-
-        END_TRANSLATE_ERROR();
     }
 
 }} // protean::clr

@@ -115,9 +115,11 @@ namespace protean { namespace clr {
         bool ContainsKey(System::String^ key);
         void Add(System::String^ key, Variant^ value);
         void Remove(System::String^ key);
+		Variant^ Range(System::String^ key);
+		Variant^ Select(System::String^ path);
 
         // TimeSeries
-        void Add(System::DateTime key, Variant^ value);
+        void Add(System::DateTime time, Variant^ value);
 
         property int Count    { int get(); }
         property bool Empty    { bool get(); }
