@@ -2,14 +2,14 @@
 <VisualStudioPropertySheet
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Compiler Settings (vc90)"
+	Name="Compiler Test Settings (vc90)"
 	>
 	<Tool
 		Name="VCCLCompilerTool"
 		DebugInformationFormat="3"
 	/>
-	<UserMacro
-		Name="CompilerFlag"
-		Value="vc90"
+	<Tool
+		Name="VCLinkerTool"
+		GenerateDebugInformation="true"
 	/>
 </VisualStudioPropertySheet>
