@@ -101,22 +101,22 @@ namespace protean {
 		    switch (v.Type)
 		    {
 		    case Variant.EnumType.String:
-			    WriteString(v.String);
+			    WriteString(v.As<String>());
 			    break;
 		    case Variant.EnumType.Double:
-			    WriteDouble(v.Double);
+                WriteDouble(v.As<double>());
 			    break;
             case Variant.EnumType.Int32:
-                WriteInt32(v.Int32);
+                WriteInt32(v.As<Int32>());
                 break;
             case Variant.EnumType.UInt32:
-                WriteUInt32(v.UInt32);
+                WriteUInt32(v.As<UInt32>());
                 break;
             case Variant.EnumType.Int64:
-			    WriteInt64(v.Int64);
+                WriteInt64(v.As<Int64>());
 			    break;
 		    case Variant.EnumType.UInt64:
-			    WriteUInt64(v.UInt64);
+                WriteUInt64(v.As<UInt64>());
 			    break;
 		    case Variant.EnumType.List:
 			    WriteUInt32((UInt32)v.Count);

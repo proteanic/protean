@@ -9,6 +9,73 @@ using System.Text;
 
 namespace protean {
 
+    public interface IVariantData
+    {
+        VariantBase.EnumType Type { get; }
+    }
+
+    // None
+    public class VariantNone : IVariantData
+    {
+        public VariantNone()
+        { }
+
+        public VariantBase.EnumType Type
+        {
+            get { return VariantBase.EnumType.None; }
+        }
+    }
+
+    // Any
+    public class VariantAny : IVariantData
+    {
+        public VariantAny() {
+            Value = "";
+        }
+
+        public VariantAny(String value) {
+            Value = value;
+        }
+
+        public VariantAny(VariantAny rhs) {
+            Value = rhs.Value;
+        }
+
+        public VariantBase.EnumType Type
+        {
+            get { return VariantBase.EnumType.Any; }
+        }
+
+        public String Value { get; set; }
+    }
+
+    // Buffer
+    public class VariantBuffer : IVariantData
+    {
+        public VariantBuffer(UInt32 capacity)
+        {
+            Value = new Byte[capacity];
+        }
+
+        public VariantBuffer(Byte[] value)
+        {
+            Value = value;
+        }
+
+        public VariantBuffer(VariantBuffer rhs)
+        {
+            Value = new Byte[rhs.Value.Length];
+            Array.Copy(rhs.Value, Value, Value.Length);
+        }
+
+        public VariantBase.EnumType Type
+        {
+            get { return VariantBase.EnumType.Buffer; }
+        }
+
+        public Byte[] Value { get; set; }
+    }
+
     public abstract class VariantBase
     {
         public enum EnumType
@@ -45,239 +112,164 @@ namespace protean {
             Collection              = Sequence | Mapping | TimeSeries
         };
 
-	    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
-	    private struct VariantUnion
-	    {
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public bool BooleanValue; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public UInt32 UInt32Value; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public Int32 Int32Value; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public UInt64 UInt64Value; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public Int64 Int64Value; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public float FloatValue; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public double DoubleValue; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public TimeSpan TimeValue; 
-		    [System.Runtime.InteropServices.FieldOffset(0)]
-		    public DateTime DateTimeValue; 
-	    };
+        protected IVariantData Value { get; set; }
 
-        private VariantUnion m_value;
-        private Object m_reference;
-
-	    protected void Initialise(EnumType type, UInt32 size)
+        protected VariantBase()
         {
-		    if ((int)(type & EnumType.Number)!=0)
+            Value = new VariantNone();
+        }
+
+        protected VariantBase(EnumType type, UInt32 size)
+        {
+		    switch (type)
 		    {
-			    m_value.UInt64Value = 0;
-		    }
-		    else
-		    {
-			    switch (type)
-			    {
-                case EnumType.Date:
-			    case EnumType.DateTime:
-				    DateTime = new DateTime(1400, 1, 1);
-                    break;
-                case EnumType.Time:
-				    Time = new TimeSpan(0, 0, 0);
-                    break;
-                case EnumType.TimeSeries:
-                    TimeSeries = new List<KeyValuePair<DateTime, Variant>>((int)size);
-                    break;
-                case EnumType.Any:
-                case EnumType.String:
-				    String = "";
-                    break;
-                case EnumType.Dictionary:
-                    Dictionary = new Dictionary<String, Variant>();
-                    break;
-                case EnumType.Bag:
-				    Bag = new List<KeyValuePair<String, Variant>>((int)size);
-                    break;
-                case EnumType.List:
-                    List = new List<Variant>((int)size);
-                    break;
-                case EnumType.Tuple:
-                    Tuple = new Variant[size];
-                    break;
-			    case EnumType.Buffer:
-				    Buffer = new byte[size];
-                    break;
-			    default:
-				    throw new VariantException("Cannot default construct variant of type: " + type.ToString());
-			    }
+            case EnumType.None:
+                Value = new VariantNone();
+                break;
+            case EnumType.Any:
+                Value = new VariantAny();
+                break;
+            case EnumType.Boolean:
+                Value = new VariantPrimitive<bool>(false);
+                break;
+            case EnumType.Int32:
+                Value = new VariantPrimitive<Int32>(0);
+                break;
+            case EnumType.UInt32:
+                Value = new VariantPrimitive<UInt32>(0);
+                break;
+            case EnumType.Int64:
+                Value = new VariantPrimitive<Int64>(0);
+                break;
+            case EnumType.UInt64:
+                Value = new VariantPrimitive<UInt64>(0);
+                break;
+            case EnumType.String:
+                Value = new VariantPrimitive<String>("");
+                break;
+            case EnumType.DateTime:
+                Value = new VariantPrimitive<DateTime>(new DateTime());
+                break;
+            case EnumType.Time:
+                Value = new VariantPrimitive<TimeSpan>(new TimeSpan());
+                break;
+            case EnumType.List:
+                Value = new VariantList(size);
+                break;
+            case EnumType.TimeSeries:
+                Value = new VariantTimeSeries(size);
+                break;
+            case EnumType.Dictionary:
+                Value = new VariantDictionary();
+                break;
+            case EnumType.Bag:
+                Value = new VariantBag();
+                break;
+            case EnumType.Tuple:
+                Value = new VariantTuple(size);
+                break;
+		    case EnumType.Buffer:
+                Value = new VariantBuffer(size);
+                break;
+		    default:
+			    throw new VariantException("Cannot default construct variant of type: " + type.ToString());
 		    }
 	    }
 
-	    protected void Dispose(EnumType type)
-	    {
-		    m_reference = null;
-	    }
-
-        protected void Assign(EnumType type, VariantBase value)
+        protected VariantBase(VariantBase rhs)
         {
-		    if ((int)(type & EnumType.Number)!=0)
-		    {
-			    m_value = value.m_value;
-		    }
-		    else
-		    {
-			    switch (type)
-			    {
-                case EnumType.Date:
-			    case EnumType.DateTime:
-				    DateTime = value.m_value.DateTimeValue;
+            EnumType type = rhs.Type;
+            switch (type)
+            {
+                case EnumType.Boolean:
+                    Value = new VariantPrimitive<bool>(rhs.Value as VariantPrimitive<bool>);
+                    break;
+                case EnumType.Int32:
+                    Value = new VariantPrimitive<Int32>(rhs.Value as VariantPrimitive<Int32>);
+                    break;
+                case EnumType.UInt32:
+                    Value = new VariantPrimitive<UInt32>(rhs.Value as VariantPrimitive<UInt32>);
+                    break;
+                case EnumType.Int64:
+                    Value = new VariantPrimitive<Int64>(rhs.Value as VariantPrimitive<Int64>);
+                    break;
+                case EnumType.UInt64:
+                    Value = new VariantPrimitive<UInt64>(rhs.Value as VariantPrimitive<UInt64>);
+                    break;
+                case EnumType.DateTime:
+                    Value = new VariantPrimitive<DateTime>(rhs.Value as VariantPrimitive<DateTime>);
                     break;
                 case EnumType.Time:
-				    Time = value.m_value.TimeValue;
+                    Value = new VariantPrimitive<TimeSpan>(rhs.Value as VariantPrimitive<TimeSpan>);
                     break;
-                case EnumType.TimeSeries:
-				    TimeSeries = new List<KeyValuePair<DateTime, Variant>>(value.m_reference as List<KeyValuePair<DateTime, Variant>>);
+                case EnumType.String:
+                    Value = new VariantPrimitive<String>(rhs.Value as VariantPrimitive<String>);
                     break;
                 case EnumType.Any:
-                case EnumType.String:
-				    String = value.String.Clone() as String;
-                    break;
-                case EnumType.Dictionary:
-				    Dictionary = new Dictionary<String, Variant>(value.m_reference as Dictionary<String, Variant>);
-                    break;
-                case EnumType.Bag:
-				    Bag = new List<KeyValuePair<String, Variant>>(value.m_reference as List<KeyValuePair<String, Variant>>);
+                    Value = new VariantAny(rhs.Value as VariantAny);
                     break;
                 case EnumType.List:
-				    List = new List<Variant>(value.m_reference as List<Variant>);
+                    Value = new VariantList(rhs.Value as VariantList);
+                    break;
+                case EnumType.Dictionary:
+                    Value = new VariantDictionary(rhs.Value as VariantDictionary);
+                    break;
+                case EnumType.Bag:
+                    Value = new VariantBag(rhs.Value as VariantBag);
+                    break;
+                case EnumType.TimeSeries:
+                    Value = new VariantTimeSeries(rhs.Value as VariantTimeSeries);
                     break;
                 case EnumType.Tuple:
-                    Tuple = value.Tuple.Clone() as Variant[];
+                    Value = new VariantTuple(rhs.Value as VariantTuple);
                     break;
-			    case EnumType.Buffer:
-				    Buffer = value.Buffer.Clone() as byte[];
-                    break;
-                case EnumType.Object:
-                    // TODO
-                    Object = value.m_reference as IVariantObject;
+                case EnumType.Buffer:
+                    Value = new VariantBuffer(rhs.Value as VariantBuffer);
                     break;
                 case EnumType.Exception:
-                    // TODO
-                    Exception = value.m_reference as ExceptionInfo;
+                    Value = new ExceptionInfo(rhs.Value as ExceptionInfo);
                     break;
                 default:
-				    throw new System.ApplicationException("Cannot default construct variant of type: " + type.ToString());
-			    }
-		    }
+                    throw new VariantException("Cannot default construct variant of type: " + type.ToString());
+            }
         }
 
-        protected String String
+        public EnumType Type
         {
-            get { return m_reference as String; }
-            set { m_reference = value; }
-        }
-        protected bool Boolean
-        {
-            get { return m_value.BooleanValue; }
-            set { m_value.BooleanValue = value; }
-        }
-        protected Int32 Int32
-        {
-            get { return m_value.Int32Value; }
-            set { m_value.Int32Value = value; }
-        }
-        protected UInt32 UInt32
-        {
-            get { return m_value.UInt32Value; }
-            set { m_value.UInt32Value = value; }
-        }
-        protected Int64 Int64
-        {
-            get { return m_value.Int64Value; }
-            set { m_value.Int64Value = value; }
-        }
-        protected UInt64 UInt64
-        {
-            get { return m_value.UInt64Value; }
-            set { m_value.UInt64Value = value; }
-        }
-        protected float Float
-        {
-            get { return m_value.FloatValue; }
-            set { m_value.FloatValue = value; }
-        }
-        protected double Double
-        {
-            get { return m_value.DoubleValue; }
-            set { m_value.DoubleValue = value; }
-        }
-        protected DateTime Date
-        {
-            get { return m_value.DateTimeValue; }
-            set { m_value.DateTimeValue = value; }
-        }
-        protected DateTime DateTime
-        {
-            get { return m_value.DateTimeValue; }
-            set { m_value.DateTimeValue = value; }
-        }
-        protected TimeSpan Time
-        {
-            get { return m_value.TimeValue; }
-            set { m_value.TimeValue = value; }
-        }
-        protected List<Variant> List
-        {
-            get { return m_reference as List<Variant>; }
-            set { m_reference = value; }
-        }
-        protected Dictionary<String, Variant> Dictionary
-        {
-            get { return m_reference as Dictionary<String, Variant>; }
-            set { m_reference = value; }
-        }
-        protected List<KeyValuePair<String, Variant>> Bag
-        {
-            get { return m_reference as List<KeyValuePair<String, Variant>>; }
-            set { m_reference = value; }
-        }
-        protected List<KeyValuePair<DateTime, Variant>> TimeSeries
-        {
-            get { return m_reference as List<KeyValuePair<DateTime, Variant>>; }
-            set { m_reference = value; }
-        }
-        protected Variant[] Tuple
-        {
-            get { return m_reference as Variant[]; }
-            set { m_reference = value; }
-        }
-        protected byte[] Buffer
-        {
-            get { return m_reference as byte[]; }
-            set { m_reference = value; }
-        }
-        protected IVariantObject Object
-        {
-            get { return m_reference as IVariantObject; }
-            set { m_reference = value; }
-        }
-        protected ExceptionInfo Exception
-        {
-            get { return m_reference as ExceptionInfo; }
-            set { m_reference = value; }
+            get
+            {
+                return Value.Type;
+            }
         }
 
-        protected System.Collections.ICollection Collection
+        // Is/As only work for primitive types
+        public T As<T>()
         {
-            get { return m_reference as System.Collections.ICollection; }
+            if (!(Value is IVariantPrimitive))
+            {
+                throw new VariantException("Attempt to call As<T> on non-primitive " + Type.ToString() + " variant");
+            }
+
+            if (!Is<T>())
+            {
+                throw new VariantException("Attempt to fetch " + typeof(T).Name + " from " + Type.ToString() + " variant.");
+            }
+
+            return (Value as VariantPrimitive<T>).Value;
         }
 
-        protected System.Collections.IEnumerable Enumerable
+        public bool Is<T>()
         {
-            get { return m_reference as System.Collections.IEnumerable; }
+            if (!(Value is IVariantPrimitive))
+            {
+                throw new VariantException("Attempt to call Is<T> on non-primitive " + Type.ToString() + " variant");
+            }
+            return (Value is VariantPrimitive<T>);
+        }
+
+        public bool Is(EnumType type)
+        {
+            return (type & Value.Type)!=0;
         }
     }
 

@@ -9,29 +9,29 @@ using System.Text;
 
 namespace protean {
 
-    class VariantObjectProxy : IVariantObject
+    class VariantObjectProxy : VariantObjectBase
     {
 	    public VariantObjectProxy(String classname)
         {
             m_classname = classname;
         }
 
-        public String ClassName
+        public override String ClassName
         {
             get { return m_classname; }
         }
 
-        public UInt32 Version
+        public override UInt32 Version
         {
             get { return m_version; }
         }
 
-        public Variant Deflate()
+        public override Variant Deflate()
         {
             return m_params;
         }
 
-        public void Inflate(Variant param, UInt32 version)
+        public override void Inflate(Variant param, UInt32 version)
         {
 		    m_params = param;
 		    m_version = version;

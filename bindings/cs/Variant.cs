@@ -14,103 +14,79 @@ namespace protean {
         IEnumerable<VariantItem>,
         IConvertible
     {
-        
-        public Variant()
+        public Variant() :
+            base()
         { } 
 
-        public Variant(Variant arg)
-        {
-            Type = arg.Type;
-            Assign(arg.Type, arg);
-        }
+        public Variant(Variant arg) :
+            base(arg)
+        { }
 
-        public Variant(EnumType type)
-        {
-            Type = type;
-            Initialise(type, 0);
-        }
+        public Variant(EnumType type) :
+            base(type, 0)
+        { }
 
-        public Variant(EnumType type, UInt32 size)
-        {
-            Type = type;
-            Initialise(type, size);
-        }
+        public Variant(EnumType type, UInt32 size) :
+            base(type, size)
+        { }
 
         public Variant(String arg)
         {
-            Type = EnumType.String;
-            base.String = arg;
+            Value = new VariantPrimitive<String>(arg);
         }
 
         public Variant(bool arg)
         {
-            Type = EnumType.Boolean;
-            base.Boolean = arg;
+            Value = new VariantPrimitive<bool>(arg);
         }
-
         public Variant(Int32 arg)
         {
-            Type = EnumType.Int32;
-            base.Int32 = arg;
+            Value = new VariantPrimitive<Int32>(arg);
         }
 
         public Variant(UInt32 arg)
         {
-            Type = EnumType.UInt32;
-            base.UInt32 = arg;
+            Value = new VariantPrimitive<UInt32>(arg);
         }
 
         public Variant(Int64 arg)
         {
-            Type = EnumType.Int64;
-            base.Int64 = arg;
+            Value = new VariantPrimitive<Int64>(arg);
         }
 
         public Variant(UInt64 arg)
         {
-            Type = EnumType.UInt64;
-            base.UInt64 = arg;
+            Value = new VariantPrimitive<UInt64>(arg);
         }
 
         public Variant(float arg)
         {
-            Type = EnumType.Float;
-            base.Float = arg;
+            Value = new VariantPrimitive<float>(arg);
         }
 
         public Variant(double arg)
         {
-            Type = EnumType.Double;
-            base.Double = arg;
+            Value = new VariantPrimitive<double>(arg);
         }
 
-        public Variant(System.TimeSpan arg)
+        public Variant(TimeSpan arg)
         {
-            Type = EnumType.Time;
-            base.Time = arg;
+            Value = new VariantPrimitive<TimeSpan>(arg);
         }
 
-        public Variant(System.DateTime arg) :
-            this(arg, false)
+        public Variant(DateTime arg)
         {
-        }
-
-        public Variant(System.DateTime arg, bool ignoreTime)
-        {
-            Type = (ignoreTime ? EnumType.Time : EnumType.DateTime);
-            base.DateTime = arg;
+            Value = new VariantPrimitive<DateTime>(arg);
         }
 
         public Variant(byte[] arg)
         {
-            Type = EnumType.Buffer;
-            base.Buffer = arg;
+            Value = new VariantBuffer(arg);
         }
 
-        public Variant(IVariantObject arg)
+        public Variant(VariantObjectBase arg)
         {
-            Type = EnumType.Object;
-            base.Object = arg;
+            Value = arg;
         }
 
         public Variant(System.Exception arg) :
@@ -120,161 +96,48 @@ namespace protean {
 
         public  Variant(ExceptionInfo arg)
         {
-            Type = EnumType.Exception;
-            base.Exception = arg;
-        }
-
-        /**
-         * Type inspection methods
-         */
-        public bool Is(EnumType type)
-        {
-            return (int)(Type & type)!=0;
-        }
-
-        /**
-         * Type query methods
-         */
-        public new String String
-        {
-            get
-            {
-                return base.String;
-            }
-        }
-        public new bool Boolean
-        {
-            get
-            {
-                return base.Boolean;
-            }
-        }
-        public new Int32 Int32
-        {
-            get
-            {
-                return base.Int32;
-            }
-        }
-        public new UInt32 UInt32
-        {
-            get
-            {
-                return base.UInt32;
-            }
-        }
-        public new Int64 Int64
-        {
-            get
-            {
-                return base.Int64;
-            }
-        }
-        public new UInt64 UInt64
-        {
-            get
-            {
-                return base.UInt64;
-            }
-        }
-        public new float Float
-        {
-            get
-            {
-                return base.Float;
-            }
-        }
-        public new double Double
-        {
-            get
-            {
-                return base.Double;
-            }
-        }
-        public new DateTime Date
-        {
-            get
-            {
-                return base.Date;
-            }
-        }
-        public new DateTime DateTime
-        {
-            get
-            {
-                return base.DateTime;
-            }
-        }
-        public new TimeSpan Time
-        {
-            get
-            {
-                return base.Time;
-            }
-        }
-        public new byte[] Buffer
-        {
-            get
-            {
-                return base.Buffer;
-            }
+            Value = arg;
         }
 
         public T AsObject<T>()
-            where T : IVariantObject, new()
+            where T : VariantObjectBase, new()
         {
             T newObj = new T();
 
             return newObj;
         }
 
-        public new IVariantObject Object
-        {
-            get
-            {
-                return base.Object;
-            }
-        }
-
-        public new ExceptionInfo Exception
-        {
-            get
-            {
-                return base.Exception;
-            }
-        }
-
         // Lists
         public void Add(Variant value)
         {
-            base.List.Add(value);
+            (Value as VariantList).Value.Add(value);
         }
 
         // Bags/Dictionaries
         public bool ContainsKey(String key)
         {
-            return base.Dictionary.ContainsKey(key);
+            return (Value as VariantDictionary).Value.ContainsKey(key);
         }
 
         public void Add(String key, Variant value)
         {
-            base.Dictionary.Add(key, value);
+            (Value as VariantDictionary).Value.Add(key, value);
         }
 
         public void Remove(String key)
         {
-            base.Dictionary.Remove(key);
+            (Value as VariantDictionary).Value.Remove(key);
         }
 
         // TimeSeries
         public void Add(DateTime time, Variant value)
         {
-            base.TimeSeries.Add(new KeyValuePair<DateTime, Variant>(time, value));
+            (Value as VariantTimeSeries).Value.Add(new KeyValuePair<DateTime, Variant>(time, value));
         }
 
         public int Count
         {
-            get { return base.Collection.Count; }
+            get { return (Value as IVariantCollection).Count; }
         }
 
         public bool Empty
@@ -284,33 +147,33 @@ namespace protean {
 
         public Variant this[String key]
         {
-            get { return base.Dictionary[key]; }
-            set { base.Dictionary[key] = value; }
+            get { return (Value as VariantDictionary).Value[key]; }
+            set { (Value as VariantDictionary).Value[key] = value; }
         }
 
         public Variant this[UInt32 index]
         {
             get
             {
-                if (Type==EnumType.Tuple)
+                if (Value is VariantTuple)
                 {
-                    return base.Tuple[index];
+                    return (Value as VariantTuple).Value[(int)index];
                 }
                 else
                 {
-                    return base.List[(int)index];
+                    return (Value as VariantList).Value[(int)index];
                 }
             }
 
             set
             {
-                if (Type==EnumType.Tuple)
+                if (Value is VariantTuple)
                 {
-                    base.Tuple[index] = value;
+                    (Value as VariantTuple).Value[index] = value;
                 }
                 else
                 {
-                    base.List[(int)index] = value;
+                    (Value as VariantList).Value[(int)index] = value;
                 }
             }
         }
@@ -329,7 +192,25 @@ namespace protean {
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            return new VariantEnumerator(Type, base.Enumerable);
+            if (Value is VariantList)
+            {
+                return new VariantEnumerator(EnumType.List, (Value as VariantList).Value);
+            }
+            else if (Value is VariantDictionary)
+            {
+                return new VariantEnumerator(EnumType.Dictionary, (Value as VariantDictionary).Value);
+            }
+            else if (Value is VariantBag)
+            {
+                return new VariantEnumerator(EnumType.Bag, (Value as VariantBag).Value);
+            }
+            else if (Value is VariantTimeSeries)
+            {
+                return new VariantEnumerator(EnumType.TimeSeries, (Value as VariantTimeSeries).Value);
+            }
+            else{
+                throw new VariantException("Attempt to call GetEnumerator on " + Type.ToString() + "variant");
+            }
         }
 
 
@@ -346,7 +227,7 @@ namespace protean {
         }
         public bool ToBoolean(IFormatProvider provider)
         {
-            return Boolean;
+            return As<bool>();
         }
         public byte ToByte(IFormatProvider provider)
         {
@@ -358,7 +239,7 @@ namespace protean {
         }
         public DateTime ToDateTime(IFormatProvider provider)
         {
-            return DateTime;
+            return As<DateTime>();
         }
         public decimal  ToDecimal(IFormatProvider provider)
         {
@@ -366,7 +247,7 @@ namespace protean {
         }
         public double ToDouble(IFormatProvider provider)
         {
-            return Double;
+            return As<Double>();
         }
         public short ToInt16(IFormatProvider provider)
         {
@@ -374,11 +255,11 @@ namespace protean {
         }
         public int ToInt32(IFormatProvider provider)
         {
-            return Int32;
+            return As<Int32>();
         }
         public long ToInt64(IFormatProvider provider)
         {
-            return Int64;
+            return As<Int64>();
         }
         public sbyte  ToSByte(IFormatProvider provider)
         {
@@ -386,11 +267,11 @@ namespace protean {
         }
         public float ToSingle(IFormatProvider provider)
         {
-            return Float;
+            return As<float>();
         }
         public String ToString(IFormatProvider provider)
         {
-            return String;
+            return As<String>();
         }
         public Object ToType(Type conversionType, IFormatProvider provider)
         {
@@ -413,15 +294,12 @@ namespace protean {
         }
         public uint ToUInt32(IFormatProvider provider)
         {
-            return UInt32;
+            return As<UInt32>();
         }
         public ulong ToUInt64(IFormatProvider provider)
         {
-            return UInt64;
+            return As<UInt64>();
         }
-
-        public EnumType Type { get; private set; }
-
     };
 
 

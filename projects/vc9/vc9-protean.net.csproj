@@ -96,13 +96,15 @@
     <Compile Include="..\..\bindings\cs\BinaryReader.cs" />
     <Compile Include="..\..\bindings\cs\BinaryWriter.cs" />
     <Compile Include="..\..\bindings\cs\ExceptionInfo.cs" />
-    <Compile Include="..\..\bindings\cs\IVariantObject.cs" />
+    <Compile Include="..\..\bindings\cs\VariantObjectBase.cs" />
 	<Compile Include="..\..\bindings\cs\Variant.cs" />
 	<Compile Include="..\..\bindings\cs\VariantBase.cs" />
+	<Compile Include="..\..\bindings\cs\VariantCollection.cs" />
     <Compile Include="..\..\bindings\cs\VariantEnumerator.cs" />
     <Compile Include="..\..\bindings\cs\VariantException.cs" />
     <Compile Include="..\..\bindings\cs\VariantItem.cs" />
     <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
+	<Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

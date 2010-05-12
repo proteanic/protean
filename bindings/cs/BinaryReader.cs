@@ -45,56 +45,50 @@ namespace protean {
 
 	        switch (type)
 	        {
-	        case Variant.EnumType.String:
+	            case Variant.EnumType.String:
 		        {
-		        String value = ReadString();
-		        return new Variant(value);
-		        break;
+		            String value = ReadString();
+		            return new Variant(value);
 		        }
-	        case Variant.EnumType.Double:
+	            case Variant.EnumType.Double:
 		        {
-		        double value = ReadDouble();
-		        return new Variant(value);
-		        break;
+		            double value = ReadDouble();
+		            return new Variant(value);
 		        }
-	        case Variant.EnumType.Int64:
+	            case Variant.EnumType.Int64:
 		        {
-		        Int64 value = ReadInt64();
-		        return new Variant(value);
-		        break;
+		            Int64 value = ReadInt64();
+		            return new Variant(value);
 		        }
-	        case Variant.EnumType.List:
+	            case Variant.EnumType.List:
 		        {
-		        Variant result = new Variant(Variant.EnumType.List);
+		            Variant result = new Variant(Variant.EnumType.List);
 
-		        UInt32 length = ReadUInt32();
-		        for (UInt32 i=0; i<length; ++i)
-		        {
-			        result.Add(ReadVariant());
-		        }
+		            UInt32 length = ReadUInt32();
+		            for (UInt32 i=0; i<length; ++i)
+		            {
+			            result.Add(ReadVariant());
+		            }
 
-		        return result;
-    		
-		        break;
-		        }
-	        case Variant.EnumType.Dictionary:
-	        case Variant.EnumType.Bag:
+		            return result;
+    		    }
+	            case Variant.EnumType.Dictionary:
+	            case Variant.EnumType.Bag:
 		        {
-		        Variant result = new Variant(type);
+		            Variant result = new Variant(type);
 
-		        UInt32 length = ReadUInt32();
-		        for (UInt32 i=0; i<length; ++i)
-		        {
-			        String key = ReadString();
-			        Variant value = ReadVariant();
-			        result.Add(key, value);
-		        }
+		            UInt32 length = ReadUInt32();
+		            for (UInt32 i=0; i<length; ++i)
+		            {
+			            String key = ReadString();
+			            Variant value = ReadVariant();
+			            result.Add(key, value);
+		            }
 
-		        return result;
-		        break;
+		            return result;
 		        }
-	        default:
-		        throw new VariantException("Case exhaustion: " + type.ToString());
+	            default:
+		            throw new VariantException("Case exhaustion: " + type.ToString());
 	        }
         }
 

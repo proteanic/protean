@@ -9,15 +9,20 @@ using System.Text;
 
 namespace protean {
 
-    public interface IVariantObject
+    public abstract class VariantObjectBase : IVariantData
     {
-        String ClassName { get; }
+        public abstract String ClassName { get; }
 
-        UInt32 Version { get; }
-        
-        Variant Deflate();
+        public abstract UInt32 Version { get; }
 
-        void Inflate(Variant param, UInt32 version);
+        public abstract Variant Deflate();
+
+        public abstract void Inflate(Variant param, UInt32 version);
+
+        public VariantBase.EnumType Type
+        {
+            get { return VariantBase.EnumType.Object; }
+        }
     };
 
 } // protean
