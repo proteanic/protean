@@ -40,10 +40,10 @@ namespace protean {
         variant(const variant& value);
 
         template<typename T>
-        variant(T value, typename boost::enable_if<boost::is_pod<T> >::type* dummy = 0);
+		variant(T value, typename boost::enable_if<boost::is_arithmetic<T> >::type* dummy = 0);
 
         explicit variant(enum_type_t type, size_t size=0);
-        explicit variant(enum_type_t type, const variant& arg);
+		explicit variant(enum_type_t type, const std::string& arg);
         explicit variant(const std::string& arg);
         explicit variant(const char *arg);
         explicit variant(bool arg);
@@ -142,7 +142,15 @@ namespace protean {
         typename boost::enable_if<return_reference<T>, const T&>::type
         as() const;
 
-        variant change_type(enum_type_t type) const;
+		// Primitive -> Any
+		variant any_cast() const;
+
+		// Number -> T
+		template<typename T>
+		T numerical_cast() const;
+
+        __declspec(deprecated("** this is a deprecated method, please use any_cast instead **"))
+		variant change_type(enum_type_t type) const;
 
     /* Collection interface */
     /************************/

@@ -116,6 +116,12 @@ namespace protean {
             }
             case variant::Any:
             case variant::String:
+            {
+                start_tag();
+                m_os << escape_chars(node.as<std::string>());
+                end_tag();
+                break;
+            }
             case variant::Int32:
             case variant::UInt32:
             case variant::Int64:
@@ -128,7 +134,7 @@ namespace protean {
             case variant::DateTime:
             {
                 start_tag();
-                m_os << escape_chars(node.change_type(variant::Any).as<std::string>());
+                m_os << node.any_cast().as<std::string>();
                 end_tag();
                 break;
             }
@@ -395,7 +401,7 @@ namespace protean {
         for ( it=context.m_attributes.begin(); it!=end; ++it )
         {
             check_invalid_chars(it.key());
-            m_os << ' ' << it.key() << "=\"" << escape_chars(it.value().change_type(variant::String).as<std::string>()) << '"';
+            m_os << ' ' << it.key() << "=\"" << escape_chars(it.value().any_cast().as<std::string>()) << '"';
         }
         m_os << '>';
     }

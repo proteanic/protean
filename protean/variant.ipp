@@ -74,7 +74,7 @@ namespace protean {
     }
 
     template<typename T>
-    variant::variant(T value, typename boost::enable_if<boost::is_pod<T> >::type*)
+    variant::variant(T value, typename boost::enable_if<boost::is_arithmetic<T> >::type*)
     {
         m_type = type_to_enum<T>::value;
         m_value.set<type_to_enum<T>::value>(value);
@@ -242,6 +242,36 @@ namespace protean {
     template<> PROTEAN_DECL const exception_data&       variant::as<exception_data>()           const;
     template<> PROTEAN_DECL const typed_array&          variant::as<typed_array>()              const;
     template<> PROTEAN_DECL const object&               variant::as<object>()                   const;
+
+    template<typename T>
+    T variant::numerical_cast() const
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(Number, "numerical_cast<T>()");
+
+        switch (m_type)
+        {
+        case Boolean:
+            return static_cast<T>(m_value.get<Boolean>());
+        case Int32:
+            return static_cast<T>(m_value.get<Int32>());
+        case UInt32:
+            return static_cast<T>(m_value.get<UInt32>());
+        case Int64:
+            return static_cast<T>(m_value.get<Int64>());
+        case UInt64:
+            return static_cast<T>(m_value.get<UInt64>());
+        case Float:
+            return static_cast<T>(m_value.get<Float>());
+        case Double:
+            return static_cast<T>(m_value.get<Double>());
+        default:
+            boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(m_type)));
+        }
+
+        END_TRANSLATE_ERROR();
+    }
 
     template<typename T>
     variant make_object(const variant& params)
