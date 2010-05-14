@@ -14,9 +14,9 @@
 
 namespace protean {
     
-    binary_writer::binary_writer(std::ostream &os, int flags) :
+    binary_writer::binary_writer(std::ostream &os, int mode) :
         m_os(os),
-        m_flags(flags)
+        m_mode(mode)
     {
     }
 
@@ -276,10 +276,10 @@ namespace protean {
         boost::uint32_t header[3];
 
         // write header
-        // [13 FF 48 49][MAJOR MINOR][FLAGS]
+        // [13 FF 48 49][MAJOR MINOR][MODE]
         header[0] = binary_magic_number;
         header[1] = (binary_major_version << 16) | binary_minor_version;
-        header[2] = (m_flags & Compress) ? 1 : 0;
+        header[2] = m_mode;
 
         if (!m_os.write(reinterpret_cast<const char*>(header), sizeof(header)))
         {
@@ -287,9 +287,10 @@ namespace protean {
         }
 
         // create compression filter if necessary
-        if ((m_flags & Compress)!=0)
+        if ((m_mode & binary_mode::Compress)!=0)
         {
-            m_filter.push(boost::iostreams::zlib_compressor(binary_compression_params()));
+            bool zlib_no_header = (m_mode & binary_mode::ZlibHeader)==0;
+            m_filter.push(boost::iostreams::zlib_compressor(binary_compression_params(zlib_no_header)));
         }
         m_filter.push(m_os);
     }

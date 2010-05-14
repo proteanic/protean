@@ -21,10 +21,7 @@ namespace protean {
     class PROTEAN_DECL binary_writer
     {
     public:
-        enum enum_flag_t { None=0, Compress=1 };
-
-    public:
-        binary_writer(std::ostream &os, int flags=None);
+        binary_writer(std::ostream &os, int mode=binary_mode::Default);
         ~binary_writer();
         
         void write(const variant& value);
@@ -46,9 +43,9 @@ namespace protean {
         void write_value(const variant& value);
 
     private:
-        std::ostream&                        m_os;
-        boost::iostreams::filtering_ostream    m_filter;
-        int                                    m_flags;
+        std::ostream&                       m_os;
+        boost::iostreams::filtering_ostream m_filter;
+        int                                 m_mode;
 
         void setup();
         void close();

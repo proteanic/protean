@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(test_binary_primitives_zlib)
       .insert("None", variant(variant::None));
 
     std::ostringstream oss;
-    binary_writer writer(oss, binary_writer::Compress);
+    binary_writer writer(oss, binary_mode::Compress);
     writer << v1;
 
     variant v2;

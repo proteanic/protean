@@ -24,28 +24,40 @@ namespace protean {
 
     struct binary_compression_params : boost::iostreams::zlib_params
     {
-        binary_compression_params() :
+        binary_compression_params(bool zlib_no_header) :
             boost::iostreams::zlib_params(
                 boost::iostreams::zlib::default_compression,
                 boost::iostreams::zlib::deflated,
                 boost::iostreams::zlib::default_window_bits, 
                 boost::iostreams::zlib::default_mem_level, 
                 boost::iostreams::zlib::default_strategy,
-                true)
+                zlib_no_header)
         {}
     };
 
+    struct binary_mode
+    {
+        enum
+        {
+            None        = 0x00000000,
+            Compress    = 0x00000001,   // binary_writer: compress data
+            ZlibHeader  = 0x00000002,   // binary_writer: output zlib header
+            CreateProxy = 0x00000004,   // binary_reader: create proxy object if class has not been registered in factory
+            Default     = None
+        };
+    };
+
     typedef struct {
-        unsigned short    year;
-        unsigned char    month;
-        unsigned char    day;
+        unsigned short  year;
+        unsigned char   month;
+        unsigned char   day;
     } binary_date_t;
 
     typedef struct {
-        unsigned char    hour;
-        unsigned char    minute;
-        unsigned char    second;
-        unsigned char    _unused;
+        unsigned char   hour;
+        unsigned char   minute;
+        unsigned char   second;
+        unsigned char   _unused;
     } binary_time_t;
 
     static const boost::uint32_t binary_magic_number = 0x484913FF;

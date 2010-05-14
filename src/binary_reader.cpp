@@ -17,9 +17,9 @@
 
 namespace protean {
     
-    binary_reader::binary_reader(std::istream &is, int flags) :
+    binary_reader::binary_reader(std::istream &is, int mode) :
         m_is(is),
-        m_flags(flags),
+        m_mode(mode),
         m_factory(NULL)
     {
     }
@@ -168,7 +168,7 @@ namespace protean {
                     obj = m_factory->create_instance(class_name);
                     if (obj.null())
                     {
-                        if ((m_flags & CreateProxy)!=0)
+                        if ((m_mode & binary_mode::CreateProxy)!=0)
                         {
                             boost::throw_exception(variant_error("Unable to create object from factory"));
                         }
@@ -363,10 +363,13 @@ namespace protean {
             ).str()));
         }
 
+        int writer_mode = header[2];
+
         // create compression filter if necessary
-        if ((header[2] & 0x00000001)!=0)
+        if ((writer_mode & binary_mode::Compress)!=0)
         {
-            m_filter.push(boost::iostreams::zlib_decompressor(binary_compression_params()));
+            bool zlib_no_header = (writer_mode & binary_mode::ZlibHeader) == 0;
+            m_filter.push(boost::iostreams::zlib_decompressor(binary_compression_params(zlib_no_header)));
         }
         m_filter.push(m_is);
     }

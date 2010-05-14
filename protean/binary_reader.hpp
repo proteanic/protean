@@ -23,10 +23,7 @@ namespace protean {
     class PROTEAN_DECL binary_reader
     {
     public:
-        enum enum_flag_t { None=0, CreateProxy=1 };
-
-    public:
-        binary_reader(std::istream &is, int flags=None);
+        binary_reader(std::istream &is, int mode=binary_mode::Default);
         ~binary_reader();
 
         void read(variant& value);
@@ -52,7 +49,7 @@ namespace protean {
     private:
         std::istream&                           m_is;
         boost::iostreams::filtering_istream     m_filter;
-        int                                     m_flags;
+        int                                     m_mode;
         object_factory*                         m_factory;
         boost::uint16_t                         m_major_version;
         boost::uint16_t                         m_minor_version;
