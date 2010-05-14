@@ -11,10 +11,6 @@ namespace protean {
 
     public class BinaryReader
     {
-        private const UInt32 MagicNumber = 0x484913FF;
-        private const UInt32 MajorVersion = 1;
-        private const UInt32 MinorVersion = 0;
-
         public BinaryReader(System.IO.Stream stream)
         {
 		    Stream = stream;
@@ -28,15 +24,34 @@ namespace protean {
 
         void ReadHeader()
         {
-            UInt32 magicNumber = ReadUInt32();
-            if (magicNumber != MagicNumber)
+            byte[] bytes = new byte[4];
+            Stream.Read(bytes, 0, 4);
+
+            UInt32 magicNumber = System.BitConverter.ToUInt32(bytes, 0);
+            if (magicNumber != BinaryConstants.PROTEAN_MAGIC)
             {
                 throw new VariantException("Invalid magic number");
             }
 
-            // TODO
-            ReadUInt32();
-            ReadUInt32();
+            // ignore version info for now
+            Stream.Read(bytes, 0, 4);
+    
+            Stream.Read(bytes, 0, 4);
+            BinaryMode writeMode = (BinaryMode)System.BitConverter.ToUInt32(bytes, 0);
+
+            if ((writeMode & BinaryMode.Compress) != 0)
+            {
+                if ((writeMode & BinaryMode.ZlibHeader) != 0)
+                {
+                    throw new VariantException("Binary data appears to contain ZLIB header which is currently not supported in the protean.NET BinaryReader");
+                }
+
+                Filter = new System.IO.Compression.DeflateStream(Stream, System.IO.Compression.CompressionMode.Decompress, true);
+            }
+            else
+            {
+                Filter = Stream;
+            }
         }
 
         Variant ReadVariant()
@@ -62,6 +77,7 @@ namespace protean {
 		        }
 	            case Variant.EnumType.List:
 		        {
+                    
 		            Variant result = new Variant(Variant.EnumType.List);
 
 		            UInt32 length = ReadUInt32();
@@ -78,9 +94,11 @@ namespace protean {
 		            Variant result = new Variant(type);
 
 		            UInt32 length = ReadUInt32();
+
 		            for (UInt32 i=0; i<length; ++i)
 		            {
 			            String key = ReadString();
+
 			            Variant value = ReadVariant();
 			            result.Add(key, value);
 		            }
@@ -95,13 +113,13 @@ namespace protean {
         byte[] ReadBytes(int length)
         {
 	        byte[] bytes = new byte[length];
-	        Stream.Read(bytes, 0, length);
+            Filter.Read(bytes, 0, length);
 
             // Add padding
 	        int residual = (4 - (length % 4)) % 4;
 	        for(int i=0; i<residual; ++i)
 	        {
-		        Stream.ReadByte();
+                Filter.ReadByte();
 	        }
 
             return bytes;
@@ -117,23 +135,27 @@ namespace protean {
 
         double ReadDouble()
         {
-	        byte[] bytes = ReadBytes(sizeof(Double));
+            byte[] bytes = new byte[sizeof(Double)];
+            Filter.Read(bytes, 0, sizeof(Double));
 	        return System.BitConverter.ToDouble(bytes, 0);
         }
         Int32 ReadInt32()
         {
-	        byte[] bytes = ReadBytes(sizeof(Int32));
-	        return System.BitConverter.ToInt32(bytes, 0);
+            byte[] bytes = new byte[sizeof(Int32)];
+            Filter.Read(bytes, 0, sizeof(Int32));
+            return System.BitConverter.ToInt32(bytes, 0);
         }
         UInt32 ReadUInt32()
         {
-	        byte[] bytes = ReadBytes(sizeof(UInt32));
+            byte[] bytes = new byte[sizeof(UInt32)];
+            Filter.Read(bytes, 0, sizeof(UInt32));
 	        return System.BitConverter.ToUInt32(bytes, 0);
         }
         Int64 ReadInt64()
         {
-	        byte[] bytes = ReadBytes(sizeof(Int64));
-	        return System.BitConverter.ToInt64(bytes, 0);
+            byte[] bytes = new byte[sizeof(Int64)];
+            Filter.Read(bytes, 0, sizeof(Int64));
+            return System.BitConverter.ToInt64(bytes, 0);
         }
         DateTime ReadDateTime(bool ignoreTime)
         {
@@ -141,6 +163,7 @@ namespace protean {
         }
 
         private System.IO.Stream Stream;
+        private System.IO.Stream Filter;
     }
 
 } // protean

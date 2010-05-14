@@ -11,34 +11,44 @@ namespace protean {
 
     public class BinaryWriter
     {
-        public enum EnumFlag { None = 0, Compress = 1 }
-
-        private const UInt32 MagicNumber = 0x484913FF;
-        private const UInt32 MajorVersion = 1;
-        private const UInt32 MinorVersion = 0;
-
-        public BinaryWriter(System.IO.Stream stream)
+        public BinaryWriter(System.IO.Stream stream, BinaryMode mode)
         {
+            Mode = mode;
+
             Stream = stream;
+            if ((Mode & BinaryMode.Compress) != 0)
+            {
+                Filter = new System.IO.Compression.DeflateStream(stream, System.IO.Compression.CompressionMode.Compress, true);
+            }
+            else
+            {
+                Filter = stream;
+            }
         }
 
         public void Write(Variant v)
         {
-		    Write(v, EnumFlag.None);
+            WriteHeader();
+            WriteVariant(v);
+            Finish();
         }
 
-        void Write(Variant v, EnumFlag flags)
-        {
-		    WriteHeader(flags);
-		    WriteVariant(v);
-        }
-
-	    private void WriteHeader(EnumFlag flags)
+	    private void WriteHeader()
 	    {
-		    WriteUInt32((UInt32)MagicNumber);
-            WriteUInt32((UInt32)((MajorVersion << 16) | MinorVersion));
-            WriteUInt32((UInt32)0);
+            // Create and write the Protean header
+            Stream.Write(System.BitConverter.GetBytes(BinaryConstants.PROTEAN_MAGIC), 0, 4);
+            Stream.Write(System.BitConverter.GetBytes(BinaryConstants.VERSION_MAJOR << 16 | BinaryConstants.VERSION_MINOR), 0, 4);
+            Stream.Write(System.BitConverter.GetBytes((uint)Mode), 0, 4);
 	    }
+
+        private void Finish()
+        {
+            if ((Mode & BinaryMode.Compress) != 0)
+            {
+                Filter.Close();
+            }
+            Filter = null;
+        }
 
 	    private void WriteString(String arg)
 	    {
@@ -47,50 +57,49 @@ namespace protean {
 		    WriteBytes(bytes);
 	    }
 
-        private void WriteDate(DateTime arg)
-	    {
-        }
-
         private void WriteTime(TimeSpan arg)
 	    {
+            // TODO
         }
 
         private void WriteDateTime(DateTime arg)
         {
+            // TODO
         }
 
 	    private void WriteInt32(Int32 arg)
 	    {
-		    WriteBytes(System.BitConverter.GetBytes(arg));
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(Int32));
 	    }
 
 	    private void WriteUInt32(UInt32 arg)
 	    {
-		    WriteBytes(System.BitConverter.GetBytes(arg));
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(UInt32));
 	    }
 
 	    private void WriteInt64(Int64 arg)
 	    {
-		    WriteBytes(System.BitConverter.GetBytes(arg));
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(Int64));
 	    }
 
 	    private void WriteUInt64(UInt64 arg)
 	    {
-		    WriteBytes(System.BitConverter.GetBytes(arg));
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(UInt64));
 	    }
 
 	    private void WriteDouble(double arg)
 	    {
-		    WriteBytes(System.BitConverter.GetBytes(arg));
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(Double));
 	    }
 
         private void WriteBytes(byte[] bytes)
         {
-		    Stream.Write(bytes, 0, bytes.Length);
+            Filter.Write(bytes, 0, bytes.Length);
+
 		    int residual = (4 - (bytes.Length % 4)) % 4;
 		    for(int i=0; i<residual; ++i)
 		    {
-			    Stream.WriteByte(0);
+                Filter.WriteByte(0);
 		    }
         }
 
@@ -138,7 +147,9 @@ namespace protean {
 			    throw new VariantException("Case exhaustion: " + v.Type.ToString());
 		    }
 	    }
+        private bool disposed;
 
-        private System.IO.Stream Stream;
+        private System.IO.Stream Stream, Filter;
+        private BinaryMode Mode;
     }
 } // protean
