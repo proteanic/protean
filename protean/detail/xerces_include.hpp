@@ -3,8 +3,8 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef PROTEAN_XML_DEFS_HPP
-#define PROTEAN_XML_DEFS_HPP
+#ifndef PROTEAN_DETAIL_XERCES_INCLUDE_HPP
+#define PROTEAN_DETAIL_XERCES_INCLUDE_HPP
 
 #include <protean/config.hpp>
 
@@ -22,4 +22,4 @@
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/Base64.hpp>
 
-#endif // PROTEAN_XML_DEFS_HPP
+#endif // PROTEAN_DETAIL_XERCES_INCLUDE_HPP

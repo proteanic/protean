@@ -4,7 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include <protean/xml_writer.hpp>
-#include <protean/xml_defs.hpp>
+#include <protean/detail/xerces_include.hpp>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>

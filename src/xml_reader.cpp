@@ -4,7 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include <protean/xml_reader.hpp>
-#include <protean/xml_parser.hpp>
+#include <protean/detail/xml_parser.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
 
 #if defined(_MSC_VER)
@@ -36,7 +36,7 @@ namespace protean {
     
     void xml_reader::read(variant& result)
     {
-        sax_content_handler handler(result, m_flags, m_factory);
+        detail::sax_content_handler handler(result, m_flags, m_factory);
         
         try
         {
@@ -70,7 +70,7 @@ namespace protean {
                 parser->setLexicalHandler(&handler);
             }
             
-            boost::scoped_ptr<stream_resolver> resolver(new stream_resolver(m_entity_path));
+            boost::scoped_ptr<detail::stream_resolver> resolver(new detail::stream_resolver(m_entity_path));
             BOOST_FOREACH(const entity_stream_map_t::value_type& e, m_entities)
             {
                 resolver->add_entity_stream(e.first, e.second);
@@ -84,16 +84,16 @@ namespace protean {
 
             if (!m_external_schema.empty())
             {
-                scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
+                detail::scoped_xmlch schema( xercesc::XMLString::transcode(m_external_schema.c_str()) );
                 parser->setProperty( xercesc::XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, schema.get() );
             }
 
-            stream_input_source source(m_is);
+            detail::stream_input_source source(m_is);
             parser->parse(source);
         }
         catch (const xercesc::XMLException& e)
         {
-            boost::throw_exception(variant_error(std::string("Xerces exception: ") + sax_content_handler::transcode(e.getMessage())));
+            boost::throw_exception(variant_error(std::string("Xerces exception: ") + detail::sax_content_handler::transcode(e.getMessage())));
         }
         catch (const std::exception& e)
         {

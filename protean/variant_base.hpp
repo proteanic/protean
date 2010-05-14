@@ -34,6 +34,14 @@
 namespace protean {
 
     class typed_array;
+    class xml_reader;
+    class xml_writer;
+    class binary_reader;
+    class binary_writer;
+
+    namespace detail {
+         class sax_content_handler;
+    }
 
     class PROTEAN_DECL variant_base
     {
@@ -124,7 +132,7 @@ namespace protean {
     private:
         friend class xml_reader;
         friend class xml_writer;
-        friend class sax_content_handler;
+        friend class detail::sax_content_handler;
         friend class binary_reader;
         friend class binary_writer;
     };

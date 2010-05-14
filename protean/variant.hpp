@@ -236,7 +236,7 @@ namespace protean {
     private:
         friend class xml_reader;
         friend class xml_writer;
-        friend class sax_content_handler;
+        friend class detail::sax_content_handler;
         friend class binary_reader;
         friend class binary_writer;
     };

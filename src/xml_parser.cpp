@@ -3,7 +3,7 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#include <protean/xml_parser.hpp>
+#include <protean/detail/xml_parser.hpp>
 #include <protean/object_proxy.hpp>
 #include <protean/object_factory.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
@@ -15,7 +15,7 @@
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
-namespace protean {
+namespace protean { namespace detail {
 
     stream_resolver::stream_resolver(const std::string& entity_path) :
         m_entity_path(boost::filesystem::system_complete(boost::filesystem::path(entity_path, boost::filesystem::native)))
@@ -41,7 +41,7 @@ namespace protean {
             boost::filesystem::path full_path = boost::filesystem::complete(boost::filesystem::path(name, boost::filesystem::native), m_entity_path);
             if (boost::filesystem::exists(full_path))
             {
-                scoped_xmlch full_path_str( xercesc::XMLString::transcode(full_path.native_directory_string().c_str()) );
+                detail::scoped_xmlch full_path_str( xercesc::XMLString::transcode(full_path.native_directory_string().c_str()) );
                 result = new xercesc::LocalFileInputSource(full_path_str.get());
             }
         }
@@ -732,4 +732,4 @@ namespace protean {
     }
 
 
-} // namespace protean
+}} // namespace protean::detail

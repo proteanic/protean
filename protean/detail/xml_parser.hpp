@@ -3,19 +3,23 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef PROTEAN_XML_PARSER_HPP
-#define PROTEAN_XML_PARSER_HPP
+#ifndef PROTEAN_DETAIL_XML_PARSER_HPP
+#define PROTEAN_DETAIL_XML_PARSER_HPP
 
 #include <protean/config.hpp>
 
 #include <protean/xml_reader.hpp>
 #include <protean/variant.hpp>
-#include <protean/xml_defs.hpp>
+#include <protean/detail/xerces_include.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
 
 namespace protean {
+
+    class object_factory;
+    
+    namespace detail {
 
     class stream_input_source : public xercesc::InputSource
     {
@@ -85,8 +89,6 @@ namespace protean {
 
         boost::filesystem::path m_entity_path;
     };
-
-    class object_factory;
 
     class sax_content_handler :
         public xercesc::DefaultHandler,
@@ -187,6 +189,6 @@ namespace protean {
         object_factory*             m_factory;
     };
 
-} // namespace protean
+}} // namespace protean::detail
 
-#endif // PROTEAN_XML_PARSER_HPP
+#endif // PROTEAN_DETAIL_XML_PARSER_HPP
