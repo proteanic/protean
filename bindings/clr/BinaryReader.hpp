@@ -6,6 +6,7 @@
 #ifndef PROTEAN_CLR_BINARY_READER_HPP
 #define PROTEAN_CLR_BINARY_READER_HPP
 
+#include "BinaryMode.hpp"
 #include "BinaryStream.hpp"
 #include "Variant.hpp"
 

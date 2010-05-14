@@ -4,7 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #if defined(_MSC_VER)
-#    pragma warning(disable:4996)
+#    pragma warning(disable:4503 4996)
 #endif
 
 #include "BinaryWriter.hpp"
@@ -14,6 +14,13 @@
 namespace protean { namespace clr {
 
     BinaryWriter::BinaryWriter(System::IO::Stream^ stream) :
+        m_mode(BinaryMode::Default),
+        m_stream(new boost::iostreams::stream<stream_type>(stream))
+    {
+    }
+
+    BinaryWriter::BinaryWriter(System::IO::Stream^ stream, BinaryMode mode) :
+        m_mode(mode),
         m_stream(new boost::iostreams::stream<stream_type>(stream))
     {
     }
@@ -30,17 +37,12 @@ namespace protean { namespace clr {
 
     void BinaryWriter::Write(Variant^ v)
     {
-        Write(v, EnumFlag::None);
-    }
-
-    void BinaryWriter::Write(Variant^ v, EnumFlag flags)
-    {
         BEGIN_TRANSLATE_ERROR();
 
         STRONG_REFERENCE(this);
         STRONG_REFERENCE(v);
 
-        protean::binary_writer writer(*m_stream, static_cast<protean::binary_writer::enum_flag_t>(flags));
+        protean::binary_writer writer(*m_stream, (int)m_mode);
         writer << v->get_internals();
         m_stream->flush();
 
@@ -49,17 +51,17 @@ namespace protean { namespace clr {
 
     array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v)
     {
-        return BinaryWriter::ToBytes(v, EnumFlag::None);
+        return ToBytes(v, BinaryMode::Default);
     }
 
-    array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v, EnumFlag flags)
+    array<System::Byte>^ BinaryWriter::ToBytes(Variant^ v, BinaryMode mode)
     {
         BEGIN_TRANSLATE_ERROR();
 
         STRONG_REFERENCE(v);
 
         std::ostringstream oss;
-        protean::binary_writer writer(oss, static_cast<protean::binary_writer::enum_flag_t>(flags));
+        protean::binary_writer writer(oss, (int)mode);
         writer << v->get_internals();
 
         array<System::Byte>^ result = gcnew array<System::Byte>(static_cast<int>(oss.str().size()));

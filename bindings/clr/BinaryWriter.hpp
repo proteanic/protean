@@ -6,6 +6,7 @@
 #ifndef PROTEAN_CLR_BINARY_WRITER_HPP
 #define PROTEAN_CLR_BINARY_WRITER_HPP
 
+#include "BinaryMode.hpp"
 #include "BinaryStream.hpp"
 #include "Variant.hpp"
 
@@ -26,26 +27,19 @@ namespace protean { namespace clr {
         typedef BinaryStream<boost::iostreams::sink_tag> stream_type;
     public:
 
-        enum class EnumFlag
-        {
-            None        = protean::binary_writer::None,
-            Compress    = protean::binary_writer::Compress
-        };
-
         BinaryWriter(System::IO::Stream^ stream);
+        BinaryWriter(System::IO::Stream^ stream, BinaryMode mode);
 
         ~BinaryWriter();
         !BinaryWriter();
 
         void Write(Variant^ v);
-        void Write(Variant^ v, EnumFlag flags);
-
-        static array<System::Byte>^ ToBytes(Variant^ v, EnumFlag flags);
         static array<System::Byte>^ ToBytes(Variant^ v);
+        static array<System::Byte>^ ToBytes(Variant^ v, BinaryMode mode);
 
     private:
-        std::ostream* m_stream;
-        EnumFlag m_flags;
+        std::ostream*   m_stream;
+        BinaryMode      m_mode;
     };
 
 }} // protean::clr
