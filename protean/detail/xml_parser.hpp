@@ -184,7 +184,7 @@ namespace protean {
         variant                     m_instructions; // processing instructions
         std::stack<boost::shared_ptr<element_info> > m_stack;
 
-        int                         m_flags;
+        int                         m_mode;
 
         object_factory*             m_factory;
     };

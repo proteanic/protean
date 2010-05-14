@@ -22,9 +22,9 @@
 
 namespace protean {
 
-    xml_reader::xml_reader(std::istream &is, int flags) :
+    xml_reader::xml_reader(std::istream &is, int mode) :
         m_is(is),
-        m_flags(flags),
+        m_mode(mode),
         m_entity_path("./"),
         m_factory(NULL)
     {
@@ -36,7 +36,7 @@ namespace protean {
     
     void xml_reader::read(variant& result)
     {
-        detail::sax_content_handler handler(result, m_flags, m_factory);
+        detail::sax_content_handler handler(result, m_mode, m_factory);
         
         try
         {
@@ -65,7 +65,7 @@ namespace protean {
             parser->setContentHandler( &handler );
             parser->setErrorHandler( &handler);
             parser->setPSVIHandler( &handler );
-            if((m_flags & Preserve)!=0)
+            if((m_mode & xml_mode::Preserve)!=0)
             {
                 parser->setLexicalHandler(&handler);
             }

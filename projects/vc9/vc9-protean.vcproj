@@ -712,6 +712,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\protean\xml_defs.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\protean\xml_reader.hpp"
 				>
 			</File>

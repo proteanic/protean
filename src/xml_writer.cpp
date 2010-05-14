@@ -12,10 +12,10 @@
 
 namespace protean {
 
-    xml_writer::xml_writer(std::ostream &os, int flags) :
+    xml_writer::xml_writer(std::ostream &os, int mode) :
         m_indentation(0),
         m_os(os),
-        m_flags(flags)
+        m_mode(mode)
     {
         if(!os.good())
         {
@@ -27,13 +27,13 @@ namespace protean {
     {
         try
         {
-            if ((m_flags & NoHeader)==0)
+            if ((m_mode & xml_mode::NoHeader)==0)
             {
                 // output the XML header
                 write_header();
             }
 
-            if ((m_flags & Preserve)!=0)
+            if ((m_mode & xml_mode::Preserve)!=0)
             {
                 if ( document.is<variant::Dictionary>() )
                 {
@@ -147,7 +147,7 @@ namespace protean {
                 variant::const_iterator it, end = node.end();
                 for ( it=node.begin(); it!=end; ++it )
                 {
-                    if ((m_flags & Preserve)!=0 && it.key()=="__attrs__" )
+                    if ((m_mode & xml_mode::Preserve)!=0 && it.key()=="__attrs__" )
                     {
                         continue;
                     }
@@ -331,7 +331,7 @@ namespace protean {
 
             if(context.m_name=="__comment__")
             {
-                if((m_flags & Preserve)!=0)
+                if((m_mode & xml_mode::Preserve)!=0)
                 {
                     if( type==variant::String )
                     {
@@ -348,7 +348,7 @@ namespace protean {
                     return;
             }
 
-            if ((m_flags & Preserve)!=0)
+            if ((m_mode & xml_mode::Preserve)!=0)
             {
                 if ((type & variant::Mapping)!=0)
                 {

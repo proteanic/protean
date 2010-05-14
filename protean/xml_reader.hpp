@@ -7,6 +7,7 @@
 #define PROTEAN_XML_READER_HPP
 
 #include <protean/config.hpp>
+#include <protean/xml_defs.hpp>
 
 #include <map>
 #include <string>
@@ -14,12 +15,6 @@
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable:4512 4251)
-#endif
-
-#if defined(_MSC_VER)
-#if defined(PROTEAN_SOURCE) || (!defined(PROTEAN_DYN_LINK) && !defined(PROTEAN_NO_AUTOLINK))
-#    pragma comment(lib, XERCES_BINARY ".lib")
-#endif
 #endif
 
 namespace protean {
@@ -30,12 +25,10 @@ namespace protean {
     class PROTEAN_DECL xml_reader
     {
     public:
-        enum enum_flag_t { None=0, Preserve=1, CreateProxy=2 };
-
         typedef std::map<std::string, std::istream*> entity_stream_map_t;
 
     public:
-        xml_reader(std::istream& is, int flags=None);
+        xml_reader(std::istream& is, int mode=xml_mode::None);
         void read(variant& result);
         void set_entity_path(const std::string& entity_path);
         void set_external_schema(const std::string& externalSchema);
@@ -44,7 +37,7 @@ namespace protean {
 
     private:
         std::istream&       m_is;
-        int                 m_flags;
+        int                 m_mode;
         std::string         m_entity_path;
         std::string         m_external_schema;
         object_factory*     m_factory;

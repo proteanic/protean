@@ -7,6 +7,7 @@
 #define PROTEAN_XML_WRITER_HPP
 
 #include <protean/config.hpp>
+#include <protean/xml_defs.hpp>
 #include <protean/variant.hpp>
 
 #include <stack>
@@ -18,15 +19,12 @@
 
 namespace protean {
 
-    static const std::string xml_default_element = "Variant";
+    
 
     class PROTEAN_DECL xml_writer
     {
     public:
-        enum enum_flag_t { None=0, Preserve=1, NoHeader=2 };
-
-    public:
-        xml_writer(std::ostream &os, int flags=None);
+        xml_writer(std::ostream &os, int mode=xml_mode::None);
         void write_document(const variant& document);
         void write_header();
         void write_instructions(const variant& instructions);
@@ -47,8 +45,8 @@ namespace protean {
         static void check_invalid_chars(const std::string& arg);
 
     private:
-        size_t            m_indentation;
-        std::ostream&    m_os;
+        size_t          m_indentation;
+        std::ostream&   m_os;
 
         struct element_info
         {
@@ -61,7 +59,7 @@ namespace protean {
             variant     m_attributes;
         };
         std::stack<element_info> m_stack;
-        int m_flags;
+        int m_mode;
 
         friend PROTEAN_DECL xml_writer& operator<<(xml_writer& writer, const variant& variant);
     };

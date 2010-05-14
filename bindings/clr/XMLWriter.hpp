@@ -6,6 +6,7 @@
 #ifndef PROTEAN_CLR_XML_WRITER_HPP
 #define PROTEAN_CLR_XML_WRITER_HPP
 
+#include "XMLMode.hpp"
 #include "TextWriter.hpp"
 #include "Variant.hpp"
 
@@ -16,23 +17,17 @@ namespace protean { namespace clr {
     public ref class XMLWriter
     {
     public:
-        enum class EnumFlag
-        {
-            None        = protean::xml_writer::None,
-            Preserve    = protean::xml_writer::Preserve,
-            NoHeader    = protean::xml_writer::NoHeader
-        };
-
         XMLWriter(System::IO::TextWriter^ writer);
+        XMLWriter(System::IO::TextWriter^ writer, XMLMode mode);
 
         ~XMLWriter();
         !XMLWriter();
 
         void Write(Variant^ v);
-        void Write(Variant^ v, EnumFlag flags);
 
     private:
-        boost::iostreams::stream<TextWriter>* m_writer;
+        boost::iostreams::stream<TextWriter>*   m_writer;
+        XMLMode                                 m_mode;
     };
 
 }} // protean::clr

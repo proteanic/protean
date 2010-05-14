@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(test_xml_untyped)
     BOOST_CHECK_EQUAL(v1["DateTime"].as<variant::date_time_t>(), date_time);
 
     std::stringstream oss;
-    xml_writer writer(oss, xml_writer::Preserve);
+    xml_writer writer(oss, xml_mode::Preserve);
     writer << variant(variant::Dictionary).insert("Variant", v1);
 
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
@@ -483,11 +483,11 @@ BOOST_AUTO_TEST_CASE(test_xml_preserve)
     iss << xml;
 
     variant v1;
-    xml_reader reader2(iss, xml_reader::Preserve);
+    xml_reader reader2(iss, xml_mode::Preserve);
     reader2 >> v1;
 
     std::ostringstream oss;
-    xml_writer writer(oss, xml_writer::Preserve);
+    xml_writer writer(oss, xml_mode::Preserve);
     writer << v1;
 
     BOOST_CHECK_EQUAL(iss.str(), oss.str());

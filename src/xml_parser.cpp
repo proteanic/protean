@@ -58,11 +58,11 @@ namespace protean { namespace detail {
         m_entities.insert(make_pair(name, is));
     }
 
-    sax_content_handler::sax_content_handler(variant& result, int flags, object_factory* factory) :
+    sax_content_handler::sax_content_handler(variant& result, int mode, object_factory* factory) :
          m_locator(NULL),
          m_result(result),
          m_instructions(variant::Bag),
-         m_flags(flags),
+         m_mode(mode),
          m_factory(factory)
     {
     }
@@ -89,7 +89,7 @@ namespace protean { namespace detail {
             boost::shared_ptr<element_info> parent_context;
             if (m_stack.empty())
             {
-                if ((m_flags & xml_reader::Preserve)!=0)
+                if ((m_mode & xml_mode::Preserve)!=0)
                 {
                     // create document node
                     m_result = variant(variant::Dictionary);
@@ -306,7 +306,7 @@ namespace protean { namespace detail {
             {
                 if (context->element().is<variant::Mapping>())
                 {
-                    if ((m_flags & xml_reader::Preserve)!=0)
+                    if ((m_mode & xml_mode::Preserve)!=0)
                     {
                         context->element().insert("__attrs__", context->attributes());
                     }
@@ -360,7 +360,7 @@ namespace protean { namespace detail {
                     obj = m_factory->create_instance(class_name);
                     if (obj.null())
                     {
-                        if ((m_flags & xml_reader::CreateProxy)!=0)
+                        if ((m_mode & xml_mode::CreateProxy)!=0)
                         {
                             boost::throw_exception(variant_error("Unable to create object from factory"));
                         }
