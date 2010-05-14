@@ -267,10 +267,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\protean\array_iterator.hpp" />
-    <ClInclude Include="..\..\protean\binary_defs.hpp" />
+    <ClInclude Include="..\..\protean\binary_common.hpp" />
     <ClInclude Include="..\..\protean\binary_reader.hpp" />
     <ClInclude Include="..\..\protean\binary_writer.hpp" />
     <ClInclude Include="..\..\protean\config.hpp" />
+    <ClInclude Include="..\..\protean\detail\scoped_xmlch.hpp" />
+    <ClInclude Include="..\..\protean\detail\xerces_include.hpp" />
+    <ClInclude Include="..\..\protean\detail\xml_parser.hpp" />
     <ClInclude Include="..\..\protean\exception_data.hpp" />
     <ClInclude Include="..\..\protean\handle.hpp" />
     <ClInclude Include="..\..\protean\object.hpp" />
@@ -283,8 +286,7 @@
     <ClInclude Include="..\..\protean\variant_iterator.hpp" />
     <ClInclude Include="..\..\protean\variant_ref.hpp" />
     <ClInclude Include="..\..\protean\version.hpp" />
-    <ClInclude Include="..\..\protean\xml_defs.hpp" />
-    <ClInclude Include="..\..\protean\xml_parser.hpp" />
+    <ClInclude Include="..\..\protean\xml_common.hpp" />
     <ClInclude Include="..\..\protean\xml_reader.hpp" />
     <ClInclude Include="..\..\protean\xml_writer.hpp" />
     <ClInclude Include="..\..\protean\detail\bag.hpp" />

@@ -311,6 +311,7 @@
     <ClCompile Include="..\..\bindings\clr\XMLWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\bindings\clr\BinaryMode.hpp" />
     <ClInclude Include="..\..\bindings\clr\BinaryReader.hpp" />
     <ClInclude Include="..\..\bindings\clr\BinaryStream.hpp" />
     <ClInclude Include="..\..\bindings\clr\BinaryWriter.hpp" />
@@ -325,6 +326,7 @@
     <ClInclude Include="..\..\bindings\clr\VariantException.hpp" />
     <ClInclude Include="..\..\bindings\clr\VariantItem.hpp" />
     <ClInclude Include="..\..\bindings\clr\VariantObjectProxy.hpp" />
+    <ClInclude Include="..\..\bindings\clr\XMLMode.hpp" />
     <ClInclude Include="..\..\bindings\clr\XMLReader.hpp" />
     <ClInclude Include="..\..\bindings\clr\XMLWriter.hpp" />
   </ItemGroup>
