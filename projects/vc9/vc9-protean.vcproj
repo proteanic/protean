@@ -712,14 +712,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\protean\xml_defs.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\protean\xml_parser.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\protean\xml_reader.hpp"
 				>
 			</File>
@@ -779,6 +771,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\protean\detail\scoped_xmlch.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\protean\detail\sequence.hpp"
 					>
 				</File>
@@ -812,6 +808,14 @@
 				</File>
 				<File
 					RelativePath="..\..\protean\detail\variant_macros_undef.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\xerces_include.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\xml_parser.hpp"
 					>
 				</File>
 			</Filter>
