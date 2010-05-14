@@ -6,7 +6,7 @@
 #ifndef PROTEAN_CLR_XML_MODE_HPP
 #define PROTEAN_CLR_XML_MODE_HPP
 
-#include <protean/xml_defs.hpp>
+#include <protean/xml_common.hpp>
 
 namespace protean { namespace clr {
 

@@ -1007,6 +1007,8 @@ namespace protean {
     {
         return ( is<Object>() && m_value.get<Object>().is<object_proxy>() );
     }
+    template<> bool variant::is<exception_data>()           const { return m_type==Exception; }
+    template<> bool variant::is<typed_array>()              const { return m_type==Array; }
 
     /*
      * variant::as

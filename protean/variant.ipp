@@ -161,8 +161,10 @@ namespace protean {
         return false;
     }
 
-    template<> bool PROTEAN_DECL variant::is<object>() const;
-    template<> bool PROTEAN_DECL variant::is<object_proxy>() const;
+    template<> bool PROTEAN_DECL variant::is<object>()                          const;
+    template<> bool PROTEAN_DECL variant::is<object_proxy>()                    const;
+    template<> bool PROTEAN_DECL variant::is<exception_data>()                  const;
+    template<> bool PROTEAN_DECL variant::is<typed_array>()                     const;
 
     /*
      * variant::as()

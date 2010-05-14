@@ -3,8 +3,8 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef PROTEAN_BINARY_DEFS_HPP
-#define PROTEAN_BINARY_DEFS_HPP
+#ifndef PROTEAN_BINARY_COMMON_HPP
+#define PROTEAN_BINARY_COMMON_HPP
 
 #include <protean/config.hpp>
 
@@ -66,4 +66,4 @@ namespace protean {
 
 } // namespace protean
 
-#endif // PROTEAN_BINARY_DEFS_HPP
+#endif // PROTEAN_BINARY_COMMON_HPP

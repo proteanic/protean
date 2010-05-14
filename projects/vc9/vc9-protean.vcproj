@@ -640,7 +640,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\protean\binary_defs.hpp"
+				RelativePath="..\..\protean\binary_common.hpp"
 				>
 			</File>
 			<File
@@ -712,7 +712,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\protean\xml_defs.hpp"
+				RelativePath="..\..\protean\xml_common.hpp"
 				>
 			</File>
 			<File

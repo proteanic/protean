@@ -6,7 +6,7 @@
 #ifndef PROTEAN_CLR_BINARY_MODE_HPP
 #define PROTEAN_CLR_BINARY_MODE_HPP
 
-#include <protean/binary_defs.hpp>
+#include <protean/binary_common.hpp>
 
 namespace protean { namespace clr {
 

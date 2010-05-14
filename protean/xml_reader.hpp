@@ -7,7 +7,7 @@
 #define PROTEAN_XML_READER_HPP
 
 #include <protean/config.hpp>
-#include <protean/xml_defs.hpp>
+#include <protean/xml_common.hpp>
 
 #include <map>
 #include <string>

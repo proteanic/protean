@@ -8,7 +8,7 @@
 
 #include <protean/config.hpp>
 
-#include <protean/binary_defs.hpp>
+#include <protean/binary_common.hpp>
 #include <protean/variant.hpp>
 
 #if defined(_MSC_VER)

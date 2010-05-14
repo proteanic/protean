@@ -7,7 +7,7 @@
 #define PROTEAN_XML_WRITER_HPP
 
 #include <protean/config.hpp>
-#include <protean/xml_defs.hpp>
+#include <protean/xml_common.hpp>
 #include <protean/variant.hpp>
 
 #include <stack>

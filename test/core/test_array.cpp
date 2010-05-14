@@ -103,6 +103,8 @@ BOOST_AUTO_TEST_CASE(test_array_variant)
 
     BOOST_CHECK(v1.is<variant::Array>());
     BOOST_CHECK(v2.is<variant::Array>());
+    BOOST_CHECK(v1.is<typed_array>());
+    BOOST_CHECK(v2.is<typed_array>());
 
     const typed_array& a3(v1.as<typed_array>());
     BOOST_CHECK_EQUAL(a3[0].as<std::string>(), "s1");
