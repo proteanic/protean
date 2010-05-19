@@ -24,6 +24,8 @@ namespace protean {
             {
                 Filter = stream;
             }
+
+            Mode |= BinaryMode.DateTimeAsTicks;
         }
 
         public void Write(Variant v)
@@ -59,12 +61,17 @@ namespace protean {
 
         private void WriteTime(TimeSpan arg)
 	    {
-            // TODO
+            WriteInt64((Int64)arg.TotalMilliseconds);
+        }
+
+        private void WriteDate(DateTime arg)
+        {
+            WriteInt32((Int32)(arg - Variant.MinDateTime).TotalDays);
         }
 
         private void WriteDateTime(DateTime arg)
         {
-            // TODO
+            WriteInt64((Int64)(arg - Variant.MinDateTime).TotalMilliseconds);
         }
 
 	    private void WriteInt32(Int32 arg)
@@ -87,15 +94,21 @@ namespace protean {
             Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(UInt64));
 	    }
 
+        private void WriteFloat(float arg)
+        {
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(float));
+        }
+
 	    private void WriteDouble(double arg)
 	    {
-            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(Double));
+            Filter.Write(System.BitConverter.GetBytes(arg), 0, sizeof(double));
 	    }
 
         private void WriteBytes(byte[] bytes)
         {
             Filter.Write(bytes, 0, bytes.Length);
 
+            // add padding
 		    int residual = (4 - (bytes.Length % 4)) % 4;
 		    for(int i=0; i<residual; ++i)
 		    {
@@ -112,7 +125,10 @@ namespace protean {
 		    case Variant.EnumType.String:
 			    WriteString(v.As<String>());
 			    break;
-		    case Variant.EnumType.Double:
+            case Variant.EnumType.Float:
+                WriteDouble(v.As<float>());
+                break;
+            case Variant.EnumType.Double:
                 WriteDouble(v.As<double>());
 			    break;
             case Variant.EnumType.Int32:
@@ -142,7 +158,15 @@ namespace protean {
 				    WriteString(item.Key);
 				    WriteVariant(item.Value);
 			    }
-			    break;	
+			    break;
+            case Variant.EnumType.TimeSeries:
+                WriteUInt32((UInt32)v.Count);
+                foreach (VariantItem item in v)
+                {
+                    WriteDateTime(item.Time);
+                    WriteVariant(item.Value);
+                }
+                break;
 		    default:
 			    throw new VariantException("Case exhaustion: " + v.Type.ToString());
 		    }

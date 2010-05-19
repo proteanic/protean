@@ -50,6 +50,7 @@ namespace protean {
         std::istream&                           m_is;
         boost::iostreams::filtering_istream     m_filter;
         int                                     m_mode;
+        int                                     m_writer_mode;
         object_factory*                         m_factory;
         boost::uint16_t                         m_major_version;
         boost::uint16_t                         m_minor_version;

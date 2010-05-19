@@ -84,7 +84,10 @@ namespace protean {
             case variant::Date:
             {
                 variant::date_t v;
-                read( v ); value = v;
+                read( v );
+                
+                value = v;
+
                 break;
             }
             case variant::Time:
@@ -279,27 +282,67 @@ namespace protean {
     }
     void binary_reader::read(variant::date_t& value)
     {
-        binary_date_t date;
-        read_bytes(reinterpret_cast<char*>(&date), sizeof(binary_date_t));
+        if ((m_writer_mode & binary_mode::DateTimeAsTicks)!=0)
+        {
+            boost::uint32_t total_days;
+            read(total_days);
 
-        value = variant::date_t( date.year, date.month, date.day );
+            value = variant::min_date + boost::gregorian::date_duration(total_days);
+        }
+        else
+        {
+            binary_date_t date;
+            read_bytes(reinterpret_cast<char*>(&date), sizeof(binary_date_t));
+
+            value = variant::date_t( date.year, date.month, date.day );
+        }
     }
     void binary_reader::read(variant::time_t& value)
     {
-        binary_time_t time;
-        read_bytes(reinterpret_cast<char*>(&time), sizeof(binary_time_t));
+        if ((m_writer_mode & binary_mode::DateTimeAsTicks)!=0)
+        {
+            boost::int64_t total_millis;
+            read(total_millis);
 
-        value = variant::time_t(time.hour, time.minute, time.second);
+            // Bit nasty! Can't simply do "value = boost::posix_time::millisec(total_millis);" because of:
+            //  https://svn.boost.org/trac/boost/ticket/3471
+            // Hopefully this will be fixed for v1.44.
+            boost::uint32_t hours = total_millis / 3600000;
+            boost::uint32_t tmp = total_millis % 3600000;
+            boost::uint32_t mins = tmp / 60000;
+            tmp %= 60000;
+            boost::uint32_t secs = tmp / 1000;
+            boost::uint32_t millis = tmp % 1000;
+
+            value = boost::posix_time::time_duration(hours, mins, secs) + boost::posix_time::millisec(millis);
+        }
+        else
+        {
+            binary_time_t time;
+            read_bytes(reinterpret_cast<char*>(&time), sizeof(binary_time_t));
+
+            value = variant::time_t(time.hour, time.minute, time.second);
+        }
     }
     void binary_reader::read(variant::date_time_t& value)
     {
-        variant::date_t date;
-        variant::time_t time;
+        if ((m_writer_mode & binary_mode::DateTimeAsTicks)!=0)
+        {
+            variant::time_t duration;
+            read(duration);
 
-        read(date);
-        read(time);
+            value = variant::min_date_time + duration;
+        }
+        else
+        {
+            variant::date_t date;
+            variant::time_t time;
 
-        value = variant::date_time_t(date, time);    
+            read(date);
+            read(time);
+
+            value = variant::date_time_t(date, time);
+        }
     }
     void binary_reader::read(void*& data, size_t length)
     {
@@ -363,12 +406,12 @@ namespace protean {
             ).str()));
         }
 
-        int writer_mode = header[2];
+        m_writer_mode = header[2];
 
         // create compression filter if necessary
-        if ((writer_mode & binary_mode::Compress)!=0)
+        if ((m_writer_mode & binary_mode::Compress)!=0)
         {
-            bool zlib_no_header = (writer_mode & binary_mode::ZlibHeader) == 0;
+            bool zlib_no_header = (m_writer_mode & binary_mode::ZlibHeader) == 0;
             m_filter.push(boost::iostreams::zlib_decompressor(binary_compression_params(zlib_no_header)));
         }
         m_filter.push(m_is);

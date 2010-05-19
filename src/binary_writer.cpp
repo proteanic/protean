@@ -216,28 +216,49 @@ namespace protean {
     }
     void binary_writer::write(const variant::date_t& value)
     {
-        boost::gregorian::greg_year_month_day ymd = value.year_month_day();
+        if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
+        {
+            write((boost::uint32_t)(value - variant::min_date).days());
+        }
+        else
+        {
+            boost::gregorian::greg_year_month_day ymd = value.year_month_day();
 
-        binary_date_t date;
-        date.year    = static_cast<short>(ymd.year);
-        date.month    = static_cast<char>(ymd.month);
-        date.day    = static_cast<char>(ymd.day);
+            binary_date_t date;
+            date.year   = static_cast<short>(ymd.year);
+            date.month  = static_cast<char>(ymd.month);
+            date.day    = static_cast<char>(ymd.day);
 
-        write_bytes(reinterpret_cast<const char*>(&date), sizeof(binary_date_t));
+            write_bytes(reinterpret_cast<const char*>(&date), sizeof(binary_date_t));
+        }
     }
     void binary_writer::write(const variant::time_t& value)
     {
-        binary_time_t time;
-        time.hour    = static_cast<char>(value.hours());
-        time.minute    = static_cast<char>(value.minutes());
-        time.second    = static_cast<char>(value.seconds());
+        if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
+        {
+            write((boost::int64_t)value.total_milliseconds());
+        }
+        else
+        {
+            binary_time_t time;
+            time.hour   = static_cast<char>(value.hours());
+            time.minute = static_cast<char>(value.minutes());
+            time.second = static_cast<char>(value.seconds());
 
-        write_bytes(reinterpret_cast<const char*>(&time), sizeof(binary_time_t));
+            write_bytes(reinterpret_cast<const char*>(&time), sizeof(binary_time_t));
+        }
     }
     void binary_writer::write(const variant::date_time_t& value)
     {
-        write(value.date());
-        write(value.time_of_day());
+        if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
+        {
+            write(value - variant::min_date_time);
+        }
+        else
+        {
+            write(value.date());
+            write(value.time_of_day());
+        }
     }
 
     void binary_writer::write(const void* data, size_t length)

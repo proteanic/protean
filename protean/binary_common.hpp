@@ -15,6 +15,7 @@
 
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #if defined(_MSC_VER)
 #    pragma warning(pop)
@@ -39,11 +40,12 @@ namespace protean {
     {
         enum
         {
-            None        = 0x00000000,
-            Compress    = 0x00000001,   // binary_writer: compress data
-            ZlibHeader  = 0x00000002,   // binary_writer: output zlib header
-            CreateProxy = 0x00000004,   // binary_reader: create proxy object if class has not been registered in factory
-            Default     = None
+            None            = 0x00000000,
+            Compress        = 0x00000001,   // binary_writer: compress data
+            ZlibHeader      = 0x00000002,   // binary_writer: output zlib header
+            CreateProxy     = 0x00000004,   // binary_reader: create proxy object if class has not been registered in factory
+            DateTimeAsTicks = 0x00000008,   // binary_writer: serialise DateTime/Date/Time as milliseconds/days since 1/1/1400
+            Default         = None
         };
     };
 
@@ -62,7 +64,7 @@ namespace protean {
 
     static const boost::uint32_t binary_magic_number = 0x484913FF;
     static const boost::uint16_t binary_major_version = 1;
-    static const boost::uint16_t binary_minor_version = 0;
+    static const boost::uint16_t binary_minor_version = 1;
 
 } // namespace protean
 

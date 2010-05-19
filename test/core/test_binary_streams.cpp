@@ -386,4 +386,81 @@ BOOST_AUTO_TEST_CASE(test_binary_complex_array)
     BOOST_CHECK(v1.compare(v2)==0);
 }
 
+BOOST_AUTO_TEST_CASE(test_date_time_as_ticks)
+{
+    variant::date_t date(2010, 1, 1);
+    variant::time_t time(boost::posix_time::time_duration(10, 30, 20) + boost::posix_time::millisec(123));
+    variant::date_time_t date_time(date, time);
+
+    {
+        variant v1(date);
+
+        std::stringstream ss;
+        binary_writer writer(ss, binary_mode::DateTimeAsTicks);
+        writer << v1;
+
+        variant v2;
+        binary_reader reader(ss, binary_mode::DateTimeAsTicks);
+        reader >> v2;
+
+        BOOST_CHECK_EQUAL(v1.as<variant::date_t>(), v2.as<variant::date_t>());
+    }
+
+    {
+        variant v1(time);
+
+        std::stringstream ss;
+        binary_writer writer(ss, binary_mode::DateTimeAsTicks);
+        writer << v1;
+
+        variant v2;
+        binary_reader reader(ss, binary_mode::DateTimeAsTicks);
+        reader >> v2;
+
+        BOOST_CHECK_EQUAL(v1.as<variant::time_t>(), v2.as<variant::time_t>());
+    }
+
+    {
+        variant v1(date_time);
+
+        std::stringstream ss;
+        binary_writer writer(ss, binary_mode::DateTimeAsTicks);
+        writer << v1;
+
+        variant v2;
+        binary_reader reader(ss, binary_mode::DateTimeAsTicks);
+        reader >> v2;
+
+        BOOST_CHECK_EQUAL(v1.as<variant::date_time_t>(), v2.as<variant::date_time_t>());
+    }
+
+    {
+        variant v1(variant::min_date_time);
+
+        std::stringstream ss;
+        binary_writer writer(ss, binary_mode::DateTimeAsTicks);
+        writer << v1;
+
+        variant v2;
+        binary_reader reader(ss, binary_mode::DateTimeAsTicks);
+        reader >> v2;
+
+        BOOST_CHECK_EQUAL(v1.as<variant::date_time_t>(), v2.as<variant::date_time_t>());
+    }
+
+    {
+        variant v1(variant::max_date_time);
+
+        std::stringstream ss;
+        binary_writer writer(ss, binary_mode::DateTimeAsTicks);
+        writer << v1;
+
+        variant v2;
+        binary_reader reader(ss, binary_mode::DateTimeAsTicks);
+        reader >> v2;
+
+        BOOST_CHECK_EQUAL(v1.as<variant::date_time_t>(), v2.as<variant::date_time_t>());
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()

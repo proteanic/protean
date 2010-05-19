@@ -12,11 +12,12 @@ namespace protean { namespace clr {
 
     public enum class BinaryMode
     {
-        None        = protean::binary_mode::None,
-        Compress    = protean::binary_mode::Compress,
-        ZlibHeader  = protean::binary_mode::ZlibHeader,
-        //CreateProxy = protean::binary_mode::CreateProxy, // not supported in CLR yet
-        Default     = protean::binary_mode::None,
+        None            = protean::binary_mode::None,
+        Compress        = protean::binary_mode::Compress,
+        ZlibHeader      = protean::binary_mode::ZlibHeader,
+        //CreateProxy     = protean::binary_mode::CreateProxy, // not supported in CLR yet
+        DateTimeAsTicks = protean::binary_mode::DateTimeAsTicks,
+        Default         = protean::binary_mode::None,
     };
 
 }}

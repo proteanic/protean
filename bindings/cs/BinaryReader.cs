@@ -65,17 +65,37 @@ namespace protean {
 		            String value = ReadString();
 		            return new Variant(value);
 		        }
+                case Variant.EnumType.Float:
+                {
+                    float value = ReadFloat();
+                    return new Variant(value);
+                }
 	            case Variant.EnumType.Double:
 		        {
 		            double value = ReadDouble();
 		            return new Variant(value);
 		        }
-	            case Variant.EnumType.Int64:
+	            case Variant.EnumType.Int32:
 		        {
-		            Int64 value = ReadInt64();
+		            Int32 value = ReadInt32();
 		            return new Variant(value);
 		        }
-	            case Variant.EnumType.List:
+                case Variant.EnumType.UInt32:
+                {
+                    UInt32 value = ReadUInt32();
+                    return new Variant(value);
+                }
+                case Variant.EnumType.Int64:
+                {
+                    Int64 value = ReadInt64();
+                    return new Variant(value);
+                }
+                case Variant.EnumType.UInt64:
+                {
+                    UInt64 value = ReadUInt64();
+                    return new Variant(value);
+                }
+                case Variant.EnumType.List:
 		        {
                     
 		            Variant result = new Variant(Variant.EnumType.List);
@@ -98,14 +118,30 @@ namespace protean {
 		            for (UInt32 i=0; i<length; ++i)
 		            {
 			            String key = ReadString();
-
 			            Variant value = ReadVariant();
+
 			            result.Add(key, value);
 		            }
 
 		            return result;
 		        }
-	            default:
+                case Variant.EnumType.TimeSeries:
+                {
+                    Variant result = new Variant(type);
+
+                    UInt32 length = ReadUInt32();
+
+                    for (UInt32 i = 0; i < length; ++i)
+                    {
+                        DateTime time = ReadDateTime();
+                        Variant value = ReadVariant();
+
+                        result.Add(time, value);
+                    }
+
+                    return result;
+                }
+                default:
 		            throw new VariantException("Case exhaustion: " + type.ToString());
 	        }
         }
@@ -132,11 +168,16 @@ namespace protean {
 
 	        return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
         }
-
+        float ReadFloat()
+        {
+            byte[] bytes = new byte[sizeof(float)];
+            Filter.Read(bytes, 0, sizeof(float));
+            return System.BitConverter.ToSingle(bytes, 0);
+        }
         double ReadDouble()
         {
-            byte[] bytes = new byte[sizeof(Double)];
-            Filter.Read(bytes, 0, sizeof(Double));
+            byte[] bytes = new byte[sizeof(double)];
+            Filter.Read(bytes, 0, sizeof(double));
 	        return System.BitConverter.ToDouble(bytes, 0);
         }
         Int32 ReadInt32()
@@ -157,9 +198,29 @@ namespace protean {
             Filter.Read(bytes, 0, sizeof(Int64));
             return System.BitConverter.ToInt64(bytes, 0);
         }
-        DateTime ReadDateTime(bool ignoreTime)
+        UInt64 ReadUInt64()
         {
-	        return new DateTime(1400, 1, 1);
+            byte[] bytes = new byte[sizeof(UInt64)];
+            Filter.Read(bytes, 0, sizeof(UInt64));
+            return System.BitConverter.ToUInt64(bytes, 0);
+        }
+        DateTime ReadDate()
+        {
+            Int32 total_days = ReadInt32();
+
+            return Variant.MinDateTime + new TimeSpan(total_days, 0, 0, 0);
+        }
+        TimeSpan ReadTime()
+        {
+            Int64 total_millis = ReadInt64();
+
+            return new TimeSpan(total_millis * 10000);
+        }
+        DateTime ReadDateTime()
+        {
+            Int64 total_millis = ReadInt64();
+
+            return Variant.MinDateTime + new TimeSpan(total_millis * 10000);
         }
 
         private System.IO.Stream Stream;
