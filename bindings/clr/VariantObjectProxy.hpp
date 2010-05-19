@@ -23,12 +23,12 @@ namespace protean { namespace clr {
         {
             virtual System::String^ get();
         }
-        property System::UInt32 Version
+        property System::Int32 Version
         {
-            virtual System::UInt32 get();
+            virtual System::Int32 get();
         }
         
-        virtual void Inflate(Variant^ params, System::UInt32 version);
+        virtual void Inflate(Variant^ params, System::Int32 version);
         
         virtual Variant^ Deflate();
 

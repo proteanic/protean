@@ -87,14 +87,14 @@ namespace protean { namespace clr {
         /**
          * Type query methods
          */
-        System::String^            AsString();
+        System::String^         AsString();
         bool                    AsBoolean();
-        System::Int32            AsInt32();
-        System::UInt32            AsUInt32();
-        System::Int64            AsInt64();
-        System::UInt64            AsUInt64();
-        float                    AsFloat();
-        double                    AsDouble();
+        System::Int32           AsInt32();
+        System::UInt32          AsUInt32();
+        System::Int64           AsInt64();
+        System::UInt64          AsUInt64();
+        float                   AsFloat();
+        double                  AsDouble();
         System::DateTime        AsDate();
         System::TimeSpan        AsTime();
         System::DateTime        AsDateTime();
@@ -104,9 +104,9 @@ namespace protean { namespace clr {
         where T : IVariantObject, gcnew()
         T AsObject();
 
-        VariantObjectProxy^        AsObject();
+        VariantObjectProxy^     AsObject();
 
-        ExceptionInfo^            AsException();
+        ExceptionInfo^          AsException();
 
         // Lists
         void Add(Variant^ value);
@@ -121,19 +121,19 @@ namespace protean { namespace clr {
         // TimeSeries
         void Add(System::DateTime time, Variant^ value);
 
-        property int Count    { int get(); }
-        property bool Empty    { bool get(); }
+        property int Count  { int get(); }
+        property bool Empty { bool get(); }
 
-        property Variant^ Item [System::String^] 
+        property Variant^ Item [System::String^]
         { 
             Variant^ get(System::String^ key); 
             void set(System::String^ key, Variant^ value); 
         }
 
-        property Variant^ Item [System::UInt32] 
+        property Variant^ Item [System::Int32]
         { 
-            Variant^ get(System::UInt32 index); 
-            void set(System::UInt32 index, Variant^ value); 
+            Variant^ get(System::Int32 index); 
+            void set(System::Int32 index, Variant^ value); 
         }
 
         virtual System::String^ ToString() override;

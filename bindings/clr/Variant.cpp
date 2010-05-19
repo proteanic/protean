@@ -543,7 +543,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    Variant^ Variant::Item::get(System::UInt32 index)
+    Variant^ Variant::Item::get(System::Int32 index)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -554,7 +554,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-    void Variant::Item::set(System::UInt32 index, Variant^ value)
+    void Variant::Item::set(System::Int32 index, Variant^ value)
     {
         BEGIN_TRANSLATE_ERROR();
 

@@ -44,10 +44,10 @@ namespace protean { namespace clr {
 
         return gcnew System::String(m_proxy->name().c_str());
 
-        END_TRANSLATE_ERROR();    
+        END_TRANSLATE_ERROR();
     }
 
-    System::UInt32 VariantObjectProxy::Version::get()
+    System::Int32 VariantObjectProxy::Version::get()
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -55,7 +55,7 @@ namespace protean { namespace clr {
 
 		return m_proxy->version();
 
-        END_TRANSLATE_ERROR();    
+        END_TRANSLATE_ERROR();
     }
 
     Variant^ VariantObjectProxy::Deflate()
@@ -69,10 +69,10 @@ namespace protean { namespace clr {
 
         return gcnew Variant(params);
 
-        END_TRANSLATE_ERROR();    
+        END_TRANSLATE_ERROR();
     }
 
-    void VariantObjectProxy::Inflate(Variant^ params, System::UInt32 version)
+    void VariantObjectProxy::Inflate(Variant^ params, System::Int32 version)
     {    
         BEGIN_TRANSLATE_ERROR();
 
@@ -80,7 +80,7 @@ namespace protean { namespace clr {
 
 		m_proxy->inflate(params->get_internals(), version);
 
-        END_TRANSLATE_ERROR();    
+        END_TRANSLATE_ERROR();
     }
 
     protean::object_proxy& VariantObjectProxy::get_internals()
@@ -89,7 +89,7 @@ namespace protean { namespace clr {
 
         return *m_proxy;
 
-        END_TRANSLATE_ERROR();    
+        END_TRANSLATE_ERROR();
     }
 
     System::String^ VariantObjectProxy::ToString()
@@ -100,7 +100,7 @@ namespace protean { namespace clr {
 
 		return gcnew System::String(m_proxy->name().c_str());
 
-        END_TRANSLATE_ERROR();    
+        END_TRANSLATE_ERROR();
     }
 
 }} // protean::clr
