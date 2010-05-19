@@ -599,6 +599,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\test\core\test_timeseries.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\test\core\test_types.cpp"
 					>
 				</File>
