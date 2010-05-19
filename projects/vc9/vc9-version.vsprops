@@ -6,6 +6,6 @@
 	>
 	<UserMacro
 		Name="VersionString"
-		Value="1_01"
+		Value="1_02"
 	/>
 </VisualStudioPropertySheet>
