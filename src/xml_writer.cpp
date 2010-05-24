@@ -37,15 +37,15 @@ namespace protean {
             {
                 if ( document.is<variant::Dictionary>() )
                 {
-                    if ( document.has_key( "__instrs__" ) )
+                    if ( document.has_key( xml_instructions ) )
                     {
-                        write_instructions( document["__instrs__"] );
+                        write_instructions( document[xml_instructions] );
                     }
                     size_t num_nodes(0);
                     variant::const_iterator it( document.begin() );
                     for ( ; it!=document.end(); ++it )
                     {
-                        if ( it.key()!="__instrs__" )
+                        if ( it.key()!=xml_instructions )
                         {
                             if (++num_nodes>1)
                             {
@@ -147,7 +147,7 @@ namespace protean {
                 variant::const_iterator it, end = node.end();
                 for ( it=node.begin(); it!=end; ++it )
                 {
-                    if ((m_mode & xml_mode::Preserve)!=0 && it.key()=="__attrs__" )
+                    if ((m_mode & xml_mode::Preserve)!=0 && it.key()==xml_attributes )
                     {
                         continue;
                     }
@@ -329,7 +329,7 @@ namespace protean {
             variant::enum_type_t type = node.type();    
             check_invalid_chars(context.m_name);
 
-            if(context.m_name=="__comment__")
+            if(context.m_name==xml_comment)
             {
                 if((m_mode & xml_mode::Preserve)!=0)
                 {
@@ -352,9 +352,9 @@ namespace protean {
             {
                 if ((type & variant::Mapping)!=0)
                 {
-                    if (node.has_key("__attrs__"))
+                    if (node.has_key(xml_attributes))
                     {
-                        context.m_attributes = node["__attrs__"];
+                        context.m_attributes = node[xml_attributes];
                     }
                 }
             }

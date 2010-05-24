@@ -28,8 +28,11 @@ namespace protean {
         };
     };
 
-    static const char* xml_default_element = "Variant";
+    static const char* xml_default_element  = "Variant";
 
+    static const char* xml_comment          = "__comment__";
+    static const char* xml_instructions     = "__instrs__";
+    static const char* xml_attributes       = "__attrs__";
 } // namespace protean
 
 #endif // PROTEAN_XML_COMMON_HPP

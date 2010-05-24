@@ -93,7 +93,7 @@ namespace protean { namespace detail {
                 {
                     // create document node
                     m_result = variant(variant::Dictionary);
-                    m_result.insert( "__instrs__", m_instructions );
+                    m_result.insert( xml_instructions, m_instructions );
                     context->m_element = &m_result.insert(element_name, variant(), variant::ReturnItem);
                 }
                 else
@@ -308,7 +308,7 @@ namespace protean { namespace detail {
                 {
                     if ((m_mode & xml_mode::Preserve)!=0)
                     {
-                        context->element().insert("__attrs__", context->attributes());
+                        context->element().insert(xml_attributes, context->attributes());
                     }
                     else
                     {
@@ -512,7 +512,7 @@ namespace protean { namespace detail {
             }
             if (context->m_type == variant::Bag)
             {
-                context->element().insert("__comment__", variant(transcode(chars)));
+                context->element().insert(xml_comment, variant(transcode(chars)));
             }
             else
             {
