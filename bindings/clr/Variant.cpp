@@ -33,7 +33,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-	Variant::Variant(EnumType type, System::UInt32 size)
+	Variant::Variant(EnumType type, System::Int32 size)
     {
         BEGIN_TRANSLATE_ERROR();
 

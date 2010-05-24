@@ -60,7 +60,7 @@ namespace protean { namespace clr {
 
         explicit Variant(Variant^ arg);
         explicit Variant(EnumType arg);
-		explicit Variant(EnumType arg, System::UInt32 size);
+		explicit Variant(EnumType arg, System::Int32 size);
         explicit Variant(System::String^ arg);
         explicit Variant(bool arg);
         explicit Variant(System::Int32 arg);
