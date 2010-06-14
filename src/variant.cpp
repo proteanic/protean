@@ -631,11 +631,11 @@ namespace protean {
         }
         else if (arg=="-INF")
         {
-            return std::numeric_limits<float>::min();
+            return -std::numeric_limits<float>::infinity();
         }
         else if (arg=="INF")
         {
-            return std::numeric_limits<float>::max();
+            return std::numeric_limits<float>::infinity();
         }
         else
         {
@@ -657,11 +657,11 @@ namespace protean {
         }
         else if (arg=="-INF")
         {
-            return std::numeric_limits<double>::min();
+            return -std::numeric_limits<double>::infinity();
         }
         else if (arg=="INF")
         {
-            return std::numeric_limits<double>::max();
+            return std::numeric_limits<double>::infinity();
         }
         else
         {
@@ -757,17 +757,13 @@ namespace protean {
     }
     template<> std::string variant::lexical_cast<std::string>(const float &arg)
     {
-        if ( boost::math::fpclassify(arg)==FP_NAN )
+        if (boost::math::fpclassify(arg)==FP_NAN)
         {
             return "NaN";
         }
-        else if (arg==std::numeric_limits<float>::max())
+        else if (boost::math::fpclassify(arg)==FP_INFINITE)
         {
-            return "INF";
-        }
-        else if (arg==std::numeric_limits<float>::min())
-        {
-            return "-INF";
+			return (arg < .0 ? "-INF" : "INF");
         }
         else
         {
@@ -787,13 +783,9 @@ namespace protean {
         {
             return "NaN";
         }
-        else if (arg==std::numeric_limits<double>::max())
+        else if (boost::math::fpclassify(arg)==FP_INFINITE)
         {
-            return "INF";
-        }
-        else if (arg==std::numeric_limits<double>::min())
-        {
-            return "-INF";
+			return (arg < .0 ? "-INF" : "INF");
         }
         else
         {
