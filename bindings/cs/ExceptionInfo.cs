@@ -11,7 +11,7 @@ namespace protean {
 
     public class ExceptionInfo : IVariantData
     {
-	    public ExceptionInfo(String type, String message)
+        public ExceptionInfo(String type, String message)
         {
             Class = type;
             Message = message;
@@ -19,7 +19,7 @@ namespace protean {
             Stack = "";
         }
 
-	    public ExceptionInfo(String type, String message, String source, String stack)
+        public ExceptionInfo(String type, String message, String source, String stack)
         {
             Class = type;
             Message = message;
@@ -35,7 +35,7 @@ namespace protean {
             Stack = rhs.Stack;
         }
 
-	    public ExceptionInfo(Exception e)
+        public ExceptionInfo(Exception e)
         {
             Class = e.GetType().ToString();
             Message = e.Message;

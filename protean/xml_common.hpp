@@ -20,19 +20,26 @@ namespace protean {
     {
         enum
         {
+            // General
             None        = 0x00000000,
-            Preserve    = 0x00000001,   // xml_reader/xml_writer: preserve structure of XML
-            NoHeader    = 0x00000002,   // xml_writer: do not output XML header
-            CreateProxy = 0x00000004,   // xml_reader: create proxy object if class has not been registered in factory
+            NoHeader    = 0x00000001,     // xml_writer: do not output XML header
+            CreateProxy = 0x00000002,     // xml_reader: create proxy object if class has not been registered in factory
+            
+            // Preserve
+            Preserve    = 0x00000004,     // xml_reader/xml_writer: preserve structure of XML
+            StripSpace  = 0x00000008,     // xml_reader: strip whitespace-only text
+            Indent      = 0x00000010,     // xml_writer: insert indentation where no text node is present
             Default     = None
         };
     };
 
     static const char* xml_default_element  = "Variant";
 
+    static const char* xml_text             = "__text__";
     static const char* xml_comment          = "__comment__";
-    static const char* xml_instructions     = "__instrs__";
-    static const char* xml_attributes       = "__attrs__";
+    static const char* xml_instruction      = "__instruction__";
+    static const char* xml_attributes       = "__attributes__";
+
 } // namespace protean
 
 #endif // PROTEAN_XML_COMMON_HPP

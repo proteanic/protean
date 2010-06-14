@@ -10,8 +10,6 @@
 #include <protean/xml_common.hpp>
 #include <protean/variant.hpp>
 
-#include <stack>
-
 #if defined(_MSC_VER)
 #    pragma warning(push)
 #    pragma warning(disable:4512 4251)
@@ -19,47 +17,14 @@
 
 namespace protean {
 
-    
-
     class PROTEAN_DECL xml_writer
     {
     public:
         xml_writer(std::ostream &os, int mode=xml_mode::None);
-        void write_document(const variant& document);
-        void write_header();
-        void write_instructions(const variant& instructions);
-        void write_node(const variant& node);
-        void write_value(const variant& node);
-        void start_tag();
-        void end_tag();
-        void indent();
-
-        variant& push(const std::string& element_name="");
-        void pop();
-
-        void start_content();
-        void end_content();
 
     private:
-        static std::string escape_chars(const std::string& arg);
-        static void check_invalid_chars(const std::string& arg);
-
-    private:
-        size_t          m_indentation;
         std::ostream&   m_os;
-
-        struct element_info
-        {
-            element_info(const std::string& name) :
-                m_name(name),
-                m_attributes(variant::Dictionary)
-            {
-            }
-            std::string m_name;
-            variant     m_attributes;
-        };
-        std::stack<element_info> m_stack;
-        int m_mode;
+        int             m_mode;
 
         friend PROTEAN_DECL xml_writer& operator<<(xml_writer& writer, const variant& variant);
     };

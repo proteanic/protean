@@ -33,7 +33,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-	Variant::Variant(EnumType type, System::Int32 size)
+    Variant::Variant(EnumType type, System::Int32 size)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -378,8 +378,8 @@ namespace protean { namespace clr {
 
             Variant^ clrParams = gcnew Variant();
 
-			// do a swap to save copying data
-			clrParams->get_internals().swap(params);
+            // do a swap to save copying data
+            clrParams->get_internals().swap(params);
 
             try
             {
@@ -565,7 +565,7 @@ namespace protean { namespace clr {
         END_TRANSLATE_ERROR();
     }
 
-	Variant^ Variant::Range(System::String^ key)
+    Variant^ Variant::Range(System::String^ key)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -573,12 +573,12 @@ namespace protean { namespace clr {
 
         std::string key_str(StringTranslator(key).c_str());
 
-		return gcnew Variant(m_variant->range(key_str));
+        return gcnew Variant(m_variant->range(key_str));
 
         END_TRANSLATE_ERROR();
     }
 
-	Variant^ Variant::Select(System::String^ path)
+    Variant^ Variant::Select(System::String^ path)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -586,7 +586,7 @@ namespace protean { namespace clr {
 
         std::string path_str(StringTranslator(path).c_str());
 
-		return gcnew Variant(m_variant->select(path_str));
+        return gcnew Variant(m_variant->select(path_str));
 
         END_TRANSLATE_ERROR();
     }

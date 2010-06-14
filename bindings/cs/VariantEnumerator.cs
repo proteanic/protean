@@ -25,7 +25,7 @@ namespace protean {
 
         public void Reset()
         {
-		    m_enumerator.Reset();
+            m_enumerator.Reset();
         }
 
         public Variant.EnumType Type { get; private set; }
@@ -34,32 +34,32 @@ namespace protean {
         {
             get
             {
-		        switch (Type)
-		        {
-		            case Variant.EnumType.List:
-			        {
-			            IEnumerator<Variant> enumerator = m_enumerator as IEnumerator<Variant>;
-			            Variant value = enumerator.Current;
-			            return new VariantItem(value);
-			        }
-		            case Variant.EnumType.Dictionary:
-		            case Variant.EnumType.Bag:
-			        {
-			            IEnumerator<KeyValuePair<String, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<String, Variant>>;
-			            String key = enumerator.Current.Key;
-			            Variant value = enumerator.Current.Value;
-			            return new VariantItem(key, value);
-			        }
-		            case Variant.EnumType.TimeSeries:
-			        {
-			            IEnumerator<KeyValuePair<DateTime, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<DateTime, Variant>>;
-			            DateTime time = enumerator.Current.Key;
-			            Variant value = enumerator.Current.Value;
-			            return new VariantItem(time, value);
-			        }
-		            default:
-			            throw new VariantException("Case exhaustion: " + Type.ToString());
-		        }
+                switch (Type)
+                {
+                    case Variant.EnumType.List:
+                    {
+                        IEnumerator<Variant> enumerator = m_enumerator as IEnumerator<Variant>;
+                        Variant value = enumerator.Current;
+                        return new VariantItem(value);
+                    }
+                    case Variant.EnumType.Dictionary:
+                    case Variant.EnumType.Bag:
+                    {
+                        IEnumerator<KeyValuePair<String, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<String, Variant>>;
+                        String key = enumerator.Current.Key;
+                        Variant value = enumerator.Current.Value;
+                        return new VariantItem(key, value);
+                    }
+                    case Variant.EnumType.TimeSeries:
+                    {
+                        IEnumerator<KeyValuePair<DateTime, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<DateTime, Variant>>;
+                        DateTime time = enumerator.Current.Key;
+                        Variant value = enumerator.Current.Value;
+                        return new VariantItem(time, value);
+                    }
+                    default:
+                        throw new VariantException("Case exhaustion: " + Type.ToString());
+                }
             }
         }
 

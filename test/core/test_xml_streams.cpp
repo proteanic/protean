@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(test_xml_primitives)
       .insert("None", variant(variant::None));
 
     std::ostringstream oss;
-    xml_writer writer(oss);
+    xml_writer writer(oss, xml_mode::Indent);
     writer << v1;
 
     variant v2;
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(test_xml_exception)
     variant v1(arg);
 
     std::ostringstream oss;
-    xml_writer writer(oss);
+    xml_writer writer(oss, xml_mode::Indent);
     writer << v1;
 
     variant v2;
@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(test_xml_untyped)
     BOOST_CHECK_EQUAL(v1["DateTime"].as<variant::date_time_t>(), date_time);
 
     std::stringstream oss;
-    xml_writer writer(oss, xml_mode::Preserve);
+    xml_writer writer(oss, xml_mode::Preserve | xml_mode::Indent);
     writer << variant(variant::Dictionary).insert("Variant", v1);
 
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
@@ -459,40 +459,6 @@ BOOST_AUTO_TEST_CASE(test_xml_validation)
     BOOST_CHECK(v1["aDateTime"].is<variant::DateTime>());
 }
 
-BOOST_AUTO_TEST_CASE(test_xml_preserve)
-{
-    static const std::string xml =
-        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-        "<Variant aBoolean=\"true\" aDate=\"2007-01-03\" aDateTime=\"2007-01-03T10:30:00\" aFloat=\"0.5\" aDouble=\"3.9\" aInteger=\"1\" aUnsigned=\"2\" aInt32=\"3\" aUInt32=\"4\" aInt64=\"5\" aUInt64=\"6\" aString=\"Element\" aTime=\"10:30:00\">\n"
-        "  <Boolean>true</Boolean>\n"
-        "  <Date>2007-01-03</Date>\n"
-        "  <DateTime>2007-01-03T10:30:00</DateTime>\n"
-        "  <Float>0.5</Float>\n"
-        "  <Double>1</Double>\n"
-        "  <Integer>1</Integer>\n"
-        "  <Unsigned>2</Unsigned>\n"
-        "  <Int32>3</Int32>\n"
-        "  <UInt32>4</UInt32>\n"
-        "  <Int64>5</Int64>\n"
-        "  <UInt64>6</UInt64>\n"
-        "  <String>Element</String>\n"
-        "  <Time>10:30:00</Time>\n"
-        "</Variant>";
-
-    std::stringstream iss;
-    iss << xml;
-
-    variant v1;
-    xml_reader reader2(iss, xml_mode::Preserve);
-    reader2 >> v1;
-
-    std::ostringstream oss;
-    xml_writer writer(oss, xml_mode::Preserve);
-    writer << v1;
-
-    BOOST_CHECK_EQUAL(iss.str(), oss.str());
-}
-
 BOOST_AUTO_TEST_CASE(test_xml_simple_array)
 {
     typed_array a1(3, variant::String);
@@ -531,6 +497,71 @@ BOOST_AUTO_TEST_CASE(test_xml_complex_array)
     reader >> v2;
 
     BOOST_CHECK(v1.compare(v2)==0);
+}
+
+BOOST_AUTO_TEST_CASE(test_xml_preserve)
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<Variant aBoolean=\"true\" aDate=\"2007-01-03\" aDateTime=\"2007-01-03T10:30:00\" aFloat=\"0.5\" aDouble=\"3.9\" aInteger=\"1\" aUnsigned=\"2\" aInt32=\"3\" aUInt32=\"4\" aInt64=\"5\" aUInt64=\"6\" aString=\"Element\" aTime=\"10:30:00\">\n"
+        "  <!-- A comment -->\n"
+        "  <Boolean>true</Boolean>\n"
+        "  <Date>2007-01-03</Date>\n"
+        "  <DateTime>2007-01-03T10:30:00</DateTime>\n"
+        "  <Float>0.5</Float>\n"
+        "  <!-- Another comment -->\n"
+        "  <Double>1</Double>\n"
+        "  <Integer>1</Integer>\n"
+        "  <Unsigned>2</Unsigned>\n"
+        "  <Int32>3</Int32>\n"
+        "  <UInt32>4</UInt32>\n"
+        "  <Int64>5</Int64>\n"
+        "  <UInt64>6</UInt64>\n"
+        "  <String>Element</String>\n"
+        "  <Time>10:30:00</Time>\n"
+        "</Variant>";
+
+    std::stringstream iss;
+    iss << xml;
+
+    variant v1;
+    xml_reader reader2(iss, xml_mode::Preserve);
+    reader2 >> v1;
+
+    std::ostringstream oss;
+    xml_writer writer(oss, xml_mode::Preserve);
+    writer << v1;
+
+    BOOST_CHECK_EQUAL(iss.str(), oss.str());
+}
+
+BOOST_AUTO_TEST_CASE(test_xml_preserve_ws)
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<elem1>\n"
+        "    1 2\n"
+        "    <elem2/>\n"
+        "         3\n"
+        "    <elem3/>\n"
+        "\n"
+        "  4\n"
+        "\n"
+        "       6\n"
+        "</elem1>";
+
+    std::stringstream iss;
+    iss << xml;
+
+    variant v1;
+    xml_reader reader(iss, xml_mode::Preserve);
+    reader >> v1;
+
+    std::ostringstream oss;
+    xml_writer writer(oss, xml_mode::Preserve);
+    writer << v1;
+
+    BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -29,7 +29,7 @@ namespace protean { namespace clr {
     VariantObjectProxy::~VariantObjectProxy()
     {
         this->!VariantObjectProxy();
-	}
+    }
 
     VariantObjectProxy::!VariantObjectProxy()
     {
@@ -40,7 +40,7 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		STRONG_REFERENCE(this);
+        STRONG_REFERENCE(this);
 
         return gcnew System::String(m_proxy->name().c_str());
 
@@ -51,9 +51,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		STRONG_REFERENCE(this);
+        STRONG_REFERENCE(this);
 
-		return m_proxy->version();
+        return m_proxy->version();
 
         END_TRANSLATE_ERROR();
     }
@@ -62,9 +62,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		STRONG_REFERENCE(this);
+        STRONG_REFERENCE(this);
 
-		protean::variant params;
+        protean::variant params;
         m_proxy->deflate(params);
 
         return gcnew Variant(params);
@@ -76,9 +76,9 @@ namespace protean { namespace clr {
     {    
         BEGIN_TRANSLATE_ERROR();
 
-		STRONG_REFERENCE(this);
+        STRONG_REFERENCE(this);
 
-		m_proxy->inflate(params->get_internals(), version);
+        m_proxy->inflate(params->get_internals(), version);
 
         END_TRANSLATE_ERROR();
     }
@@ -96,9 +96,9 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-		STRONG_REFERENCE(this);
+        STRONG_REFERENCE(this);
 
-		return gcnew System::String(m_proxy->name().c_str());
+        return gcnew System::String(m_proxy->name().c_str());
 
         END_TRANSLATE_ERROR();
     }

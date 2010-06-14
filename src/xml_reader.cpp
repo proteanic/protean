@@ -4,7 +4,9 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include <protean/xml_reader.hpp>
-#include <protean/detail/xml_parser.hpp>
+#include <protean/detail/xml_default_handler.hpp>
+#include <protean/detail/xml_preserve_handler.hpp>
+#include <protean/detail/xml_utility.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
 
 #if defined(_MSC_VER)
@@ -22,7 +24,7 @@
 
 namespace protean {
 
-    xml_reader::xml_reader(std::istream &is, int mode) :
+    xml_reader::xml_reader(std::istream& is, int mode) :
         m_is(is),
         m_mode(mode),
         m_entity_path("./"),
@@ -36,7 +38,15 @@ namespace protean {
     
     void xml_reader::read(variant& result)
     {
-        detail::sax_content_handler handler(result, m_mode, m_factory);
+        boost::scoped_ptr<detail::xml_handler_base> handler;
+        if ((m_mode & xml_mode::Preserve)!=0)
+        {
+            handler.reset(new detail::xml_preserve_handler(result, m_mode));
+        }
+        else
+        {
+            handler.reset(new detail::xml_default_handler(result, m_mode, m_factory));
+        }
         
         try
         {
@@ -62,15 +72,15 @@ namespace protean {
 #endif
             boost::scoped_ptr<xercesc::SAX2XMLReaderImpl> parser( new xercesc::SAX2XMLReaderImpl() );
 
-            parser->setContentHandler( &handler );
-            parser->setErrorHandler( &handler);
-            parser->setPSVIHandler( &handler );
+            parser->setContentHandler(handler.get());
+            parser->setErrorHandler(handler.get());
+            parser->setPSVIHandler(handler.get());
             if((m_mode & xml_mode::Preserve)!=0)
             {
-                parser->setLexicalHandler(&handler);
+                parser->setLexicalHandler(handler.get());
             }
             
-            boost::scoped_ptr<detail::stream_resolver> resolver(new detail::stream_resolver(m_entity_path));
+            boost::scoped_ptr<detail::xml_stream_resolver> resolver(new detail::xml_stream_resolver(m_entity_path));
             BOOST_FOREACH(const entity_stream_map_t::value_type& e, m_entities)
             {
                 resolver->add_entity_stream(e.first, e.second);
@@ -88,12 +98,12 @@ namespace protean {
                 parser->setProperty( xercesc::XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, schema.get() );
             }
 
-            detail::stream_input_source source(m_is);
+            detail::xml_stream_source source(m_is);
             parser->parse(source);
         }
         catch (const xercesc::XMLException& e)
         {
-            boost::throw_exception(variant_error(std::string("Xerces exception: ") + detail::sax_content_handler::transcode(e.getMessage())));
+            boost::throw_exception(variant_error(std::string("Xerces exception: ") + detail::xml_utility::transcode(e.getMessage())));
         }
         catch (const std::exception& e)
         {

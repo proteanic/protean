@@ -13,13 +13,13 @@ namespace protean {
     {
         public BinaryReader(System.IO.Stream stream)
         {
-		    Stream = stream;
+            Stream = stream;
         }
     
         public Variant Read()
         {
-	        ReadHeader();
-	        return ReadVariant();
+            ReadHeader();
+            return ReadVariant();
         }
 
         void ReadHeader()
@@ -56,30 +56,30 @@ namespace protean {
 
         Variant ReadVariant()
         {
-	        Variant.EnumType type = (Variant.EnumType)ReadUInt32();
+            Variant.EnumType type = (Variant.EnumType)ReadUInt32();
 
-	        switch (type)
-	        {
-	            case Variant.EnumType.String:
-		        {
-		            String value = ReadString();
-		            return new Variant(value);
-		        }
+            switch (type)
+            {
+                case Variant.EnumType.String:
+                {
+                    String value = ReadString();
+                    return new Variant(value);
+                }
                 case Variant.EnumType.Float:
                 {
                     float value = ReadFloat();
                     return new Variant(value);
                 }
-	            case Variant.EnumType.Double:
-		        {
-		            double value = ReadDouble();
-		            return new Variant(value);
-		        }
-	            case Variant.EnumType.Int32:
-		        {
-		            Int32 value = ReadInt32();
-		            return new Variant(value);
-		        }
+                case Variant.EnumType.Double:
+                {
+                    double value = ReadDouble();
+                    return new Variant(value);
+                }
+                case Variant.EnumType.Int32:
+                {
+                    Int32 value = ReadInt32();
+                    return new Variant(value);
+                }
                 case Variant.EnumType.UInt32:
                 {
                     UInt32 value = ReadUInt32();
@@ -96,35 +96,35 @@ namespace protean {
                     return new Variant(value);
                 }
                 case Variant.EnumType.List:
-		        {
+                {
                     
-		            Variant result = new Variant(Variant.EnumType.List);
+                    Variant result = new Variant(Variant.EnumType.List);
 
-		            UInt32 length = ReadUInt32();
-		            for (UInt32 i=0; i<length; ++i)
-		            {
-			            result.Add(ReadVariant());
-		            }
+                    UInt32 length = ReadUInt32();
+                    for (UInt32 i=0; i<length; ++i)
+                    {
+                        result.Add(ReadVariant());
+                    }
 
-		            return result;
-    		    }
-	            case Variant.EnumType.Dictionary:
-	            case Variant.EnumType.Bag:
-		        {
-		            Variant result = new Variant(type);
+                    return result;
+                }
+                case Variant.EnumType.Dictionary:
+                case Variant.EnumType.Bag:
+                {
+                    Variant result = new Variant(type);
 
-		            UInt32 length = ReadUInt32();
+                    UInt32 length = ReadUInt32();
 
-		            for (UInt32 i=0; i<length; ++i)
-		            {
-			            String key = ReadString();
-			            Variant value = ReadVariant();
+                    for (UInt32 i=0; i<length; ++i)
+                    {
+                        String key = ReadString();
+                        Variant value = ReadVariant();
 
-			            result.Add(key, value);
-		            }
+                        result.Add(key, value);
+                    }
 
-		            return result;
-		        }
+                    return result;
+                }
                 case Variant.EnumType.TimeSeries:
                 {
                     Variant result = new Variant(type);
@@ -142,31 +142,31 @@ namespace protean {
                     return result;
                 }
                 default:
-		            throw new VariantException("Case exhaustion: " + type.ToString());
-	        }
+                    throw new VariantException("Case exhaustion: " + type.ToString());
+            }
         }
 
         byte[] ReadBytes(int length)
         {
-	        byte[] bytes = new byte[length];
+            byte[] bytes = new byte[length];
             Filter.Read(bytes, 0, length);
 
             // Add padding
-	        int residual = (4 - (length % 4)) % 4;
-	        for(int i=0; i<residual; ++i)
-	        {
+            int residual = (4 - (length % 4)) % 4;
+            for(int i=0; i<residual; ++i)
+            {
                 Filter.ReadByte();
-	        }
+            }
 
             return bytes;
         }
 
         String ReadString()
         {
-	        Int32 length = ReadInt32();
+            Int32 length = ReadInt32();
             byte[] bytes = ReadBytes(length);
 
-	        return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
+            return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
         }
         float ReadFloat()
         {
@@ -178,7 +178,7 @@ namespace protean {
         {
             byte[] bytes = new byte[sizeof(double)];
             Filter.Read(bytes, 0, sizeof(double));
-	        return System.BitConverter.ToDouble(bytes, 0);
+            return System.BitConverter.ToDouble(bytes, 0);
         }
         Int32 ReadInt32()
         {
@@ -190,7 +190,7 @@ namespace protean {
         {
             byte[] bytes = new byte[sizeof(UInt32)];
             Filter.Read(bytes, 0, sizeof(UInt32));
-	        return System.BitConverter.ToUInt32(bytes, 0);
+            return System.BitConverter.ToUInt32(bytes, 0);
         }
         Int64 ReadInt64()
         {

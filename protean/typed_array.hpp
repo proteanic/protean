@@ -54,9 +54,7 @@ namespace protean {
         const variant_base& at(size_t n) const;
 
     private:
-        friend class xml_reader;
-        friend class xml_writer;
-        friend class detail::sax_content_handler;
+        friend class detail::xml_default_handler;
         friend class binary_reader;
         friend class binary_writer;
 

@@ -618,7 +618,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\xml_parser.cpp"
+				RelativePath="..\..\src\xml_default_handler.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\xml_handler_base.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\xml_preserve_handler.cpp"
 				>
 			</File>
 			<File
@@ -626,7 +634,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\xml_utility.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\xml_writer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\xml_writer_impl.cpp"
 				>
 			</File>
 		</Filter>
@@ -819,7 +835,23 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\protean\detail\xml_parser.hpp"
+					RelativePath="..\..\protean\detail\xml_default_handler.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\xml_handler_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\xml_preserve_handler.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\xml_utility.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\xml_writer_impl.hpp"
 					>
 				</File>
 			</Filter>

@@ -40,7 +40,7 @@ namespace protean {
     class binary_writer;
 
     namespace detail {
-         class sax_content_handler;
+         class xml_default_handler;
     }
 
     class PROTEAN_DECL variant_base
@@ -130,9 +130,7 @@ namespace protean {
         size_t hash(enum_type_t type) const;
 
     private:
-        friend class xml_reader;
-        friend class xml_writer;
-        friend class detail::sax_content_handler;
+        friend class detail::xml_default_handler;
         friend class binary_reader;
         friend class binary_writer;
     };

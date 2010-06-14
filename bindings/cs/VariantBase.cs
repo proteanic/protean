@@ -121,8 +121,8 @@ namespace protean {
 
         protected VariantBase(EnumType type, UInt32 size)
         {
-		    switch (type)
-		    {
+            switch (type)
+            {
             case EnumType.None:
                 Value = new VariantNone();
                 break;
@@ -168,13 +168,13 @@ namespace protean {
             case EnumType.Tuple:
                 Value = new VariantTuple(size);
                 break;
-		    case EnumType.Buffer:
+            case EnumType.Buffer:
                 Value = new VariantBuffer(size);
                 break;
-		    default:
-			    throw new VariantException("Cannot default construct variant of type: " + type.ToString());
-		    }
-	    }
+            default:
+                throw new VariantException("Cannot default construct variant of type: " + type.ToString());
+            }
+        }
 
         protected VariantBase(VariantBase rhs)
         {

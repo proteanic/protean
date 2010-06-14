@@ -60,7 +60,7 @@ namespace protean { namespace clr {
 
         explicit Variant(Variant^ arg);
         explicit Variant(EnumType arg);
-		explicit Variant(EnumType arg, System::Int32 size);
+        explicit Variant(EnumType arg, System::Int32 size);
         explicit Variant(System::String^ arg);
         explicit Variant(bool arg);
         explicit Variant(System::Int32 arg);
@@ -115,8 +115,8 @@ namespace protean { namespace clr {
         bool ContainsKey(System::String^ key);
         void Add(System::String^ key, Variant^ value);
         void Remove(System::String^ key);
-		Variant^ Range(System::String^ key);
-		Variant^ Select(System::String^ path);
+        Variant^ Range(System::String^ key);
+        Variant^ Select(System::String^ path);
 
         // TimeSeries
         void Add(System::DateTime time, Variant^ value);

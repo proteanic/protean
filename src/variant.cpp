@@ -151,8 +151,8 @@ namespace protean {
     {
     }
 
-	variant::variant(enum_type_t type, const std::string& arg) :
-		m_type(type)
+    variant::variant(enum_type_t type, const std::string& arg) :
+        m_type(type)
     {
         BEGIN_TRANSLATE_ERROR();
 
@@ -167,7 +167,7 @@ namespace protean {
         {
         case Any:
         case String:
-			m_value.set<String>(detail::string(arg.c_str(), arg.size()));
+            m_value.set<String>(detail::string(arg.c_str(), arg.size()));
             break;
         case Int32:
             m_value.set<Int32>(lexical_cast<boost::int32_t>(arg));
@@ -204,7 +204,7 @@ namespace protean {
         }
 
         END_TRANSLATE_ERROR();
-	}
+    }
 
    variant::~variant()
     {
@@ -832,64 +832,64 @@ namespace protean {
         return boost::posix_time::to_iso_extended_string(arg);
     }
 
-	// Primitive -> Any
+    // Primitive -> Any
     variant variant::any_cast() const
     {
         BEGIN_TRANSLATE_ERROR();
 
-		CHECK_VARIANT_FUNCTION(Primitive, "any_cast()");
+        CHECK_VARIANT_FUNCTION(Primitive, "any_cast()");
 
-		std::string value_as_string;
+        std::string value_as_string;
 
-		switch (m_type)
-		{
-		case Any:
-		case String:
-			value_as_string = as<std::string>();
-			break;
-		case Int32:
-			value_as_string = lexical_cast<std::string>(m_value.get<Int32>());
-			break;
-		case UInt32:
-			value_as_string = lexical_cast<std::string>(m_value.get<UInt32>());
-			break;
-		case Int64:
-			value_as_string = lexical_cast<std::string>(m_value.get<Int64>());
-			break;
-		case UInt64:
-			value_as_string = lexical_cast<std::string>(m_value.get<UInt64>());
-			break;
-		case Float:
-			value_as_string = lexical_cast<std::string>(m_value.get<Float>());
-			break;
-		case Double:
-			value_as_string = (boost::format("%|.20|") % m_value.get<Double>() ).str();
-			break;
-		case Boolean:
-			value_as_string = lexical_cast<std::string>(m_value.get<Boolean>());
-			break;
-		case Date:
-			value_as_string = lexical_cast<std::string>(m_value.get<Date>());
-			break;
-		case Time:
-			value_as_string = lexical_cast<std::string>(m_value.get<Time>());
-			break;
-		case DateTime:
-			value_as_string = lexical_cast<std::string>(m_value.get<DateTime>());
-			break;
-		default:
-			boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(m_type)));
-		}
+        switch (m_type)
+        {
+        case Any:
+        case String:
+            value_as_string = as<std::string>();
+            break;
+        case Int32:
+            value_as_string = lexical_cast<std::string>(m_value.get<Int32>());
+            break;
+        case UInt32:
+            value_as_string = lexical_cast<std::string>(m_value.get<UInt32>());
+            break;
+        case Int64:
+            value_as_string = lexical_cast<std::string>(m_value.get<Int64>());
+            break;
+        case UInt64:
+            value_as_string = lexical_cast<std::string>(m_value.get<UInt64>());
+            break;
+        case Float:
+            value_as_string = lexical_cast<std::string>(m_value.get<Float>());
+            break;
+        case Double:
+            value_as_string = (boost::format("%|.20|") % m_value.get<Double>() ).str();
+            break;
+        case Boolean:
+            value_as_string = lexical_cast<std::string>(m_value.get<Boolean>());
+            break;
+        case Date:
+            value_as_string = lexical_cast<std::string>(m_value.get<Date>());
+            break;
+        case Time:
+            value_as_string = lexical_cast<std::string>(m_value.get<Time>());
+            break;
+        case DateTime:
+            value_as_string = lexical_cast<std::string>(m_value.get<DateTime>());
+            break;
+        default:
+            boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(m_type)));
+        }
 
-		variant result(value_as_string);
-		result.m_type = Any;
+        variant result(value_as_string);
+        result.m_type = Any;
 
-		return result;
+        return result;
 
         END_TRANSLATE_ERROR();
-	}
+    }
 
-	// Any -> Primitive (DEPRECATED)
+    // Any -> Primitive (DEPRECATED)
     variant variant::change_type(enum_type_t type) const
     {
         BEGIN_TRANSLATE_ERROR();

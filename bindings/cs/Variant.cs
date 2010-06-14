@@ -300,6 +300,9 @@ namespace protean {
         {
             return As<UInt64>();
         }
+
+        public static readonly DateTime MinDateTime = new DateTime(1400, 1, 1);
+        public static readonly DateTime MaxDateTime = new DateTime(9999, 12, 31, 23, 59, 59, 999);
     };
 
 
