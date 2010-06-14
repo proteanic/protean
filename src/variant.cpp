@@ -610,11 +610,11 @@ namespace protean {
      */
     template<> bool variant::lexical_cast<bool>(const std::string &arg)
     {
-        if (boost::algorithm::iequals(arg, "true") || boost::algorithm::iequals(arg, "1"))
+        if (arg=="true" || arg=="1")
         {
             return true;
         }
-        else if (boost::algorithm::iequals(arg, "false") || boost::algorithm::iequals(arg, "0"))
+        else if (arg=="false" || arg=="0")
         {
             return false;
         }
