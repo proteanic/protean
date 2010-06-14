@@ -261,9 +261,13 @@
     <ClCompile Include="..\..\src\variant_base.cpp" />
     <ClCompile Include="..\..\src\variant_iterator.cpp" />
     <ClCompile Include="..\..\src\variant_ref.cpp" />
-    <ClCompile Include="..\..\src\xml_parser.cpp" />
+    <ClCompile Include="..\..\src\xml_default_handler.cpp" />
+    <ClCompile Include="..\..\src\xml_handler_base.cpp" />
+    <ClCompile Include="..\..\src\xml_preserve_handler.cpp" />
     <ClCompile Include="..\..\src\xml_reader.cpp" />
+    <ClCompile Include="..\..\src\xml_utility.cpp" />
     <ClCompile Include="..\..\src\xml_writer.cpp" />
+    <ClCompile Include="..\..\src\xml_writer_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\protean\array_iterator.hpp" />
@@ -273,7 +277,11 @@
     <ClInclude Include="..\..\protean\config.hpp" />
     <ClInclude Include="..\..\protean\detail\scoped_xmlch.hpp" />
     <ClInclude Include="..\..\protean\detail\xerces_include.hpp" />
-    <ClInclude Include="..\..\protean\detail\xml_parser.hpp" />
+    <ClInclude Include="..\..\protean\detail\xml_default_handler.hpp" />
+    <ClInclude Include="..\..\protean\detail\xml_handler_base.hpp" />
+    <ClInclude Include="..\..\protean\detail\xml_preserve_handler.hpp" />
+    <ClInclude Include="..\..\protean\detail\xml_utility.hpp" />
+    <ClInclude Include="..\..\protean\detail\xml_writer_impl.hpp" />
     <ClInclude Include="..\..\protean\exception_data.hpp" />
     <ClInclude Include="..\..\protean\handle.hpp" />
     <ClInclude Include="..\..\protean\object.hpp" />
