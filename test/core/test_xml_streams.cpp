@@ -574,10 +574,10 @@ BOOST_AUTO_TEST_CASE(test_xml_double)
 		"  <Variant variant=\"Double\">NaN</Variant>\n"
 		"  <Variant variant=\"Double\">-INF</Variant>\n"
 		"  <Variant variant=\"Double\">INF</Variant>\n"
-		"  <Variant>NaN</Variant>\n"
-		"  <Variant>-INF</Variant>\n"
-		"  <Variant>INF</Variant>\n"
-        "</Variant>\n";
+		"  <Variant variant=\"Any\">NaN</Variant>\n"
+		"  <Variant variant=\"Any\">-INF</Variant>\n"
+		"  <Variant variant=\"Any\">INF</Variant>\n"
+        "</Variant>";
 
     std::stringstream iss;
     iss << xml;
@@ -593,6 +593,12 @@ BOOST_AUTO_TEST_CASE(test_xml_double)
 	BOOST_CHECK(boost::math::fpclassify(v1[3].as<double>())==FP_NAN);
 	BOOST_CHECK(boost::math::fpclassify(v1[4].as<double>())==FP_INFINITE && v1[4].as<double>()<.0);
 	BOOST_CHECK(boost::math::fpclassify(v1[5].as<double>())==FP_INFINITE && v1[5].as<double>()>.0);
+
+    std::ostringstream oss;
+    xml_writer writer(oss, xml_mode::Indent);
+    writer << v1;
+
+    BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
 BOOST_AUTO_TEST_CASE(test_xml_float)
@@ -603,10 +609,10 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
 		"  <Variant variant=\"Float\">NaN</Variant>\n"
 		"  <Variant variant=\"Float\">-INF</Variant>\n"
 		"  <Variant variant=\"Float\">INF</Variant>\n"
-		"  <Variant>NaN</Variant>\n"
-		"  <Variant>-INF</Variant>\n"
-		"  <Variant>INF</Variant>\n"
-        "</Variant>\n";
+		"  <Variant variant=\"Any\">NaN</Variant>\n"
+		"  <Variant variant=\"Any\">-INF</Variant>\n"
+		"  <Variant variant=\"Any\">INF</Variant>\n"
+        "</Variant>";
 
     std::stringstream iss;
     iss << xml;
@@ -622,6 +628,12 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
 	BOOST_CHECK(boost::math::fpclassify(v1[3].as<float>())==FP_NAN);
 	BOOST_CHECK(boost::math::fpclassify(v1[4].as<float>())==FP_INFINITE && v1[4].as<float>()<.0);
 	BOOST_CHECK(boost::math::fpclassify(v1[5].as<float>())==FP_INFINITE && v1[5].as<float>()>.0);
+
+    std::ostringstream oss;
+    xml_writer writer(oss, xml_mode::Indent);
+    writer << v1;
+
+    BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

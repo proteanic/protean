@@ -608,7 +608,7 @@ namespace protean {
     /*
      * variant::lexical_cast
      */
-    template<> bool variant::lexical_cast<bool>(const std::string &arg)
+    template<> bool variant::lexical_cast<bool>(const std::string& arg)
     {
         if (arg=="true" || arg=="1")
         {
@@ -623,7 +623,7 @@ namespace protean {
             boost::throw_exception(variant_error(std::string("Bad lexical cast: failed to interpret ") + arg + " as bool"));
         }
     }
-    template<> float variant::lexical_cast<float>(const std::string &arg)
+    template<> float variant::lexical_cast<float>(const std::string& arg)
     {
         if (arg=="NaN")
         {
@@ -649,7 +649,7 @@ namespace protean {
             }
         }
     }
-    template<> double variant::lexical_cast<double>(const std::string &arg)
+    template<> double variant::lexical_cast<double>(const std::string& arg)
     {
         if (arg=="NaN")
         {
@@ -675,7 +675,7 @@ namespace protean {
             }
         }
     }
-    template<> variant::date_t variant::lexical_cast<variant::date_t>(const std::string &arg)
+    template<> variant::date_t variant::lexical_cast<variant::date_t>(const std::string& arg)
     {
         const boost::regex expr( "^\\d{4}-\\d{2}-\\d{2}$" );
         if ( boost::regex_match(arg, expr) )
@@ -686,7 +686,7 @@ namespace protean {
         boost::throw_exception(variant_error(std::string("Bad lexical cast: invalid date '") + arg + "' specified, expecting YYYY-MM-DD"));
     }
 
-    template<> variant::time_t variant::lexical_cast<variant::time_t>(const std::string &arg)
+    template<> variant::time_t variant::lexical_cast<variant::time_t>(const std::string& arg)
     {
         const boost::regex expr( "^\\d{2}:\\d{2}:\\d{2}(.\\d*)?$" );
         if ( boost::regex_match(arg, expr ))
@@ -736,7 +736,7 @@ namespace protean {
         boost::throw_exception(variant_error(std::string("Bad lexical cast: invalid time '") + arg + "' specified, expecting expecting HH:MM:SS[.fff] or P[n]Y[n]M[n]DT[n]H[n]M[n]S"));
     }
 
-    template<> variant::date_time_t variant::lexical_cast<variant::date_time_t>(const std::string &arg)
+    template<> variant::date_time_t variant::lexical_cast<variant::date_time_t>(const std::string& arg)
     {
         const boost::regex expr( "^(.+)T(.+)$" );
         boost::smatch matches;
@@ -791,7 +791,10 @@ namespace protean {
         {
             try
             {
-                return boost::lexical_cast<std::string>(arg);
+                // print extra precision
+                std::ostringstream oss;
+                oss << std::setprecision(20) << arg;
+                return oss.str();
             }
             catch(const boost::bad_lexical_cast&)
             {
@@ -855,7 +858,7 @@ namespace protean {
             value_as_string = lexical_cast<std::string>(m_value.get<Float>());
             break;
         case Double:
-            value_as_string = (boost::format("%|.20|") % m_value.get<Double>() ).str();
+            value_as_string = lexical_cast<std::string>(m_value.get<Double>());
             break;
         case Boolean:
             value_as_string = lexical_cast<std::string>(m_value.get<Boolean>());
@@ -1128,6 +1131,7 @@ namespace protean {
         static const std::string no_indent = "";
         
         std::ostringstream oss;
+        oss << std::setprecision(std::numeric_limits<double>::digits10);
 
         oss << indent;
         switch ( type() )
