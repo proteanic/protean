@@ -21,15 +21,19 @@ namespace protean {
         enum
         {
             // General
-            None        = 0x00000000,
-            NoHeader    = 0x00000001,     // xml_writer: do not output XML header
-            CreateProxy = 0x00000002,     // xml_reader: create proxy object if class has not been registered in factory
+            None                = 0x00000000,
+            NoHeader            = 0x00000001,     // xml_writer: do not output XML header
+
+            // Default mode
+            CreateProxy         = 0x00000002,     // xml_reader: create proxy object if class has not been registered in factory
+            NoTypeAttributes    = 0x00000004,     // xml_writer: omit variant type attributes
             
-            // Preserve
-            Preserve    = 0x00000004,     // xml_reader/xml_writer: preserve structure of XML
-            StripSpace  = 0x00000008,     // xml_reader: strip whitespace-only text
-            Indent      = 0x00000010,     // xml_writer: insert indentation where no text node is present
-            Default     = None
+            // Preserve mode
+            Preserve            = 0x00000008,     // xml_reader/xml_writer: preserve structure of XML
+            StripSpace          = 0x00000010,     // xml_reader: strip whitespace-only text
+            Indent              = 0x00000020,     // xml_writer: insert indentation where no text node is present
+
+            Default             = None
         };
     };
 

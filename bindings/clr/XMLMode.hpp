@@ -12,13 +12,14 @@ namespace protean { namespace clr {
 
     public enum class XMLMode
     {
-        None        = protean::xml_mode::None,
-        Preserve    = protean::xml_mode::Preserve,
-        NoHeader    = protean::xml_mode::NoHeader,
-        Indent      = protean::xml_mode::Indent,
-        StripSpace  = protean::xml_mode::StripSpace,
+        None                = protean::xml_mode::None,
+        Preserve            = protean::xml_mode::Preserve,
+        NoHeader            = protean::xml_mode::NoHeader,
+        Indent              = protean::xml_mode::Indent,
+        StripSpace          = protean::xml_mode::StripSpace,
+        NoTypeAttributes    = protean::xml_mode::NoTypeAttributes,
         //CreateProxy = protean::xml_mode::CreateProxy, // not supported in CLR yet
-        Default     = protean::xml_mode::Default
+        Default             = protean::xml_mode::Default
     };
 
 }}

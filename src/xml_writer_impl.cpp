@@ -252,7 +252,7 @@ namespace protean { namespace detail {
 
     void xml_writer_impl::write_variant(const variant& value)
     {
-        if ((m_mode & xml_mode::Preserve)==0)
+        if ((m_mode & (xml_mode::Preserve | xml_mode::NoTypeAttributes))==0)
         {
             m_stack.top().m_attributes.insert("variant", variant(variant::enum_to_string(value.type())));
         }
