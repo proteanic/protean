@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(test_date_time_as_ticks)
     }
 
     {
-        variant v1(variant::min_date_time);
+        variant v1(variant::min_date_time());
 
         std::stringstream ss;
         binary_writer writer(ss, binary_mode::DateTimeAsTicks);
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE(test_date_time_as_ticks)
     }
 
     {
-        variant v1(variant::max_date_time);
+        variant v1(variant::max_date_time());
 
         std::stringstream ss;
         binary_writer writer(ss, binary_mode::DateTimeAsTicks);

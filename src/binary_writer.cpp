@@ -218,7 +218,7 @@ namespace protean {
     {
         if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
         {
-            write((boost::uint32_t)(value - variant::min_date).days());
+            write((boost::uint32_t)(value - variant::min_date()).days());
         }
         else
         {
@@ -252,7 +252,7 @@ namespace protean {
     {
         if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
         {
-            write(value - variant::min_date_time);
+            write(value - variant::min_date_time());
         }
         else
         {

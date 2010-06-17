@@ -34,10 +34,10 @@ namespace protean {
         typedef std::bidirectional_iterator_tag         iterator_category;
 
     public:
-        static const date_time_t min_date_time;
-        static const date_time_t max_date_time;
-        static const date_t min_date;
-        static const date_t max_date;
+        static const date_time_t& min_date_time();
+        static const date_time_t& max_date_time();
+        static const date_t& min_date();
+        static const date_t& max_date();
 
     /* Construction */
     /****************/

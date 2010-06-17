@@ -18,10 +18,29 @@
 
 namespace protean {
 
-    const variant::date_t variant::min_date(boost::gregorian::min_date_time);
-    const variant::date_t variant::max_date(boost::gregorian::max_date_time);
-    const variant::date_time_t variant::min_date_time(boost::posix_time::min_date_time);
-    const variant::date_time_t variant::max_date_time(variant::max_date, variant::time_t(23, 59, 59) + boost::posix_time::millisec(999));
+    const variant::date_t& variant::min_date()
+    {
+        static variant::date_t min_date(boost::gregorian::min_date_time);
+        return min_date;
+    }
+
+    const variant::date_t& variant::max_date()
+    {
+        static variant::date_t max_date(boost::gregorian::max_date_time);
+        return max_date;
+    }
+
+    const variant::date_time_t& variant::min_date_time()
+    {
+        static variant::date_time_t min_date_time(boost::posix_time::min_date_time);
+        return min_date_time;
+    }
+
+    const variant::date_time_t& variant::max_date_time()
+    {
+        static variant::date_time_t max_date_time(variant::max_date(), variant::time_t(23, 59, 59) + boost::posix_time::millisec(999));
+        return max_date_time;
+    }
 
     /* Constructors */
     variant::variant() :

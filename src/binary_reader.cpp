@@ -287,7 +287,7 @@ namespace protean {
             boost::uint32_t total_days;
             read(total_days);
 
-            value = variant::min_date + boost::gregorian::date_duration(total_days);
+            value = variant::min_date() + boost::gregorian::date_duration(total_days);
         }
         else
         {
@@ -331,7 +331,7 @@ namespace protean {
             variant::time_t duration;
             read(duration);
 
-            value = variant::min_date_time + duration;
+            value = variant::min_date_time() + duration;
         }
         else
         {
