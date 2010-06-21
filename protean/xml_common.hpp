@@ -37,12 +37,14 @@ namespace protean {
         };
     };
 
-    static const char* xml_default_element  = "Variant";
+  
+    extern const char* xml_default_element;
 
-    static const char* xml_text             = "__text__";
-    static const char* xml_comment          = "__comment__";
-    static const char* xml_instruction      = "__instruction__";
-    static const char* xml_attributes       = "__attributes__";
+    extern const char* xml_text;
+    extern const char* xml_comment;
+    extern const char* xml_instruction;
+    extern const char* xml_attributes;
+  
 
 } // namespace protean
 
