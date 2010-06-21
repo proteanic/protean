@@ -113,7 +113,6 @@ namespace protean {
 
     public:
         variant_base();
-        variant_base(enum_type_t type, size_t size=0);
         variant_base(enum_type_t type, const variant_base& rhs);
 
         void destroy(enum_type_t type);

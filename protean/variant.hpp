@@ -84,6 +84,8 @@ namespace protean {
 
         void swap(variant& rhs);
 
+        void initialise(enum_type_t type, size_t size = 0);
+
     /* Destructor */
     /**************/
     public:
