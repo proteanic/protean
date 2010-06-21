@@ -157,7 +157,7 @@ namespace protean {
         template<typename T>
         T numerical_cast() const;
 
-        __declspec(deprecated("** this is a deprecated method, please use any_cast instead **"))
+        DEPRECATED("** this is a deprecated method, please use any_cast instead **")
         variant change_type(enum_type_t type) const;
 
     /* Collection interface */
