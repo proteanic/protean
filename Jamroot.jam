@@ -139,6 +139,8 @@ else
 DEPENDENTONXERCES =
    src/xml_reader.cpp src/xml_parser.cpp src/xml_writer.cpp test/core/test_xml_streams.cpp 
    protean/xml_reader.hpp protean/xml_parser.hpp protean/xml_writer.hpp protean/xml_defs.hpp
+   src/xml_writer_impl.cpp src/xml_handler_base.cpp src/xml_default_handler.cpp
+   src/xml_preserve_handler.cpp
 ;
 
 if $(NO_XERCES) = 1 
