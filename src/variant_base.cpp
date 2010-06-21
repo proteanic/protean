@@ -9,12 +9,6 @@ namespace protean {
     {
     }
 
-    // not sure if this method should try and default construct any type.. maybe the collections would do..
-    variant_base::variant_base(enum_type_t type, size_t size)
-    {
-        initialise(type, size);
-    }
-
     void variant_base::initialise(enum_type_t type, size_t size)
     {
         if ((type & Number)!=0)

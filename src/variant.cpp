@@ -164,13 +164,18 @@ namespace protean {
         return *this;
     }
 
-    variant::variant(enum_type_t type, size_t size) :
-        variant_base(type, size),
-        m_type(type)
+    variant::variant(enum_type_t type, size_t size)
     {
+		initialise(type, size);
     }
 
-    variant::variant(enum_type_t type, const std::string& arg) :
+ 	void variant::initialise(enum_type_t type, size_t size)
+    {
+		variant_base::initialise(type, size);
+		m_type = type;
+    }
+
+	variant::variant(enum_type_t type, const std::string& arg) :
         m_type(type)
     {
         BEGIN_TRANSLATE_ERROR();
@@ -225,7 +230,7 @@ namespace protean {
         END_TRANSLATE_ERROR();
     }
 
-   variant::~variant()
+    variant::~variant()
     {
         destroy(m_type);
     }
