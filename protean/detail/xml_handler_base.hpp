@@ -75,9 +75,9 @@ namespace protean { namespace detail {
         void fatalError( const xercesc::SAXParseException& e );
 
     protected:
-        const xercesc::Locator* m_locator;
         variant&                m_result;
         int                     m_mode;
+        const xercesc::Locator* m_locator;
     };
 
 }} // namespace protean::detail

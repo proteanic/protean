@@ -38,9 +38,9 @@ namespace protean { namespace detail {
         void pop();
 
     private:
-        
+
+        std::ostream&               m_os;        
         int                         m_mode;
-        std::ostream&               m_os;
 
         struct element_info
         {
