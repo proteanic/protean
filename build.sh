@@ -12,9 +12,9 @@ BOOST_DIR=boost_1_41_0
 BOOST_DIST=${ARCHIVES}/${BOOST_DIR}.tar.gz
 BOOST_HTTP='http://downloads.sourceforge.net/project/boost/boost/1.41.0/boost_1_41_0.tar.gz?use_mirror=kent'
 
-XERCES_DIR=xerces-c-3.1.0
+XERCES_DIR=xerces-c-3.1.1
 XERCES_DIST=${ARCHIVES}/${XERCES_DIR}.tar.gz
-XERCES_HTTP="http://mirror.ox.ac.uk/sites/rsync.apache.org/xerces/c/3/sources/xerces-c-3.1.0.tar.gz"
+XERCES_HTTP="http://mirror.ox.ac.uk/sites/rsync.apache.org/xerces/c/3/sources/${XERCES_DIR}.tar.gz"
 XERCES_INSTALL_DIR=${THIRDPARTY}/xerces-install
 
 ZLIB_DIR=zlib-1.2.3
