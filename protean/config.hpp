@@ -33,4 +33,10 @@
 #endif
 #endif
 
+#if defined (_MSC_VER)
+#   define DEPRECATED(x) __declspec(deprecated(x))
+#else
+#   define DEPRECATED(x)
+#endif
+
 #endif // PROTEAN_CONFIG_HPP
