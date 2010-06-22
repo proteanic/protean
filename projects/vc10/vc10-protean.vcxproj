@@ -261,6 +261,7 @@
     <ClCompile Include="..\..\src\variant_base.cpp" />
     <ClCompile Include="..\..\src\variant_iterator.cpp" />
     <ClCompile Include="..\..\src\variant_ref.cpp" />
+    <ClCompile Include="..\..\src\xml_common.cpp" />
     <ClCompile Include="..\..\src\xml_default_handler.cpp" />
     <ClCompile Include="..\..\src\xml_handler_base.cpp" />
     <ClCompile Include="..\..\src\xml_preserve_handler.cpp" />

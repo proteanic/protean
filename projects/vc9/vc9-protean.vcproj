@@ -618,6 +618,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\xml_common.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\xml_default_handler.cpp"
 				>
 			</File>
