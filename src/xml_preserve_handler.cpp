@@ -144,8 +144,8 @@ namespace protean { namespace detail {
             const std::string data_str = xml_utility::transcode(data);
 
             variant& instruction = context->element().insert(xml_instruction, variant(variant::Dictionary), variant::ReturnItem);
-            instruction.insert("target", variant(target_str));
-            instruction.insert("data", variant(data_str));
+            instruction.insert(xml_target, variant(target_str));
+            instruction.insert(xml_data, variant(data_str));
         }
     }
 

@@ -13,5 +13,7 @@ namespace protean {
     const char* xml_comment          = "__comment__";
     const char* xml_instruction      = "__instruction__";
     const char* xml_attributes       = "__attributes__";
+    const char* xml_target           = "__target__";
+    const char* xml_data             = "__data__";
 
 } // namespace protean

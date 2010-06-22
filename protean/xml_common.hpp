@@ -44,6 +44,8 @@ namespace protean {
     extern const char* xml_comment;
     extern const char* xml_instruction;
     extern const char* xml_attributes;
+    extern const char* xml_target;
+    extern const char* xml_data;
   
 
 } // namespace protean

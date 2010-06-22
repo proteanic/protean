@@ -197,12 +197,14 @@ namespace protean { namespace detail {
 
     void xml_writer_impl::write_instruction(const variant& instruction)
     {
-        if (!instruction.is<variant::Mapping>())
+        if (instruction.is<variant::Mapping>() && instruction.has_key(xml_target) && instruction.has_key(xml_data))
         {
-            boost::throw_exception(variant_error("Expecting dictionary with 'target' and 'data' for processing instruction"));
+            m_os << "<?" << instruction[xml_target].as<std::string>() << " " << instruction[xml_data].as<std::string>() << "?>";
         }
-            
-        m_os << "<?" << instruction["target"].as<std::string>() << " " << instruction["data"].as<std::string>() << "?>";
+        else
+        {
+            boost::throw_exception(variant_error((boost::format("Expecting dictionary containing '%s' and '%s' for processing instruction") % xml_target % xml_data).str()));
+        }        
     }
 
     void xml_writer_impl::write_comment(const variant& comment)
