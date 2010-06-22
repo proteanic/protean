@@ -541,6 +541,7 @@ BOOST_AUTO_TEST_CASE(test_xml_preserve_ws)
 {
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<?target data=\"test\"?>\n"
         "<elem1>\n"
         "    1 2\n"
         "    <elem2/>\n"
@@ -564,6 +565,33 @@ BOOST_AUTO_TEST_CASE(test_xml_preserve_ws)
     writer << v1;
 
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
+}
+
+BOOST_AUTO_TEST_CASE(test_xml_indent)
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<?target data=\"test\"?><elem1><elem2>1</elem2>\n <elem3/> </elem1>";
+
+    static const std::string formatted_xml =
+        "<?target data=\"test\"?>\n"
+        "<elem1>\n"
+        "  <elem2>1</elem2>\n"
+        "  <elem3/>\n"
+        "</elem1>";
+
+    std::stringstream iss;
+    iss << xml;
+
+    variant v1;
+    xml_reader reader(iss, xml_mode::Preserve | xml_mode::StripSpace);
+    reader >> v1;
+
+    std::ostringstream oss;
+    xml_writer writer(oss, xml_mode::Preserve | xml_mode::Indent | xml_mode::NoHeader);
+    writer << v1;
+
+    BOOST_CHECK_EQUAL(formatted_xml, oss.str());
 }
 
 BOOST_AUTO_TEST_CASE(test_xml_no_type_attributes)

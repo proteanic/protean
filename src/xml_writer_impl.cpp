@@ -46,11 +46,11 @@ namespace protean { namespace detail {
     {
         std::ostringstream oss;
 
+        oss << "\n";
         if (!m_stack.empty())
         {
             if ((m_mode & xml_mode::Indent)!=0)
             {
-                oss << "\n";
                 for (size_t i=0; i<m_stack.top().m_level; ++i)
                 {
                    oss << "  ";
@@ -127,11 +127,11 @@ namespace protean { namespace detail {
             {
                 // output the XML header
                 write_header();
-                m_os << indent();
             }
 
             if ((m_mode & xml_mode::Preserve)!=0)
             {
+                bool first(true);
                 if (document.is<variant::Mapping>())
                 {
                     std::string element_name;
@@ -148,13 +148,19 @@ namespace protean { namespace detail {
                         }
                         else if (it.key()==xml_instruction)
                         {
+                            if (!first)
+                            {
+                                m_os << indent();
+                            }
                             write_instruction(it.value());
-                            m_os << indent();
                         }
                         else if (it.key()==xml_comment)
                         {
+                            if (!first)
+                            {
+                                m_os << indent();
+                            }
                             write_comment(it.value());
-                            m_os << indent();
                         }
                         else
                         {
@@ -168,9 +174,14 @@ namespace protean { namespace detail {
                             }
 
                             push(it.key());
+                            if (!first)
+                            {
+                                m_os << indent();
+                            }
                             write_element(it.value());
                             pop();
                         }
+                        first = false;
                     }
                 }
                 else
