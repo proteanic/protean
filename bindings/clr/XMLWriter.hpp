@@ -7,6 +7,7 @@
 #define PROTEAN_CLR_XML_WRITER_HPP
 
 #include "XMLMode.hpp"
+#include "XMLConst.hpp"
 #include "TextWriter.hpp"
 #include "Variant.hpp"
 

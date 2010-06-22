@@ -6,6 +6,8 @@
 #ifndef PROTEAN_CLR_XML_READER_HPP
 #define PROTEAN_CLR_XML_READER_HPP
 
+#include "XMLMode.hpp"
+#include "XMLConst.hpp"
 #include "TextReader.hpp"
 #include "Variant.hpp"
 
@@ -17,13 +19,16 @@ namespace protean { namespace clr {
     { 
     public:
         XMLReader(System::IO::TextReader^ reader);
+        XMLReader(System::IO::TextReader^ reader, XMLMode mode);
+
         ~XMLReader();
         !XMLReader();
 
         Variant^ Read();
 
     private:
-        boost::iostreams::stream<TextReader>* m_reader;
+        boost::iostreams::stream<TextReader>*   m_reader;
+        XMLMode                                 m_mode;
     };
 
 }} // protean::clr

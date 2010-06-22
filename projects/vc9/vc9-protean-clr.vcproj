@@ -738,6 +738,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\bindings\clr\XMLConst.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\bindings\clr\XMLMode.hpp"
 				>
 			</File>

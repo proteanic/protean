@@ -12,10 +12,15 @@
 
 namespace protean { namespace clr {
 
-    XMLReader::XMLReader(System::IO::TextReader^ reader) :
+    XMLReader::XMLReader(System::IO::TextReader^ reader, XMLMode mode) :
+        m_mode(mode),
         m_reader(new boost::iostreams::stream<TextReader>(reader))
-    {
-    }
+    { }
+
+    XMLReader::XMLReader(System::IO::TextReader^ reader) :
+        m_mode(XMLMode::Default),
+        m_reader(new boost::iostreams::stream<TextReader>(reader))
+    { }
 
     XMLReader::~XMLReader()
     {
@@ -33,7 +38,7 @@ namespace protean { namespace clr {
 
         Variant^ result = gcnew Variant();
 
-        protean::xml_reader reader(*m_reader);
+        protean::xml_reader reader(*m_reader, (int)m_mode);
         reader >> result->get_internals();
 
         return result;

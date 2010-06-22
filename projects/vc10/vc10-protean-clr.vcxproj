@@ -326,6 +326,7 @@
     <ClInclude Include="..\..\bindings\clr\VariantException.hpp" />
     <ClInclude Include="..\..\bindings\clr\VariantItem.hpp" />
     <ClInclude Include="..\..\bindings\clr\VariantObjectProxy.hpp" />
+    <ClInclude Include="..\..\bindings\clr\XMLConst.hpp" />
     <ClInclude Include="..\..\bindings\clr\XMLMode.hpp" />
     <ClInclude Include="..\..\bindings\clr\XMLReader.hpp" />
     <ClInclude Include="..\..\bindings\clr\XMLWriter.hpp" />

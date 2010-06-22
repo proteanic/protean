@@ -99,6 +99,9 @@
     <ClInclude Include="..\..\bindings\clr\BinaryMode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\bindings\clr\XMLConst.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
