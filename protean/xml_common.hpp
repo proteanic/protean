@@ -38,14 +38,14 @@ namespace protean {
     };
 
   
-    extern const char* xml_default_element;
+    extern PROTEAN_DECL const char* xml_default_element;
 
-    extern const char* xml_text;
-    extern const char* xml_comment;
-    extern const char* xml_instruction;
-    extern const char* xml_attributes;
-    extern const char* xml_target;
-    extern const char* xml_data;
+    extern PROTEAN_DECL const char* xml_text;
+    extern PROTEAN_DECL const char* xml_comment;
+    extern PROTEAN_DECL const char* xml_instruction;
+    extern PROTEAN_DECL const char* xml_attributes;
+    extern PROTEAN_DECL const char* xml_target;
+    extern PROTEAN_DECL const char* xml_data;
   
 
 } // namespace protean
