@@ -8,7 +8,7 @@
 #include <protean/variant.hpp>
 #include <protean/variant_error.hpp>
 
-#include <boost/functional/hash.hpp>
+#include <protean/detail/hash.hpp>
 
 namespace protean { namespace detail {
 
@@ -61,9 +61,9 @@ namespace protean { namespace detail {
             -1 : (std::lexicographical_compare(rhs_cast->m_value, rhs_cast->m_value + rhs_cast->m_size, m_value, m_value + m_size) ? 1 : 0));
     }
 
-    size_t tuple::hash() const
+    boost::uint64_t tuple::hash(boost::uint64_t seed) const
     {
-        return boost::hash_range(m_value, m_value + m_size);
+        return hash_range(m_value, m_value + m_size, seed);
     }
 
     variant& tuple::at(size_t index) 

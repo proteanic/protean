@@ -225,15 +225,13 @@ namespace protean {
         template<typename TARGET, typename SOURCE>
         static TARGET lexical_cast(const SOURCE& toCast);
 
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed = 0) const;
 
         std::string str(bool summarise=false, const std::string& indent="") const;
 
     private:
         template <typename T>
         friend variant make_object(const variant& params);
-
-        friend size_t hash_value(const variant& value);
 
     private:
         static void select_impl(const variant& input, const std::string& path, variant& result);

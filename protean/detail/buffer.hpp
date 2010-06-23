@@ -10,6 +10,8 @@
 
 #include <protean/detail/ref_counted.hpp>
 
+#include <boost/cstdint.hpp>
+
 #include <cstddef>
 
 namespace protean { namespace detail {
@@ -27,7 +29,7 @@ namespace protean { namespace detail {
         size_t size() const;
 
         int compare(const buffer& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
 
         void swap(buffer& rhs);
 

@@ -268,62 +268,62 @@ namespace protean {
         }
     }
 
-    size_t variant_base::hash(enum_type_t type) const
+    boost::uint64_t variant_base::hash(enum_type_t type, boost::uint64_t seed) const
     {
         switch (type)
         {
             case None:
                 return 0;
             case Any:
-                return boost::hash<std::string>()(m_value.get<Any>().value());
+                return detail::hash_value(m_value.get<Any>().value(), seed);
             case String:
-                return boost::hash<std::string>()(m_value.get<String>().value());
+                return detail::hash_value(m_value.get<String>().value(), seed);
             case Int32:
-                return boost::hash<boost::int32_t>()(m_value.get<Int32>());
+                return detail::hash_value(m_value.get<Int32>(), seed);
             case UInt32:
-                return boost::hash<boost::uint32_t>()(m_value.get<UInt32>());
+                return detail::hash_value(m_value.get<UInt32>(), seed);
             case Int64:
-                return boost::hash<boost::int64_t>()(m_value.get<Int64>());
+                return detail::hash_value(m_value.get<Int64>(), seed);
             case UInt64:
-                return boost::hash<boost::uint64_t>()(m_value.get<UInt64>());
+                return detail::hash_value(m_value.get<UInt64>(), seed);
             case Float:
-                return boost::hash<float>()(m_value.get<Float>());
+                return detail::hash_value(m_value.get<Float>(), seed);
             case Double:
-                return boost::hash<double>()(m_value.get<Double>());
+                return detail::hash_value(m_value.get<Double>(), seed);
             case Boolean:
-                return boost::hash<bool>()(m_value.get<Boolean>());
+                return detail::hash_value(m_value.get<Boolean>(), seed);
             case Date:
-                return boost::hash<boost::gregorian::date>()(m_value.get<Date>());
+                return detail::hash_value(m_value.get<Date>(), seed);
             case Time:
-                return boost::hash<boost::posix_time::time_duration>()(m_value.get<Time>());
+                return detail::hash_value(m_value.get<Time>(), seed);
             case DateTime:
-                return boost::hash<boost::posix_time::ptime>()(m_value.get<DateTime>());
+                return detail::hash_value(m_value.get<DateTime>(), seed);
             case List:
             case Dictionary:
             case Bag:
             case TimeSeries:
             {
-                return m_value.get<Collection>().hash();
+                return m_value.get<Collection>().hash(seed);
             }
             case Buffer:
             {
-                return m_value.get<Buffer>()->hash();
+                return m_value.get<Buffer>()->hash(seed);
             }
             case Tuple:
             {
-                return m_value.get<Tuple>().hash();
+                return m_value.get<Tuple>().hash(seed);
             }
             case Exception:
             {
-                return m_value.get<Exception>().hash();
+                return m_value.get<Exception>().hash(seed);
             }
             case Object:
             {
-                return m_value.get<Object>()->hash();
+                return m_value.get<Object>()->hash(seed);
             }
             case Array:
             {
-                return m_value.get<Array>()->hash();
+                return m_value.get<Array>()->hash(seed);
             }
             default:
             {

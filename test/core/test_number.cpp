@@ -40,6 +40,8 @@ BOOST_AUTO_TEST_CASE(test_int32)
     BOOST_CHECK_EQUAL(v5.as<boost::int32_t>(), 0);
 
     BOOST_CHECK_THROW(v1.as<boost::uint32_t>(), variant_error);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0xfaf89879581633a9UL);
 }
 
 BOOST_AUTO_TEST_CASE(test_uint32)
@@ -69,6 +71,8 @@ BOOST_AUTO_TEST_CASE(test_uint32)
     BOOST_CHECK_EQUAL(v5.as<boost::uint32_t>(), 0u);
 
     BOOST_CHECK_THROW(v1.as<boost::int32_t>(), variant_error);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x82fb587a448e8822UL);
 }
 
 BOOST_AUTO_TEST_CASE(test_int64)
@@ -98,6 +102,8 @@ BOOST_AUTO_TEST_CASE(test_int64)
     BOOST_CHECK_EQUAL(v5.as<boost::int64_t>(), 0);
 
     BOOST_CHECK_THROW(v1.as<boost::uint64_t>(), variant_error);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x28f2daae23d14c0UL);
 }
 
 BOOST_AUTO_TEST_CASE(test_uInt64)
@@ -127,6 +133,8 @@ BOOST_AUTO_TEST_CASE(test_uInt64)
     BOOST_CHECK_EQUAL(v5.as<boost::uint64_t>(), 0u);
 
     BOOST_CHECK_THROW(v1.as<boost::int64_t>(), variant_error);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x421b797986c2e5a5UL);
 }
 
 BOOST_AUTO_TEST_CASE(test_float)
@@ -154,6 +162,8 @@ BOOST_AUTO_TEST_CASE(test_float)
     variant v5(variant::Float);
     BOOST_CHECK(v5.is<variant::Float>());
     BOOST_CHECK_EQUAL(v5.as<float>(), 0.);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x5340a61f9264fa3bUL);
 }
 
 BOOST_AUTO_TEST_CASE(test_double)
@@ -181,6 +191,8 @@ BOOST_AUTO_TEST_CASE(test_double)
     variant v5(variant::Double);
     BOOST_CHECK(v5.is<variant::Double>());
     BOOST_CHECK_EQUAL(v5.as<double>(), 0.);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x1feb970e905230ecUL);
 }
 
 BOOST_AUTO_TEST_CASE(test_boolean)
@@ -208,6 +220,8 @@ BOOST_AUTO_TEST_CASE(test_boolean)
     variant v5(variant::Boolean);
     BOOST_CHECK(v5.is<variant::Boolean>());
     BOOST_CHECK_EQUAL(v5.as<bool>(), false);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x3db28790f6c316a6UL);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

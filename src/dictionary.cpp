@@ -5,10 +5,9 @@
 
 #include <protean/detail/dictionary.hpp>
 #include <protean/detail/dictionary_iterator.hpp>
+#include <protean/detail/hash.hpp>
 #include <protean/variant.hpp>
 #include <protean/variant_error.hpp>
-
-#include <boost/functional/hash.hpp>
 
 namespace protean { namespace detail {
 
@@ -23,9 +22,9 @@ namespace protean { namespace detail {
             -1 : (std::lexicographical_compare(cast_rhs->m_value.begin(), cast_rhs->m_value.end(), m_value.begin(), m_value.end()) ? 1 : 0));
     }
 
-    size_t dictionary::hash() const
+    boost::uint64_t dictionary::hash(boost::uint64_t seed) const
     {
-        return boost::hash_range( m_value.begin(), m_value.end() );
+        return hash_range(m_value.begin(), m_value.end(), seed);
     }
 
     bool dictionary::empty() const

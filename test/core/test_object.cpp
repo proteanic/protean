@@ -110,6 +110,9 @@ BOOST_AUTO_TEST_CASE(test_object)
         BOOST_CHECK_EQUAL(obj.id(),     "my id");
         BOOST_CHECK_EQUAL(obj.count(),  10);
     }
+
+    // test hashing
+    BOOST_CHECK_EQUAL(v1.hash(), 0xe0bb97afca6308aeUL);
 }
 
 BOOST_AUTO_TEST_CASE(test_object_proxy)

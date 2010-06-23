@@ -5,7 +5,8 @@
 
 #include <protean/detail/buffer.hpp>
 
-#include <boost/functional/hash.hpp>
+#include <protean/detail/hash.hpp>
+
 
 #include <cstring>
 #include <cstdlib>
@@ -68,10 +69,9 @@ namespace protean { namespace detail {
         }
     }
 
-    size_t buffer::hash() const
+    boost::uint64_t buffer::hash(boost::uint64_t seed) const
     {
-        const char* char_array( static_cast<const char*>(m_data) );
-        return boost::hash_range(char_array, char_array+m_size);
+        return hash_value((unsigned char*)m_data, m_size, seed);
     }
 
     void buffer::swap(buffer& rhs)

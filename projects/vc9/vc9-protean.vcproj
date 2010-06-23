@@ -566,10 +566,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\hash.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\list.cpp"
 				>
 			</File>
@@ -760,6 +756,10 @@
 				</File>
 				<File
 					RelativePath="..\..\protean\detail\collection.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\protean\detail\crc64.hpp"
 					>
 				</File>
 				<File

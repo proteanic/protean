@@ -23,9 +23,9 @@ namespace protean { namespace detail {
             -1 : (std::lexicographical_compare(cast_rhs->m_value.begin(), cast_rhs->m_value.end(), m_value.begin(), m_value.end()) ? 1 : 0));
     }
 
-    size_t timeseries::hash() const
+    boost::uint64_t timeseries::hash(boost::uint64_t seed) const
     {
-        return boost::hash_range(m_value.begin(), m_value.end());
+        return hash_range(m_value.begin(), m_value.end(), seed);
     }
 
     bool timeseries::empty() const

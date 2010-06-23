@@ -4,8 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include <protean/detail/string.hpp>
-
-#include <boost/functional/hash.hpp>
+#include <protean/detail/hash.hpp>
 
 #include <cstring>
 #include <cstdlib>
@@ -188,12 +187,9 @@ namespace protean { namespace detail {
         return value().compare(rhs.value());
     }
 
-    size_t string::hash() const
+    boost::uint64_t string::hash(boost::uint64_t seed) const
     {
-        size_t seed = 0;
-        boost::hash_combine(seed, value());
-
-        return seed;
+        return hash_value(value(), seed);
     }
 
 }} // namespace protean::detail

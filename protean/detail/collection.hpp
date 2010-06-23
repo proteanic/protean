@@ -18,7 +18,7 @@ namespace protean { namespace detail {
         virtual ~collection() { }
 
         virtual int compare(const collection& rhs) const = 0;
-        virtual size_t hash() const = 0;
+        virtual boost::uint64_t hash(boost::uint64_t seed) const = 0;
 
         virtual bool empty() const = 0;
         virtual size_t size() const = 0;

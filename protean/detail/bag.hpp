@@ -23,7 +23,7 @@ namespace protean { namespace detail {
 
     public:
         int compare(const collection& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
         bool empty() const;
         size_t size() const;
         void clear();

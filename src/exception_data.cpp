@@ -4,8 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #include <protean/exception_data.hpp>
-
-#include <boost/functional/hash.hpp>
+#include <protean/detail/hash.hpp>
 
 #include <typeinfo>
 
@@ -73,15 +72,13 @@ namespace protean {
 
         return stack().compare(rhs.stack());
     }
-    size_t exception_data::hash() const
-    {
-        size_t seed = 0;
-        boost::hash_combine(seed, m_type);
-        boost::hash_combine(seed, m_message);
-        boost::hash_combine(seed, m_source);
-        boost::hash_combine(seed, m_stack);
 
-        return seed;
+    boost::uint64_t exception_data::hash(boost::uint64_t seed) const
+    {
+        seed = detail::hash_value(m_type, seed);
+        seed = detail::hash_value(m_message, seed);
+        seed = detail::hash_value(m_source, seed);
+        return detail::hash_value(m_stack, seed);
     }
     /*static*/ std::string exception_data::format(const char* class_name)
     {

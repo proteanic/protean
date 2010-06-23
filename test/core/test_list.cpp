@@ -54,6 +54,9 @@ BOOST_AUTO_TEST_CASE(test_list_basic)
     v4 = v3;
     BOOST_CHECK(v4.is<variant::List>());
     BOOST_CHECK(v4==v3);
+
+    // test hashing
+    BOOST_CHECK_EQUAL(v1.hash(), 0x29280912e5afd22eUL);
 }
 
 BOOST_AUTO_TEST_CASE(test_list_iterator)

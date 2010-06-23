@@ -12,6 +12,8 @@
 
 #include <string>
 
+#include <boost/cstdint.hpp>
+
 namespace protean {
 
     class variant;
@@ -34,7 +36,7 @@ namespace protean {
         void coerce(const object& rhs);
 
         int compare(const object& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
     };
 
 } // namespace protean

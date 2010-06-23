@@ -12,6 +12,7 @@
 #include <protean/variant.hpp>
 
 #include <protean/detail/dummy_iterator.hpp>
+#include <protean/detail/hash.hpp>
 #include <protean/variant_ref.hpp>
 
 #include <protean/detail/variant_macros_define.hpp>
@@ -1414,17 +1415,11 @@ namespace protean {
         return oss.str();
     }
 
-    size_t variant::hash() const
+    boost::uint64_t variant::hash(boost::uint64_t seed) const
     {
-        size_t seed = boost::hash<size_t>()(m_type);
-        boost::hash_combine(seed, variant_base::hash(m_type));
-
+        seed = detail::hash_value((boost::uint32_t)m_type, seed);
+        seed = variant_base::hash(m_type, seed);
         return seed;
-    }
-
-    std::size_t hash_value(const variant& value)
-    {
-        return value.hash();
     }
 
 } // namespace protean

@@ -37,7 +37,7 @@ namespace protean {
         variant_cref operator[](size_t n) const;
 
         int compare(const typed_array& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
 
         void swap(typed_array& rhs);
 

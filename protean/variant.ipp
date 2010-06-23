@@ -283,6 +283,13 @@ namespace protean {
         return variant(obj);
     }
 
+    namespace detail
+    {
+        inline boost::uint64_t hash_value(const variant& value, boost::uint64_t seed)
+        {
+            return value.hash(seed);
+        }
+    }
 
 } // namespace protean
 

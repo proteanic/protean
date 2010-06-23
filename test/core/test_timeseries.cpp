@@ -49,6 +49,9 @@ BOOST_AUTO_TEST_CASE(test_timeseries_basic)
     v4 = v3;
     BOOST_CHECK(v4.is<variant::TimeSeries>());
     BOOST_CHECK(v4==v3);
+
+    // test hashing
+    BOOST_CHECK_EQUAL(v1.hash(), 0x6e2b1e2020c96cb7UL);
 }
 
 BOOST_AUTO_TEST_CASE(test_timeseries_iterator)

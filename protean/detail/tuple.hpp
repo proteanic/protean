@@ -20,7 +20,7 @@ namespace protean { namespace detail {
         ~tuple();
 
         int compare(const collection& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
 
         variant& at(size_t index);
         const variant& at(size_t index) const;

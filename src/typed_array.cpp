@@ -5,8 +5,8 @@
 
 #include <protean/typed_array.hpp>
 #include <protean/variant.hpp>
+#include <protean/detail/hash.hpp>
 
-#include <boost/functional/hash.hpp>
 #include <boost/bind.hpp>
 #include <boost/cast.hpp>
 
@@ -92,13 +92,13 @@ namespace protean {
             -1 : (std::lexicographical_compare(rhs.m_data, rhs.m_data + m_size, m_data, m_data + m_size, comp) ? 1 : 0));
     }
 
-    size_t typed_array::hash() const
+    boost::uint64_t typed_array::hash(boost::uint64_t seed) const
     {
-        size_t seed = 0;
+        seed = detail::hash_value((boost::uint32_t)m_type, seed);
 
         for (size_t i=0; i<m_size; ++i)
         {
-            boost::hash_combine(seed, m_data[i].hash(m_type));
+            seed = m_data[i].hash(m_type, seed);
         }
 
         return seed;

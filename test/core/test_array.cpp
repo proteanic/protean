@@ -123,6 +123,8 @@ BOOST_AUTO_TEST_CASE(test_array_variant)
     BOOST_CHECK_EQUAL(v2.compare(v2), 0);
     BOOST_CHECK_EQUAL(v1.compare(v2), -1);
     BOOST_CHECK_EQUAL(v2.compare(v1), 1);
+
+    BOOST_CHECK_EQUAL(v1.hash(), 0x2f24bc620e696f1eUL);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

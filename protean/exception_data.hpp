@@ -10,6 +10,8 @@
 
 #include <string>
 
+#include <boost/cstdint.hpp>
+
 #if defined(_MSC_VER)
 #    pragma warning(push)
 #    pragma warning(disable:4512 4251)
@@ -31,7 +33,7 @@ namespace protean {
         const std::string& stack() const;
 
         int compare(const exception_data& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
 
         static std::string format(const char* class_name);
 

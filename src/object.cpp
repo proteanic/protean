@@ -6,7 +6,7 @@
 #include <protean/object.hpp>
 #include <protean/variant.hpp>
 
-#include <boost/functional/hash.hpp>
+#include <protean/detail/hash.hpp>
 
 namespace protean {
 
@@ -44,13 +44,13 @@ namespace protean {
         }
     }
 
-    size_t object::hash() const
+    boost::uint64_t object::hash(boost::uint64_t seed) const
     {
-        size_t seed = 0;
-        boost::hash_combine(seed, name() );
+        seed = detail::hash_value(name(), seed);
+
         variant params;
         deflate(params);
-        boost::hash_combine(seed, params );
+        seed = detail::hash_value(params, seed);
 
         return seed;
     }

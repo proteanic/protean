@@ -126,7 +126,7 @@ namespace protean {
         static enum_type_t string_to_enum(const std::string& type);
 
         int compare(enum_type_t type, const variant_base& rhs) const;
-        size_t hash(enum_type_t type) const;
+        boost::uint64_t hash(enum_type_t type, boost::uint64_t seed) const;
 
     private:
         friend class detail::xml_default_handler;

@@ -35,7 +35,7 @@ namespace protean { namespace detail {
 
         size_t size() const;
         int compare(const string& rhs) const;
-        size_t hash() const;
+        boost::uint64_t hash(boost::uint64_t seed) const;
 
     private:
         char* heapPointer();
