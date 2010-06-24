@@ -52,7 +52,7 @@ namespace protean { namespace detail {
 
             std::string m_name;
             variant     m_attributes;
-            int         m_level;
+            size_t      m_level;
         };
 
         std::stack<element_info>    m_stack;
