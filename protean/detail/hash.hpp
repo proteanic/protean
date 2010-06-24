@@ -14,8 +14,14 @@
 
 #include <protean/detail/crc64.hpp>
 
-namespace protean { namespace detail
+namespace protean { 
+
+class variant;
+
+namespace detail
 {
+    inline boost::uint64_t hash_value(const variant& value, boost::uint64_t seed);
+
     inline boost::uint64_t hash_value(const unsigned char* value, size_t length, boost::uint64_t seed)
     {
         return update_crc64(seed, value, length);
