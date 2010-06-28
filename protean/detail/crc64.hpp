@@ -151,4 +151,4 @@ namespace protean { namespace detail {
 
 }} // protean::detail
 
-#endif
+#endif // PROTEAN_DETAIL_CRC64_HPP
