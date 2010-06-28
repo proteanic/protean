@@ -248,7 +248,6 @@
     <ClCompile Include="..\..\src\buffer.cpp" />
     <ClCompile Include="..\..\src\dictionary.cpp" />
     <ClCompile Include="..\..\src\exception_data.cpp" />
-    <ClCompile Include="..\..\src\hash.cpp" />
     <ClCompile Include="..\..\src\list.cpp" />
     <ClCompile Include="..\..\src\object.cpp" />
     <ClCompile Include="..\..\src\object_factory.cpp" />
@@ -276,6 +275,7 @@
     <ClInclude Include="..\..\protean\binary_reader.hpp" />
     <ClInclude Include="..\..\protean\binary_writer.hpp" />
     <ClInclude Include="..\..\protean\config.hpp" />
+    <ClInclude Include="..\..\protean\detail\crc64.hpp" />
     <ClInclude Include="..\..\protean\detail\scoped_xmlch.hpp" />
     <ClInclude Include="..\..\protean\detail\xerces_include.hpp" />
     <ClInclude Include="..\..\protean\detail\xml_default_handler.hpp" />

@@ -16,9 +16,6 @@
     <ClCompile Include="..\..\src\buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\hash.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -232,6 +229,9 @@
       <Filter>Header Files\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\..\protean\detail\xml_writer_impl.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\detail\crc64.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
   </ItemGroup>
