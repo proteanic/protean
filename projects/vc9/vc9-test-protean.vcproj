@@ -46,6 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="_DEBUG;PROTEAN_DYN_LINK"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 			/>
 			<Tool
@@ -114,6 +115,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="_DEBUG;PROTEAN_DYN_LINK"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 			/>
 			<Tool
@@ -315,6 +317,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="_DEBUG"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 			/>
 			<Tool
@@ -382,6 +385,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="_DEBUG"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 			/>
 			<Tool
