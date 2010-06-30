@@ -4,7 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #if defined(_MSC_VER)
-#    pragma warning(disable:4503 4996)
+#    pragma warning(disable:4244 4503 4996)
 #endif
 
 #include "BinaryReader.hpp"
