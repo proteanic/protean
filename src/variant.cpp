@@ -690,14 +690,13 @@ namespace protean {
         }
         else
         {
-            try
-            {
-                return boost::lexical_cast<double>(arg);
-            }
-            catch(const boost::bad_lexical_cast&)
+            char *endp;
+            double result = strtod(arg.c_str(), &endp);
+            if (arg.c_str()==endp || *endp != '\0')
             {
                 boost::throw_exception(variant_error(std::string("Bad lexical cast: failed to interpret ") + arg + " as double"));
             }
+            return result;
         }
     }
     template<> variant::date_t variant::lexical_cast<variant::date_t>(const std::string& arg)

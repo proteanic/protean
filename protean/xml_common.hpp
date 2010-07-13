@@ -26,7 +26,7 @@ namespace protean {
 
             // Default mode
             CreateProxy         = 0x00000002,     // xml_reader: create proxy object if class has not been registered in factory
-            NoTypeAttributes    = 0x00000004,     // xml_writer: omit variant type attributes
+            NativeFP            = 0x00000004,     // xml_reader/xml_writer: serialise floating point numbers in native format
             
             // Preserve mode
             Preserve            = 0x00000008,     // xml_reader/xml_writer: preserve structure of XML

@@ -16,6 +16,7 @@ using boost::unit_test::test_suite;
 #include <protean/object_factory.hpp>
 using namespace protean;
 
+
 BOOST_AUTO_TEST_SUITE(xml_streams_suite);
 
 BOOST_AUTO_TEST_CASE(test_xml_primitives)
@@ -594,38 +595,36 @@ BOOST_AUTO_TEST_CASE(test_xml_indent)
     BOOST_CHECK_EQUAL(formatted_xml, oss.str());
 }
 
-BOOST_AUTO_TEST_CASE(test_xml_no_type_attributes)
+// see TRAC #46
+BOOST_AUTO_TEST_CASE(test_xml_native_fp)
 {
-    static const std::string xml =
-        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-        "<Variant>\n"
-        "  <Boolean>true</Boolean>\n"
-        "  <Date>2007-01-03</Date>\n"
-        "  <DateTime>2007-01-03T10:30:00</DateTime>\n"
-        "  <Float>0.5</Float>\n"
-        "  <Double>1</Double>\n"
-        "  <Integer>1</Integer>\n"
-        "  <Unsigned>2</Unsigned>\n"
-        "  <Int32>3</Int32>\n"
-        "  <UInt32>4</UInt32>\n"
-        "  <Int64>5</Int64>\n"
-        "  <UInt64>6</UInt64>\n"
-        "  <String>Element</String>\n"
-        "  <Time>10:30:00</Time>\n"
-        "</Variant>";
+    double value1 = 0.0034326330806188038;
 
-    std::stringstream iss;
-    iss << xml;
+    variant v1(value1);
 
-    variant v1;
-    xml_reader reader2(iss);
-    reader2 >> v1;
+    std::stringstream ss1;
+    xml_writer writer1(ss1, xml_mode::NativeFP);
+    writer1 << v1;
 
-    std::ostringstream oss;
-    xml_writer writer(oss, xml_mode::Indent | xml_mode::NoTypeAttributes);
-    writer << v1;
+    variant v2;
+    xml_reader reader1(ss1, xml_mode::NativeFP);
+    reader1 >> v2;
 
-    BOOST_CHECK_EQUAL(iss.str(), oss.str());
+    BOOST_CHECK_EQUAL(v2.as<double>(), value1);
+
+    float value2 = 0.0034326330806188038;
+
+    variant v3(value2);
+
+    std::stringstream ss2;
+    xml_writer writer2(ss2, xml_mode::NativeFP);
+    writer2 << v3;
+
+    variant v4;
+    xml_reader reader2(ss2, xml_mode::NativeFP);
+    reader2 >> v4;
+
+    BOOST_CHECK_EQUAL(v4.as<float>(), value2);
 }
 
 BOOST_AUTO_TEST_CASE(test_xml_double)
