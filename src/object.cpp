@@ -31,9 +31,14 @@ namespace protean {
 
     int object::compare(const object& rhs) const
     {
-        if ( name()!=rhs.name() )
+        if (name()!=rhs.name())
         {
             return name().compare(rhs.name());
+        }
+        else if (version()!=rhs.version())
+        {
+			
+            return version()<rhs.version() ? -1 : 1;
         }
         else
         {
