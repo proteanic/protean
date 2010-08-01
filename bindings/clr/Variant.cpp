@@ -343,11 +343,6 @@ namespace protean { namespace clr {
 
 		return System::DateTime(1400, 1, 1) + System::TimeSpan(total_millis * 10000);
 
-		//new TimeSpan(total_millis * 10000);
-
-        //protean::variant::date_time_t dt(m_variant->as<protean::variant::date_time_t>());
-        //return System::DateTime(dt.date().year(), dt.date().month(), dt.date().day(), dt.time_of_day().hours(), dt.time_of_day().minutes(), dt.time_of_day().seconds() );
-
         END_TRANSLATE_ERROR();
     }
     array<System::Byte>^ Variant::AsBuffer()

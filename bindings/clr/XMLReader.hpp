@@ -26,9 +26,18 @@ namespace protean { namespace clr {
 
         Variant^ Read();
 
+        void SetEntityPath(System::String^ path);
+        void SetExternalSchema(System::String^ id);
+        void AddEntityReader(System::String^ id, System::IO::TextReader^ reader);
+
     private:
         boost::iostreams::stream<TextReader>*   m_reader;
         XMLMode                                 m_mode;
+
+		System::String^							m_entityPath;
+		System::String^							m_externalSchema;
+		System::Collections::Generic::Dictionary<System::String^,System::IO::TextReader^>^ m_entityReaders;
+
     };
 
 }} // protean::clr
