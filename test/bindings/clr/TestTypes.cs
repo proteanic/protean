@@ -79,6 +79,20 @@ namespace protean
 
                     Assert.AreEqual(datetime, v.AsDateTime());
                 }
+
+                [Test]
+                public void TestMillis()
+                {
+                    TimeSpan duration = new TimeSpan(1, 25, 3, 4, 5);
+                    Variant v1 = new Variant(duration);
+
+                    Assert.AreEqual(duration, v1.AsTime());
+
+                    DateTime datetime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
+                    Variant v2 = new Variant(datetime);
+
+                    Assert.AreEqual(datetime, v2.AsDateTime());
+                }
             }
         }
     }

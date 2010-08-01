@@ -17,7 +17,7 @@ namespace protean { namespace clr {
         ZlibHeader      = protean::binary_mode::ZlibHeader,
         //CreateProxy     = protean::binary_mode::CreateProxy, // not supported in CLR yet
         DateTimeAsTicks = protean::binary_mode::DateTimeAsTicks,
-        Default         = protean::binary_mode::None,
+        Default         = protean::binary_mode::DateTimeAsTicks,
     };
 
 }}

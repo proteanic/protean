@@ -120,7 +120,7 @@ namespace protean { namespace clr {
     {
         BEGIN_TRANSLATE_ERROR();
 
-        protean::variant::time_t time(arg.Hours, arg.Minutes, arg.Seconds);
+        protean::variant::time_t time = boost::posix_time::time_duration(arg.Hours + 24*arg.Days, arg.Minutes, arg.Seconds) + boost::posix_time::millisec(arg.Milliseconds);
         m_variant = new protean::variant(time);
 
         END_TRANSLATE_ERROR();
@@ -131,7 +131,7 @@ namespace protean { namespace clr {
         BEGIN_TRANSLATE_ERROR();
 
         protean::variant::date_t date(arg.Date.Year, arg.Date.Month, arg.Date.Day);
-        protean::variant::time_t time(arg.TimeOfDay.Hours, arg.TimeOfDay.Minutes, arg.TimeOfDay.Seconds);
+        protean::variant::time_t time = boost::posix_time::time_duration(arg.TimeOfDay.Hours, arg.TimeOfDay.Minutes, arg.TimeOfDay.Seconds) + boost::posix_time::millisec(arg.TimeOfDay.Milliseconds);
         protean::variant::date_time_t dateTime(date, time);
         m_variant = new protean::variant(dateTime);
 
@@ -329,8 +329,7 @@ namespace protean { namespace clr {
 
         STRONG_REFERENCE(this);
 
-        protean::variant::time_t t(m_variant->as<protean::variant::time_t>());
-        return System::TimeSpan(t.hours(), t.minutes(), t.seconds());
+        return System::TimeSpan(10000 * m_variant->as<protean::variant::time_t>().total_milliseconds());
 
         END_TRANSLATE_ERROR();
     }
@@ -340,8 +339,14 @@ namespace protean { namespace clr {
 
         STRONG_REFERENCE(this);
 
-        protean::variant::date_time_t dt(m_variant->as<protean::variant::date_time_t>());
-        return System::DateTime(dt.date().year(), dt.date().month(), dt.date().day(), dt.time_of_day().hours(), dt.time_of_day().minutes(), dt.time_of_day().seconds() );
+		boost::int64_t total_millis = (m_variant->as<protean::variant::date_time_t>() - variant::min_date_time()).total_milliseconds();
+
+		return System::DateTime(1400, 1, 1) + System::TimeSpan(total_millis * 10000);
+
+		//new TimeSpan(total_millis * 10000);
+
+        //protean::variant::date_time_t dt(m_variant->as<protean::variant::date_time_t>());
+        //return System::DateTime(dt.date().year(), dt.date().month(), dt.date().day(), dt.time_of_day().hours(), dt.time_of_day().minutes(), dt.time_of_day().seconds() );
 
         END_TRANSLATE_ERROR();
     }

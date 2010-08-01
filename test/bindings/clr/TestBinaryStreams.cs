@@ -66,6 +66,26 @@ namespace protean
 
                     Assert.True(input.Equals(output));
                 }
+
+                [Test]
+                public void TestDateTime()
+                {
+                    TimeSpan duration = new TimeSpan(1, 25, 3, 4, 5);
+                    Variant v1 = new Variant(duration);
+
+                    byte[] bytes1 = BinaryWriter.ToBytes(v1, BinaryMode.DateTimeAsTicks);
+                    Variant v2 = BinaryReader.FromBytes(bytes1);
+
+                    Assert.AreEqual(v1.AsTime(), v2.AsTime());
+
+                    DateTime datetime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
+                    Variant v3 = new Variant(datetime);
+
+                    byte[] bytes2 = BinaryWriter.ToBytes(v3, BinaryMode.DateTimeAsTicks);
+                    Variant v4 = BinaryReader.FromBytes(bytes2);
+
+                    Assert.AreEqual(v3.AsDateTime(), v4.AsDateTime());
+                }
             }
         }
     }
