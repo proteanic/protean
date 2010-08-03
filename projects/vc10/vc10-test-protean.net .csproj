@@ -1,24 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FE65C748-71EF-4373-A2ED-5CB4F74E841B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>protean.clr.test</RootNamespace>
-    <AssemblyName>test-protean-clr</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -89,24 +70,39 @@
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <ProjectGuid>{867F4343-F062-4937-BD8E-2C00F64AB160}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>protean.test</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>test-protean.net</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\test\bindings\clr\TestTypes.cs" />
-    <Compile Include="..\..\test\bindings\clr\AssemblyInfo.cs" />
-    <Compile Include="..\..\test\bindings\clr\TestBinaryStreams.cs" />
-    <Compile Include="..\..\test\bindings\clr\TestXMLStreams.cs" />
-    <Compile Include="..\..\test\bindings\clr\TestEnumerator.cs" />
+    <Compile Include="..\..\test\bindings\cs\AssemblyInfo.cs" />
+    <Compile Include="..\..\test\bindings\cs\TestDictionary.cs">
+      <Link>TestDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestPrimitives.cs">
+      <Link>TestPrimitives.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="vc10-protean-clr.vcxproj">
-      <Project>{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}</Project>
-      <Name>vc10-protean-clr</Name>
+    <ProjectReference Include="vc10-protean.net.csproj">
+      <Project>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</Project>
+      <Name>vc10-protean.net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

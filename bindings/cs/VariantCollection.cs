@@ -12,6 +12,8 @@ namespace protean {
     public interface IVariantCollection : IVariantData
     {
         int Count { get; }
+
+        IEnumerator<VariantItem> GetEnumerator();
     }
 
     public class VariantTimeSeries : IVariantCollection
@@ -21,9 +23,9 @@ namespace protean {
             Value = new List<KeyValuePair<DateTime, Variant>>();
         }
 
-        public VariantTimeSeries(UInt32 capacity)
+        public VariantTimeSeries(int capacity)
         {
-            Value = new List<KeyValuePair<DateTime, Variant>>((int)capacity);
+            Value = new List<KeyValuePair<DateTime, Variant>>(capacity);
         }
 
         public VariantTimeSeries(VariantTimeSeries rhs)
@@ -34,6 +36,11 @@ namespace protean {
         public int Count
         {
             get { return Value.Count; }
+        }
+
+        public IEnumerator<VariantItem> GetEnumerator()
+        {
+            return new VariantEnumerator(Type, Value);
         }
 
         public VariantBase.EnumType Type
@@ -61,6 +68,11 @@ namespace protean {
             get { return Value.Count; }
         }
 
+        public IEnumerator<VariantItem> GetEnumerator()
+        {
+            return new VariantEnumerator(Type, Value);
+        }
+
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.Dictionary; }
@@ -76,9 +88,9 @@ namespace protean {
             Value = new List<Variant>();
         }
 
-        public VariantList(UInt32 capacity)
+        public VariantList(int capacity)
         {
-            Value = new List<Variant>((int)capacity);
+            Value = new List<Variant>(capacity);
         }
 
         public VariantList(VariantList rhs)
@@ -89,6 +101,11 @@ namespace protean {
         public int Count
         {
             get { return Value.Count; }
+        }
+
+        public IEnumerator<VariantItem> GetEnumerator()
+        {
+            return new VariantEnumerator(Type, Value);
         }
 
         public VariantBase.EnumType Type
@@ -111,7 +128,7 @@ namespace protean {
             Value = value;
         }
 
-        public VariantTuple(UInt32 capacity)
+        public VariantTuple(int capacity)
         {
             Value = new Variant[capacity];
         }
@@ -125,6 +142,11 @@ namespace protean {
         public int Count
         {
             get { return Value.Length; }
+        }
+
+        public IEnumerator<VariantItem> GetEnumerator()
+        {
+            return new VariantEnumerator(Type, Value);
         }
 
         public VariantBase.EnumType Type
@@ -150,6 +172,11 @@ namespace protean {
         public int Count
         {
             get { return Value.Count; }
+        }
+
+        public IEnumerator<VariantItem> GetEnumerator()
+        {
+            return new VariantEnumerator(Type, Value);
         }
 
         public VariantBase.EnumType Type

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace protean {
 
-    class VariantException :
+    public class VariantException :
         System.ApplicationException
     {
         public VariantException(String message) :

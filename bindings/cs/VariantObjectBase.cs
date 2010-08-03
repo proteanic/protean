@@ -17,7 +17,7 @@ namespace protean {
 
         public abstract Variant Deflate();
 
-        public abstract void Inflate(Variant param, UInt32 version);
+        public abstract void Inflate(Variant param, int version);
 
         public VariantBase.EnumType Type
         {

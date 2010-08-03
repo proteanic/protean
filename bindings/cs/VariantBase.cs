@@ -52,19 +52,16 @@ namespace protean {
     // Buffer
     public class VariantBuffer : IVariantData
     {
-        public VariantBuffer(UInt32 capacity)
-        {
-            Value = new Byte[capacity];
+        public VariantBuffer(int capacity) {
+            Value = new byte[capacity];
         }
 
-        public VariantBuffer(Byte[] value)
-        {
+        public VariantBuffer(byte[] value) {
             Value = value;
         }
 
-        public VariantBuffer(VariantBuffer rhs)
-        {
-            Value = new Byte[rhs.Value.Length];
+        public VariantBuffer(VariantBuffer rhs) {
+            Value = new byte[rhs.Value.Length];
             Array.Copy(rhs.Value, Value, Value.Length);
         }
 
@@ -73,7 +70,7 @@ namespace protean {
             get { return VariantBase.EnumType.Buffer; }
         }
 
-        public Byte[] Value { get; set; }
+        public byte[] Value { get; set; }
     }
 
     public abstract class VariantBase
@@ -119,7 +116,7 @@ namespace protean {
             Value = new VariantNone();
         }
 
-        protected VariantBase(EnumType type, UInt32 size)
+        protected VariantBase(EnumType type, int size)
         {
             switch (type)
             {
@@ -245,25 +242,23 @@ namespace protean {
         // Is/As only work for primitive types
         public T As<T>()
         {
-            if (!(Value is IVariantPrimitive))
+            if (Value is VariantPrimitive<T>)
             {
-                throw new VariantException("Attempt to call As<T> on non-primitive " + Type.ToString() + " variant");
+                return (Value as VariantPrimitive<T>).Value;
+            } 
+            else if (Value is VariantAny)
+            {
+                String str = ((VariantAny)Value).Value;
+                return (T)Convert.ChangeType(str, typeof(T));
             }
-
-            if (!Is<T>())
+            else
             {
                 throw new VariantException("Attempt to fetch " + typeof(T).Name + " from " + Type.ToString() + " variant.");
             }
-
-            return (Value as VariantPrimitive<T>).Value;
         }
 
         public bool Is<T>()
         {
-            if (!(Value is IVariantPrimitive))
-            {
-                throw new VariantException("Attempt to call Is<T> on non-primitive " + Type.ToString() + " variant");
-            }
             return (Value is VariantPrimitive<T>);
         }
 

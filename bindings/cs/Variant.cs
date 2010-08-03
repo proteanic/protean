@@ -26,66 +26,50 @@ namespace protean {
             base(type, 0)
         { }
 
-        public Variant(EnumType type, UInt32 size) :
+        public Variant(EnumType type, int size) :
             base(type, size)
         { }
 
-        public Variant(String arg)
-        {
+        public Variant(string arg) {
             Value = new VariantPrimitive<String>(arg);
         }
 
-        public Variant(bool arg)
-        {
+        public Variant(bool arg) {
             Value = new VariantPrimitive<bool>(arg);
         }
-        public Variant(Int32 arg)
-        {
+        public Variant(Int32 arg) {
             Value = new VariantPrimitive<Int32>(arg);
         }
 
-        public Variant(UInt32 arg)
-        {
+        public Variant(UInt32 arg) {
             Value = new VariantPrimitive<UInt32>(arg);
         }
 
-        public Variant(Int64 arg)
-        {
+        public Variant(Int64 arg) {
             Value = new VariantPrimitive<Int64>(arg);
         }
 
-        public Variant(UInt64 arg)
-        {
+        public Variant(UInt64 arg) {
             Value = new VariantPrimitive<UInt64>(arg);
         }
 
-        public Variant(float arg)
-        {
-            Value = new VariantPrimitive<float>(arg);
-        }
-
-        public Variant(double arg)
-        {
+        public Variant(double arg) {
             Value = new VariantPrimitive<double>(arg);
         }
 
-        public Variant(TimeSpan arg)
-        {
+        public Variant(TimeSpan arg) {
             Value = new VariantPrimitive<TimeSpan>(arg);
         }
 
-        public Variant(DateTime arg)
-        {
+        public Variant(DateTime arg) {
             Value = new VariantPrimitive<DateTime>(arg);
         }
 
-        public Variant(byte[] arg)
-        {
+        public Variant(byte[] arg) {
             Value = new VariantBuffer(arg);
         }
 
-        public Variant(VariantObjectBase arg)
-        {
+        public Variant(VariantObjectBase arg)  {
             Value = arg;
         }
 
@@ -94,8 +78,7 @@ namespace protean {
         {
         }
 
-        public  Variant(ExceptionInfo arg)
-        {
+        public  Variant(ExceptionInfo arg) {
             Value = arg;
         }
 
@@ -110,6 +93,7 @@ namespace protean {
         // Lists
         public void Add(Variant value)
         {
+            CheckType(EnumType.List, "Remove");
             (Value as VariantList).Value.Add(value);
         }
 
@@ -121,17 +105,20 @@ namespace protean {
 
         public void Add(String key, Variant value)
         {
+            CheckType(EnumType.Dictionary, "Add");
             (Value as VariantDictionary).Value.Add(key, value);
         }
 
         public void Remove(String key)
         {
+            CheckType(EnumType.Dictionary, "Remove");
             (Value as VariantDictionary).Value.Remove(key);
         }
 
         // TimeSeries
         public void Add(DateTime time, Variant value)
         {
+            CheckType(EnumType.TimeSeries, "Add");
             (Value as VariantTimeSeries).Value.Add(new KeyValuePair<DateTime, Variant>(time, value));
         }
 
@@ -145,80 +132,298 @@ namespace protean {
             get { return Count==0; }
         }
 
-        public Variant this[String key]
+        public Variant this[string key]
         {
             get { return (Value as VariantDictionary).Value[key]; }
             set { (Value as VariantDictionary).Value[key] = value; }
         }
 
-        public Variant this[UInt32 index]
+        public Variant this[int index]
         {
-            get
-            {
-                if (Value is VariantTuple)
-                {
-                    return (Value as VariantTuple).Value[(int)index];
+            
+            get {
+                CheckType(EnumType.Sequence, "this[]");
+
+                if (Value is VariantTuple) {
+                    return (Value as VariantTuple).Value[index];
                 }
-                else
-                {
-                    return (Value as VariantList).Value[(int)index];
+                else {
+                    return (Value as VariantList).Value[index];
                 }
             }
 
             set
             {
-                if (Value is VariantTuple)
-                {
+                CheckType(EnumType.Sequence, "this[]");
+
+                if (Value is VariantTuple) {
                     (Value as VariantTuple).Value[index] = value;
                 }
-                else
-                {
-                    (Value as VariantList).Value[(int)index] = value;
+                else {
+                    (Value as VariantList).Value[index] = value;
                 }
             }
+        }
+
+        public Variant As(EnumType type)
+        {
+            return new Variant();
+        }
+
+        string ToString(bool summarise, string indent)
+        {
+            const string tab = "   ";
+            const string no_indent = "";
+
+            string result = indent;
+        
+            switch (Type)
+            {
+                case EnumType.None:
+                    result += "None";
+                    break;
+                case EnumType.Any:
+                    result += "Any('" + As<string>() + "')";
+                    break;
+                case EnumType.String:
+                    result += "'" + As<string>() + "'";
+                    break;
+                case EnumType.Int32:
+                case EnumType.UInt32:
+                case EnumType.Int64:
+                case EnumType.UInt64:
+                case EnumType.Float:
+                case EnumType.Double:
+                case EnumType.Boolean:
+                case EnumType.Time:
+                case EnumType.DateTime:
+                    result += "value";
+                    //result += any_cast().as<std::string>();
+                    break;
+                case EnumType.List:
+                {
+                    if (summarise)
+                    {
+                        result += "List(size=" + Count.ToString() + ")";
+                    }
+                    else
+                    {
+                        result += "[\n";
+                        int count = Count;
+                        foreach (VariantItem item in this)
+                        {
+                            result += item.Value.ToString(false, indent+tab);
+                            if (--count>0)
+                            {
+                                result += ",";
+                            }
+                            result += "\n";
+                        }
+                        result += indent + "]";
+                    }
+                    break;
+                }
+                case EnumType.Dictionary:
+                {
+                    if (summarise)
+                    {
+                        result += "Dictionary(size=" + Count.ToString() + ")";
+                    }
+                    else
+                    {
+                        result += "{\n";
+                        int count = Count;
+                        foreach (VariantItem item in this)
+                        {
+                            result += indent + tab + item.Key + ": ";
+                            if (item.Value.Is(EnumType.Primitive))
+                            {
+                                result += item.Value.ToString(false, no_indent);
+                            }
+                            else
+                            {
+                                result += "\n" + item.Value.ToString(false, indent + tab + tab);
+                            }
+                            if (--count!=0)
+                            {
+                                result += ",";
+                            }
+                            result += "\n";
+                        }
+                        result += indent + "}";
+                    }
+                    break;
+                }
+                case EnumType.Bag:
+                {
+                    if (summarise)
+                    {
+                        result += "Bag(size=" + Count + ")";
+                    }
+                    else
+                    {
+                        result += "[\n";
+                        int count = Count;
+                        foreach (VariantItem item in this)
+                        {
+                            result += indent + tab + "(" + item.Key + ", ";
+                            if (item.Value.Is(EnumType.Primitive))
+                            {
+                                result += item.Value.ToString(false, no_indent);
+                            }
+                            else
+                            {
+                                result += "\n" + item.Value.ToString(false, indent+tab);
+                            }
+                            result += ")";
+                            if (--count!=0)
+                            {
+                                result += ",";
+                            }
+                            result += "\n";
+                        }
+                        result += indent + "]";
+                    }
+                    break;
+                }
+                case EnumType.TimeSeries:
+                {
+                    if (summarise)
+                    {
+                        result += "TimeSeries(size=" + Count + ")";
+                    }
+                    else
+                    {
+                        result += "TimeSeries(\n";
+                        int count = Count;
+                        foreach (VariantItem item in this)
+                        {
+                            result += indent + tab + "(" + item.Time + ", ";
+                            if (item.Value.Is(EnumType.Primitive))
+                            {
+                                result += item.Value.ToString(false, no_indent);
+                            }
+                            else
+                            {
+                                result += "\n" + item.Value.ToString(false, indent + tab);
+                            }
+                            result += ")";
+                            if (--count!=0)
+                            {
+                                result += ",";
+                            }
+                            result += "\n";
+                        }
+                        result += indent + ")";
+                    }
+                    break;
+                }
+                case EnumType.Buffer:
+                {
+                    if (summarise)
+                    {
+                        result += "Buffer(size=" + Count + ")";
+                    }
+                    else
+                    {
+                        result += "Buffer(";
+
+                        byte[] bytes = (Value as VariantBuffer).Value;
+                        result += bytes.ToString();
+                        result += ')';
+                    }
+                    break;
+                }
+                case EnumType.Tuple:
+                {
+                    if (summarise)
+                    {
+                        result += "Tuple(size=" + Count + ")";
+                    }
+                    else
+                    {
+                        result += "(\n";
+                        int count = Count;
+                        foreach (VariantItem item in this)
+                        {
+                            result += item.Value.ToString(false, indent+tab);
+                            if (--count!=0)
+                            {
+                                result += ",";
+                            }
+                            result += "\n";
+
+                        }
+                        result += indent + ")";
+                    }
+                    break;
+                }
+                case EnumType.Exception:
+                {
+                    /*
+                    const exception_data& x(as<exception_data>());
+                    oss << x.type() << "('" << x.message() << "')";
+
+                    if (!x.source().empty())
+                    {
+                        oss << " in: " << x.source();
+                    }
+
+                    if (!x.stack().empty())
+                    {
+                        oss << "\n" << x.stack();
+                    }
+                    */
+                    break;
+                }
+                case EnumType.Object:
+                {
+                    /*
+                    handle<object> obj(m_value.get<Object>());
+                    if (summarise)
+                    {
+                        oss << obj->name() << "(version=" << obj->version() << ")";
+                    }
+                    else
+                    {
+                        variant param;
+                        obj->deflate(params);
+
+                        oss << obj->name() << "(\n";
+                        oss << params.str(false, indent + tab);
+                        oss << "\n" << indent;
+                    }
+                     * */
+                    break;
+                }
+                default:
+                    result += "UNKNOWN<" + Type + ">";
+                    break;
+            }
+            return result;
         }
 
         public override String ToString()
         {
-            // TODO
-            return ToString(false);
+            return ToString(false, "");
         }
 
         String ToString(bool summarise)
         {
-            // TODO
-            return Type.ToString();
+            return ToString(summarise, "");
         }
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            if (Value is VariantList)
-            {
-                return new VariantEnumerator(EnumType.List, (Value as VariantList).Value);
-            }
-            else if (Value is VariantDictionary)
-            {
-                return new VariantEnumerator(EnumType.Dictionary, (Value as VariantDictionary).Value);
-            }
-            else if (Value is VariantBag)
-            {
-                return new VariantEnumerator(EnumType.Bag, (Value as VariantBag).Value);
-            }
-            else if (Value is VariantTimeSeries)
-            {
-                return new VariantEnumerator(EnumType.TimeSeries, (Value as VariantTimeSeries).Value);
-            }
-            else{
-                throw new VariantException("Attempt to call GetEnumerator on " + Type.ToString() + "variant");
-            }
-        }
+            CheckType(EnumType.Collection, "GetEnumerator()");
 
+            return (Value as IVariantCollection).GetEnumerator();
+        }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
 
         // System::IConvertible
         public TypeCode GetTypeCode()
@@ -299,6 +504,15 @@ namespace protean {
         public ulong ToUInt64(IFormatProvider provider)
         {
             return As<UInt64>();
+        }
+
+        // helpers
+        private void CheckType(EnumType type, string fn)
+        {
+            if (!Is(type))
+            {
+                throw new VariantException(string.Format("Calling {0} on Variant of type {1}\n{2}", fn, type, ToString()));
+            }
         }
 
         public static readonly DateTime MinDateTime = new DateTime(1400, 1, 1);

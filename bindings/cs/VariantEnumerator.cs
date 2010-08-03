@@ -39,23 +39,18 @@ namespace protean {
                     case Variant.EnumType.List:
                     {
                         IEnumerator<Variant> enumerator = m_enumerator as IEnumerator<Variant>;
-                        Variant value = enumerator.Current;
-                        return new VariantItem(value);
+                        return new VariantItem(enumerator.Current);
                     }
                     case Variant.EnumType.Dictionary:
                     case Variant.EnumType.Bag:
                     {
                         IEnumerator<KeyValuePair<String, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<String, Variant>>;
-                        String key = enumerator.Current.Key;
-                        Variant value = enumerator.Current.Value;
-                        return new VariantItem(key, value);
+                        return new VariantItem(enumerator.Current.Key, enumerator.Current.Value);
                     }
                     case Variant.EnumType.TimeSeries:
                     {
                         IEnumerator<KeyValuePair<DateTime, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<DateTime, Variant>>;
-                        DateTime time = enumerator.Current.Key;
-                        Variant value = enumerator.Current.Value;
-                        return new VariantItem(time, value);
+                        return new VariantItem(enumerator.Current.Key, enumerator.Current.Value);
                     }
                     default:
                         throw new VariantException("Case exhaustion: " + Type.ToString());
@@ -73,7 +68,6 @@ namespace protean {
 
         void IDisposable.Dispose() { }
         
-        private Variant m_parent;
         private System.Collections.IEnumerator m_enumerator;
     }
 

@@ -61,77 +61,51 @@ namespace protean {
             switch (type)
             {
                 case Variant.EnumType.String:
-                {
-                    String value = ReadString();
-                    return new Variant(value);
-                }
-                case Variant.EnumType.Float:
-                {
-                    float value = ReadFloat();
-                    return new Variant(value);
-                }
+                    return new Variant(ReadString());
                 case Variant.EnumType.Double:
-                {
-                    double value = ReadDouble();
-                    return new Variant(value);
-                }
+                    return new Variant(ReadDouble());
                 case Variant.EnumType.Int32:
-                {
-                    Int32 value = ReadInt32();
-                    return new Variant(value);
-                }
+                    return new Variant(ReadInt32());
                 case Variant.EnumType.UInt32:
-                {
-                    UInt32 value = ReadUInt32();
-                    return new Variant(value);
-                }
+                    return new Variant(ReadUInt32());
                 case Variant.EnumType.Int64:
-                {
-                    Int64 value = ReadInt64();
-                    return new Variant(value);
-                }
+                    return new Variant(ReadInt64());
                 case Variant.EnumType.UInt64:
-                {
-                    UInt64 value = ReadUInt64();
-                    return new Variant(value);
-                }
+                    return new Variant(ReadUInt64());
+                case Variant.EnumType.Tuple:
                 case Variant.EnumType.List:
                 {
-                    
-                    Variant result = new Variant(Variant.EnumType.List);
+                    int length = ReadInt32();
 
-                    UInt32 length = ReadUInt32();
-                    for (UInt32 i=0; i<length; ++i)
+                    Variant result = new Variant(type, length);
+                    for (int i=0; i<length; ++i)
                     {
-                        result.Add(ReadVariant());
+                        result[i] = ReadVariant();
                     }
-
                     return result;
                 }
                 case Variant.EnumType.Dictionary:
                 case Variant.EnumType.Bag:
                 {
+                    int length = ReadInt32();
+
                     Variant result = new Variant(type);
-
-                    UInt32 length = ReadUInt32();
-
-                    for (UInt32 i=0; i<length; ++i)
+                    for (int i=0; i<length; ++i)
                     {
                         String key = ReadString();
                         Variant value = ReadVariant();
 
                         result.Add(key, value);
                     }
-
                     return result;
                 }
                 case Variant.EnumType.TimeSeries:
                 {
                     Variant result = new Variant(type);
 
-                    UInt32 length = ReadUInt32();
+                    int length = ReadInt32();
 
-                    for (UInt32 i = 0; i < length; ++i)
+                    for (int i=0; i<length; ++i)
                     {
                         DateTime time = ReadDateTime();
                         Variant value = ReadVariant();
@@ -146,69 +120,53 @@ namespace protean {
             }
         }
 
-        byte[] ReadBytes(int length)
+        byte[] ReadBytes(int length, bool readPadding)
         {
-            byte[] bytes = new byte[length];
-            Filter.Read(bytes, 0, length);
+            byte[] bytes = ReadBytes(length);
 
-            // Add padding
-            int residual = (4 - (length % 4)) % 4;
-            for(int i=0; i<residual; ++i)
+            if (readPadding)
             {
-                Filter.ReadByte();
+                int residual = (4 - (length % 4)) % 4;
+                for (int i = 0; i < residual; ++i)
+                {
+                    Filter.ReadByte();
+                }
             }
 
             return bytes;
         }
-
-        String ReadString()
+        byte[] ReadBytes(int length)
+        {
+            byte[] bytes = new byte[length];
+            Filter.Read(bytes, 0, length);
+            return bytes;
+        }
+        string ReadString()
         {
             Int32 length = ReadInt32();
-            byte[] bytes = ReadBytes(length);
+            byte[] bytes = ReadBytes(length, true);
 
             return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
         }
-        float ReadFloat()
-        {
-            byte[] bytes = new byte[sizeof(float)];
-            Filter.Read(bytes, 0, sizeof(float));
-            return System.BitConverter.ToSingle(bytes, 0);
-        }
         double ReadDouble()
         {
-            byte[] bytes = new byte[sizeof(double)];
-            Filter.Read(bytes, 0, sizeof(double));
-            return System.BitConverter.ToDouble(bytes, 0);
+            return System.BitConverter.Int64BitsToDouble(ReadInt64());
         }
         Int32 ReadInt32()
         {
-            byte[] bytes = new byte[sizeof(Int32)];
-            Filter.Read(bytes, 0, sizeof(Int32));
-            return System.BitConverter.ToInt32(bytes, 0);
+            return System.BitConverter.ToInt32(ReadBytes(sizeof(Int32)), 0);
         }
         UInt32 ReadUInt32()
         {
-            byte[] bytes = new byte[sizeof(UInt32)];
-            Filter.Read(bytes, 0, sizeof(UInt32));
-            return System.BitConverter.ToUInt32(bytes, 0);
+            return System.BitConverter.ToUInt32(ReadBytes(sizeof(UInt32)), 0);
         }
         Int64 ReadInt64()
         {
-            byte[] bytes = new byte[sizeof(Int64)];
-            Filter.Read(bytes, 0, sizeof(Int64));
-            return System.BitConverter.ToInt64(bytes, 0);
+            return System.BitConverter.ToInt64(ReadBytes(sizeof(Int64)), 0);
         }
         UInt64 ReadUInt64()
         {
-            byte[] bytes = new byte[sizeof(UInt64)];
-            Filter.Read(bytes, 0, sizeof(UInt64));
-            return System.BitConverter.ToUInt64(bytes, 0);
-        }
-        DateTime ReadDate()
-        {
-            Int32 total_days = ReadInt32();
-
-            return Variant.MinDateTime + new TimeSpan(total_days, 0, 0, 0);
+            return System.BitConverter.ToUInt64(ReadBytes(sizeof(UInt64)), 0);
         }
         TimeSpan ReadTime()
         {
