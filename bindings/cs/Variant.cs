@@ -82,13 +82,41 @@ namespace protean {
             Value = arg;
         }
 
+        public VariantObjectBase AsObject()
+        {
+            CheckType(EnumType.Object, "AsObject()");
+
+            return Value as VariantObjectBase;
+        }
+
         public T AsObject<T>()
             where T : VariantObjectBase, new()
         {
+            CheckType(EnumType.Object, "AsObject()");
 
-            T newObj = new T();
+            VariantObjectBase o = Value as VariantObjectBase;
 
-            return newObj;
+            T result = o as T;
+
+            if (result==null)
+            {
+                result = new T();
+                result.Coerce(o);
+
+                if (o is VariantObjectProxy)
+                {
+                    Value = result;
+                }
+            }
+
+            return result;
+        }
+
+        public ExceptionInfo AsException()
+        {
+            CheckType(EnumType.Exception, "AsException()");
+
+            return Value as ExceptionInfo;
         }
 
         // Lists
@@ -375,40 +403,37 @@ namespace protean {
                 }
                 case EnumType.Exception:
                 {
-                    /*
-                    const exception_data& x(as<exception_data>());
-                    oss << x.type() << "('" << x.message() << "')";
+                    ExceptionInfo x = AsException();
 
-                    if (!x.source().empty())
+                    result += x.Class + "('" + x.Message + "')";
+                    
+                    if (x.Source.Length>0)
                     {
-                        oss << " in: " << x.source();
+                        result += " in: " + x.Source;
                     }
 
-                    if (!x.stack().empty())
+                    if (x.Stack.Length>0)
                     {
-                        oss << "\n" << x.stack();
+                        result += "\n" + x.Stack;
                     }
-                    */
                     break;
                 }
                 case EnumType.Object:
                 {
-                    /*
-                    handle<object> obj(m_value.get<Object>());
+                    VariantObjectBase o = AsObject();
+
                     if (summarise)
                     {
-                        oss << obj->name() << "(version=" << obj->version() << ")";
+                        result += o.Class + "(version=" + o.Version + ")";
                     }
                     else
                     {
-                        variant param;
-                        obj->deflate(params);
-
-                        oss << obj->name() << "(\n";
-                        oss << params.str(false, indent + tab);
-                        oss << "\n" << indent;
+                        Variant param = o.Deflate();
+                        
+                        result += o.Class + "(version=" + o.Version + ")(\n";
+                        result += param.ToString(false, indent + tab);
+                        result += "\n" + indent + ")";
                     }
-                     * */
                     break;
                 }
                 default:

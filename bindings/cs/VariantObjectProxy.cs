@@ -9,14 +9,20 @@ using System.Text;
 
 namespace protean {
 
-    class VariantObjectProxy : VariantObjectBase
+    public class VariantObjectProxy : VariantObjectBase
     {
         public VariantObjectProxy(string classname)
         {
             m_classname = classname;
+            m_params = new Variant(Variant.EnumType.None);
+            m_version = 0;
         }
 
-        public override string ClassName
+        public VariantObjectProxy() :
+            this("VariantObjectProxy")
+        { }
+
+        public override string Class
         {
             get { return m_classname; }
         }

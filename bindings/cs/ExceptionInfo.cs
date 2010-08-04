@@ -11,15 +11,7 @@ namespace protean {
 
     public class ExceptionInfo : IVariantData
     {
-        public ExceptionInfo(String type, String message)
-        {
-            Class = type;
-            Message = message;
-            Source = "";
-            Stack = "";
-        }
-
-        public ExceptionInfo(String type, String message, String source, String stack)
+        public ExceptionInfo(string type, string message, string source, string stack)
         {
             Class = type;
             Message = message;
@@ -27,31 +19,27 @@ namespace protean {
             Stack = stack;
         }
 
-        public ExceptionInfo(ExceptionInfo rhs)
-        {
-            Class = rhs.Class;
-            Message = rhs.Message;
-            Source = rhs.Source;
-            Stack = rhs.Stack;
-        }
+        public ExceptionInfo(string type, string message) :
+            this(type, message, "", "")
+        { }
 
-        public ExceptionInfo(Exception e)
-        {
-            Class = e.GetType().ToString();
-            Message = e.Message;
-            Source = e.Source;
-            Stack = e.StackTrace;
-        }
+        public ExceptionInfo(ExceptionInfo rhs) :
+            this(rhs.Class, rhs.Message, rhs.Source, rhs.Stack)
+        { }
+
+        public ExceptionInfo(Exception e) :
+            this(e.GetType().ToString(), e.Message, e.Source, e.StackTrace)
+        { }
 
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.Exception; }
         }
 
-        String Class { get; set; }
-        String Message { get; set; }
-        String Source { get; set; }
-        String Stack { get; set; }
+        public string Class { get; set; }
+        public string Message { get; set; }
+        public string Source { get; set; }
+        public string Stack { get; set; }
     }
 
 } // protean

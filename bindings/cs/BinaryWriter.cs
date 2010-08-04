@@ -30,10 +30,12 @@ namespace protean {
 
         public static byte[] ToBytes(Variant value, BinaryMode mode)
         {
-            System.IO.MemoryStream ms = new System.IO.MemoryStream();
-            BinaryWriter writer = new BinaryWriter(ms, mode);
-            writer.Write(value);
-            return ms.GetBuffer();
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            {
+                BinaryWriter writer = new BinaryWriter(ms, mode);
+                writer.Write(value);
+                return ms.GetBuffer();
+            }
         }
 
         public static byte[] ToBytes(Variant value)
@@ -190,6 +192,12 @@ namespace protean {
                     Write(item.Time);
                     WriteVariant(item.Value);
                 }
+                break;
+            case Variant.EnumType.Object:
+                VariantObjectBase o = v.AsObject();
+                Write(o.Class);
+                Write(o.Version);
+                WriteVariant(o.Deflate());
                 break;
             default:
                 throw new VariantException("Case exhaustion: " + type.ToString());

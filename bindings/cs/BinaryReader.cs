@@ -24,9 +24,11 @@ namespace protean {
 
         public static Variant FromBytes(byte[] bytes)
         {
-            System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes);
-            BinaryReader reader = new BinaryReader(ms);
-            return reader.Read();
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes))
+            {
+                BinaryReader reader = new BinaryReader(ms);
+                return reader.Read();
+            }
         }
 
         private void ReadHeader()
@@ -125,6 +127,17 @@ namespace protean {
                     }
 
                     return result;
+                }
+                case Variant.EnumType.Object:
+                {
+                    string className = ReadString();
+                    int version = ReadInt32();
+                    Variant param = ReadVariant();
+
+                    VariantObjectProxy proxy = new VariantObjectProxy(className);
+                    proxy.Inflate(param, version);
+
+                    return new Variant(proxy);
                 }
                 default:
                     throw new VariantException("Case exhaustion: " + type.ToString());

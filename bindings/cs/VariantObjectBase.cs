@@ -11,13 +11,24 @@ namespace protean {
 
     public abstract class VariantObjectBase : IVariantData
     {
-        public abstract string ClassName { get; }
+        public abstract string Class { get; }
 
         public abstract int Version { get; }
 
         public abstract Variant Deflate();
 
         public abstract void Inflate(Variant param, int version);
+
+        public void Coerce(VariantObjectBase rhs)
+        {
+            if (Class!=rhs.Class)
+            {
+                throw new VariantException(string.Format("Attempt to coerce object of type {0} into {1}", rhs.Class, Class));
+            }
+
+            Variant param = rhs.Deflate();
+            Inflate(param, rhs.Version);
+        }
 
         public VariantBase.EnumType Type
         {

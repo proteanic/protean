@@ -92,14 +92,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\test\bindings\cs\AssemblyInfo.cs" />
+    <Compile Include="..\..\test\bindings\cs\TestBinaryStreams.cs">
+      <Link>TestBinaryStreams.cs</Link>
+    </Compile>
     <Compile Include="..\..\test\bindings\cs\TestDictionary.cs">
       <Link>TestDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestObject.cs">
+      <Link>TestObject.cs</Link>
     </Compile>
     <Compile Include="..\..\test\bindings\cs\TestPrimitives.cs">
       <Link>TestPrimitives.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="vc10-protean-clr.vcxproj">
+      <Project>{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}</Project>
+      <Name>vc10-protean-clr</Name>
+    </ProjectReference>
     <ProjectReference Include="vc10-protean.net.csproj">
       <Project>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</Project>
       <Name>vc10-protean.net</Name>

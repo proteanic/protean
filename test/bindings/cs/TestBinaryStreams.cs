@@ -109,5 +109,153 @@ namespace protean.test
 
             Assert.IsTrue(v2.Equals(v3));
         }
+
+        [Test]
+        public void TestPerformanceCS()
+        {
+            Int32 argInt32 = -1;
+            UInt32 argUInt32 = 0xffffffff;
+            Int64 argInt64 = -1;
+            UInt64 argUInt64 = 0xffffffffffffffff;
+            bool argBoolean = true;
+            double argDouble = double.MaxValue;
+            string argString = "test string";
+
+            Variant v1 = new Variant(Variant.EnumType.Dictionary);
+            v1.Add("Int32", new Variant(argInt32));
+            v1.Add("UInt32", new Variant(argUInt32));
+            v1.Add("Int64", new Variant(argInt64));
+            v1.Add("UInt64", new Variant(argUInt64));
+            v1.Add("Boolean", new Variant(argBoolean));
+            v1.Add("Double", new Variant(argDouble));
+            v1.Add("String", new Variant(argString));
+            v1.Add("None", new Variant(Variant.EnumType.None));
+
+            byte[] bytesCompressed = BinaryWriter.ToBytes(v1, BinaryMode.Compress);
+            byte[] bytesDefault = BinaryWriter.ToBytes(v1);
+
+            const int numIterations = 50000;
+
+            DateTime t1 = DateTime.Now;
+
+            // C# serialisation, compressed
+            for (int i = 0; i < numIterations; ++i)
+            {
+                byte[] bytes = BinaryWriter.ToBytes(v1, BinaryMode.Compress);
+                Assert.DoesNotThrow(delegate { BinaryReader.FromBytes(bytes); });
+            }
+
+            DateTime t2 = DateTime.Now;
+
+            // C# serialisation, default
+            for (int i = 0; i < numIterations; ++i)
+            {
+                byte[] bytes = BinaryWriter.ToBytes(v1);
+                Assert.DoesNotThrow(delegate { BinaryReader.FromBytes(bytes); });
+            }
+
+            DateTime t3 = DateTime.Now;
+
+            System.Console.WriteLine("C# serialisation timings: {0} (compressed), {1} (default)", t2 - t1, t3 - t2);
+        }
+
+        [Test]
+        public void TestPerformanceCLR()
+        {
+            Int32 argInt32 = -1;
+            UInt32 argUInt32 = 0xffffffff;
+            Int64 argInt64 = -1;
+            UInt64 argUInt64 = 0xffffffffffffffff;
+            bool argBoolean = true;
+            double argDouble = double.MaxValue;
+            string argString = "test string";
+
+            protean.clr.Variant v1 = new protean.clr.Variant(protean.clr.Variant.EnumType.Dictionary);
+            v1.Add("Int32", new protean.clr.Variant(argInt32));
+            v1.Add("UInt32", new protean.clr.Variant(argUInt32));
+            v1.Add("Int64", new protean.clr.Variant(argInt64));
+            v1.Add("UInt64", new protean.clr.Variant(argUInt64));
+            v1.Add("Boolean", new protean.clr.Variant(argBoolean));
+            v1.Add("Double", new protean.clr.Variant(argDouble));
+            v1.Add("String", new protean.clr.Variant(argString));
+            v1.Add("None", new protean.clr.Variant(protean.clr.Variant.EnumType.None));
+
+            byte[] bytesCompressed = protean.clr.BinaryWriter.ToBytes(v1, protean.clr.BinaryMode.Compress);
+            byte[] bytesDefault = protean.clr.BinaryWriter.ToBytes(v1);
+
+            const int numIterations = 50000;
+
+            DateTime t1 = DateTime.Now;
+
+            // C# serialisation, compressed
+            for (int i = 0; i < numIterations; ++i)
+            {
+                byte[] bytes = protean.clr.BinaryWriter.ToBytes(v1, protean.clr.BinaryMode.Compress);
+                Assert.DoesNotThrow(delegate { BinaryReader.FromBytes(bytes); });
+            }
+
+            DateTime t2 = DateTime.Now;
+
+            // C# serialisation, default
+            for (int i = 0; i < numIterations; ++i)
+            {
+                byte[] bytes = protean.clr.BinaryWriter.ToBytes(v1);
+                Assert.DoesNotThrow(delegate { BinaryReader.FromBytes(bytes); });
+            }
+
+            DateTime t3 = DateTime.Now;
+
+            System.Console.WriteLine("CLR serialisation timings: {0} (compressed), {1} (default)", t2 - t1, t3 - t2);
+        }
+
+        class TestObject1 : VariantObjectBase
+        {
+            public TestObject1(string value)
+            {
+                m_value = value;
+            }
+
+            public TestObject1() :
+                this("default")
+            { }
+
+            public override string Class { get { return "TestObject1"; } }
+
+            public override int Version { get { return 1; } }
+
+            public override Variant Deflate()
+            {
+                Variant result = new Variant(Variant.EnumType.Dictionary);
+                result.Add("value", new Variant(m_value));
+                return result;
+            }
+
+            public override void Inflate(Variant param, int version)
+            {
+                m_value = param["value"].As<string>();
+            }
+
+            private string m_value;
+        }
+
+        [Test]
+        public void TestObject()
+        {
+            TestObject1 o1 = new TestObject1("some value");
+
+            Variant v1 = new Variant(o1);
+
+            byte[] bytes = BinaryWriter.ToBytes(v1);
+            
+            Variant v2 = BinaryReader.FromBytes(bytes);
+
+            Assert.AreEqual(v2.Type, Variant.EnumType.Object);
+
+            TestObject1 o2 = v2.AsObject<TestObject1>();
+
+            Assert.AreEqual(o1.Class, o2.Class);
+            Assert.AreEqual(o1.Version, o2.Version);
+            Assert.IsTrue(o1.Deflate().Equals(o2.Deflate()));
+        }
     }
 }
