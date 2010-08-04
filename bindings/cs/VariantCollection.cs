@@ -9,7 +9,73 @@ using System.Text;
 
 namespace protean {
 
-    public interface IVariantCollection : IVariantData
+    public class KeyValuePairComparer<TKey, TValue> :
+        IComparer<KeyValuePair<TKey, TValue>>
+        where TKey : IComparable<TKey>
+        where TValue : IComparable<TValue>
+    {
+        public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
+        {
+            if (!x.Key.Equals(y.Key))
+            {
+                return x.Key.CompareTo(y.Key);
+            }
+            return x.Value.CompareTo(y.Value);
+        }
+    }
+
+    public static class SequenceComparer
+    {
+        public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b) where T : IComparable<T>
+        {
+            return Compare(a, b, Comparer<T>.Default);
+        }
+
+        public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b, IComparer<T> comparer)
+        {
+            if (a == null || b == null || comparer == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var valueA = a.GetEnumerator();
+            var valueB = b.GetEnumerator();
+
+            bool hasValueA = true;
+            bool hasValueB = true;
+            while (hasValueA && hasValueB)
+            {
+                hasValueA = valueA.MoveNext();
+                hasValueB = valueB.MoveNext();
+
+                if (hasValueA && hasValueB)
+                {
+                    int valueCompare = comparer.Compare(valueA.Current, valueB.Current);
+                    if (valueCompare != 0)
+                    {
+                        return valueCompare;
+                    }
+                }
+            }
+
+            if (hasValueA && !hasValueB)
+            {
+                return 1;
+            }
+            else if (!hasValueA && hasValueB)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+    public interface IVariantCollection :
+        IVariantData,
+        IComparable<IVariantCollection>
     {
         int Count { get; }
 
@@ -53,6 +119,11 @@ namespace protean {
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.TimeSeries; }
+        }
+
+        public int CompareTo(IVariantCollection rhs)
+        {
+            return SequenceComparer.Compare(Value, ((VariantTimeSeries)rhs).Value, new KeyValuePairComparer<DateTime, Variant>());
         }
 
         public List<KeyValuePair<DateTime, Variant>> Value { get; set; }
@@ -133,7 +204,12 @@ namespace protean {
             get { return VariantBase.EnumType.Dictionary; }
         }
 
-        public Dictionary<String, Variant> Value { get; set; }
+        public int CompareTo(IVariantCollection rhs)
+        {
+            return SequenceComparer.Compare(Value, ((VariantDictionary)rhs).Value, new KeyValuePairComparer<string, Variant>());
+        }
+
+        public Dictionary<string, Variant> Value { get; set; }
     }
 
     public class VariantBag : IVariantMapping
@@ -212,6 +288,11 @@ namespace protean {
             return new VariantEnumerator(Type, Value);
         }
 
+        public int CompareTo(IVariantCollection rhs)
+        {
+            return SequenceComparer.Compare(Value, ((VariantBag)rhs).Value, new KeyValuePairComparer<string, Variant>());
+        }
+
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.Bag; }
@@ -282,6 +363,11 @@ namespace protean {
             }
         }
 
+        public int CompareTo(IVariantCollection rhs)
+        {
+            return SequenceComparer.Compare(Value, ((VariantList)rhs).Value);
+        }
+
         public IEnumerator<VariantItem> GetEnumerator()
         {
             return new VariantEnumerator(Type, Value);
@@ -350,6 +436,11 @@ namespace protean {
                 }
                 Value[index] = value;
             }
+        }
+
+        public int CompareTo(IVariantCollection rhs)
+        {
+            return SequenceComparer.Compare(Value, ((VariantTuple)rhs).Value);
         }
 
         public IEnumerator<VariantItem> GetEnumerator()

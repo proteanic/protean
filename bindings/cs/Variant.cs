@@ -13,7 +13,8 @@ namespace protean {
         VariantBase,
         IEnumerable<VariantItem>,
         IConvertible,
-        IEquatable<Variant>
+        IEquatable<Variant>,
+        IComparable<Variant>
     {
         public Variant() :
             base()
@@ -27,9 +28,9 @@ namespace protean {
             base(type, 0)
         { }
 
-        public Variant(EnumType type, string value)
-        {
-        }
+        public Variant(EnumType type, string value) :
+            base(type, value)
+        { }
 
         public Variant(EnumType type, int size) :
             base(type, size)
@@ -450,7 +451,7 @@ namespace protean {
             return ToString(false, "");
         }
 
-        String ToString(bool summarise)
+        public new string ToString(bool summarise)
         {
             return ToString(summarise, "");
         }
@@ -548,11 +549,55 @@ namespace protean {
             return As<UInt64>();
         }
 
-        // System.IEquatable
-        public bool Equals(Variant obj)
+        // System.CompareTo<Variant>
+        public int CompareTo(Variant rhs)
         {
-            // TODO!
-            throw new VariantException("TODO: Implement IEquatable");
+            EnumType type = Type;
+
+            if (type!=rhs.Type)
+            {
+                return Type.CompareTo(rhs.Type);
+            }
+
+            switch(type)
+            {
+                case EnumType.None:
+                    return 0;
+                case EnumType.Any:
+                case EnumType.String:
+                    return As<string>().CompareTo(rhs.As<string>());
+                case EnumType.Int32:
+                    return As<Int32>().CompareTo(rhs.As<Int32>());
+                case EnumType.UInt32:
+                    return As<UInt32>().CompareTo(rhs.As<UInt32>());
+                case EnumType.Int64:
+                    return As<Int64>().CompareTo(rhs.As<Int64>());
+                case EnumType.UInt64:
+                    return As<UInt64>().CompareTo(rhs.As<UInt64>());
+                case EnumType.Double:
+                    return As<double>().CompareTo(rhs.As<double>());
+                case EnumType.Boolean:
+                    return As<bool>().CompareTo(rhs.As<bool>());
+                case EnumType.Time:
+                    return As<TimeSpan>().CompareTo(rhs.As<TimeSpan>());
+                case EnumType.DateTime:
+                    return As<DateTime>().CompareTo(rhs.As<DateTime>());
+                case EnumType.List:
+                case EnumType.Tuple:
+                case EnumType.Dictionary:
+                case EnumType.Bag:
+                case EnumType.TimeSeries:
+                    return (Value as IVariantCollection).CompareTo(rhs.Value as IVariantCollection);
+                default:
+                    throw new VariantException("Case exhaustion: " + Type);
+            }
+        }
+
+        // System.IEquatable<Variant>
+        public bool Equals(Variant rhs)
+        {
+            // lazy, this could be implemented efficiently if required
+            return CompareTo(rhs)==0;
         }
 
         // helpers

@@ -68,11 +68,37 @@ namespace protean.test
             int count = 1;
             foreach (VariantItem item in v)
             {
-                Assert.AreEqual(item.Key, "key" + count);
-                Assert.AreEqual(item.Value.As<string>(), "value" + count);
+                Assert.AreEqual("key" + count, item.Key);
+                Assert.AreEqual("value" + count, item.Value.As<string>());
                 Assert.Throws<VariantException>(delegate { DateTime t = item.Time; });
                 ++count;
             }
+        }
+
+        [Test]
+        public void TestComparison()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Dictionary);
+            v1.Add("key1", new Variant("value1"));
+            v1.Add("key2", new Variant("value2"));
+
+            Variant v2 = new Variant(Variant.EnumType.Dictionary);
+            v2.Add("key1", new Variant("value1"));
+            v2.Add("key2", new Variant("value2"));
+
+            Variant v3 = new Variant(Variant.EnumType.Dictionary);
+            v3.Add("key2", new Variant("value1"));
+            v3.Add("key3", new Variant("value2"));
+
+            Variant v4 = new Variant(Variant.EnumType.Dictionary);
+            v4.Add("key1", new Variant("value2"));
+            v4.Add("key2", new Variant("value3"));
+
+            Assert.AreEqual(0, v1.CompareTo(v2));
+            Assert.AreEqual(-1, v1.CompareTo(v3));
+            Assert.AreEqual(1, v3.CompareTo(v1));
+            Assert.AreEqual(-1, v1.CompareTo(v4));
+            Assert.AreEqual(1, v4.CompareTo(v1));
         }
     }
 }

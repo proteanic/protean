@@ -44,7 +44,7 @@ namespace protean {
         {
             if (typeof(T) == typeof(TimeSpan))
             {
-                return ToString((TimeSpan)Convert.ChangeType(Value, typeof(TimeSpan)));
+                return VariantBase.ToString((TimeSpan)Convert.ChangeType(Value, typeof(TimeSpan)));
             }
             else
             {
@@ -52,64 +52,14 @@ namespace protean {
                 switch (typeCode)
                 {
                     case TypeCode.Double:
-                        return ToString((double)Convert.ChangeType(Value, typeof(double)));
+                        return VariantBase.ToString((double)Convert.ChangeType(Value, typeof(double)));
                     case TypeCode.Boolean:
-                        return ToString((bool)Convert.ChangeType(Value, typeof(bool)));
+                        return VariantBase.ToString((bool)Convert.ChangeType(Value, typeof(bool)));
                     case TypeCode.DateTime:
-                        return ToString((DateTime)Convert.ChangeType(Value, typeof(DateTime)));
+                        return VariantBase.ToString((DateTime)Convert.ChangeType(Value, typeof(DateTime)));
                     default:
                         return Value.ToString();
                 }
-            }
-        }
-
-        private string ToString(bool arg)
-        {
-            return arg ? "true" : "false";
-        }
-
-        private string ToString(double arg)
-        {
-            if (double.IsNaN(arg))
-            {
-                return "NaN";
-            }
-            else if (double.IsPositiveInfinity(arg))
-            {
-                return "INF";
-            }
-            else if (double.IsNegativeInfinity(arg))
-            {
-                return "-INF";
-            }
-            else
-            {
-                return arg.ToString();
-            }
-        }
-
-        private string ToString(DateTime arg)
-        {
-            if (arg.Millisecond == 0)
-            {
-                return arg.ToString("yyyy-MM-ddTHH:mm:ss");
-            }
-            else
-            {
-                return arg.ToString("yyyy-MM-ddTHH:mm:ss.fff");
-            }
-        }
-
-        private string ToString(TimeSpan arg)
-        {
-            DateTime dt = new DateTime(arg.Ticks);
-            if (dt.Millisecond == 0)
-            {
-                return dt.ToString("HH:mm:ss");
-            }
-            else
-            {
-                return dt.ToString("HH:mm:ss.fff");
             }
         }
 

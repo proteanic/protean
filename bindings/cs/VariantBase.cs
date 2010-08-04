@@ -116,6 +116,42 @@ namespace protean {
             Value = new VariantNone();
         }
 
+        protected VariantBase(EnumType type, string value)
+        {
+            switch (type)
+            {
+                case EnumType.Any:
+                    Value = new VariantAny(value);
+                    break;
+                case EnumType.String:
+                    Value = new VariantPrimitive<String>("value");
+                    break;
+                case EnumType.Boolean:
+                    Value = new VariantPrimitive<bool>(ParseBoolean(value));
+                    break;
+                case EnumType.Int32:
+                    Value = new VariantPrimitive<Int32>(Int32.Parse(value));
+                    break;
+                case EnumType.UInt32:
+                    Value = new VariantPrimitive<UInt32>(UInt32.Parse(value));
+                    break;
+                case EnumType.Int64:
+                    Value = new VariantPrimitive<Int64>(Int64.Parse(value));
+                    break;
+                case EnumType.UInt64:
+                    Value = new VariantPrimitive<UInt64>(UInt64.Parse(value));
+                    break;
+                case EnumType.DateTime:
+                    Value = new VariantPrimitive<DateTime>(ParseDateTime(value));
+                    break;
+                case EnumType.Time:
+                    Value = new VariantPrimitive<TimeSpan>(ParseTime(value));
+                    break;
+                default:
+                    throw new VariantException(string.Format("Unable to constract variant of type {0} from string", Type));
+            }
+        }
+
         protected VariantBase(EnumType type, int size)
         {
             switch (type)
@@ -265,6 +301,93 @@ namespace protean {
         public bool Is(EnumType type)
         {
             return (type & Value.Type)!=0;
+        }
+
+        public static double ParseDouble(string str)
+        {
+            if (str == "INF")
+            {
+                return double.PositiveInfinity;
+            }
+            else if (str == "-INF")
+            {
+                return double.NegativeInfinity;
+            }
+            else
+            {
+                return double.Parse(str);
+            }
+        }
+
+        public static bool ParseBoolean(string str)
+        {
+            switch (str)
+            {
+                case "true":
+                case "1":
+                    return true;
+                case "false":
+                case "0":
+                    return false;
+                default:
+                    throw new VariantException(string.Format("Illegal format for Boolean, expecting true/1 or false/0"));
+            }
+        }
+
+        public static DateTime ParseDateTime(string str)
+        {
+            return DateTime.Parse(str);
+        }
+
+        public static TimeSpan ParseTime(string str)
+        {
+            return TimeSpan.Parse(str);
+        }
+
+        public static string ToString(bool arg)
+        {
+            return arg ? "true" : "false";
+        }
+
+        public static string ToString(double arg)
+        {
+            if (double.IsPositiveInfinity(arg))
+            {
+                return "INF";
+            }
+            else if (double.IsNegativeInfinity(arg))
+            {
+                return "-INF";
+            }
+            else
+            {
+                return arg.ToString();
+            }
+        }
+
+        public static string ToString(DateTime arg)
+        {
+            if (arg.Millisecond == 0)
+            {
+                return arg.ToString("yyyy-MM-ddTHH:mm:ss");
+            }
+            else
+            {
+                return arg.ToString("yyyy-MM-ddTHH:mm:ss.fff");
+            }
+        }
+
+        public static string ToString(TimeSpan arg)
+        {
+            DateTime dt = new DateTime(arg.Ticks);
+            if (dt.Millisecond == 0)
+            {
+                return dt.ToString("HH:mm:ss");
+            }
+            else
+            {
+                return dt.ToString("HH:mm:ss.fff");
+            }
         }
     }
 

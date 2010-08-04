@@ -109,6 +109,10 @@ namespace protean.test
 
             Variant vNEGINF = new Variant(double.NegativeInfinity);
             Assert.AreEqual(vNEGINF.ToString(), "-INF");
+
+            Assert.IsTrue(double.IsNaN(VariantBase.ParseDouble("NaN")));
+            Assert.IsTrue(double.IsPositiveInfinity(VariantBase.ParseDouble("INF")));
+            Assert.IsTrue(double.IsNegativeInfinity(VariantBase.ParseDouble("-INF")));
         }
 
         [Test]
@@ -123,6 +127,9 @@ namespace protean.test
             Assert.AreEqual(Convert.ToDateTime(v), arg);
 
             Assert.AreEqual(v.ToString(), "2010-01-02T03:04:05.006");
+
+            Assert.AreEqual(VariantBase.ParseDateTime("2010-01-02T03:04:05.006"), new DateTime(2010, 1, 2, 3, 4, 5, 6));
+            Assert.AreEqual(VariantBase.ParseDateTime("2010-01-02T03:04:05"), new DateTime(2010, 1, 2, 3, 4, 5, 0));
         }
 
         [Test]
@@ -136,6 +143,9 @@ namespace protean.test
             Assert.AreEqual(v.As<TimeSpan>(), arg);
 
             Assert.AreEqual(v.ToString(), "02:03:04.005");
+
+            Assert.AreEqual(VariantBase.ParseTime("02:03:04.005"), new TimeSpan(0, 2, 3, 4, 5));
+            Assert.AreEqual(VariantBase.ParseTime("02:03:04"), new TimeSpan(2, 3, 4));
         }
     }
 }
