@@ -13,6 +13,8 @@ namespace protean {
     {
         int Count { get; }
 
+        void Clear();
+
         IEnumerator<VariantItem> GetEnumerator();
     }
 
@@ -38,6 +40,11 @@ namespace protean {
             get { return Value.Count; }
         }
 
+        public void Clear()
+        {
+            Value.Clear();
+        }
+
         public IEnumerator<VariantItem> GetEnumerator()
         {
             return new VariantEnumerator(Type, Value);
@@ -51,7 +58,22 @@ namespace protean {
         public List<KeyValuePair<DateTime, Variant>> Value { get; set; }
     }
 
-    public class VariantDictionary : IVariantCollection
+    //
+    // Mapping interface
+    //
+    public interface IVariantMapping : IVariantCollection
+    {
+        bool ContainsKey(string key);
+        void Add(string key, Variant value);
+        Variant this[string key]
+        {
+            get; set;
+        }
+        void Remove(string key);
+        Variant Range(string key);
+    }
+
+    public class VariantDictionary : IVariantMapping
     {
         public VariantDictionary()
         {
@@ -68,6 +90,39 @@ namespace protean {
             get { return Value.Count; }
         }
 
+        public void Clear()
+        {
+            Value.Clear();
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return Value.ContainsKey(key);
+        }
+        public void Add(string key, Variant value)
+        {
+            Value.Add(key, value);
+        }
+        public Variant this[string key]
+        {
+            get { return Value[key]; }
+            set { Value[key] = value; }
+        }
+        public void Remove(string key)
+        {
+            Value.Remove(key);
+        }
+        public Variant Range(string key)
+        {
+            Variant result = new Variant(Variant.EnumType.List);
+            if (ContainsKey(key))
+            {
+                result.Add(key, Value[key]);
+            }
+
+            return result;
+        }
+
         public IEnumerator<VariantItem> GetEnumerator()
         {
             return new VariantEnumerator(Type, Value);
@@ -81,7 +136,102 @@ namespace protean {
         public Dictionary<String, Variant> Value { get; set; }
     }
 
-    public class VariantList : IVariantCollection
+    public class VariantBag : IVariantMapping
+    {
+        public VariantBag()
+        {
+            Value = new List<KeyValuePair<String, Variant>>();
+        }
+
+        public VariantBag(VariantBag rhs)
+        {
+            Value = new List<KeyValuePair<String, Variant>>(rhs.Value);
+        }
+
+        public int Count
+        {
+            get { return Value.Count; }
+        }
+
+        public void Clear()
+        {
+            Value.Clear();
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return System.Linq.Enumerable.Any(Value, kv => kv.Key==key);
+        }
+        public void Add(string key, Variant value)
+        {
+            Value.Add(new KeyValuePair<string, Variant>(key, value));
+        }
+
+        public Variant this[string key]
+        {
+            get {
+                int index = Value.FindIndex(delegate(KeyValuePair<string, Variant> kv) { return kv.Key==key; });
+                if (index==-1)
+                {
+                    throw new VariantException(string.Format("Key {0} does not Exist in Bag", key));
+                }
+                return Value[index].Value;
+            }
+
+            set {
+                int index = Value.FindIndex(delegate(KeyValuePair<string, Variant> kv) { return kv.Key==key; });
+                if (index==-1)
+                {
+                    throw new VariantException(string.Format("Key {0} does not Exist in Bag", key));
+                }
+                Value[index] = new KeyValuePair<string, Variant>(key, value);
+            }
+        }
+
+        public void Remove(string key)
+        {
+            Value.RemoveAll(obj => obj.Key == key);
+        }
+
+        public Variant Range(string key)
+        {
+            Variant result = new Variant(Variant.EnumType.List);
+            foreach (KeyValuePair<string, Variant> kv in Value)
+            {
+                if (kv.Key == key)
+                {
+                    result.Add(kv.Value);
+                }
+            }
+
+            return result;
+        }
+
+        public IEnumerator<VariantItem> GetEnumerator()
+        {
+            return new VariantEnumerator(Type, Value);
+        }
+
+        public VariantBase.EnumType Type
+        {
+            get { return VariantBase.EnumType.Bag; }
+        }
+
+        public List<KeyValuePair<String, Variant>> Value { get; set; }
+    }
+
+    //
+    // Sequence interface
+    //
+    public interface IVariantSequence : IVariantCollection
+    {
+        Variant this[int index]
+        {
+            get; set;
+        }
+    }
+
+    public class VariantList : IVariantSequence
     {
         public VariantList()
         {
@@ -103,6 +253,35 @@ namespace protean {
             get { return Value.Count; }
         }
 
+        public void Clear()
+        {
+            Value.Clear();
+        }
+
+        public void Add(Variant value)
+        {
+            Value.Add(value);
+        }
+
+        public Variant this[int index]
+        {
+            get {
+                if (index < 0 || index >= Value.Count)
+                {
+                    throw new VariantException(string.Format("Index {0} is out of range for List of size {1}", index, Value.Count));
+                }
+                return Value[index];
+            }
+
+            set {
+                if (index < 0 || index >= Value.Count)
+                {
+                    throw new VariantException(string.Format("Index {0} is out of range for List of size {1}", index, Value.Count));
+                }
+                Value[index] = value;
+            }
+        }
+
         public IEnumerator<VariantItem> GetEnumerator()
         {
             return new VariantEnumerator(Type, Value);
@@ -116,7 +295,7 @@ namespace protean {
         public List<Variant> Value { get; set; }
     }
 
-    public class VariantTuple : IVariantCollection
+    public class VariantTuple : IVariantSequence
     {
         public VariantTuple()
         {
@@ -144,6 +323,35 @@ namespace protean {
             get { return Value.Length; }
         }
 
+        public void Clear()
+        {
+            for (int i=0; i<Value.Length; ++i)
+            {
+                Value[i] = new Variant();
+            }
+        }
+
+        public Variant this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Value.Length)
+                {
+                    throw new VariantException(string.Format("Index {0} is out of range for List of size {1}", index, Value.Length));
+                }
+                return Value[index];
+            }
+
+            set
+            {
+                if (index < 0 || index >= Value.Length)
+                {
+                    throw new VariantException(string.Format("Index {0} is out of range for List of size {1}", index, Value.Length));
+                }
+                Value[index] = value;
+            }
+        }
+
         public IEnumerator<VariantItem> GetEnumerator()
         {
             return new VariantEnumerator(Type, Value);
@@ -155,36 +363,6 @@ namespace protean {
         }
 
         public Variant[] Value { get; set; }
-    }
-
-    public class VariantBag : IVariantCollection
-    {
-        public VariantBag()
-        {
-            Value = new List<KeyValuePair<String, Variant>>();
-        }
-
-        public VariantBag(VariantBag rhs)
-        {
-            Value = new List<KeyValuePair<String, Variant>>(rhs.Value);
-        }
-
-        public int Count
-        {
-            get { return Value.Count; }
-        }
-
-        public IEnumerator<VariantItem> GetEnumerator()
-        {
-            return new VariantEnumerator(Type, Value);
-        }
-
-        public VariantBase.EnumType Type
-        {
-            get { return VariantBase.EnumType.Bag; }
-        }
-
-        public List<KeyValuePair<String, Variant>> Value { get; set; }
     }
 
 } // protean

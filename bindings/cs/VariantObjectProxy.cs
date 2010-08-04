@@ -11,17 +11,17 @@ namespace protean {
 
     class VariantObjectProxy : VariantObjectBase
     {
-        public VariantObjectProxy(String classname)
+        public VariantObjectProxy(string classname)
         {
             m_classname = classname;
         }
 
-        public override String ClassName
+        public override string ClassName
         {
             get { return m_classname; }
         }
 
-        public override UInt32 Version
+        public override int Version
         {
             get { return m_version; }
         }
@@ -31,7 +31,7 @@ namespace protean {
             return m_params;
         }
 
-        public override void Inflate(Variant param, UInt32 version)
+        public override void Inflate(Variant param, int version)
         {
             m_params = param;
             m_version = version;
@@ -42,8 +42,8 @@ namespace protean {
             return m_classname; 
         }
 
-        UInt32 m_version;
-        String m_classname;
+        int m_version;
+        string m_classname;
         Variant m_params;
     }
 

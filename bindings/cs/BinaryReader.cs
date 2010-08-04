@@ -22,7 +22,14 @@ namespace protean {
             return ReadVariant();
         }
 
-        void ReadHeader()
+        public static Variant FromBytes(byte[] bytes)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes);
+            BinaryReader reader = new BinaryReader(ms);
+            return reader.Read();
+        }
+
+        private void ReadHeader()
         {
             byte[] bytes = new byte[4];
             Stream.Read(bytes, 0, 4);
@@ -54,12 +61,14 @@ namespace protean {
             }
         }
 
-        Variant ReadVariant()
+        private Variant ReadVariant()
         {
             Variant.EnumType type = (Variant.EnumType)ReadUInt32();
 
             switch (type)
             {
+                case Variant.EnumType.None:
+                    return new Variant(Variant.EnumType.None);
                 case Variant.EnumType.String:
                     return new Variant(ReadString());
                 case Variant.EnumType.Double:
@@ -72,6 +81,8 @@ namespace protean {
                     return new Variant(ReadInt64());
                 case Variant.EnumType.UInt64:
                     return new Variant(ReadUInt64());
+                case Variant.EnumType.Boolean:
+                    return new Variant(ReadBoolean());
                 case Variant.EnumType.Tuple:
                 case Variant.EnumType.List:
                 {
@@ -120,7 +131,7 @@ namespace protean {
             }
         }
 
-        byte[] ReadBytes(int length, bool readPadding)
+        private byte[] ReadBytes(int length, bool readPadding)
         {
             byte[] bytes = ReadBytes(length);
 
@@ -135,46 +146,51 @@ namespace protean {
 
             return bytes;
         }
-        byte[] ReadBytes(int length)
+        private byte[] ReadBytes(int length)
         {
             byte[] bytes = new byte[length];
             Filter.Read(bytes, 0, length);
             return bytes;
         }
-        string ReadString()
+        private bool ReadBoolean()
+        {
+            return ReadInt32()!=0;
+        }
+
+        private string ReadString()
         {
             Int32 length = ReadInt32();
             byte[] bytes = ReadBytes(length, true);
 
             return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
         }
-        double ReadDouble()
+        private double ReadDouble()
         {
             return System.BitConverter.Int64BitsToDouble(ReadInt64());
         }
-        Int32 ReadInt32()
+        private Int32 ReadInt32()
         {
             return System.BitConverter.ToInt32(ReadBytes(sizeof(Int32)), 0);
         }
-        UInt32 ReadUInt32()
+        private UInt32 ReadUInt32()
         {
             return System.BitConverter.ToUInt32(ReadBytes(sizeof(UInt32)), 0);
         }
-        Int64 ReadInt64()
+        private Int64 ReadInt64()
         {
             return System.BitConverter.ToInt64(ReadBytes(sizeof(Int64)), 0);
         }
-        UInt64 ReadUInt64()
+        private UInt64 ReadUInt64()
         {
             return System.BitConverter.ToUInt64(ReadBytes(sizeof(UInt64)), 0);
         }
-        TimeSpan ReadTime()
+        private TimeSpan ReadTime()
         {
             Int64 total_millis = ReadInt64();
 
             return new TimeSpan(total_millis * 10000);
         }
-        DateTime ReadDateTime()
+        private DateTime ReadDateTime()
         {
             Int64 total_millis = ReadInt64();
 

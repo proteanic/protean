@@ -11,9 +11,9 @@ namespace protean {
 
     public abstract class VariantObjectBase : IVariantData
     {
-        public abstract String ClassName { get; }
+        public abstract string ClassName { get; }
 
-        public abstract UInt32 Version { get; }
+        public abstract int Version { get; }
 
         public abstract Variant Deflate();
 

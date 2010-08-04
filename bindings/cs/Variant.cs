@@ -12,7 +12,8 @@ namespace protean {
     public class Variant :
         VariantBase,
         IEnumerable<VariantItem>,
-        IConvertible
+        IConvertible,
+        IEquatable<Variant>
     {
         public Variant() :
             base()
@@ -75,8 +76,7 @@ namespace protean {
 
         public Variant(System.Exception arg) :
             this(new ExceptionInfo(arg))
-        {
-        }
+        {  }
 
         public  Variant(ExceptionInfo arg) {
             Value = arg;
@@ -85,6 +85,7 @@ namespace protean {
         public T AsObject<T>()
             where T : VariantObjectBase, new()
         {
+
             T newObj = new T();
 
             return newObj;
@@ -93,38 +94,55 @@ namespace protean {
         // Lists
         public void Add(Variant value)
         {
-            CheckType(EnumType.List, "Remove");
+            CheckType(EnumType.List, "Add");
+
             (Value as VariantList).Value.Add(value);
         }
 
         // Bags/Dictionaries
-        public bool ContainsKey(String key)
+        public bool ContainsKey(string key)
         {
-            return (Value as VariantDictionary).Value.ContainsKey(key);
+            CheckType(EnumType.Mapping, "ContainsKey");
+
+            return (Value as IVariantMapping).ContainsKey(key);
         }
 
-        public void Add(String key, Variant value)
+        public void Add(string key, Variant value)
         {
-            CheckType(EnumType.Dictionary, "Add");
-            (Value as VariantDictionary).Value.Add(key, value);
+            CheckType(EnumType.Mapping, "Add");
+
+            (Value as IVariantMapping).Add(key, value);
         }
 
-        public void Remove(String key)
+        public void Remove(string key)
         {
-            CheckType(EnumType.Dictionary, "Remove");
-            (Value as VariantDictionary).Value.Remove(key);
+            CheckType(EnumType.Mapping, "Remove");
+
+            (Value as IVariantMapping).Remove(key);
+        }
+
+        public Variant Range(string key)
+        {
+            CheckType(EnumType.Mapping, "Range");
+
+            return (Value as IVariantMapping).Range(key);
         }
 
         // TimeSeries
         public void Add(DateTime time, Variant value)
         {
             CheckType(EnumType.TimeSeries, "Add");
+
             (Value as VariantTimeSeries).Value.Add(new KeyValuePair<DateTime, Variant>(time, value));
         }
 
         public int Count
         {
-            get { return (Value as IVariantCollection).Count; }
+            get {
+                CheckType(EnumType.Collection, "Count"); 
+
+                return (Value as IVariantCollection).Count;
+            }
         }
 
         public bool Empty
@@ -134,8 +152,16 @@ namespace protean {
 
         public Variant this[string key]
         {
-            get { return (Value as VariantDictionary).Value[key]; }
-            set { (Value as VariantDictionary).Value[key] = value; }
+            get {
+                CheckType(EnumType.Mapping, "this[]");
+
+                return (Value as IVariantMapping)[key];
+            }
+            set {
+                CheckType(EnumType.Mapping, "this[]");
+
+                (Value as IVariantMapping)[key] = value;
+            }
         }
 
         public Variant this[int index]
@@ -144,24 +170,13 @@ namespace protean {
             get {
                 CheckType(EnumType.Sequence, "this[]");
 
-                if (Value is VariantTuple) {
-                    return (Value as VariantTuple).Value[index];
-                }
-                else {
-                    return (Value as VariantList).Value[index];
-                }
+                return (Value as IVariantSequence)[index];
             }
 
-            set
-            {
+            set  {
                 CheckType(EnumType.Sequence, "this[]");
 
-                if (Value is VariantTuple) {
-                    (Value as VariantTuple).Value[index] = value;
-                }
-                else {
-                    (Value as VariantList).Value[index] = value;
-                }
+                (Value as IVariantSequence)[index] = value;
             }
         }
 
@@ -504,6 +519,13 @@ namespace protean {
         public ulong ToUInt64(IFormatProvider provider)
         {
             return As<UInt64>();
+        }
+
+        // System.IEquatable
+        public bool Equals(Variant obj)
+        {
+            // TODO!
+            throw new VariantException("TODO: Implement IEquatable");
         }
 
         // helpers

@@ -28,6 +28,19 @@ namespace protean {
             Mode |= BinaryMode.DateTimeAsTicks;
         }
 
+        public static byte[] ToBytes(Variant value, BinaryMode mode)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            BinaryWriter writer = new BinaryWriter(ms, mode);
+            writer.Write(value);
+            return ms.GetBuffer();
+        }
+
+        public static byte[] ToBytes(Variant value)
+        {
+            return ToBytes(value, BinaryMode.Default);
+        }
+
         public void Write(Variant v)
         {
             WriteHeader();
@@ -104,6 +117,11 @@ namespace protean {
             Filter.Write(arg, 0, arg.Length);
         }
 
+        private void Write(bool arg)
+        {
+            Write((int)(arg ? 1 : 0));
+        }
+
         private void Write(byte[] bytes, bool writePadding)
         {
             Write(bytes);
@@ -125,6 +143,8 @@ namespace protean {
 
             switch (type)
             {
+            case Variant.EnumType.None:
+                break;
             case Variant.EnumType.String:
                 Write(v.As<string>());
                 break;
@@ -142,6 +162,9 @@ namespace protean {
                 break;
             case Variant.EnumType.UInt64:
                 Write(v.As<UInt64>());
+                break;
+            case Variant.EnumType.Boolean:
+                Write(v.As<bool>());
                 break;
             case Variant.EnumType.List:
             case Variant.EnumType.Tuple:

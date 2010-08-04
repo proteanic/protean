@@ -42,6 +42,16 @@ namespace protean.test
             Assert.AreEqual(v["key1"].As<string>(), "value1");
             Assert.AreEqual(v["key2"].Type, Variant.EnumType.Double);
             Assert.AreEqual(v["key2"].As<double>(), 1.0);
+
+            v["key1"] = new Variant("other");
+            Assert.AreEqual(v["key1"].As<string>(), "other");
+
+            v.Remove("key1");
+            Assert.AreEqual(v.Count, 1);
+
+            v.Remove("key2");
+            Assert.AreEqual(v.Count, 0);
+            Assert.IsTrue(v.Empty);
         }
 
         [Test]
