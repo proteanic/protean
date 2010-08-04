@@ -12,11 +12,22 @@ namespace protean {
     public class VariantEnumerator :
         IEnumerator<VariantItem>
     {
-        public VariantEnumerator(Variant.EnumType type, System.Collections.IEnumerable enumerable)
+        private VariantEnumerator(Variant.EnumType type, System.Collections.IEnumerator enumerator)
         {
             Type = type;
-            m_enumerator = enumerable.GetEnumerator();
+            m_enumerator = enumerator;
         }
+        public VariantEnumerator(IEnumerator<Variant> enumerator) :
+            this(Variant.EnumType.Sequence, enumerator)
+        {  }
+
+        public VariantEnumerator(IEnumerator<KeyValuePair<String, Variant>> enumerator) :
+            this(Variant.EnumType.Mapping, enumerator)
+        { }
+
+        public VariantEnumerator(IEnumerator<KeyValuePair<DateTime, Variant>> enumerator) :
+            this(Variant.EnumType.TimeSeries, enumerator)
+        { }
 
         public bool MoveNext()
         {
@@ -36,13 +47,12 @@ namespace protean {
             {
                 switch (Type)
                 {
-                    case Variant.EnumType.List:
+                    case Variant.EnumType.Sequence:
                     {
-                        IEnumerator<Variant> enumerator = m_enumerator as IEnumerator<Variant>;
+                        IEnumerator<Variant> enumerator = (IEnumerator<Variant>)m_enumerator;
                         return new VariantItem(enumerator.Current);
                     }
-                    case Variant.EnumType.Dictionary:
-                    case Variant.EnumType.Bag:
+                    case Variant.EnumType.Mapping:
                     {
                         IEnumerator<KeyValuePair<String, Variant>> enumerator = m_enumerator as IEnumerator<KeyValuePair<String, Variant>>;
                         return new VariantItem(enumerator.Current.Key, enumerator.Current.Value);
@@ -60,10 +70,7 @@ namespace protean {
 
         Object System.Collections.IEnumerator.Current
         {
-            get
-            {
-                return Current;
-            }
+            get { return Current; }
         }
 
         void IDisposable.Dispose() { }

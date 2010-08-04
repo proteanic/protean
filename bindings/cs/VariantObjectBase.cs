@@ -34,6 +34,20 @@ namespace protean {
         {
             get { return VariantBase.EnumType.Object; }
         }
+
+        public int CompareTo(IVariantData rhs)
+        {
+            VariantObjectBase rhsObj = (VariantObjectBase)rhs;
+            if (Class != rhsObj.Class)
+            {
+                return Class.CompareTo(rhsObj.Class);
+            }
+            if (Version != rhsObj.Version)
+            {
+                return Version.CompareTo(rhsObj.Version);
+            }
+            return Deflate().CompareTo(rhsObj.Deflate());
+        }
     };
 
 } // protean

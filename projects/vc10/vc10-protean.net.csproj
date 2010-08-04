@@ -95,7 +95,9 @@
     <Compile Include="..\..\bindings\cs\BinaryMode.cs" />
     <Compile Include="..\..\bindings\cs\BinaryReader.cs" />
     <Compile Include="..\..\bindings\cs\BinaryWriter.cs" />
-    <Compile Include="..\..\bindings\cs\ExceptionInfo.cs" />
+    <Compile Include="..\..\bindings\cs\VariantExceptionInfo.cs">
+      <Link>VariantExceptionInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\bindings\cs\VariantObjectBase.cs" />
     <Compile Include="..\..\bindings\cs\Variant.cs" />
     <Compile Include="..\..\bindings\cs\VariantBase.cs" />

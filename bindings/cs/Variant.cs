@@ -80,10 +80,10 @@ namespace protean {
         }
 
         public Variant(System.Exception arg) :
-            this(new ExceptionInfo(arg))
+            this(new VariantExceptionInfo(arg))
         {  }
 
-        public  Variant(ExceptionInfo arg) {
+        public Variant(VariantExceptionInfo arg) {
             Value = arg;
         }
 
@@ -117,11 +117,11 @@ namespace protean {
             return result;
         }
 
-        public ExceptionInfo AsException()
+        public VariantExceptionInfo AsException()
         {
             CheckType(EnumType.Exception, "AsException()");
 
-            return Value as ExceptionInfo;
+            return Value as VariantExceptionInfo;
         }
 
         // Lists
@@ -176,6 +176,13 @@ namespace protean {
 
                 return (Value as IVariantCollection).Count;
             }
+        }
+
+        public void Clear()
+        {
+            CheckType(EnumType.Collection, "Clear");
+
+            ((IVariantCollection)Value).Clear();
         }
 
         public bool Empty
@@ -406,7 +413,7 @@ namespace protean {
                 }
                 case EnumType.Exception:
                 {
-                    ExceptionInfo x = AsException();
+                    VariantExceptionInfo x = AsException();
 
                     result += x.Class + "('" + x.Message + "')";
                     
@@ -552,45 +559,12 @@ namespace protean {
         // System.CompareTo<Variant>
         public int CompareTo(Variant rhs)
         {
-            EnumType type = Type;
-
-            if (type!=rhs.Type)
+            if (Type!=rhs.Type)
             {
                 return Type.CompareTo(rhs.Type);
             }
 
-            switch(type)
-            {
-                case EnumType.None:
-                    return 0;
-                case EnumType.Any:
-                case EnumType.String:
-                    return As<string>().CompareTo(rhs.As<string>());
-                case EnumType.Int32:
-                    return As<Int32>().CompareTo(rhs.As<Int32>());
-                case EnumType.UInt32:
-                    return As<UInt32>().CompareTo(rhs.As<UInt32>());
-                case EnumType.Int64:
-                    return As<Int64>().CompareTo(rhs.As<Int64>());
-                case EnumType.UInt64:
-                    return As<UInt64>().CompareTo(rhs.As<UInt64>());
-                case EnumType.Double:
-                    return As<double>().CompareTo(rhs.As<double>());
-                case EnumType.Boolean:
-                    return As<bool>().CompareTo(rhs.As<bool>());
-                case EnumType.Time:
-                    return As<TimeSpan>().CompareTo(rhs.As<TimeSpan>());
-                case EnumType.DateTime:
-                    return As<DateTime>().CompareTo(rhs.As<DateTime>());
-                case EnumType.List:
-                case EnumType.Tuple:
-                case EnumType.Dictionary:
-                case EnumType.Bag:
-                case EnumType.TimeSeries:
-                    return (Value as IVariantCollection).CompareTo(rhs.Value as IVariantCollection);
-                default:
-                    throw new VariantException("Case exhaustion: " + Type);
-            }
+            return Value.CompareTo(rhs.Value);
         }
 
         // System.IEquatable<Variant>
@@ -605,7 +579,7 @@ namespace protean {
         {
             if (!Is(type))
             {
-                throw new VariantException(string.Format("Calling {0} on Variant of type {1}\n{2}", fn, type, ToString()));
+                throw new VariantException(string.Format("Attempt to call {0} on Variant of type {1}\n{2}", fn, Type, ToString()));
             }
         }
 

@@ -13,7 +13,9 @@ namespace protean {
     public interface IVariantPrimitive : IVariantData
     { }
 
-    public class VariantPrimitive<T> : IVariantPrimitive
+    public class VariantPrimitive<T> :
+        IVariantPrimitive
+        where T : IComparable<T>
     {
         public VariantPrimitive(T value) {
             Value = value;
@@ -61,6 +63,11 @@ namespace protean {
                         return Value.ToString();
                 }
             }
+        }
+
+        public int CompareTo(IVariantData rhs)
+        {
+            return Value.CompareTo(((VariantPrimitive<T>)rhs).Value);
         }
 
         static Dictionary<Type, VariantBase.EnumType> m_typeMapping =

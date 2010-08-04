@@ -9,9 +9,9 @@ using System.Text;
 
 namespace protean {
 
-    public class ExceptionInfo : IVariantData
+    public class VariantExceptionInfo : IVariantData
     {
-        public ExceptionInfo(string type, string message, string source, string stack)
+        public VariantExceptionInfo(string type, string message, string source, string stack)
         {
             Class = type;
             Message = message;
@@ -19,21 +19,39 @@ namespace protean {
             Stack = stack;
         }
 
-        public ExceptionInfo(string type, string message) :
+        public VariantExceptionInfo(string type, string message) :
             this(type, message, "", "")
         { }
 
-        public ExceptionInfo(ExceptionInfo rhs) :
+        public VariantExceptionInfo(VariantExceptionInfo rhs) :
             this(rhs.Class, rhs.Message, rhs.Source, rhs.Stack)
         { }
 
-        public ExceptionInfo(Exception e) :
+        public VariantExceptionInfo(Exception e) :
             this(e.GetType().ToString(), e.Message, e.Source, e.StackTrace)
         { }
 
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.Exception; }
+        }
+
+        public int CompareTo(IVariantData rhs)
+        {
+            VariantExceptionInfo rhsEx = (VariantExceptionInfo)rhs;
+            if (Class != rhsEx.Class)
+            {
+                return Class.CompareTo(rhsEx.Class);
+            }
+            if (Message != rhsEx.Message)
+            {
+                return Message.CompareTo(rhsEx.Message);
+            }
+            if (Source != rhsEx.Source)
+            {
+                return Source.CompareTo(rhsEx.Source);
+            }
+            return Stack.CompareTo(rhsEx.Stack);
         }
 
         public string Class { get; set; }

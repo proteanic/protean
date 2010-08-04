@@ -9,7 +9,8 @@ using System.Text;
 
 namespace protean {
 
-    public interface IVariantData
+    public interface IVariantData :
+        IComparable<IVariantData>
     {
         VariantBase.EnumType Type { get; }
     }
@@ -23,6 +24,11 @@ namespace protean {
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.None; }
+        }
+
+        public int CompareTo(IVariantData rhs)
+        {
+            return 0;
         }
     }
 
@@ -46,7 +52,12 @@ namespace protean {
             get { return VariantBase.EnumType.Any; }
         }
 
-        public String Value { get; set; }
+        public int CompareTo(IVariantData rhs)
+        {
+            return Value.CompareTo(((VariantAny)rhs).Value);
+        }
+
+        public string Value { get; set; }
     }
 
     // Buffer
@@ -68,6 +79,11 @@ namespace protean {
         public VariantBase.EnumType Type
         {
             get { return VariantBase.EnumType.Buffer; }
+        }
+
+        public int CompareTo(IVariantData rhs)
+        {
+            return SequenceComparer.Compare(Value, ((VariantBuffer)rhs).Value);
         }
 
         public byte[] Value { get; set; }
@@ -260,7 +276,7 @@ namespace protean {
                     Value = new VariantBuffer(rhs.Value as VariantBuffer);
                     break;
                 case EnumType.Exception:
-                    Value = new ExceptionInfo(rhs.Value as ExceptionInfo);
+                    Value = new VariantExceptionInfo(rhs.Value as VariantExceptionInfo);
                     break;
                 default:
                     throw new VariantException("Cannot default construct variant of type: " + type.ToString());
@@ -276,7 +292,7 @@ namespace protean {
         }
 
         // Is/As only work for primitive types
-        public T As<T>()
+        public T As<T>() where T : IComparable<T>
         {
             if (Value is VariantPrimitive<T>)
             {
@@ -293,7 +309,7 @@ namespace protean {
             }
         }
 
-        public bool Is<T>()
+        public bool Is<T>() where T : IComparable<T>
         {
             return (Value is VariantPrimitive<T>);
         }

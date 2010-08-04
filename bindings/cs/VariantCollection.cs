@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace protean {
 
@@ -74,8 +75,7 @@ namespace protean {
     }
 
     public interface IVariantCollection :
-        IVariantData,
-        IComparable<IVariantCollection>
+        IVariantData
     {
         int Count { get; }
 
@@ -113,7 +113,7 @@ namespace protean {
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            return new VariantEnumerator(Type, Value);
+            return new VariantEnumerator(((IEnumerable<KeyValuePair<DateTime, Variant>>)Value).GetEnumerator());
         }
 
         public VariantBase.EnumType Type
@@ -121,7 +121,7 @@ namespace protean {
             get { return VariantBase.EnumType.TimeSeries; }
         }
 
-        public int CompareTo(IVariantCollection rhs)
+        public int CompareTo(IVariantData rhs)
         {
             return SequenceComparer.Compare(Value, ((VariantTimeSeries)rhs).Value, new KeyValuePairComparer<DateTime, Variant>());
         }
@@ -148,12 +148,12 @@ namespace protean {
     {
         public VariantDictionary()
         {
-            Value = new Dictionary<String, Variant>();
+            Value = new SortedDictionary<String, Variant>();
         }
 
         public VariantDictionary(VariantDictionary rhs)
         {
-            Value = new Dictionary<String, Variant>(rhs.Value);
+            Value = new SortedDictionary<String, Variant>(rhs.Value);
         }
 
         public int Count
@@ -196,7 +196,7 @@ namespace protean {
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            return new VariantEnumerator(Type, Value);
+            return new VariantEnumerator(((IEnumerable<KeyValuePair<string, Variant>>)Value).GetEnumerator());
         }
 
         public VariantBase.EnumType Type
@@ -204,12 +204,13 @@ namespace protean {
             get { return VariantBase.EnumType.Dictionary; }
         }
 
-        public int CompareTo(IVariantCollection rhs)
+        public int CompareTo(IVariantData rhs)
         {
             return SequenceComparer.Compare(Value, ((VariantDictionary)rhs).Value, new KeyValuePairComparer<string, Variant>());
         }
 
-        public Dictionary<string, Variant> Value { get; set; }
+        // Use a sorted dictionary, so we can easily compare
+        public SortedDictionary<string, Variant> Value { get; set; }
     }
 
     public class VariantBag : IVariantMapping
@@ -285,10 +286,10 @@ namespace protean {
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            return new VariantEnumerator(Type, Value);
+            return new VariantEnumerator(((IEnumerable<KeyValuePair<string, Variant>>)Value).GetEnumerator());
         }
 
-        public int CompareTo(IVariantCollection rhs)
+        public int CompareTo(IVariantData rhs)
         {
             return SequenceComparer.Compare(Value, ((VariantBag)rhs).Value, new KeyValuePairComparer<string, Variant>());
         }
@@ -363,14 +364,14 @@ namespace protean {
             }
         }
 
-        public int CompareTo(IVariantCollection rhs)
+        public int CompareTo(IVariantData rhs)
         {
             return SequenceComparer.Compare(Value, ((VariantList)rhs).Value);
         }
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            return new VariantEnumerator(Type, Value);
+            return new VariantEnumerator(((IEnumerable<Variant>)Value).GetEnumerator());
         }
 
         public VariantBase.EnumType Type
@@ -396,6 +397,7 @@ namespace protean {
         public VariantTuple(int capacity)
         {
             Value = new Variant[capacity];
+            Clear();
         }
 
         public VariantTuple(VariantTuple rhs)
@@ -438,14 +440,14 @@ namespace protean {
             }
         }
 
-        public int CompareTo(IVariantCollection rhs)
+        public int CompareTo(IVariantData rhs)
         {
             return SequenceComparer.Compare(Value, ((VariantTuple)rhs).Value);
         }
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            return new VariantEnumerator(Type, Value);
+            return new VariantEnumerator(((IEnumerable<Variant>)Value).GetEnumerator());
         }
 
         public VariantBase.EnumType Type

@@ -95,14 +95,17 @@
     <Compile Include="..\..\test\bindings\cs\TestBinaryStreams.cs">
       <Link>TestBinaryStreams.cs</Link>
     </Compile>
-    <Compile Include="..\..\test\bindings\cs\TestDictionary.cs">
-      <Link>TestDictionary.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestMapping.cs">
+      <Link>TestMapping.cs</Link>
     </Compile>
     <Compile Include="..\..\test\bindings\cs\TestObject.cs">
       <Link>TestObject.cs</Link>
     </Compile>
     <Compile Include="..\..\test\bindings\cs\TestPrimitives.cs">
       <Link>TestPrimitives.cs</Link>
+    </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestSequence.cs">
+      <Link>TestSequence.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
