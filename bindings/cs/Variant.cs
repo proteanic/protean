@@ -27,6 +27,10 @@ namespace protean {
             base(type, 0)
         { }
 
+        public Variant(EnumType type, string value)
+        {
+        }
+
         public Variant(EnumType type, int size) :
             base(type, size)
         { }
@@ -235,13 +239,11 @@ namespace protean {
                 case EnumType.UInt32:
                 case EnumType.Int64:
                 case EnumType.UInt64:
-                case EnumType.Float:
                 case EnumType.Double:
                 case EnumType.Boolean:
                 case EnumType.Time:
                 case EnumType.DateTime:
-                    result += "value";
-                    //result += any_cast().as<std::string>();
+                    result += (Value as IVariantPrimitive).ToString();
                     break;
                 case EnumType.List:
                 {
