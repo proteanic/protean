@@ -86,6 +86,16 @@ namespace protean {
                 case Variant.EnumType.Boolean:
                     return new Variant(ReadBoolean());
                 case Variant.EnumType.Tuple:
+                {
+                    int length = ReadInt32();
+
+                    Variant result = new Variant(Variant.EnumType.Tuple, length);
+                    for (int i = 0; i < length; ++i)
+                    {
+                        result[i] = ReadVariant();
+                    }
+                    return result;
+                }
                 case Variant.EnumType.List:
                 {
                     int length = ReadInt32();

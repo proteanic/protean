@@ -318,5 +318,19 @@ namespace protean.test
             Assert.AreEqual(v2.Type, Variant.EnumType.Buffer);
             Assert.IsTrue(v1.Equals(v2));
         }
+
+        [Test]
+        public void TestTuple()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Tuple, 2);
+            v1[0] = new Variant("value");
+            v1[1] = new Variant(1.0);
+
+            byte[] bytes = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bytes);
+
+            Assert.AreEqual(v2.Type, Variant.EnumType.Tuple);
+            Assert.IsTrue(v1.Equals(v2));
+        }
     }
 }
