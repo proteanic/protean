@@ -107,6 +107,12 @@
     <Compile Include="..\..\bindings\cs\VariantItem.cs" />
     <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
     <Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
+    <Compile Include="..\..\bindings\cs\XMLMode.cs">
+      <Link>XMLMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLWriter.cs">
+      <Link>XMLWriter.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -227,9 +227,18 @@ namespace protean {
             }
         }
 
-        public Variant As(EnumType type)
+        public Variant AnyCast()
         {
-            return new Variant();
+            CheckType(EnumType.Primitive, "AnyCast");
+
+            if (Value is VariantAny)
+            {
+                return this;
+            }
+            else
+            {
+                return new Variant(EnumType.Any, ((IVariantPrimitive)Value).ToString());
+            }
         }
 
         string ToString(bool summarise, string indent)

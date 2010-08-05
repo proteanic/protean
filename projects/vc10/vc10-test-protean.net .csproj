@@ -95,6 +95,9 @@
     <Compile Include="..\..\test\bindings\cs\TestBinaryStreams.cs">
       <Link>TestBinaryStreams.cs</Link>
     </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestBuffer.cs">
+      <Link>TestBuffer.cs</Link>
+    </Compile>
     <Compile Include="..\..\test\bindings\cs\TestMapping.cs">
       <Link>TestMapping.cs</Link>
     </Compile>
@@ -104,8 +107,11 @@
     <Compile Include="..\..\test\bindings\cs\TestPrimitives.cs">
       <Link>TestPrimitives.cs</Link>
     </Compile>
-    <Compile Include="..\..\test\bindings\cs\TestSequence.cs">
-      <Link>TestSequence.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestTimeSeries.cs">
+      <Link>TestTimeSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestXMLStreams.cs">
+      <Link>TestXMLStreams.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
