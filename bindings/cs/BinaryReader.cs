@@ -93,7 +93,7 @@ namespace protean {
                     Variant result = new Variant(type, length);
                     for (int i=0; i<length; ++i)
                     {
-                        result[i] = ReadVariant();
+                        result.Add(ReadVariant());
                     }
                     return result;
                 }
@@ -138,6 +138,11 @@ namespace protean {
                     proxy.Inflate(param, version);
 
                     return new Variant(proxy);
+                }
+                case Variant.EnumType.Buffer:
+                {
+                    int length = ReadInt32();
+                    return new Variant(ReadBytes(length, true));
                 }
                 default:
                     throw new VariantException("Case exhaustion: " + type.ToString());

@@ -199,6 +199,10 @@ namespace protean {
                 Write(o.Version);
                 WriteVariant(o.Deflate());
                 break;
+            case Variant.EnumType.Buffer:
+                Write(v.AsBuffer().Length);
+                Write(v.AsBuffer(), true);
+                break;
             default:
                 throw new VariantException("Case exhaustion: " + type.ToString());
             }

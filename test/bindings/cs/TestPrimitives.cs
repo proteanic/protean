@@ -17,6 +17,28 @@ namespace protean.test
     public class TestPrimitives
     {
         [Test]
+        public void TestNone()
+        {
+            Variant v1 = new Variant();
+            Assert.AreEqual(v1.Type, Variant.EnumType.None);
+            Assert.IsTrue(v1.Is(Variant.EnumType.None));
+
+            Variant v2 = new Variant(Variant.EnumType.None);
+            Assert.AreEqual(v2.Type, Variant.EnumType.None);
+            Assert.IsTrue(v2.Is(Variant.EnumType.None));
+        }
+
+        [Test]
+        public void TestAny()
+        {
+            Variant v = new Variant(Variant.EnumType.Any, "1.0");
+            Assert.AreEqual(v.Type, Variant.EnumType.Any);
+            Assert.IsTrue(v.Is(Variant.EnumType.Any));
+
+            Assert.AreEqual(1.0, v.As<double>());
+        }
+
+        [Test]
         public void TestString()
         {
             Variant v = new Variant("test string");

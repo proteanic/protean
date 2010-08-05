@@ -124,6 +124,13 @@ namespace protean {
             return Value as VariantExceptionInfo;
         }
 
+        public byte[] AsBuffer()
+        {
+            CheckType(EnumType.Buffer, "AsBuffer()");
+
+            return ((VariantBuffer)Value).Value;
+        }
+
         // Lists
         public void Add(Variant value)
         {
@@ -379,11 +386,7 @@ namespace protean {
                     }
                     else
                     {
-                        result += "Buffer(";
-
-                        byte[] bytes = (Value as VariantBuffer).Value;
-                        result += bytes.ToString();
-                        result += ')';
+                        result += "Buffer(" + ASCIIEncoding.ASCII.GetString(AsBuffer()) + ')';
                     }
                     break;
                 }

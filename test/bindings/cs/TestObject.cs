@@ -107,5 +107,19 @@ namespace protean.test
 
             Assert.IsInstanceOf<TestObject1>(v2.AsObject());
         }
+
+        [Test]
+        public void TestComparison()
+        {
+            Variant v1 = new Variant(new TestObject1("some value"));
+            Variant v2 = new Variant(new TestObject1("some other value"));
+            Variant v3 = new Variant(new TestObject2("some value"));
+
+            Assert.AreEqual(0, v1.CompareTo(v1));
+            Assert.AreEqual(1, v1.CompareTo(v2));
+            Assert.AreEqual(-1, v2.CompareTo(v1));
+            Assert.AreEqual(-1, v1.CompareTo(v3));
+            Assert.AreEqual(1, v3.CompareTo(v1));
+        }
     }
 }

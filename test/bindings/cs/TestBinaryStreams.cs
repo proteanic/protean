@@ -262,5 +262,61 @@ namespace protean.test
             Assert.AreEqual(o1.Version, o2.Version);
             Assert.IsTrue(o1.Deflate().Equals(o2.Deflate()));
         }
+
+        [Test]
+        public void TestTimeSeries()
+        {
+            Variant v1 = new Variant(Variant.EnumType.TimeSeries);
+            v1.Add(new DateTime(2010, 1, 2, 3, 4, 5, 6), new Variant("value1"));
+            v1.Add(new DateTime(2010, 1, 3, 3, 4, 5, 6), new Variant("value2"));
+
+            byte[] bytes = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bytes);
+
+            Assert.AreEqual(v2.Type, Variant.EnumType.TimeSeries);
+            Assert.IsTrue(v1.Equals(v2));
+        }
+
+        [Test]
+        public void TestList()
+        {
+            Variant v1 = new Variant(Variant.EnumType.List);
+            v1.Add(new Variant("value1"));
+            v1.Add(new Variant(1.0));
+
+            byte[] bytes = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bytes);
+
+            Assert.AreEqual(v2.Type, Variant.EnumType.List);
+            Assert.IsTrue(v1.Equals(v2));
+        }
+
+        [Test]
+        public void TestBag()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Bag);
+            v1.Add("key1", new Variant("value1"));
+            v1.Add("key2", new Variant(1.0));
+
+            byte[] bytes = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bytes);
+
+            Assert.AreEqual(v2.Type, Variant.EnumType.Bag);
+            Assert.IsTrue(v1.Equals(v2));
+        }
+
+        [Test]
+        public void TestBuffer()
+        {
+            byte[] bytes = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09 };
+
+            Variant v1 = new Variant(bytes);
+
+            byte[] bin = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bin);
+
+            Assert.AreEqual(v2.Type, Variant.EnumType.Buffer);
+            Assert.IsTrue(v1.Equals(v2));
+        }
     }
 }
