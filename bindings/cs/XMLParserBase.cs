@@ -29,7 +29,7 @@ namespace protean {
                     string name = m_reader.Name;
                     bool isEmptyElement = m_reader.IsEmptyElement;
 
-                    Variant attributes = new Variant(Variant.EnumType.Dictionary);
+                    Variant attributes = new Variant(Variant.EnumType.Bag);
                     for (int i = 0; i<m_reader.AttributeCount; ++i)
                     {
                         m_reader.MoveToAttribute(i);
