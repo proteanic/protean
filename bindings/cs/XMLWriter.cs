@@ -313,7 +313,7 @@ namespace protean {
             }
             case Variant.EnumType.Buffer:
             {
-                WriteText(new Variant(System.Convert.ToBase64String(element.AsBuffer())));
+                m_writer.WriteBase64(element.AsBuffer(), 0, element.AsBuffer().Length);
                 break;
             }
             case Variant.EnumType.Object:
