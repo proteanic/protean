@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace protean {
 
@@ -14,7 +15,10 @@ namespace protean {
         public XMLWriter(System.IO.TextWriter stream, XMLMode mode)
         {
             m_mode = mode;
-            m_stream = stream;
+            m_writer = new XmlTextWriter(stream);
+
+            m_writer.Indentation = 2;
+            m_writer.Formatting = (mode & XMLMode.Indent) != 0 ? Formatting.Indented : Formatting.None;
 
             m_stack = new Stack<ElementInfo>();
         }
@@ -41,12 +45,7 @@ namespace protean {
 
         private Variant Push(string elementName)
         {
-            int level = 0;
-            if (m_stack.Count != 0)
-            {
-                level = m_stack.Peek().m_level + 1;
-            }
-            m_stack.Push(new ElementInfo(elementName, level));
+            m_stack.Push(new ElementInfo(elementName));
             return m_stack.Peek().m_attributes;
         }
 
@@ -60,136 +59,55 @@ namespace protean {
             m_stack.Pop();
         }
 
-        private void WriteHeader()
+        void WriteHeader()
         {
-            m_stream.Write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
-        }
-
-        private string Indent()
-        {
-            if ((m_mode & XMLMode.Indent) != 0)
-            {
-                string result = "\n";
-                if (m_stack.Count != 0)
-                {
-                    for (int i = 0; i < m_stack.Peek().m_level; ++i)
-                    {
-                        result += "  ";
-                    }
-                }
-                return result;
-            }
-            return "";
-        }
-
-        void WriteEmptyElement()
-        {
-            if (m_stack.Count!=0)
-            {
-                ElementInfo context = m_stack.Peek();
-
-                m_stream.Write('<' + (context.m_name.Length==0 ? XMLConst.Default : context.m_name));
-                foreach(VariantItem item in context.m_attributes)
-                {
-                    m_stream.Write(string.Format(@" {0}=""{1}""", item.Key, item.Value.AnyCast().As<string>()));
-                }
-                m_stream.Write("/>");
-            }
-        }
-
-        string StartTag()
-        {
-            string result = "";
-
-            if (m_stack.Count!=0)
-            {
-                ElementInfo context = m_stack.Peek();
-            
-                m_stream.Write('<' + (context.m_name.Length==0 ? XMLConst.Default : context.m_name));
-                foreach(VariantItem item in context.m_attributes)
-                {
-                    m_stream.Write(string.Format(@" {0}=""{1}""", item.Key, item.Value.AnyCast().As<string>()));
-                }
-                result += '>';
-            }
-
-            return result;
-        }
-
-        string EndTag()
-        {
-            string result = "";
-
-            if (m_stack.Count!=0)
-            {
-                ElementInfo context = m_stack.Peek();
-
-                m_stream.Write(string.Format("</{0}>", context.m_name.Length==0 ? XMLConst.Default : context.m_name));
-            }
-
-            return result;
+            m_writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
         }
 
         void WriteDocument(Variant document)
         {
-            if ((m_mode & XMLMode.NoHeader)==0)
+            if ((m_mode & XMLMode.NoHeader) == 0)
             {
-                // output the XML header
                 WriteHeader();
             }
-
             if ((m_mode & XMLMode.Preserve)!=0)
             {
-                bool first = true;
+                string rootName = "";
                 if (document.Is(Variant.EnumType.Mapping))
                 {
-                    string elementName = "";
-                    foreach(VariantItem item in document)
+                    foreach (VariantItem item in document)
                     {
-                        if (item.Key==XMLConst.Text)
+                        if (item.Key == XMLConst.Text)
                         {
                             throw new VariantException("Encountered text in document node");
                         }
-                        else if (item.Key==XMLConst.Attributes)
+                        else if (item.Key == XMLConst.Attributes)
                         {
                             throw new VariantException("Encountered attributes in document node");
                         }
-                        else if (item.Key==XMLConst.Instruction)
+                        else if (item.Key == XMLConst.Instruction)
                         {
-                            if (!first)
-                            {
-                                m_stream.Write(Indent());
-                            }
                             WriteInstruction(item.Value);
                         }
-                        else if (item.Key==XMLConst.Comment)
+                        else if (item.Key == XMLConst.Comment)
                         {
-                            if (!first)
-                            {
-                                m_stream.Write(Indent());
-                            }
                             WriteComment(item.Value);
                         }
                         else
                         {
-                            if (elementName.Length==0)
+                            if (rootName.Length==0)
                             {
-                                elementName = item.Key;
+                                rootName = item.Key;
                             }
                             else
                             {
-                                throw new VariantException(string.Format("Illegal element {0} encountered in document, expecting single element {1} at root", item.Key, elementName));
+                                throw new VariantException(string.Format("Illegal element {0} encountered in document, expecting single element {1} at root", item.Key, rootName));
                             }
 
-                            Push(item.Key);
-                            if (!first)
-                            {
-                                m_stream.Write(Indent());
-                            }
+                            Push(rootName);
                             WriteElement(item.Value);
                             Pop();
                         }
-                        first = false;
                     }
                 }
                 else
@@ -209,17 +127,39 @@ namespace protean {
         {
             if (instruction.Is(Variant.EnumType.Mapping) && instruction.ContainsKey(XMLConst.Target) && instruction.ContainsKey(XMLConst.Data))
             {
-                m_stream.Write(string.Format("<?{0} {1}?>", instruction[XMLConst.Target].As<string>(), instruction[XMLConst.Data].As<string>()));
+                m_writer.WriteProcessingInstruction(instruction[XMLConst.Target].As<string>(), instruction[XMLConst.Data].As<string>());
             }
             else
             {
                 throw new VariantException(string.Format("Expecting dictionary containing '{0}' and '{1}' for processing instruction", XMLConst.Target, XMLConst.Data));
-            }        
+            }
+        }
+
+        void WriteAttributes(Variant attribute)
+        {
+            foreach (VariantItem item in attribute)
+            {
+                m_writer.WriteAttributeString(item.Key, item.Value.AnyCast().As<string>());
+            }
+        }
+
+        void WriteStartTag(string name)
+        {
+            if (m_stack.Count!=0)
+            {
+                ElementInfo context = m_stack.Peek();
+                m_writer.WriteStartElement(context.m_name.Length==0 ? XMLConst.Default : context.m_name);
+             }
+        }
+
+        void WriteEndTag()
+        {
+            m_writer.WriteEndElement();
         }
 
         void WriteComment(Variant comment)
         {
-            m_stream.Write("<!--" + comment.As<string>() + "-->");
+            m_writer.WriteComment(comment.As<string>());
         }
 
         void WriteText(Variant text)
@@ -229,7 +169,7 @@ namespace protean {
             case Variant.EnumType.Any:
             case Variant.EnumType.String:
             {
-                m_stream.Write(text.As<string>());
+                m_writer.WriteString(text.As<string>());
                 break;
             }
             case Variant.EnumType.Int32:
@@ -243,7 +183,7 @@ namespace protean {
             case Variant.EnumType.Time:
             case Variant.EnumType.DateTime:
             {
-                m_stream.Write(text.AnyCast().As<string>());
+                m_writer.WriteString(text.AnyCast().As<string>());
                 break;
             }
             default:
@@ -263,34 +203,17 @@ namespace protean {
 
         void WriteElement(Variant element)
         {
-            if (element.Is(Variant.EnumType.Collection) && element.Empty)
-            {
-                WriteEmptyElement();
-                return;
-            }
+            WriteStartTag(m_stack.Peek().m_name);
+            WriteAttributes(m_stack.Peek().m_attributes);
 
             switch(element.Type)
             {
             case Variant.EnumType.None:
             {
-                WriteEmptyElement();
                 break;
             }
             case Variant.EnumType.Any:
             case Variant.EnumType.String:
-            {
-                if (element.As<string>().Length == 0)
-                {
-                    WriteEmptyElement();
-                }
-                else
-                {
-                    m_stream.Write(StartTag());
-                    WriteText(element);
-                    m_stream.Write(EndTag());
-                }
-                break;
-            }
             case Variant.EnumType.Float:
             case Variant.EnumType.Double:
             case Variant.EnumType.Int32:
@@ -302,9 +225,7 @@ namespace protean {
             case Variant.EnumType.Time:
             case Variant.EnumType.DateTime:
             {
-                m_stream.Write(StartTag());
                 WriteText(element);
-                m_stream.Write(EndTag());
                 break;
             }
             case Variant.EnumType.Dictionary:
@@ -314,158 +235,85 @@ namespace protean {
                 {
                     if (element.ContainsKey(XMLConst.Attributes))
                     {
-                        m_stack.Peek().m_attributes = element[XMLConst.Attributes];
-
-                        if (element.Count==1)
-                        {
-                            WriteEmptyElement();
-                            break;
-                        }
+                        WriteAttributes(element[XMLConst.Attributes]);
                     }
 
-                    m_stream.Write(StartTag());
-
-                    bool prev_is_text = false;
                     foreach(VariantItem item in element)
                     {
                         if (item.Key==XMLConst.Attributes)
                         {
-                            continue;
+                             continue;
                         }
                         else if (item.Key==XMLConst.Text)
                         {
                             WriteText(item.Value);
-                            prev_is_text = true;
                         }
                         else if (item.Key==XMLConst.Instruction)
                         {
-                            Push(item.Key);
-
-                            if (!prev_is_text)
-                            {
-                                m_stream.Write(Indent());
-                            }
-
                             WriteInstruction(item.Value);
-
-                            prev_is_text = false;
-
-                            Pop();
                         }
                         else if (item.Key==XMLConst.Comment)
                         {
-                            Push(item.Key);
-
-                            if (!prev_is_text)
-                            {
-                                m_stream.Write(Indent());
-                            }
-
                             WriteComment(item.Value);
-
-                            prev_is_text = false;
-
-                            Pop();
                         }
                         else
                         {
                             Push(item.Key);
-
-                            if (!prev_is_text)
-                            {
-                                m_stream.Write(Indent());
-                            }
-
                             WriteElement(item.Value);
-
-                            prev_is_text = false;
-
                             Pop();
                         }
                     }
-
-                    if (!prev_is_text)
-                    {
-                        m_stream.Write(Indent());
-                    }
-
-                    m_stream.Write(EndTag());
                 }
                 else
                 {
-                    m_stream.Write(StartTag());
-
                     foreach (VariantItem item in element)
                     {
                         Push(item.Key);
-
-                        m_stream.Write(Indent());
                         WriteVariant(item.Value);
-
                         Pop();
                     }
-
-                    m_stream.Write(Indent());
-                    m_stream.Write(EndTag());
                 }
 
                 break;
             }
             case Variant.EnumType.List:
             {
-                m_stream.Write(StartTag());
-
                 foreach(VariantItem item in element)
                 {
                     Push();
-                    m_stream.Write(Indent());
                     WriteVariant(item.Value);
                     Pop();
                 }
-
-                m_stream.Write(Indent());
-                m_stream.Write(EndTag());
 
                 break;
             }
             case Variant.EnumType.Tuple:
             {
                 m_stack.Peek().m_attributes.Add("size", new Variant(element.Count));
-                m_stream.Write(StartTag());
 
                 foreach(VariantItem item in element)
                 {
                     Push();
-                    m_stream.Write(Indent());
                     WriteVariant(item.Value);
                     Pop();
                 }
 
-                m_stream.Write(Indent());
-                m_stream.Write(EndTag());
                 break;
             }
             case Variant.EnumType.TimeSeries:
             {
-                m_stream.Write(StartTag());
-
                 foreach(VariantItem item in element)
                 {
                     Push().Add("time", new Variant(item.Time));
-                    m_stream.Write(Indent());
                     WriteVariant(item.Value);
                     Pop();
                 }
 
-                m_stream.Write(Indent());
-                m_stream.Write(EndTag());
                 break;
             }
             case Variant.EnumType.Buffer:
             {
-                m_stream.Write(StartTag());
-                m_stream.Write(System.Convert.ToBase64String(element.AsBuffer()));
-                m_stream.Write(EndTag());
+                WriteText(new Variant(System.Convert.ToBase64String(element.AsBuffer())));
                 break;
             }
             case Variant.EnumType.Object:
@@ -476,39 +324,28 @@ namespace protean {
                 m_stack.Peek().m_attributes.Add("class", new Variant(obj.Class));
                 m_stack.Peek().m_attributes.Add("version", new Variant(obj.Version));
 
-                m_stream.Write(StartTag());
-
                 // write parameter dictionary
                 Push("params");
-                m_stream.Write(Indent());
                 WriteVariant(obj.Deflate());
                 Pop();
-
-                m_stream.Write(Indent());
-                m_stream.Write(EndTag());
 
                 break;
             }
             case Variant.EnumType.Exception:
             {
-                m_stream.Write(StartTag());
-
                 VariantExceptionInfo e = element.AsException();
 
                 Push("type");
-                m_stream.Write(Indent());
                 WriteElement(new Variant(e.Class));
                 Pop();
                 
                 Push("message");
-                m_stream.Write(Indent());
                 WriteElement(new Variant(e.Message));
                 Pop();
 
                 if (e.Source.Length!=0)
                 {
                     Push("source");
-                    m_stream.Write(Indent());
                     WriteElement(new Variant(e.Source));
                     Pop();
                 }
@@ -516,36 +353,31 @@ namespace protean {
                 if (e.Stack.Length!=0)
                 {
                     Push("stack");
-                    m_stream.Write(Indent());
                     WriteElement(new Variant(e.Stack));
                     Pop();
                 }
-
-                m_stream.Write(Indent());
-                m_stream.Write(EndTag());
                 break;
             }
             default:
                 throw new VariantException("Case exhaustion: " + element.Type); 
             }
 
+            WriteEndTag();
         }
 
-        private System.IO.TextWriter m_stream;
+        private XmlTextWriter m_writer;
         private XMLMode m_mode;
 
         class ElementInfo
         {
-            public ElementInfo(string name, int level)
+            public ElementInfo(string name)
             {
                 m_name = name;
                 m_attributes = new Variant(Variant.EnumType.Dictionary);
-                m_level = level;
             }
 
             public string m_name;
             public Variant m_attributes;
-            public int m_level;
         }
 
         Stack<ElementInfo>    m_stack;
