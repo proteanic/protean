@@ -140,7 +140,7 @@ namespace protean {
                     Value = new VariantAny(value);
                     break;
                 case EnumType.String:
-                    Value = new VariantPrimitive<String>("value");
+                    Value = new VariantPrimitive<String>(value);
                     break;
                 case EnumType.Boolean:
                     Value = new VariantPrimitive<bool>(ParseBoolean(value));
@@ -156,6 +156,9 @@ namespace protean {
                     break;
                 case EnumType.UInt64:
                     Value = new VariantPrimitive<UInt64>(UInt64.Parse(value));
+                    break;
+                case EnumType.Double:
+                    Value = new VariantPrimitive<double>(double.Parse(value));
                     break;
                 case EnumType.DateTime:
                     Value = new VariantPrimitive<DateTime>(ParseDateTime(value));
@@ -230,8 +233,14 @@ namespace protean {
             EnumType type = rhs.Type;
             switch (type)
             {
+                case EnumType.None:
+                    Value = new VariantNone();
+                    break;
                 case EnumType.Boolean:
                     Value = new VariantPrimitive<bool>(rhs.Value as VariantPrimitive<bool>);
+                    break;
+                case EnumType.Double:
+                    Value = new VariantPrimitive<double>(rhs.Value as VariantPrimitive<double>);
                     break;
                 case EnumType.Int32:
                     Value = new VariantPrimitive<Int32>(rhs.Value as VariantPrimitive<Int32>);
@@ -279,7 +288,7 @@ namespace protean {
                     Value = new VariantExceptionInfo(rhs.Value as VariantExceptionInfo);
                     break;
                 default:
-                    throw new VariantException("Cannot default construct variant of type: " + type.ToString());
+                    throw new VariantException("Cannot copy variant of type: " + type.ToString());
             }
         }
 
@@ -346,7 +355,7 @@ namespace protean {
                 case "0":
                     return false;
                 default:
-                    throw new VariantException(string.Format("Illegal format for Boolean, expecting true/1 or false/0"));
+                    throw new VariantException("Illegal format for Boolean, expecting true/1 or false/0, encountered " + str);
             }
         }
 

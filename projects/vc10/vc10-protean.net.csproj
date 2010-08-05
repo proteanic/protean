@@ -88,6 +88,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\bindings\cs\AssemblyInfo.cs" />
@@ -107,8 +108,17 @@
     <Compile Include="..\..\bindings\cs\VariantItem.cs" />
     <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
     <Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
+    <Compile Include="..\..\bindings\cs\XMLDefaultParser.cs">
+      <Link>XMLDefaultParser.cs</Link>
+    </Compile>
     <Compile Include="..\..\bindings\cs\XMLMode.cs">
       <Link>XMLMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLParserBase.cs">
+      <Link>XMLParserBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLReader.cs">
+      <Link>XMLReader.cs</Link>
     </Compile>
     <Compile Include="..\..\bindings\cs\XMLWriter.cs">
       <Link>XMLWriter.cs</Link>

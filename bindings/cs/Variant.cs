@@ -305,7 +305,7 @@ namespace protean {
                         foreach (VariantItem item in this)
                         {
                             result += indent + tab + item.Key + ": ";
-                            if (item.Value.Is(EnumType.Primitive))
+                            if (item.Value.Is(EnumType.Primitive | EnumType.None))
                             {
                                 result += item.Value.ToString(false, no_indent);
                             }
@@ -587,6 +587,17 @@ namespace protean {
         }
 
         // helpers
+        public static EnumType StringToEnum(string value)
+        {
+            try
+            {
+                return (EnumType)Enum.Parse(typeof(EnumType), value, true);
+            }
+            catch
+            {
+                throw new VariantException(string.Format("Unable to convert {0} to valid variant enumeration", value));
+            }
+        }
         private void CheckType(EnumType type, string fn)
         {
             if (!Is(type))

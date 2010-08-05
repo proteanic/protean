@@ -204,12 +204,12 @@ namespace protean {
         void WriteElement(Variant element)
         {
             WriteStartTag(m_stack.Peek().m_name);
-            WriteAttributes(m_stack.Peek().m_attributes);
-
+            
             switch(element.Type)
             {
             case Variant.EnumType.None:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
                 break;
             }
             case Variant.EnumType.Any:
@@ -225,12 +225,14 @@ namespace protean {
             case Variant.EnumType.Time:
             case Variant.EnumType.DateTime:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
                 WriteText(element);
                 break;
             }
             case Variant.EnumType.Dictionary:
             case Variant.EnumType.Bag:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
                 if ((m_mode & XMLMode.Preserve)!=0)
                 {
                     if (element.ContainsKey(XMLConst.Attributes))
@@ -278,6 +280,7 @@ namespace protean {
             }
             case Variant.EnumType.List:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
                 foreach(VariantItem item in element)
                 {
                     Push();
@@ -291,6 +294,8 @@ namespace protean {
             {
                 m_stack.Peek().m_attributes.Add("size", new Variant(element.Count));
 
+                WriteAttributes(m_stack.Peek().m_attributes);
+
                 foreach(VariantItem item in element)
                 {
                     Push();
@@ -302,6 +307,8 @@ namespace protean {
             }
             case Variant.EnumType.TimeSeries:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
+
                 foreach(VariantItem item in element)
                 {
                     Push().Add("time", new Variant(item.Time));
@@ -313,6 +320,8 @@ namespace protean {
             }
             case Variant.EnumType.Buffer:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
+
                 m_writer.WriteBase64(element.AsBuffer(), 0, element.AsBuffer().Length);
                 break;
             }
@@ -324,6 +333,8 @@ namespace protean {
                 m_stack.Peek().m_attributes.Add("class", new Variant(obj.Class));
                 m_stack.Peek().m_attributes.Add("version", new Variant(obj.Version));
 
+                WriteAttributes(m_stack.Peek().m_attributes);
+
                 // write parameter dictionary
                 Push("params");
                 WriteVariant(obj.Deflate());
@@ -333,6 +344,8 @@ namespace protean {
             }
             case Variant.EnumType.Exception:
             {
+                WriteAttributes(m_stack.Peek().m_attributes);
+
                 VariantExceptionInfo e = element.AsException();
 
                 Push("type");
