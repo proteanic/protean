@@ -30,7 +30,7 @@ namespace protean {
             Inflate(param, rhs.Version);
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Object; }
         }

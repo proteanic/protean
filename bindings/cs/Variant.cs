@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace protean {
 
@@ -566,6 +567,69 @@ namespace protean {
         public ulong ToUInt64(IFormatProvider provider)
         {
             return As<UInt64>();
+        }
+
+        private static void SelectImpl(Variant input, string path, Variant result)
+        {
+            string head = "", tail = "";
+
+            Match myMatch = Regex.Match(path, @"[^/]+");
+
+            if (myMatch.Success)
+            {
+                head = myMatch.Value;
+                tail = path.Substring(myMatch.Index + myMatch.Length);
+            }
+            else
+            {
+                result.Add(input);
+                return;
+            }
+
+            string node = "", pred_key = "", pred_val = "";
+
+            myMatch = Regex.Match(head, @"^(\*|\w+)(\[@?(\w+)=""?(\w+)""?\])?");
+            if (myMatch.Success)
+            {
+                node = myMatch.Groups[1].Value;
+                pred_key = myMatch.Groups[3].Value;
+                pred_val = myMatch.Groups[4].Value;
+            }
+            else 
+            {
+                throw new VariantException("Select path has invalid syntax: " + head);
+            }
+
+            Variant nodes = new Variant(EnumType.List);
+            if (node.Length==0 || node=="*")
+            {
+                foreach(VariantItem item in input)
+                {
+                    nodes.Add(item.Value);
+                }
+            }
+            else if (input.Is(EnumType.Mapping))
+            {
+                foreach(VariantItem item in input.Range(node))
+                {
+                    nodes.Add(item.Value);
+                }
+            }
+
+            foreach(VariantItem item in nodes)
+            {
+                if (pred_key.Length==0 || (item.Value.Is(EnumType.Mapping) && item.Value.ContainsKey(pred_key) && item.Value[pred_key].AnyCast().As<string>()==pred_val))
+                {
+                    SelectImpl(item.Value, tail, result);
+                }
+            }
+        }
+
+        public Variant Select(string path)
+        {
+            Variant result = new Variant(Variant.EnumType.List);
+            SelectImpl(this, path, result);
+            return result;
         }
 
         // System.CompareTo<Variant>

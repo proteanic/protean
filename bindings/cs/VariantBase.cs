@@ -12,7 +12,7 @@ namespace protean {
     public interface IVariantData :
         IComparable<IVariantData>
     {
-        VariantBase.EnumType Type { get; }
+        VariantBase.EnumType _Type { get; }
     }
 
     // None
@@ -21,7 +21,7 @@ namespace protean {
         public VariantNone()
         { }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.None; }
         }
@@ -47,7 +47,7 @@ namespace protean {
             Value = rhs.Value;
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Any; }
         }
@@ -76,7 +76,7 @@ namespace protean {
             Array.Copy(rhs.Value, Value, Value.Length);
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Buffer; }
         }
@@ -296,7 +296,7 @@ namespace protean {
         {
             get
             {
-                return Value.Type;
+                return Value._Type;
             }
         }
 
@@ -325,7 +325,7 @@ namespace protean {
 
         public bool Is(EnumType type)
         {
-            return (type & Value.Type)!=0;
+            return (type & Value._Type)!=0;
         }
 
         public static double ParseDouble(string str)

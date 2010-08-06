@@ -31,7 +31,7 @@ namespace protean {
             this(e.GetType().ToString(), e.Message, e.Source, e.StackTrace)
         { }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Exception; }
         }

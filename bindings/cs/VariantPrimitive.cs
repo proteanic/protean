@@ -29,7 +29,7 @@ namespace protean {
             return new VariantPrimitive<T>(value);
         }
 
-        public VariantBase.EnumType Type  {
+        public VariantBase.EnumType _Type  {
             get {
                 if (m_typeMapping.ContainsKey(Value.GetType()))
                 {

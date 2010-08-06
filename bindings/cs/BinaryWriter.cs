@@ -28,6 +28,10 @@ namespace protean {
             Mode |= BinaryMode.DateTimeAsTicks;
         }
 
+        public BinaryWriter(System.IO.Stream stream) :
+            this(stream, BinaryMode.Default)
+        { }
+
         public static byte[] ToBytes(Variant value, BinaryMode mode)
         {
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream())

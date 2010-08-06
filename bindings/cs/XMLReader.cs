@@ -12,6 +12,7 @@ namespace protean {
 
     public class XMLReader
     {
+
         public XMLReader(System.IO.TextReader stream, XMLMode mode)
         {
             if ((mode & XMLMode.Preserve) != 0)
@@ -23,6 +24,10 @@ namespace protean {
                 m_parser = new XMLDefaultParser(stream, mode);
             }
         }
+
+        public XMLReader(System.IO.TextReader stream) :
+            this(stream, XMLMode.Default)
+        {  }
 
         public Variant Read()
         {

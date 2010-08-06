@@ -116,7 +116,7 @@ namespace protean {
             return new VariantEnumerator(((IEnumerable<KeyValuePair<DateTime, Variant>>)Value).GetEnumerator());
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.TimeSeries; }
         }
@@ -188,7 +188,7 @@ namespace protean {
             Variant result = new Variant(Variant.EnumType.List);
             if (ContainsKey(key))
             {
-                result.Add(key, Value[key]);
+                result.Add(Value[key]);
             }
 
             return result;
@@ -199,7 +199,7 @@ namespace protean {
             return new VariantEnumerator(((IEnumerable<KeyValuePair<string, Variant>>)Value).GetEnumerator());
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Dictionary; }
         }
@@ -294,7 +294,7 @@ namespace protean {
             return SequenceComparer.Compare(Value, ((VariantBag)rhs).Value, new KeyValuePairComparer<string, Variant>());
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Bag; }
         }
@@ -374,7 +374,7 @@ namespace protean {
             return new VariantEnumerator(((IEnumerable<Variant>)Value).GetEnumerator());
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.List; }
         }
@@ -450,7 +450,7 @@ namespace protean {
             return new VariantEnumerator(((IEnumerable<Variant>)Value).GetEnumerator());
         }
 
-        public VariantBase.EnumType Type
+        public VariantBase.EnumType _Type
         {
             get { return VariantBase.EnumType.Tuple; }
         }

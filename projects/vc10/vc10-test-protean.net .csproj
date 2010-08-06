@@ -102,6 +102,9 @@
     <Compile Include="..\..\test\bindings\cs\TestMapping.cs">
       <Link>TestMapping.cs</Link>
     </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestMisc.cs">
+      <Link>TestMisc.cs</Link>
+    </Compile>
     <Compile Include="..\..\test\bindings\cs\TestObject.cs">
       <Link>TestObject.cs</Link>
     </Compile>
