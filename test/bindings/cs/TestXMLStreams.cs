@@ -129,8 +129,6 @@ namespace protean.test
             Variant v1 = new Variant(o1);
 
             string xml = XMLWriter.ToString(v1);
-
-            System.Console.WriteLine(xml);
             Variant v2 = XMLReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.Object);
@@ -151,8 +149,6 @@ namespace protean.test
 
             string xml = XMLWriter.ToString(v1);
             Variant v2 = XMLReader.FromString(xml);
-
-            System.Console.WriteLine(v2.ToString());
 
             Assert.AreEqual(v2.Type, Variant.EnumType.TimeSeries);
             Assert.IsTrue(v1.Equals(v2));

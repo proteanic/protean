@@ -21,8 +21,6 @@ namespace protean {
 
         public override void StartElement(string name, Variant attributes)
         {
-            System.Console.WriteLine("StartElement() " + name);
-
             ElementInfo context = new ElementInfo(name, attributes);
 
             if (m_stack.Count!=0)
@@ -167,7 +165,6 @@ namespace protean {
                 case Variant.EnumType.Date:
                 case Variant.EnumType.Time:
                 case Variant.EnumType.DateTime:
-                    System.Console.WriteLine("EndElement: " + context.m_data);
                     context.m_element = new Variant(context.m_type, context.m_data);
                     break;
                 case Variant.EnumType.Buffer:
@@ -310,7 +307,6 @@ namespace protean {
                 case Variant.EnumType.DateTime:
                 case Variant.EnumType.Buffer:
                     context.m_data += chars;
-                    System.Console.WriteLine("Characters: " + context.m_data);
                     break;
                 case Variant.EnumType.None:
                 case Variant.EnumType.List:

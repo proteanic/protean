@@ -34,8 +34,6 @@ namespace protean {
                     {
                         m_reader.MoveToAttribute(i);
                         attributes.Add(m_reader.Name, new Variant(Variant.EnumType.Any, m_reader.Value));
-
-                        System.Console.WriteLine(m_reader.Name);
                     }
                     StartElement(name, attributes);
 
