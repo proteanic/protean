@@ -153,6 +153,15 @@ namespace protean {
 
                     return new Variant(proxy);
                 }
+                case Variant.EnumType.Exception:
+                {
+                    string xtype = ReadString();
+                    string xmessage = ReadString();
+                    string xsource = ReadString();
+                    string xstack = ReadString();
+
+                    return new Variant(new VariantExceptionInfo(xtype, xmessage, xsource, xstack));
+                }
                 case Variant.EnumType.Buffer:
                 {
                     int length = ReadInt32();

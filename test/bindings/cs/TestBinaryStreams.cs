@@ -349,5 +349,24 @@ namespace protean.test
             Assert.AreEqual(v2.Type, Variant.EnumType.Tuple);
             Assert.IsTrue(v1.Equals(v2));
         }
+
+        [Test]
+        public void TestException()
+        {
+            VariantExceptionInfo x1 = new VariantExceptionInfo("type", "message", "source", "stacktrace");
+            Variant v1 = new Variant(x1);
+
+            byte[] bytes = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bytes);
+
+            Assert.AreEqual(Variant.EnumType.Exception, v2.Type);
+
+            VariantExceptionInfo x2 = v2.AsException();
+
+            Assert.AreEqual(x1.Class, x2.Class);
+            Assert.AreEqual(x1.Message, x2.Message);
+            Assert.AreEqual(x1.Source, x2.Source);
+            Assert.AreEqual(x1.Stack, x2.Stack);
+        }
     }
 }

@@ -66,7 +66,7 @@ namespace protean {
             }
         }
 
-        public static string ToString<T>(T value)
+        public static string ToString(T value)
         {
             if (typeof(T) == typeof(TimeSpan))
             {

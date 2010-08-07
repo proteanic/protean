@@ -209,6 +209,13 @@ namespace protean {
                 Write(o.Version);
                 WriteVariant(o.Deflate());
                 break;
+            case Variant.EnumType.Exception:
+                VariantExceptionInfo x = v.AsException();
+                Write(x.Class);
+                Write(x.Message);
+                Write(x.Source);
+                Write(x.Stack);
+                break;
             case Variant.EnumType.Buffer:
                 Write(v.AsBuffer().Length);
                 Write(v.AsBuffer(), true);
