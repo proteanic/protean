@@ -34,6 +34,7 @@ namespace protean {
                     {
                         // Untyped elements with children are converted to Bags
                         parentContext.m_type = Variant.EnumType.Bag;
+                        parentContext.m_element = new Variant(parentContext.m_type);
                     }
                     break;
                 case Variant.EnumType.None:
@@ -83,6 +84,7 @@ namespace protean {
                         // untyped elements with attributes are assumed
                         // to be bags
                         context.m_type = Variant.EnumType.Bag;
+                        context.m_element = new Variant(context.m_type);
                     }
                     break;
                 case Variant.EnumType.None:
@@ -344,7 +346,7 @@ namespace protean {
             {
                 m_name = name;
                 m_attributes = attributes;
-                m_element = new Variant();
+                m_element = new Variant(Variant.EnumType.Any);
                 m_isTyped = false;
                 m_type = Variant.EnumType.Any;
                 m_data = "";

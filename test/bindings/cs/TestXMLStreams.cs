@@ -45,6 +45,40 @@ namespace protean.test
         }
 
         [Test]
+        public void TestUntypedXML()
+        {
+            string xml =
+                @"<?xml version=""1.0"" encoding=""utf-8""?>
+                    <element1>
+                        <element2>
+	                        <element3>value1</element3>
+                        </element2>
+                        <element4 attr1=""value"">
+                            <element5>
+	                            <element6>value2</element6>
+                                <element7/>
+                            </element5>
+                        </element4>
+                        <element8 attr2=""value""/>
+                    </element1>";
+
+            Variant v = XMLReader.FromString(xml);
+
+            Assert.AreEqual(Variant.EnumType.Bag, v.Type);
+            Assert.AreEqual(Variant.EnumType.Bag, v["element2"].Type);
+            Assert.AreEqual(Variant.EnumType.Any, v["element2"]["element3"].Type);
+            Assert.AreEqual(Variant.EnumType.Bag, v["element4"].Type);
+            Assert.AreEqual(Variant.EnumType.Any, v["element4"]["attr1"].Type);
+            Assert.AreEqual(Variant.EnumType.Bag, v["element4"]["element5"].Type);
+            Assert.AreEqual(Variant.EnumType.Any, v["element4"]["element5"]["element6"].Type);
+            Assert.AreEqual(Variant.EnumType.Any, v["element4"]["element5"]["element7"].Type);
+            Assert.AreEqual(Variant.EnumType.Bag, v["element8"].Type);
+            Assert.AreEqual(Variant.EnumType.Any, v["element8"]["attr2"].Type);
+
+            System.Console.WriteLine(v);
+        }
+
+        [Test]
         // Test compatibility with CLR variant
         public void TestCompatibility()
         {
