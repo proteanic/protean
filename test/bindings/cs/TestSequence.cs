@@ -57,6 +57,21 @@ namespace protean.test
         }
 
         [Test]
+        public void TestCollectionInitialization()
+        {
+            Variant v = new Variant(Variant.EnumType.List) {
+                new Variant("value1"),
+                new Variant(2.0)
+            };
+
+            Assert.AreEqual(v.Count, 2);
+            Assert.AreEqual(Variant.EnumType.String, v[0].Type);
+            Assert.AreEqual("value1", v[0].As<string>());
+            Assert.AreEqual(Variant.EnumType.Double, v[1].Type);
+            Assert.AreEqual(2.0, v[1].As<double>());
+        }
+
+        [Test]
         public void TestListEnumeration()
         {
             Variant v = new Variant(Variant.EnumType.List);

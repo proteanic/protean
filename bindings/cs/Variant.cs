@@ -76,8 +76,8 @@ namespace protean {
             Value = new VariantBuffer(arg);
         }
 
-        public Variant(VariantObjectBase arg)  {
-            Value = arg;
+        public Variant(IVariantObject arg)  {
+            Value = new VariantObjectData(arg);
         }
 
         public Variant(System.Exception arg) :
@@ -88,30 +88,37 @@ namespace protean {
             Value = arg;
         }
 
-        public VariantObjectBase AsObject()
+        public IVariantObject AsObject()
         {
             CheckType(EnumType.Object, "AsObject()");
 
-            return Value as VariantObjectBase;
+            return ((VariantObjectData)Value).Value;
         }
 
         public T AsObject<T>()
-            where T : VariantObjectBase, new()
+            where T : class, IVariantObject, new()
         {
             CheckType(EnumType.Object, "AsObject()");
 
-            VariantObjectBase o = Value as VariantObjectBase;
+            IVariantObject o = ((VariantObjectData)Value).Value;
 
             T result = o as T;
 
             if (result==null)
             {
                 result = new T();
-                result.Coerce(o);
+
+                if (o.Class != result.Class)
+                {
+                    throw new VariantException(string.Format("Attempt to coerce object of type {0} into {1}", o.Class, result.Class));
+                }
+
+                Variant param = o.Deflate();
+                result.Inflate(param, o.Version);
 
                 if (o is VariantObjectProxy)
                 {
-                    Value = result;
+                    Value = new VariantObjectData(result);
                 }
             }
 
@@ -443,7 +450,7 @@ namespace protean {
                 }
                 case EnumType.Object:
                 {
-                    VariantObjectBase o = AsObject();
+                    IVariantObject o = AsObject();
 
                     if (summarise)
                     {

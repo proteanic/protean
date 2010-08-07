@@ -9,7 +9,7 @@ using System.Text;
 
 namespace protean {
 
-    public class VariantObjectProxy : VariantObjectBase
+    public class VariantObjectProxy : IVariantObject
     {
         public VariantObjectProxy(string classname)
         {
@@ -22,22 +22,22 @@ namespace protean {
             this("VariantObjectProxy")
         { }
 
-        public override string Class
+        public string Class
         {
             get { return m_classname; }
         }
 
-        public override int Version
+        public int Version
         {
             get { return m_version; }
         }
 
-        public override Variant Deflate()
+        public Variant Deflate()
         {
             return m_params;
         }
 
-        public override void Inflate(Variant param, int version)
+        public void Inflate(Variant param, int version)
         {
             m_params = param;
             m_version = version;

@@ -91,7 +91,7 @@ namespace protean.test
             Assert.AreEqual(v2["Double"].AsDouble(), argDouble);
         }
 
-        class TestObject1 : VariantObjectBase
+        class TestObject1 : IVariantObject
         {
             public TestObject1(string value)
             {
@@ -102,18 +102,18 @@ namespace protean.test
                 this("default")
             { }
 
-            public override string Class { get { return "TestObject1"; } }
+            public string Class { get { return "TestObject1"; } }
 
-            public override int Version { get { return 1; } }
+            public int Version { get { return 1; } }
 
-            public override Variant Deflate()
+            public Variant Deflate()
             {
                 Variant result = new Variant(Variant.EnumType.Dictionary);
                 result.Add("value", new Variant(m_value));
                 return result;
             }
 
-            public override void Inflate(Variant param, int version)
+            public void Inflate(Variant param, int version)
             {
                 m_value = param["value"].As<string>();
             }

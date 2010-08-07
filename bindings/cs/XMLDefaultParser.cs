@@ -233,7 +233,7 @@ namespace protean {
                         throw new VariantException("Missing 'params' element in Object variant");
                     }
 
-                    VariantObjectBase obj = new VariantObjectProxy(className);
+                    IVariantObject obj = new VariantObjectProxy(className);
                     obj.Inflate(param, version);
 
                     context.m_element = new Variant(obj);

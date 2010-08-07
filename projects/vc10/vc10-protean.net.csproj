@@ -96,16 +96,21 @@
     <Compile Include="..\..\bindings\cs\BinaryMode.cs" />
     <Compile Include="..\..\bindings\cs\BinaryReader.cs" />
     <Compile Include="..\..\bindings\cs\BinaryWriter.cs" />
+    <Compile Include="..\..\bindings\cs\IVariantObject.cs">
+      <Link>IVariantObject.cs</Link>
+    </Compile>
     <Compile Include="..\..\bindings\cs\VariantExceptionInfo.cs">
       <Link>VariantExceptionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\VariantObjectBase.cs" />
     <Compile Include="..\..\bindings\cs\Variant.cs" />
     <Compile Include="..\..\bindings\cs\VariantBase.cs" />
     <Compile Include="..\..\bindings\cs\VariantCollection.cs" />
     <Compile Include="..\..\bindings\cs\VariantEnumerator.cs" />
     <Compile Include="..\..\bindings\cs\VariantException.cs" />
     <Compile Include="..\..\bindings\cs\VariantItem.cs" />
+    <Compile Include="..\..\bindings\cs\VariantObjectData.cs">
+      <Link>VariantObjectData.cs</Link>
+    </Compile>
     <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
     <Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
     <Compile Include="..\..\bindings\cs\XMLDefaultParser.cs">

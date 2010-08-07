@@ -327,7 +327,7 @@ namespace protean {
             }
             case Variant.EnumType.Object:
             {
-                VariantObjectBase obj = element.AsObject();
+                IVariantObject obj = element.AsObject();
 
                 // write class name
                 m_stack.Peek().m_attributes.Add("class", new Variant(obj.Class));

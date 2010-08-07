@@ -198,7 +198,7 @@ namespace protean {
                 }
                 break;
             case Variant.EnumType.Object:
-                VariantObjectBase o = v.AsObject();
+                IVariantObject o = v.AsObject();
                 Write(o.Class);
                 Write(o.Version);
                 WriteVariant(o.Deflate());

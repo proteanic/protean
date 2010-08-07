@@ -16,7 +16,7 @@ namespace protean.test
     [TestFixture]
     public class TestObject
     {
-        class TestObject1 : VariantObjectBase
+        class TestObject1 : IVariantObject
         {
             public TestObject1(string value) {
                 m_value = value;
@@ -26,18 +26,18 @@ namespace protean.test
                 this("default")
             { }
 
-            public override string Class { get { return "TestObject1"; } }
+            public string Class { get { return "TestObject1"; } }
 
-            public override int Version { get { return 1; } }
+            public int Version { get { return 1; } }
 
-            public override Variant Deflate()
+            public Variant Deflate()
             {
                 Variant result = new Variant(Variant.EnumType.Dictionary);
                 result.Add("value", new Variant(m_value));
                 return result;
             }
 
-            public override void Inflate(Variant param, int version)
+            public void Inflate(Variant param, int version)
             {
                 m_value = param["value"].As<string>();
             }
@@ -45,7 +45,7 @@ namespace protean.test
             private string m_value;
         }
 
-        class TestObject2 : VariantObjectBase
+        class TestObject2 : IVariantObject
         {
             public TestObject2(string value) {
                 m_value = value;
@@ -55,18 +55,18 @@ namespace protean.test
                 this("default")
             { }
 
-            public override string Class { get { return "TestObject2"; } }
+            public string Class { get { return "TestObject2"; } }
 
-            public override int Version { get { return 1; } }
+            public int Version { get { return 1; } }
 
-            public override Variant Deflate()
+            public Variant Deflate()
             {
                 Variant result = new Variant(Variant.EnumType.Dictionary);
                 result.Add("value", new Variant(m_value));
                 return result;
             }
 
-            public override void Inflate(Variant param, int version)
+            public void Inflate(Variant param, int version)
             {
                 m_value = param["value"].As<string>();
             }
@@ -89,7 +89,7 @@ namespace protean.test
             Assert.Throws<VariantException>(delegate { v1.AsObject<VariantObjectProxy>(); });
 
             VariantObjectProxy obj3 = new VariantObjectProxy(obj1.Class);
-            obj3.Coerce(obj2);
+            obj3.Inflate(obj2.Deflate(), obj2.Version);
             
             Assert.AreEqual(obj3.Class, "TestObject1");
             Assert.AreEqual(obj3.Version, 1);
