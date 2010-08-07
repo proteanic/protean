@@ -202,7 +202,19 @@ namespace protean {
 
         public bool Empty
         {
-            get { return Count==0; }
+            get
+            {
+                CheckType(EnumType.Collection | EnumType.Any, "Empty");
+
+                if (Value is IVariantCollection)
+                {
+                    return ((IVariantCollection)Value).Count == 0;
+                }
+                else
+                {
+                    return ((VariantAny)Value).Value.Length == 0;
+                }
+            }
         }
 
         public Variant this[string key]
