@@ -172,6 +172,12 @@ namespace protean {
             case Variant.EnumType.Boolean:
                 Write(v.As<bool>());
                 break;
+            case Variant.EnumType.Time:
+                Write(v.As<TimeSpan>());
+                break;
+            case Variant.EnumType.DateTime:
+                Write(v.As<DateTime>());
+                break;
             case Variant.EnumType.List:
             case Variant.EnumType.Tuple:
                 Write(v.Count);

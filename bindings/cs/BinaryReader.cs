@@ -85,6 +85,10 @@ namespace protean {
                     return new Variant(ReadUInt64());
                 case Variant.EnumType.Boolean:
                     return new Variant(ReadBoolean());
+                case Variant.EnumType.Time:
+                    return new Variant(ReadTime());
+                case Variant.EnumType.DateTime:
+                    return new Variant(ReadDateTime());
                 case Variant.EnumType.Tuple:
                 {
                     int length = ReadInt32();

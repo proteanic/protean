@@ -26,6 +26,8 @@ namespace protean.test
             bool argBoolean = true;
             double argDouble = double.MaxValue;
             string argString = "test string";
+            DateTime argDateTime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
+            TimeSpan argTime = new TimeSpan(0, 1, 2, 3, 4);
 
             Variant v1 = new Variant(Variant.EnumType.Dictionary);
             v1.Add("Int32", new Variant(argInt32));
@@ -35,6 +37,8 @@ namespace protean.test
             v1.Add("Boolean", new Variant(argBoolean));
             v1.Add("Double", new Variant(argDouble));
             v1.Add("String", new Variant(argString));
+            v1.Add("DateTime", new Variant(argDateTime));
+            v1.Add("Time", new Variant(argTime));
             v1.Add("None", new Variant(Variant.EnumType.None));
 
             byte[] bytesCompressed = BinaryWriter.ToBytes(v1, BinaryMode.Compress);
@@ -50,6 +54,8 @@ namespace protean.test
             Assert.AreEqual(v2["UInt64"].Type, Variant.EnumType.UInt64);
             Assert.AreEqual(v2["Boolean"].Type, Variant.EnumType.Boolean);
             Assert.AreEqual(v2["Double"].Type, Variant.EnumType.Double);
+            Assert.AreEqual(v2["DateTime"].Type, Variant.EnumType.DateTime);
+            Assert.AreEqual(v2["Time"].Type, Variant.EnumType.Time);
             Assert.AreEqual(v2["None"].Type, Variant.EnumType.None);
 
             Assert.AreEqual(v2["String"].As<string>(), argString);
@@ -59,6 +65,8 @@ namespace protean.test
             Assert.AreEqual(v2["UInt64"].As<UInt64>(), argUInt64);
             Assert.AreEqual(v2["Boolean"].As<Boolean>(), argBoolean);
             Assert.AreEqual(v2["Double"].As<Double>(), argDouble);
+            Assert.AreEqual(v2["DateTime"].As<DateTime>(), argDateTime);
+            Assert.AreEqual(v2["Time"].As<TimeSpan>(), argTime);
 
             Variant v3 = BinaryReader.FromBytes(bytesUncompressed);
 
@@ -76,6 +84,8 @@ namespace protean.test
             bool argBoolean = true;
             double argDouble = double.MaxValue;
             string argString = "test string";
+            DateTime argDateTime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
+            TimeSpan argTime = new TimeSpan(0, 1, 2, 3, 4);
 
             Variant v1 = new Variant(Variant.EnumType.Dictionary);
             v1.Add("Int32", new Variant(argInt32));
@@ -85,6 +95,9 @@ namespace protean.test
             v1.Add("Boolean", new Variant(argBoolean));
             v1.Add("Double", new Variant(argDouble));
             v1.Add("String", new Variant(argString));
+            v1.Add("DateTime", new Variant(argDateTime));
+            v1.Add("Time", new Variant(argTime));
+
             v1.Add("None", new Variant(Variant.EnumType.None));
 
             byte[] bytesCompressed = BinaryWriter.ToBytes(v1, BinaryMode.Compress);
@@ -100,6 +113,8 @@ namespace protean.test
             Assert.AreEqual(v2["UInt64"].Type, protean.clr.Variant.EnumType.UInt64);
             Assert.AreEqual(v2["Boolean"].Type, protean.clr.Variant.EnumType.Boolean);
             Assert.AreEqual(v2["Double"].Type, protean.clr.Variant.EnumType.Double);
+            Assert.AreEqual(v2["DateTime"].Type, protean.clr.Variant.EnumType.DateTime);
+            Assert.AreEqual(v2["Time"].Type, protean.clr.Variant.EnumType.Time);
             Assert.AreEqual(v2["None"].Type, protean.clr.Variant.EnumType.None);
 
             Assert.AreEqual(v2["String"].AsString(), argString);
@@ -109,6 +124,8 @@ namespace protean.test
             Assert.AreEqual(v2["UInt64"].AsUInt64(), argUInt64);
             Assert.AreEqual(v2["Boolean"].AsBoolean(), argBoolean);
             Assert.AreEqual(v2["Double"].AsDouble(), argDouble);
+            Assert.AreEqual(v2["DateTime"].AsDateTime(), argDateTime);
+            Assert.AreEqual(v2["Time"].AsTime(), argTime);
 
             protean.clr.Variant v3 = protean.clr.BinaryReader.FromBytes(bytesUncompressed);
 

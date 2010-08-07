@@ -26,6 +26,8 @@ namespace protean.test
             bool argBoolean = true;
             double argDouble = 2.0;
             string argString = "test string";
+            DateTime argDateTime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
+            TimeSpan argTime = new TimeSpan(0, 1, 2, 3, 4);
 
             Variant v1 = new Variant(Variant.EnumType.Dictionary);
             v1.Add("Int32", new Variant(argInt32));
@@ -35,10 +37,11 @@ namespace protean.test
             v1.Add("Boolean", new Variant(argBoolean));
             v1.Add("Double", new Variant(argDouble));
             v1.Add("String", new Variant(argString));
+            v1.Add("DateTime", new Variant(argDateTime));
+            v1.Add("Time", new Variant(argTime));
             v1.Add("None", new Variant(Variant.EnumType.None));
 
             string xml = XMLWriter.ToString(v1);
-
             Variant v2 = XMLReader.FromString(xml);
 
             Assert.IsTrue(v1.Equals(v2));
@@ -74,8 +77,6 @@ namespace protean.test
             Assert.AreEqual(Variant.EnumType.Any, v["element4"]["element5"]["element7"].Type);
             Assert.AreEqual(Variant.EnumType.Bag, v["element8"].Type);
             Assert.AreEqual(Variant.EnumType.Any, v["element8"]["attr2"].Type);
-
-            System.Console.WriteLine(v);
         }
 
         [Test]

@@ -305,12 +305,12 @@ namespace protean {
         {
             if (Value is VariantPrimitive<T>)
             {
-                return (Value as VariantPrimitive<T>).Value;
+                return ((VariantPrimitive<T>)Value).Value;
             } 
             else if (Value is VariantAny)
             {
-                String str = ((VariantAny)Value).Value;
-                return (T)Convert.ChangeType(str, typeof(T));
+                string str = ((VariantAny)Value).Value;
+                return VariantPrimitive<T>.Parse(str);
             }
             else
             {

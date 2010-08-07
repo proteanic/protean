@@ -155,6 +155,9 @@ namespace protean {
 
             switch (context.m_type)
             {
+                case Variant.EnumType.None:
+                    context.m_element = new Variant();
+                    break;
                 case Variant.EnumType.Any:
                 case Variant.EnumType.String:
                 case Variant.EnumType.Int32:

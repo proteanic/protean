@@ -42,27 +42,56 @@ namespace protean {
             }
         }
 
-        public override string ToString()
+        public static T Parse(string value)
         {
             if (typeof(T) == typeof(TimeSpan))
             {
-                return VariantBase.ToString((TimeSpan)Convert.ChangeType(Value, typeof(TimeSpan)));
+                return (T)Convert.ChangeType(VariantBase.ParseTime(value), typeof(T));
             }
             else
             {
-                TypeCode typeCode = System.Type.GetTypeCode(Value.GetType());
+
+                TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
                 switch (typeCode)
                 {
                     case TypeCode.Double:
-                        return VariantBase.ToString((double)Convert.ChangeType(Value, typeof(double)));
+                        return (T)Convert.ChangeType(VariantBase.ParseDouble(value), typeof(T));
                     case TypeCode.Boolean:
-                        return VariantBase.ToString((bool)Convert.ChangeType(Value, typeof(bool)));
+                        return (T)Convert.ChangeType(VariantBase.ParseBoolean(value), typeof(T));
                     case TypeCode.DateTime:
-                        return VariantBase.ToString((DateTime)Convert.ChangeType(Value, typeof(DateTime)));
+                        return (T)Convert.ChangeType(VariantBase.ParseDateTime(value), typeof(T));
                     default:
-                        return Value.ToString();
+                        return (T)Convert.ChangeType(value, typeof(T));
                 }
             }
+        }
+
+        public static string ToString<T>(T value)
+        {
+            if (typeof(T) == typeof(TimeSpan))
+            {
+                return VariantBase.ToString((TimeSpan)Convert.ChangeType(value, typeof(TimeSpan)));
+            }
+            else
+            {
+                TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
+                switch (typeCode)
+                {
+                    case TypeCode.Double:
+                        return VariantBase.ToString((double)Convert.ChangeType(value, typeof(double)));
+                    case TypeCode.Boolean:
+                        return VariantBase.ToString((bool)Convert.ChangeType(value, typeof(bool)));
+                    case TypeCode.DateTime:
+                        return VariantBase.ToString((DateTime)Convert.ChangeType(value, typeof(DateTime)));
+                    default:
+                        return value.ToString();
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return ToString(Value);
         }
 
         public int CompareTo(IVariantData rhs)

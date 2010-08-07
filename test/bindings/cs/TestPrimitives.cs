@@ -164,10 +164,6 @@ namespace protean.test
             Variant vNEGINF = new Variant(double.NegativeInfinity);
             Assert.AreEqual(vNEGINF.ToString(), "-INF");
 
-            Assert.IsTrue(double.IsNaN(VariantBase.ParseDouble("NaN")));
-            Assert.IsTrue(double.IsPositiveInfinity(VariantBase.ParseDouble("INF")));
-            Assert.IsTrue(double.IsNegativeInfinity(VariantBase.ParseDouble("-INF")));
-
             Variant v2 = new Variant(v1);
             Assert.IsTrue(v1.Equals(v2));
         }
@@ -185,9 +181,6 @@ namespace protean.test
 
             Assert.AreEqual(v1.ToString(), "2010-01-02T03:04:05.006");
 
-            Assert.AreEqual(VariantBase.ParseDateTime("2010-01-02T03:04:05.006"), new DateTime(2010, 1, 2, 3, 4, 5, 6));
-            Assert.AreEqual(VariantBase.ParseDateTime("2010-01-02T03:04:05"), new DateTime(2010, 1, 2, 3, 4, 5, 0));
-
             Variant v2 = new Variant(v1);
             Assert.IsTrue(v1.Equals(v2));
         }
@@ -204,11 +197,40 @@ namespace protean.test
 
             Assert.AreEqual(v1.ToString(), "02:03:04.005");
 
-            Assert.AreEqual(VariantBase.ParseTime("02:03:04.005"), new TimeSpan(0, 2, 3, 4, 5));
-            Assert.AreEqual(VariantBase.ParseTime("02:03:04"), new TimeSpan(2, 3, 4));
-
             Variant v2 = new Variant(v1);
             Assert.IsTrue(v1.Equals(v2));
+        }
+
+        [Test]
+        public void TestParsing()
+        {
+            // Time
+            Variant v1 = new Variant(Variant.EnumType.Any, "02:03:04.005");
+            Assert.AreEqual(new TimeSpan(0, 2, 3, 4, 5), v1.As<TimeSpan>());
+
+            Variant v2 = new Variant(Variant.EnumType.Any, "02:03:04");
+            Assert.AreEqual(new TimeSpan(2, 3, 4), v2.As<TimeSpan>());
+
+            // DateTime
+            Variant v3 = new Variant(Variant.EnumType.Any, "2010-01-02T03:04:05.006");
+            Assert.AreEqual(new DateTime(2010, 1, 2, 3, 4, 5, 6), v3.As<DateTime>());
+
+            Variant v4 = new Variant(Variant.EnumType.Any, "2010-01-02T03:04:05");
+            Assert.AreEqual(new DateTime(2010, 1, 2, 3, 4, 5, 0), v4.As<DateTime>());
+
+            // Double
+            Variant v5 = new Variant(Variant.EnumType.Any, "NaN");
+            Assert.IsTrue(double.IsNaN(v5.As<Double>()));
+
+            Variant v6 = new Variant(Variant.EnumType.Any, "INF");
+            Assert.IsTrue(double.IsPositiveInfinity(v6.As<Double>()));
+
+            Variant v7 = new Variant(Variant.EnumType.Any, "-INF");
+            Assert.IsTrue(double.IsNegativeInfinity(v7.As<Double>()));
+
+            // String
+            Variant v8 = new Variant(Variant.EnumType.Any, "value");
+            Assert.AreEqual("value", v8.As<string>());
         }
     }
 }
