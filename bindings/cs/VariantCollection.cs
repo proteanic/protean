@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace protean {
 
-    public class KeyValuePairComparer<TKey, TValue> :
+    internal class KeyValuePairComparer<TKey, TValue> :
         IComparer<KeyValuePair<TKey, TValue>>
         where TKey : IComparable<TKey>
         where TValue : IComparable<TValue>
@@ -25,7 +25,7 @@ namespace protean {
         }
     }
 
-    public static class SequenceComparer
+    internal static class SequenceComparer
     {
         public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b) where T : IComparable<T>
         {
@@ -74,7 +74,7 @@ namespace protean {
         }
     }
 
-    public interface IVariantCollection :
+    internal interface IVariantCollection :
         IVariantData
     {
         int Count { get; }
@@ -84,7 +84,7 @@ namespace protean {
         IEnumerator<VariantItem> GetEnumerator();
     }
 
-    public class VariantTimeSeries : IVariantCollection
+    internal class VariantTimeSeries : IVariantCollection
     {
         public VariantTimeSeries()
         {
@@ -132,7 +132,7 @@ namespace protean {
     //
     // Mapping interface
     //
-    public interface IVariantMapping : IVariantCollection
+    internal interface IVariantMapping : IVariantCollection
     {
         bool ContainsKey(string key);
         void Add(string key, Variant value);
@@ -144,7 +144,7 @@ namespace protean {
         Variant Range(string key);
     }
 
-    public class VariantDictionary : IVariantMapping
+    internal class VariantDictionary : IVariantMapping
     {
         public VariantDictionary()
         {
@@ -213,7 +213,7 @@ namespace protean {
         public SortedDictionary<string, Variant> Value { get; set; }
     }
 
-    public class VariantBag : IVariantMapping
+    internal class VariantBag : IVariantMapping
     {
         public VariantBag()
         {
@@ -305,7 +305,7 @@ namespace protean {
     //
     // Sequence interface
     //
-    public interface IVariantSequence : IVariantCollection
+    internal interface IVariantSequence : IVariantCollection
     {
         Variant this[int index]
         {
@@ -313,7 +313,7 @@ namespace protean {
         }
     }
 
-    public class VariantList : IVariantSequence
+    internal class VariantList : IVariantSequence
     {
         public VariantList()
         {
@@ -382,7 +382,7 @@ namespace protean {
         public List<Variant> Value { get; set; }
     }
 
-    public class VariantTuple : IVariantSequence
+    internal class VariantTuple : IVariantSequence
     {
         public VariantTuple()
         {

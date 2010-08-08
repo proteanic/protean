@@ -10,10 +10,10 @@ using System.Text;
 namespace protean {
 
     // Primitives
-    public interface IVariantPrimitive : IVariantData
+    internal interface IVariantPrimitive : IVariantData
     { }
 
-    public class VariantPrimitive<T> :
+    internal class VariantPrimitive<T> :
         IVariantPrimitive
         where T : IComparable<T>
     {

@@ -16,7 +16,7 @@ namespace protean {
     }
 
     // None
-    public class VariantNone : IVariantData
+    internal class VariantNone : IVariantData
     {
         public VariantNone()
         { }
@@ -33,7 +33,7 @@ namespace protean {
     }
 
     // Any
-    public class VariantAny : IVariantData
+    internal class VariantAny : IVariantData
     {
         public VariantAny() {
             Value = "";
@@ -61,7 +61,7 @@ namespace protean {
     }
 
     // Buffer
-    public class VariantBuffer : IVariantData
+    internal class VariantBuffer : IVariantData
     {
         public VariantBuffer(int capacity) {
             Value = new byte[capacity];
@@ -125,7 +125,7 @@ namespace protean {
             Collection              = Sequence | Mapping | TimeSeries
         };
 
-        protected IVariantData Value { get; set; }
+        internal IVariantData Value { get; set; }
 
         protected VariantBase()
         {
