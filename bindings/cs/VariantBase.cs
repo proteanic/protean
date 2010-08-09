@@ -310,7 +310,7 @@ namespace protean {
             else if (Value is VariantAny)
             {
                 string str = ((VariantAny)Value).Value;
-                return VariantPrimitive<T>.Parse(str);
+                return VariantPrimitiveBase.Parse<T>(str);
             }
             else
             {

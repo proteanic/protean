@@ -48,5 +48,16 @@ namespace protean.test
             Assert.AreEqual(2, s8.Count);
             Assert.AreEqual(1, s9.Count);
         }
+
+        [Test]
+        public void TestAnyCast()
+        {
+            double arg = 2.0;
+            Variant v1 = new Variant(arg);
+            Variant v2 = v1.AnyCast();
+
+            Assert.AreEqual(Variant.EnumType.Any, v2.Type);
+            Assert.AreEqual("2", v2.As<string>());
+        }
     }
 }

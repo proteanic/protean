@@ -10,39 +10,46 @@ using System.Text;
 namespace protean {
 
     // Primitives
-    internal interface IVariantPrimitive : IVariantData
-    { }
-
-    internal class VariantPrimitive<T> :
-        IVariantPrimitive
-        where T : IComparable<T>
+    internal abstract class VariantPrimitiveBase
     {
-        public VariantPrimitive(T value) {
-            Value = value;
-        }
+        static Dictionary<Type, VariantBase.EnumType> m_typeMapping =
+            new Dictionary<Type, VariantBase.EnumType> {
+		        { typeof(string), VariantBase.EnumType.String },
+		        { typeof(bool), VariantBase.EnumType.Boolean },
+		        { typeof(Int32), VariantBase.EnumType.Int32 },
+		        { typeof(UInt32), VariantBase.EnumType.UInt32 },
+		        { typeof(Int64), VariantBase.EnumType.Int64 },
+		        { typeof(UInt64), VariantBase.EnumType.UInt64 },
+		        { typeof(float), VariantBase.EnumType.Float },
+		        { typeof(double), VariantBase.EnumType.Double },
+                { typeof(DateTime), VariantBase.EnumType.DateTime },
+                { typeof(TimeSpan), VariantBase.EnumType.Time }
+            };
 
-        public VariantPrimitive(VariantPrimitive<T> rhs) :
-            this(rhs.Value)
-        {  }
-
-        public static implicit operator VariantPrimitive<T>(T value) {
-            return new VariantPrimitive<T>(value);
-        }
-
-        public VariantBase.EnumType _Type  {
-            get {
-                if (m_typeMapping.ContainsKey(Value.GetType()))
+        public static string ToString<T>(T value)
+        {
+            if (typeof(T) == typeof(TimeSpan))
+            {
+                return VariantBase.ToString((TimeSpan)Convert.ChangeType(value, typeof(TimeSpan)));
+            }
+            else
+            {
+                TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
+                switch (typeCode)
                 {
-                    return m_typeMapping[Value.GetType()];
-                }
-                else
-                {
-                    throw new VariantException("Case exhaustion: " + Value.GetType().Name);
+                    case TypeCode.Double:
+                        return VariantBase.ToString((double)Convert.ChangeType(value, typeof(double)));
+                    case TypeCode.Boolean:
+                        return VariantBase.ToString((bool)Convert.ChangeType(value, typeof(bool)));
+                    case TypeCode.DateTime:
+                        return VariantBase.ToString((DateTime)Convert.ChangeType(value, typeof(DateTime)));
+                    default:
+                        return value.ToString();
                 }
             }
         }
 
-        public static T Parse(string value)
+        public static T Parse<T>(string value)
         {
             if (typeof(T) == typeof(TimeSpan))
             {
@@ -66,51 +73,49 @@ namespace protean {
             }
         }
 
-        public static string ToString(T value)
+        public static VariantBase.EnumType TypeToEnum(Type type)
         {
-            if (typeof(T) == typeof(TimeSpan))
+            if (m_typeMapping.ContainsKey(type))
             {
-                return VariantBase.ToString((TimeSpan)Convert.ChangeType(value, typeof(TimeSpan)));
+                return m_typeMapping[type];
             }
             else
             {
-                TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
-                switch (typeCode)
-                {
-                    case TypeCode.Double:
-                        return VariantBase.ToString((double)Convert.ChangeType(value, typeof(double)));
-                    case TypeCode.Boolean:
-                        return VariantBase.ToString((bool)Convert.ChangeType(value, typeof(bool)));
-                    case TypeCode.DateTime:
-                        return VariantBase.ToString((DateTime)Convert.ChangeType(value, typeof(DateTime)));
-                    default:
-                        return value.ToString();
-                }
+                throw new VariantException("Case exhaustion: " + type.Name);
             }
+        }
+    }
+
+    internal class VariantPrimitive<T> :
+        VariantPrimitiveBase,
+        IVariantData
+        where T : IComparable<T>
+    {
+        public VariantPrimitive(T value) {
+            Value = value;
+        }
+
+        public VariantPrimitive(VariantPrimitive<T> rhs) :
+            this(rhs.Value)
+        {  }
+
+        public static implicit operator VariantPrimitive<T>(T value) {
+            return new VariantPrimitive<T>(value);
+        }
+
+        public VariantBase.EnumType _Type  {
+            get { return TypeToEnum(Value.GetType());  }
         }
 
         public override string ToString()
         {
-            return ToString(Value);
+            return VariantPrimitiveBase.ToString<T>(Value);
         }
 
         public int CompareTo(IVariantData rhs)
         {
             return Value.CompareTo(((VariantPrimitive<T>)rhs).Value);
         }
-
-        static Dictionary<Type, VariantBase.EnumType> m_typeMapping =
-            new Dictionary<Type, VariantBase.EnumType>
-		        { { typeof(string), VariantBase.EnumType.String },
-		          { typeof(bool), VariantBase.EnumType.Boolean },
-		          { typeof(Int32), VariantBase.EnumType.Int32 },
-		          { typeof(UInt32), VariantBase.EnumType.UInt32 },
-		          { typeof(Int64), VariantBase.EnumType.Int64 },
-		          { typeof(UInt64), VariantBase.EnumType.UInt64 },
-		          { typeof(float), VariantBase.EnumType.Float },
-		          { typeof(double), VariantBase.EnumType.Double },
-                  { typeof(DateTime), VariantBase.EnumType.DateTime },
-                  { typeof(TimeSpan), VariantBase.EnumType.Time }};
 
         public T Value { get; set; }
     }

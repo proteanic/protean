@@ -257,7 +257,7 @@ namespace protean {
             }
             else
             {
-                return new Variant(EnumType.Any, ((IVariantPrimitive)Value).ToString());
+                return new Variant(EnumType.Any, Value.ToString());
             }
         }
 
@@ -287,7 +287,7 @@ namespace protean {
                 case EnumType.Boolean:
                 case EnumType.Time:
                 case EnumType.DateTime:
-                    result += (Value as IVariantPrimitive).ToString();
+                    result += Value.ToString();
                     break;
                 case EnumType.List:
                 {
