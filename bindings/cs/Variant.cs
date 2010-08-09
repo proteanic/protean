@@ -60,6 +60,10 @@ namespace protean {
             Value = new VariantPrimitive<UInt64>(arg);
         }
 
+        public Variant(float arg) {
+            Value = new VariantPrimitive<float>(arg);
+        }
+
         public Variant(double arg) {
             Value = new VariantPrimitive<double>(arg);
         }

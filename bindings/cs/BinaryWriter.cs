@@ -113,6 +113,11 @@ namespace protean {
             Write(System.BitConverter.GetBytes(arg));
         }
 
+        private void Write(float arg)
+        {
+            Write(System.BitConverter.GetBytes(arg));
+        }
+
         private void Write(double arg)
         {
             Write(System.BitConverter.DoubleToInt64Bits(arg));
@@ -153,6 +158,9 @@ namespace protean {
                 break;
             case Variant.EnumType.String:
                 Write(v.As<string>());
+                break;
+            case Variant.EnumType.Float:
+                Write(v.As<float>());
                 break;
             case Variant.EnumType.Double:
                 Write(v.As<double>());

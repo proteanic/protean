@@ -75,6 +75,8 @@ namespace protean {
                     return new Variant(ReadString());
                 case Variant.EnumType.Double:
                     return new Variant(ReadDouble());
+                case Variant.EnumType.Float:
+                    return new Variant(ReadFloat());
                 case Variant.EnumType.Int32:
                     return new Variant(ReadInt32());
                 case Variant.EnumType.UInt32:
@@ -204,6 +206,10 @@ namespace protean {
             byte[] bytes = ReadBytes(length, true);
 
             return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
+        }
+        private float ReadFloat()
+        {
+            return System.BitConverter.ToSingle(ReadBytes(sizeof(float)), 0);
         }
         private double ReadDouble()
         {

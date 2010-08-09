@@ -25,6 +25,7 @@ namespace protean.test
             UInt64 argUInt64 = 0xffffffffffffffff;
             bool argBoolean = true;
             double argDouble = double.MaxValue;
+            float argFloat = float.MaxValue;
             string argString = "test string";
             DateTime argDateTime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
             TimeSpan argTime = new TimeSpan(0, 1, 2, 3, 4);
@@ -35,6 +36,7 @@ namespace protean.test
             v1.Add("Int64", new Variant(argInt64));
             v1.Add("UInt64", new Variant(argUInt64));
             v1.Add("Boolean", new Variant(argBoolean));
+            v1.Add("Float", new Variant(argFloat));
             v1.Add("Double", new Variant(argDouble));
             v1.Add("String", new Variant(argString));
             v1.Add("DateTime", new Variant(argDateTime));
@@ -53,6 +55,7 @@ namespace protean.test
             Assert.AreEqual(v2["Int64"].Type, Variant.EnumType.Int64);
             Assert.AreEqual(v2["UInt64"].Type, Variant.EnumType.UInt64);
             Assert.AreEqual(v2["Boolean"].Type, Variant.EnumType.Boolean);
+            Assert.AreEqual(v2["Float"].Type, Variant.EnumType.Float);
             Assert.AreEqual(v2["Double"].Type, Variant.EnumType.Double);
             Assert.AreEqual(v2["DateTime"].Type, Variant.EnumType.DateTime);
             Assert.AreEqual(v2["Time"].Type, Variant.EnumType.Time);
@@ -64,7 +67,8 @@ namespace protean.test
             Assert.AreEqual(v2["Int64"].As<Int64>(), argInt64);
             Assert.AreEqual(v2["UInt64"].As<UInt64>(), argUInt64);
             Assert.AreEqual(v2["Boolean"].As<Boolean>(), argBoolean);
-            Assert.AreEqual(v2["Double"].As<Double>(), argDouble);
+            Assert.AreEqual(v2["Float"].As<float>(), argFloat);
+            Assert.AreEqual(v2["Double"].As<double>(), argDouble);
             Assert.AreEqual(v2["DateTime"].As<DateTime>(), argDateTime);
             Assert.AreEqual(v2["Time"].As<TimeSpan>(), argTime);
 
