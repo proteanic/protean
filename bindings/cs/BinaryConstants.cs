@@ -9,7 +9,7 @@ using System.Text;
 
 namespace protean
 {
-    sealed class BinaryConstants
+    public sealed class BinaryConstants
     {
         public const UInt32 PROTEAN_MAGIC = 0x484913FF;
         public const UInt32 VERSION_MAJOR = 1;
