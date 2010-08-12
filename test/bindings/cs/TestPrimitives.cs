@@ -42,6 +42,15 @@ namespace protean.test
 
             Variant v2 = new Variant(v1);
             Assert.IsTrue(v1.Equals(v2));
+
+            // Enumerating an Any variant with content should throw an exception
+            Assert.Throws<VariantException>(delegate { v1.GetEnumerator(); });
+
+            // We should be able to enumerate an Any variant with no content as this is a common occurance when reading untyped XML
+            Variant v3 = new Variant(Variant.EnumType.Any);
+            IEnumerator<VariantItem> enumerator = v3.GetEnumerator();
+            Assert.IsFalse(enumerator.MoveNext());
+            Assert.Throws<VariantException>(delegate { VariantItem item = enumerator.Current; });
         }
 
         [Test]

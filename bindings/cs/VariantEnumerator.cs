@@ -8,7 +8,31 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace protean {
-    
+
+    public class DummyEnumerator :
+        IEnumerator<VariantItem>
+    {
+        public bool MoveNext()
+        {
+            return false;
+        }
+
+        public void Reset()
+        { }
+
+        public VariantItem Current
+        {
+            get { throw new VariantException("Attempt to dereference dummy iterator"); }
+        }
+
+        Object System.Collections.IEnumerator.Current
+        {
+            get { return Current; }
+        }
+
+        void IDisposable.Dispose() { }
+    }
+
     public class VariantEnumerator :
         IEnumerator<VariantItem>
     {

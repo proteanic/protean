@@ -12,7 +12,7 @@ namespace protean {
     // Primitives
     internal abstract class VariantPrimitiveBase
     {
-        static Dictionary<Type, VariantBase.EnumType> m_typeMapping =
+        static Dictionary<Type, VariantBase.EnumType> m_typeToEnumMapping =
             new Dictionary<Type, VariantBase.EnumType> {
 		        { typeof(string), VariantBase.EnumType.String },
 		        { typeof(bool), VariantBase.EnumType.Boolean },
@@ -25,6 +25,21 @@ namespace protean {
                 { typeof(DateTime), VariantBase.EnumType.DateTime },
                 { typeof(TimeSpan), VariantBase.EnumType.Time }
             };
+
+        static Dictionary<VariantBase.EnumType, Type> m_enumToTypeMapping =
+            new Dictionary<VariantBase.EnumType, Type> {
+		        { VariantBase.EnumType.String, typeof(string) },
+		        { VariantBase.EnumType.Boolean, typeof(bool) },
+		        { VariantBase.EnumType.Int32, typeof(Int32) },
+		        { VariantBase.EnumType.UInt32, typeof(UInt32) },
+		        { VariantBase.EnumType.Int64, typeof(Int64) },
+		        { VariantBase.EnumType.UInt64, typeof(UInt64) },
+		        { VariantBase.EnumType.Float, typeof(float) },
+		        { VariantBase.EnumType.Double, typeof(double) },
+                { VariantBase.EnumType.DateTime, typeof(DateTime) },
+                { VariantBase.EnumType.Time, typeof(TimeSpan) }
+            };
+
 
         public static string ToString<T>(T value)
         {
@@ -75,13 +90,25 @@ namespace protean {
 
         public static VariantBase.EnumType TypeToEnum(Type type)
         {
-            if (m_typeMapping.ContainsKey(type))
+            if (m_typeToEnumMapping.ContainsKey(type))
             {
-                return m_typeMapping[type];
+                return m_typeToEnumMapping[type];
             }
             else
             {
                 throw new VariantException("Case exhaustion: " + type.Name);
+            }
+        }
+
+        public static Type EnumToType(Variant.EnumType type)
+        {
+            if (m_enumToTypeMapping.ContainsKey(type))
+            {
+                return m_enumToTypeMapping[type];
+            }
+            else
+            {
+                throw new VariantException("Case exhaustion: " + type);
             }
         }
     }

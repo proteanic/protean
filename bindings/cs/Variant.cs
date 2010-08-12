@@ -501,9 +501,23 @@ namespace protean {
 
         public IEnumerator<VariantItem> GetEnumerator()
         {
-            CheckType(EnumType.Collection, "GetEnumerator()");
+            CheckType(EnumType.Collection | EnumType.Any, "GetEnumerator()");
 
-            return (Value as IVariantCollection).GetEnumerator();
+            if (Value is IVariantCollection)
+            {
+                return ((IVariantCollection)Value).GetEnumerator();
+            }
+            else
+            {
+                if (Empty)
+                {
+                    return new DummyEnumerator();
+                }
+                else
+                {
+                    throw new VariantException("Attempt to enumerate Any variant with content");
+                }
+            }
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
