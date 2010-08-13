@@ -48,6 +48,11 @@ namespace protean {
             Stream.Read(bytes, 0, 4);
             BinaryMode writeMode = (BinaryMode)System.BitConverter.ToUInt32(bytes, 0);
 
+            if ((writeMode & BinaryMode.DateTimeAsTicks) == 0)
+            {
+                throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
+            }
+
             if ((writeMode & BinaryMode.Compress) != 0)
             {
                 if ((writeMode & BinaryMode.ZlibHeader) != 0)
