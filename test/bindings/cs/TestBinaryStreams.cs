@@ -137,6 +137,15 @@ namespace protean.test
         }
 
         [Test]
+        public void TestDateTimeModeError()
+        {
+            clr.Variant v1 = new clr.Variant(new DateTime(2010, 1, 1));
+            byte[] bytes = clr.BinaryWriter.ToBytes(v1, clr.BinaryMode.None);
+
+            Assert.Throws<VariantException>(delegate { Variant v2 = BinaryReader.FromBytes(bytes); });
+        }
+
+        [Test]
         public void TestPerformanceCS()
         {
             Int32 argInt32 = -1;

@@ -13,7 +13,7 @@ namespace protean {
     {
         public BinaryReader(System.IO.Stream stream)
         {
-            Stream = stream;
+            m_stream = stream;
         }
     
         public Variant Read()
@@ -34,7 +34,7 @@ namespace protean {
         private void ReadHeader()
         {
             byte[] bytes = new byte[4];
-            Stream.Read(bytes, 0, 4);
+            m_stream.Read(bytes, 0, 4);
 
             UInt32 magicNumber = System.BitConverter.ToUInt32(bytes, 0);
             if (magicNumber != BinaryConstants.PROTEAN_MAGIC)
@@ -43,28 +43,23 @@ namespace protean {
             }
 
             // ignore version info for now
-            Stream.Read(bytes, 0, 4);
-    
-            Stream.Read(bytes, 0, 4);
-            BinaryMode writeMode = (BinaryMode)System.BitConverter.ToUInt32(bytes, 0);
+            m_stream.Read(bytes, 0, 4);
 
-            if ((writeMode & BinaryMode.DateTimeAsTicks) == 0)
-            {
-                throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
-            }
+            m_stream.Read(bytes, 0, 4);
+            m_mode = (BinaryMode)System.BitConverter.ToUInt32(bytes, 0);
 
-            if ((writeMode & BinaryMode.Compress) != 0)
+            if ((m_mode & BinaryMode.Compress) != 0)
             {
-                if ((writeMode & BinaryMode.ZlibHeader) != 0)
+                if ((m_mode & BinaryMode.ZlibHeader) != 0)
                 {
                     throw new VariantException("Binary data appears to contain ZLIB header which is currently not supported in the protean.NET BinaryReader");
                 }
 
-                Filter = new System.IO.Compression.DeflateStream(Stream, System.IO.Compression.CompressionMode.Decompress, true);
+                m_filter = new System.IO.Compression.DeflateStream(m_stream, System.IO.Compression.CompressionMode.Decompress, true);
             }
             else
             {
-                Filter = Stream;
+                m_filter = m_stream;
             }
         }
 
@@ -93,8 +88,16 @@ namespace protean {
                 case Variant.EnumType.Boolean:
                     return new Variant(ReadBoolean());
                 case Variant.EnumType.Time:
+                    if ((m_mode & BinaryMode.DateTimeAsTicks) == 0)
+                    {
+                        throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
+                    }
                     return new Variant(ReadTime());
                 case Variant.EnumType.DateTime:
+                    if ((m_mode & BinaryMode.DateTimeAsTicks) == 0)
+                    {
+                        throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
+                    }
                     return new Variant(ReadDateTime());
                 case Variant.EnumType.Tuple:
                 {
@@ -188,7 +191,7 @@ namespace protean {
                 int residual = (4 - (length % 4)) % 4;
                 for (int i = 0; i < residual; ++i)
                 {
-                    Filter.ReadByte();
+                    m_filter.ReadByte();
                 }
             }
 
@@ -197,7 +200,7 @@ namespace protean {
         private byte[] ReadBytes(int length)
         {
             byte[] bytes = new byte[length];
-            Filter.Read(bytes, 0, length);
+            m_filter.Read(bytes, 0, length);
             return bytes;
         }
         private bool ReadBoolean()
@@ -249,8 +252,9 @@ namespace protean {
             return Variant.MinDateTime + new TimeSpan(total_millis * 10000);
         }
 
-        private System.IO.Stream Stream;
-        private System.IO.Stream Filter;
+        private System.IO.Stream m_stream;
+        private System.IO.Stream m_filter;
+        private BinaryMode m_mode;
     }
 
 } // protean
