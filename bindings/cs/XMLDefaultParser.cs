@@ -180,14 +180,14 @@ namespace protean {
                     string typeStr = "", messageStr = "", sourceStr = "", stackStr = "";
 
                     if (context.m_element.ContainsKey("type")) {
-                            typeStr = context.m_element["type"].As<string>();
+                        typeStr = context.m_element["type"].As<string>();
                     }
                     else {
                         throw new VariantException("Missing 'type' element in Exception variant"); 
                     }
 
                     if (context.m_element.ContainsKey("message")) {
-                            typeStr = context.m_element["message"].As<string>();
+                        messageStr = context.m_element["message"].As<string>();
                     }
                     else {
                         throw new VariantException("Missing 'message' element in Exception variant"); 
