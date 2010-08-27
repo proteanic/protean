@@ -115,6 +115,7 @@ namespace protean {
             TimeSeries              = 0x00080000,
             Object                  = 0x00100000,
             Array                   = 0x00200000,
+            DataTable               = 0x00400000,
 
             // The following enums represent groupings of variants
             Integer                 = Boolean | Int32 | UInt32 | Int64 | UInt64,
@@ -167,7 +168,7 @@ namespace protean {
                     Value = new VariantPrimitive<TimeSpan>(ParseTime(value));
                     break;
                 default:
-                    throw new VariantException(string.Format("Unable to constract variant of type {0} from string", Type));
+                    throw new VariantException(string.Format("Unable to construct variant of type {0} from string", Type));
             }
         }
 

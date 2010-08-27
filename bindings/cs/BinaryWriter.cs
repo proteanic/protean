@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
 
 namespace protean {
 
@@ -147,10 +148,94 @@ namespace protean {
             }
         }
 
+        private void Write(DataTable arg)
+        {
+            int numCols = arg.Columns.Count;
+            int numRows = arg.Rows.Count;
+
+            WriteDelegate[] colWriters = new WriteDelegate[numCols];
+            Variant.EnumType[] colTypes = new Variant.EnumType[numCols];
+            string[] colNames = new string[numCols];
+
+            for (int i = 0; i < numCols; ++i)
+            {
+                DataColumn col = arg.Columns[i];
+                colTypes[i] = VariantPrimitiveBase.TypeToEnum(col.DataType);
+                colNames[i] = col.ColumnName;
+
+                switch (colTypes[i])
+                {
+                    case VariantBase.EnumType.Float:
+                        colWriters[i] = delegate(object o) { Write((float)o); };
+                        break;
+                    case VariantBase.EnumType.Double:
+                        colWriters[i] = delegate(object o) { Write((double)o); };
+                        break;
+                    case VariantBase.EnumType.String:
+                        colWriters[i] = delegate(object o) { Write((string)o); };
+                        break;
+                    case VariantBase.EnumType.Boolean:
+                        colWriters[i] = delegate(object o) { Write((bool)o); };
+                        break;
+                    case VariantBase.EnumType.Int32:
+                        colWriters[i] = delegate(object o) { Write((Int32)o); };
+                        break;
+                    case VariantBase.EnumType.UInt32:
+                        colWriters[i] = delegate(object o) { Write((UInt32)o); };
+                        break;
+                    case VariantBase.EnumType.Int64:
+                        colWriters[i] = delegate(object o) { Write((Int64)o); };
+                        break;
+                    case VariantBase.EnumType.UInt64:
+                        colWriters[i] = delegate(object o) { Write((UInt64)o); };
+                        break;
+                    case VariantBase.EnumType.Time:
+                        colWriters[i] = delegate(object o) { Write((TimeSpan)o); };
+                        break;
+                    case VariantBase.EnumType.DateTime:
+                        colWriters[i] = delegate(object o) { Write((DateTime)o); };
+                        break;
+                }
+            }
+
+            // Write number of columns
+            Write(numCols);
+
+            // Write number of rows
+            Write(numRows);
+
+            // Write column types
+            foreach (Variant.EnumType colType in colTypes)
+            {
+                Write((int)colType);
+            }
+
+            // Write column names
+            foreach (string colName in colNames)
+            {
+                Write(colName);
+            }
+
+            // Write rows
+            foreach (DataRow item in arg.Rows)
+            {
+                for (int i = 0; i < numCols; ++i)
+                {
+                    if (item.IsNull(i))
+                    {
+                        throw new VariantException("Cannot serialise DataTables containing null elements.");
+                    }
+                    colWriters[i](item[i]);
+                }
+            }
+        }
+
+        delegate void WriteDelegate(object arg);
+
         private void WriteVariant(Variant v)
         {
             Variant.EnumType type = v.Type;
-            Write((UInt32)type);
+            Write((Int32)type);
 
             switch (type)
             {
@@ -227,6 +312,9 @@ namespace protean {
             case Variant.EnumType.Buffer:
                 Write(v.AsBuffer().Length);
                 Write(v.AsBuffer(), true);
+                break;
+            case Variant.EnumType.DataTable:
+                Write(v.AsDataTable());
                 break;
             default:
                 throw new VariantException("Case exhaustion: " + type.ToString());

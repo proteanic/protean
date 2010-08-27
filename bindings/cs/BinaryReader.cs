@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using System.Data;
+
 namespace protean {
 
     public class BinaryReader
@@ -63,6 +65,8 @@ namespace protean {
             }
         }
 
+        delegate object ReadDelegate();
+
         private Variant ReadVariant()
         {
             Variant.EnumType type = (Variant.EnumType)ReadUInt32();
@@ -73,10 +77,12 @@ namespace protean {
                     return new Variant(Variant.EnumType.None);
                 case Variant.EnumType.String:
                     return new Variant(ReadString());
-                case Variant.EnumType.Double:
-                    return new Variant(ReadDouble());
+                case Variant.EnumType.Any:
+                    return new Variant(Variant.EnumType.Any, ReadString());
                 case Variant.EnumType.Float:
                     return new Variant(ReadFloat());
+                case Variant.EnumType.Double:
+                    return new Variant(ReadDouble());
                 case Variant.EnumType.Int32:
                     return new Variant(ReadInt32());
                 case Variant.EnumType.UInt32:
@@ -99,6 +105,8 @@ namespace protean {
                         throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
                     }
                     return new Variant(ReadDateTime());
+                case Variant.EnumType.Date:
+                    throw new VariantException("Attempt to read Date variant which is no longer supported");
                 case Variant.EnumType.Tuple:
                 {
                     int length = ReadInt32();
@@ -177,6 +185,10 @@ namespace protean {
                     int length = ReadInt32();
                     return new Variant(ReadBytes(length, true));
                 }
+                case Variant.EnumType.DataTable:
+                {
+                     return new Variant(ReadDataTable());
+                }
                 default:
                     throw new VariantException("Case exhaustion: " + type.ToString());
             }
@@ -250,6 +262,78 @@ namespace protean {
             Int64 total_millis = ReadInt64();
 
             return Variant.MinDateTime + new TimeSpan(total_millis * 10000);
+        }
+        private DataTable ReadDataTable()
+        {
+            int numCols = ReadInt32();
+            int numRows = ReadInt32();
+                    
+            ReadDelegate[] colReaders = new ReadDelegate[numCols];
+            Variant.EnumType[] colTypes = new Variant.EnumType[numCols];
+
+            for (int i = 0; i < numCols; ++i)
+            {
+                colTypes[i] = (Variant.EnumType)ReadInt32();
+
+                switch (colTypes[i])
+                {
+                    case VariantBase.EnumType.Float:
+                        colReaders[i] = delegate() { return ReadFloat(); };
+                        break;
+                    case VariantBase.EnumType.Double:
+                        colReaders[i] = delegate() { return ReadDouble(); };
+                        break;
+                    case VariantBase.EnumType.Boolean:
+                        colReaders[i] = delegate() { return ReadBoolean(); };
+                        break;
+                    case VariantBase.EnumType.String:
+                        colReaders[i] = delegate() { return ReadString(); };
+                        break;
+                    case VariantBase.EnumType.Int32:
+                        colReaders[i] = delegate() { return ReadInt32(); };
+                        break;
+                    case VariantBase.EnumType.UInt32:
+                        colReaders[i] = delegate() { return ReadUInt32(); };
+                        break;
+                    case VariantBase.EnumType.Int64:
+                        colReaders[i] = delegate() { return ReadInt64(); };
+                        break;
+                    case VariantBase.EnumType.UInt64:
+                        colReaders[i] = delegate() { return ReadUInt64(); };
+                        break;
+                    case VariantBase.EnumType.Time:
+                        colReaders[i] = delegate() { return ReadTime(); };
+                        break;
+                    case VariantBase.EnumType.DateTime:
+                        colReaders[i] = delegate() { return ReadDateTime(); };
+                        break;
+                }
+            }
+
+            string[] colNames = new string[numCols];
+            for (int i = 0; i < numCols; ++i)
+            {
+                colNames[i] = ReadString();
+            }
+
+            DataTable dt = new DataTable();
+            for (int i = 0; i < numCols; ++i)
+            {
+                dt.Columns.Add(new DataColumn(colNames[i], VariantPrimitiveBase.EnumToType(colTypes[i])));
+            };
+
+            // Write number of rows
+            for (int i=0; i<numRows; ++i)
+            {
+                DataRow dr = dt.NewRow();
+                for (int j = 0; j < numCols; ++j)
+                {
+                    dr[j] = colReaders[j]();
+                }
+                dt.Rows.Add(dr);
+            }
+
+            return dt;
         }
 
         private System.IO.Stream m_stream;

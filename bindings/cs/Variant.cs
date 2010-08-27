@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Data;
 
 namespace protean {
 
@@ -92,6 +93,11 @@ namespace protean {
             Value = arg;
         }
 
+        public Variant(DataTable arg)
+        {
+            Value = new VariantDataTable(arg);
+        }
+
         public IVariantObject AsObject()
         {
             CheckType(EnumType.Object, "AsObject()");
@@ -141,6 +147,13 @@ namespace protean {
             CheckType(EnumType.Buffer, "AsBuffer()");
 
             return ((VariantBuffer)Value).Value;
+        }
+
+        public DataTable AsDataTable()
+        {
+            CheckType(EnumType.DataTable, "AsDataTable()");
+
+            return ((VariantDataTable)Value).Value;
         }
 
         // Lists
