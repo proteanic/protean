@@ -89,6 +89,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +119,9 @@
     </Compile>
     <Compile Include="..\..\bindings\cs\VariantCollection.cs">
       <Link>VariantCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantDataTable.cs">
+      <Link>VariantDataTable.cs</Link>
     </Compile>
     <Compile Include="..\..\bindings\cs\VariantEnumerator.cs">
       <Link>VariantEnumerator.cs</Link>

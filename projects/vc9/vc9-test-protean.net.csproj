@@ -90,6 +90,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +102,9 @@
     </Compile>
     <Compile Include="..\..\test\bindings\cs\TestBuffer.cs">
       <Link>TestBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestDataTable.cs">
+      <Link>TestDataTable.cs</Link>
     </Compile>
     <Compile Include="..\..\test\bindings\cs\TestMapping.cs">
       <Link>TestMapping.cs</Link>
