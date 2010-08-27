@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1234B6E6-DB7A-4DDC-BDA4-2AAFE7502054}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>protean.test</RootNamespace>
+    <AssemblyName>test-protean.net</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -70,65 +84,55 @@
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <ProjectGuid>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</ProjectGuid>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>protean</RootNamespace>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>protean.net</AssemblyName>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\bindings\cs\AssemblyInfo.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryConstants.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryMode.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryReader.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryWriter.cs" />
-    <Compile Include="..\..\bindings\cs\IVariantObject.cs">
-      <Link>IVariantObject.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\VariantExceptionInfo.cs">
-      <Link>VariantExceptionInfo.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestBinaryStreams.cs">
+      <Link>TestBinaryStreams.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\Variant.cs" />
-    <Compile Include="..\..\bindings\cs\VariantBase.cs" />
-    <Compile Include="..\..\bindings\cs\VariantCollection.cs" />
-    <Compile Include="..\..\bindings\cs\VariantEnumerator.cs" />
-    <Compile Include="..\..\bindings\cs\VariantException.cs" />
-    <Compile Include="..\..\bindings\cs\VariantItem.cs" />
-    <Compile Include="..\..\bindings\cs\VariantObjectData.cs">
-      <Link>VariantObjectData.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestBuffer.cs">
+      <Link>TestBuffer.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
-    <Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
-    <Compile Include="..\..\bindings\cs\XMLDefaultParser.cs">
-      <Link>XMLDefaultParser.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestMapping.cs">
+      <Link>TestMapping.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLMode.cs">
-      <Link>XMLMode.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestMisc.cs">
+      <Link>TestMisc.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLParserBase.cs">
-      <Link>XMLParserBase.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestObject.cs">
+      <Link>TestObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLReader.cs">
-      <Link>XMLReader.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestPrimitives.cs">
+      <Link>TestPrimitives.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLWriter.cs">
-      <Link>XMLWriter.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestSequence.cs">
+      <Link>TestSequence.cs</Link>
     </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestTimeSeries.cs">
+      <Link>TestTimeSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\..\test\bindings\cs\TestXMLStreams.cs">
+      <Link>TestXMLStreams.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="vc9-protean-clr.vcproj">
+      <Project>{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}</Project>
+      <Name>vc9-protean-clr</Name>
+    </ProjectReference>
+    <ProjectReference Include="vc9-protean.net.csproj">
+      <Project>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</Project>
+      <Name>vc9-protean.net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

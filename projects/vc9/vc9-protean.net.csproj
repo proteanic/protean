@@ -89,23 +89,72 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\bindings\cs\AssemblyInfo.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryConstants.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryMode.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryReader.cs" />
-    <Compile Include="..\..\bindings\cs\BinaryWriter.cs" />
-    <Compile Include="..\..\bindings\cs\ExceptionInfo.cs" />
-    <Compile Include="..\..\bindings\cs\VariantObjectBase.cs" />
-    <Compile Include="..\..\bindings\cs\Variant.cs" />
-    <Compile Include="..\..\bindings\cs\VariantBase.cs" />
-    <Compile Include="..\..\bindings\cs\VariantCollection.cs" />
-    <Compile Include="..\..\bindings\cs\VariantEnumerator.cs" />
-    <Compile Include="..\..\bindings\cs\VariantException.cs" />
-    <Compile Include="..\..\bindings\cs\VariantItem.cs" />
-    <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
-    <Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
+    <Compile Include="..\..\bindings\cs\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\BinaryConstants.cs">
+      <Link>BinaryConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\BinaryMode.cs">
+      <Link>BinaryMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\BinaryReader.cs">
+      <Link>BinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\BinaryWriter.cs">
+      <Link>BinaryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\IVariantObject.cs">
+      <Link>IVariantObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\Variant.cs">
+      <Link>Variant.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantBase.cs">
+      <Link>VariantBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantCollection.cs">
+      <Link>VariantCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantEnumerator.cs">
+      <Link>VariantEnumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantException.cs">
+      <Link>VariantException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantExceptionInfo.cs">
+      <Link>VariantExceptionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantItem.cs">
+      <Link>VariantItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantObjectData.cs">
+      <Link>VariantObjectData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs">
+      <Link>VariantObjectProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\VariantPrimitive.cs">
+      <Link>VariantPrimitive.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLDefaultParser.cs">
+      <Link>XMLDefaultParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLMode.cs">
+      <Link>XMLMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLParserBase.cs">
+      <Link>XMLParserBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLReader.cs">
+      <Link>XMLReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\bindings\cs\XMLWriter.cs">
+      <Link>XMLWriter.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
