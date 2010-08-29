@@ -101,6 +101,9 @@
     <Compile Include="..\..\bindings\cs\IVariantObject.cs">
       <Link>IVariantObject.cs</Link>
     </Compile>
+    <Compile Include="..\..\bindings\cs\IVariantObjectFactory.cs">
+      <Link>IVariantObjectFactory.cs</Link>
+    </Compile>
     <Compile Include="..\..\bindings\cs\VariantDataTable.cs">
       <Link>VariantDataTable.cs</Link>
     </Compile>

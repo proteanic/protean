@@ -5,6 +5,7 @@
 
 namespace protean
 {
+    [System.Flags]
     public enum XMLMode
     {
         None                = 0x00000000,
@@ -12,6 +13,7 @@ namespace protean
         NoHeader            = 0x00000002,
         Indent              = 0x00000004,
         StripSpace          = 0x00000008,
+        CreateProxy         = 0x00000010,
         Default             = None
     }
 

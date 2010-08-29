@@ -13,10 +13,16 @@ namespace protean {
 
     public class BinaryReader
     {
-        public BinaryReader(System.IO.Stream stream)
+        public BinaryReader(System.IO.Stream stream, BinaryMode mode, IVariantObjectFactory factory)
         {
+            m_mode = mode;
+            m_factory = factory;
             m_stream = stream;
         }
+
+        public BinaryReader(System.IO.Stream stream) :
+            this(stream, BinaryMode.Default, null)
+        { }
     
         public Variant Read()
         {
@@ -24,13 +30,18 @@ namespace protean {
             return ReadVariant();
         }
 
-        public static Variant FromBytes(byte[] bytes)
+        public static Variant FromBytes(byte[] bytes, BinaryMode mode, IVariantObjectFactory factory)
         {
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes))
             {
-                BinaryReader reader = new BinaryReader(ms);
+                BinaryReader reader = new BinaryReader(ms, mode, factory);
                 return reader.Read();
             }
+        }
+
+        public static Variant FromBytes(byte[] bytes)
+        {
+            return FromBytes(bytes, BinaryMode.Default, null);
         }
 
         private void ReadHeader()
@@ -166,10 +177,26 @@ namespace protean {
                     int version = ReadInt32();
                     Variant param = ReadVariant();
 
-                    VariantObjectProxy proxy = new VariantObjectProxy(className);
-                    proxy.Inflate(param, version);
 
-                    return new Variant(proxy);
+                    IVariantObject obj = null;
+                    if (m_factory != null)
+                    {
+                        obj = m_factory.Create(className);
+
+                        if (obj == null && (m_mode & BinaryMode.CreateProxy) == 0)
+                        {
+                            throw new VariantException("Object of class " + className + " is not regsistered in factory");
+                        }
+                    }
+
+                    if (obj == null)
+                    {
+                        obj = new VariantObjectProxy(className);
+                    }
+
+                    obj.Inflate(param, version);
+
+                    return new Variant(obj);
                 }
                 case Variant.EnumType.Exception:
                 {
@@ -339,6 +366,7 @@ namespace protean {
         private System.IO.Stream m_stream;
         private System.IO.Stream m_filter;
         private BinaryMode m_mode;
+        private IVariantObjectFactory m_factory;
     }
 
 } // protean

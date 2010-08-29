@@ -12,9 +12,10 @@ namespace protean {
 
     internal abstract class XMLParserBase
     {
-        public XMLParserBase(System.IO.TextReader stream, XMLMode mode)
+        public XMLParserBase(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory)
         {
             m_mode = mode;
+            m_factory = factory;
             m_reader = new XmlTextReader(stream);
         }
 
@@ -71,6 +72,7 @@ namespace protean {
 
         private XmlTextReader m_reader;
         protected XMLMode m_mode;
+        protected IVariantObjectFactory m_factory;
     }
 
 } // protean

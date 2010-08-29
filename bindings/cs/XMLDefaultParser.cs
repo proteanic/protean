@@ -12,8 +12,8 @@ namespace protean {
 
     internal class XMLDefaultParser : XMLParserBase
     {
-        public XMLDefaultParser(System.IO.TextReader stream, XMLMode mode) :
-            base(stream, mode)
+        public XMLDefaultParser(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory) :
+            base(stream, mode, factory)
         {
             m_stack = new Stack<ElementInfo>();
             m_result = new Variant();
@@ -238,7 +238,22 @@ namespace protean {
                         throw new VariantException("Missing 'params' element in Object variant");
                     }
 
-                    IVariantObject obj = new VariantObjectProxy(className);
+                    IVariantObject obj = null;
+                    if (m_factory!=null)
+                    {
+                        obj = m_factory.Create(className);
+
+                        if (obj==null && (m_mode & XMLMode.CreateProxy)==0)
+                        {
+                            throw new VariantException("Object of class " + className + " is not regsistered in factory");
+                        }
+                    }
+
+                    if (obj==null)
+                    {
+                        obj = new VariantObjectProxy(className);
+                    }
+
                     obj.Inflate(param, version);
 
                     context.m_element = new Variant(obj);
