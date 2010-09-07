@@ -24,7 +24,7 @@ namespace protean { namespace detail {
 
         string& operator=(const string& rhs);
 
-        const std::string value() const;
+        std::string value() const;
         void initialise(const char* value, size_t size);
 
         bool onStack() const;

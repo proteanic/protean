@@ -1,0 +1,233 @@
+;----------------------------------------
+; PROTAN_VISUALIZER_START protean::variant
+;
+; (C) Copyright Johan Ditmar, Karel Hruda, Paul O'Neill & Luke Stedman 2009.
+; Use, modification and distribution are subject to the Boost Software License,
+; Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+; http://www.boost.org/LICENSE_1_0.txt).
+
+protean::variant {
+  preview(
+    #switch ($e.m_type & 0xffffffff)
+    #case 0x00000001 ( #("None") )
+    #case 0x00000002
+    (
+      #("Any = ",
+        #if (((protean::detail::string*)&$e.m_value.m_val)->m_stack[0] & 0x1)
+        (
+          [&((protean::detail::string*)&$e.m_value.m_val)->m_stack[1], s]
+        )
+        #else
+        (
+          [((protean::detail::string*)&$e.m_value.m_val)->m_heapPtr, s]
+        )
+      )
+    )
+    #case 0x00000004
+    (
+      #("String = ",  
+        #if (((protean::detail::string*)&$e.m_value.m_val)->m_stack[0] & 0x1)
+        (
+          [&((protean::detail::string*)&$e.m_value.m_val)->m_stack[1], s]
+        )
+        #else
+        (
+          [((protean::detail::string*)&$e.m_value.m_val)->m_heapPtr, s]
+        )
+      )
+    )
+    #case 0x00000008 ( #("Boolean = ",    (bool)$e.m_value.m_val) )
+    #case 0x00000010 ( #("Int32 = ",      (signed int)$e.m_value.m_val) )
+    #case 0x00000020 ( #("UInt32 = ",     (unsigned)$e.m_value.m_val) )
+    #case 0x00000040 ( #("Int64 = ",      (signed __int64)$e.m_value.m_val) )
+    #case 0x00000080 ( #("UInt64 = ",     (unsigned __int64)$e.m_value.m_val) )
+    #case 0x00000100 ( #("Float = ",      *(float*)(&$e.m_value.m_val)) )
+    #case 0x00000200 ( #("Double = ",     *(double*)(&$e.m_value.m_val)) )
+    #case 0x00000400 ( #("Date = ",       *(boost::gregorian::date*)&$e.m_value.m_val) )
+    #case 0x00000800 ( #("Time = ",       *(boost::posix_time::time_duration*)&$e.m_value.m_val) )
+    #case 0x00001000 ( #("DateTime = ",   *(boost::posix_time::ptime*)&$e.m_value.m_val) )
+    #case 0x00002000
+    (
+      #(
+        "List = [",
+          ((protean::detail::list*)$e.m_value.m_ptr)->m_value._Mylast-((protean::detail::list*)$e.m_value.m_ptr)->m_value._Myfirst,
+        "]"
+      )
+    ) 
+    #case 0x00004000
+    (
+      #(
+        "Dictionary = [",
+          ((protean::detail::dictionary*)$e.m_value.m_ptr)->m_value._Mysize,
+        "]"
+      )
+    )
+    #case 0x00008000
+    (
+      #(
+        "Bag = [",
+          ((protean::detail::bag*)$e.m_value.m_ptr)->m_value._Mysize,
+        "]"
+      )
+    )
+    #case 0x00010000
+    (
+      #(
+        "Buffer = [",
+          ((protean::handle<protean::detail::buffer>*)&$e.m_value.m_val)->m_pointee->m_size,
+        "]"
+      )
+    )
+    #case 0x00020000
+    (
+      #(
+        "Tuple = [",
+          ((protean::detail::tuple*)$e.m_value.m_ptr)->m_size,
+        "]"
+      )
+    )
+    #case 0x00040000
+    (
+      #("Exception = ", ((protean::exception_data*)$e.m_value.m_ptr)->m_type)
+    )
+    #case 0x00080000
+    (
+      #(
+        "TimeSeries = [",
+        ((protean::detail::timeseries*)$e.m_value.m_ptr)->m_value._Mylast-((protean::detail::timeseries*)$e.m_value.m_ptr)->m_value._Myfirst,
+        "]"
+      )
+    ) 
+    #case 0x00100000
+    ( 
+      #("Object = ", ((protean::handle<protean::object>*)&$e.m_value.m_val)->m_pointee)
+    )
+    #default
+    (
+      #("Unknown variant type = ", $e.m_type)
+    )
+    #except
+    (
+      #("Unknown variant type = ", $e.m_type)
+    )
+  )	
+  children(
+    #(
+			#switch ($e.m_type & 0xffffffff)
+      #case 0x00000002
+      (
+        #(Any :
+          #if (((protean::detail::string*)&$e.m_value.m_val)->m_stack[0] & 0x1)
+          (
+            [&((protean::detail::string*)&$e.m_value.m_val)->m_stack[1], s]
+          )
+          #else
+          (
+            [((protean::detail::string*)&$e.m_value.m_val)->m_heapPtr, s]
+          )
+        )
+      )
+      #case 0x00000004
+      (
+        #(String : 
+          #if (((protean::detail::string*)&$e.m_value.m_val)->m_stack[0] & 0x1)
+          (
+            [&((protean::detail::string*)&$e.m_value.m_val)->m_stack[1], s]
+          )
+          #else
+          (
+            [((protean::detail::string*)&$e.m_value.m_val)->m_heapPtr, s]
+          )
+        )
+      )      
+      #case 0x00000008 ( #(Boolean : (bool)$e.m_value.m_val) )
+      #case 0x00000010 ( #(Int32 : (signed int)$e.m_value.m_val) )
+      #case 0x00000020 ( #(UInt32 : (unsigned)$e.m_value.m_val) )
+      #case 0x00000040 ( #(Int64 : (signed __int64)$e.m_value.m_val) )
+      #case 0x00000080 ( #(UInt64 : (unsigned __int64)$e.m_value.m_val) )
+      #case 0x00000100 ( #(Float : *(float*)&$e.m_value.m_val) )
+      #case 0x00000200 ( #(Double : *(double*)&$e.m_value.m_val) )
+      #case 0x00000400 ( #(Date : *(boost::gregorian::date*)&$e.m_value.m_val) )
+      #case 0x00000800 ( #(Time : *(boost::posix_time::time_duration*)&$e.m_value.m_val) )
+      #case 0x00001000 ( #(DateTime : *(boost::posix_time::ptime*)&$e.m_value.m_val) )
+      #case 0x00002000
+      (
+        #(
+          #array(
+            expr : ((protean::detail::list*)$e.m_value.m_ptr)->m_value._Myfirst[$i],
+            size : ((protean::detail::list*)$e.m_value.m_ptr)->m_value._Mylast-((protean::detail::list*)$e.m_value.m_ptr)->m_value._Myfirst
+          )
+        )
+      )
+      #case 0x00004000
+      (
+        #(
+          #tree(
+            head: ((protean::detail::dictionary*)$e.m_value.m_ptr)->m_value._Myhead->_Parent,
+            skip: ((protean::detail::dictionary*)$e.m_value.m_ptr)->m_value._Myhead,
+            left: _Left,
+            right: _Right,
+            size: ((protean::detail::dictionary*)$e.m_value.m_ptr)->m_value._Mysize
+          ) : $e._Myval
+        )
+      )
+      #case 0x00008000
+      (
+        #(
+          #list(
+            head : ((protean::detail::bag*)$e.m_value.m_ptr)->m_value._Myhead->_Next,
+            size : ((protean::detail::bag*)$e.m_value.m_ptr)->m_value._Mysize,
+            next: _Next
+          ) : $e._Myval
+        )
+      )
+      #case 0x00010000
+      (
+        #(
+          #array(
+            expr : ((unsigned char*)((protean::handle<protean::detail::buffer>*)&$e.m_value.m_val)->m_pointee->m_data)[$i],
+            size : ((protean::handle<protean::detail::buffer>*)&$e.m_value.m_val)->m_pointee->m_size
+          )
+        )
+      )
+      #case 0x00020000
+      (
+        #(
+          #array(
+            expr : (((protean::detail::tuple*)$e.m_value.m_ptr)->m_value)[$i],
+            size : ((protean::detail::tuple*)$e.m_value.m_ptr)->m_size
+          )
+        )
+      )
+      #case 0x00040000
+      (
+        #(Exception : *(protean::exception_data*)$e.m_value.m_ptr)
+      )
+      #case 0x00080000
+      (
+        #(
+          #array(
+            expr : ((protean::detail::timeseries*)$e.m_value.m_ptr)->m_value._Myfirst[$i],
+            size : ((protean::detail::timeseries*)$e.m_value.m_ptr)->m_value._Mylast-((protean::detail::timeseries*)$e.m_value.m_ptr)->m_value._Myfirst;
+          )
+        )
+      )
+      #case 0x00100000
+      (
+        #(Object : ((protean::handle<protean::object>*)&$e.m_value.m_val)->m_pointee)
+      )
+      #default
+      (
+        [raw members]: [$e,!]	; unformatted data members
+      )
+      #except
+      (
+        [raw members]: [$e,!]	; unformatted data members
+      )
+    )
+  )
+}
+
+;
+; PROTEAN_VISUALIZER_END protean::variant
+;--------------------------------------

@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(test_detail_string)
 
     detail::string vs02("1234567");
     BOOST_CHECK_EQUAL(vs02.size(), 7u);
-    BOOST_CHECK_EQUAL(vs02.onStack(), true);
+    BOOST_CHECK_EQUAL(vs02.onStack(), false);
     BOOST_CHECK_EQUAL(vs02.value(), "1234567");
 
     detail::string vs03("12345678");

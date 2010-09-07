@@ -12,7 +12,6 @@
 namespace protean { namespace detail {
 
     static const boost::uint64_t s_onStackMask    = 0x0000000000000001ull;
-    static const boost::uint64_t s_sizeMask       = 0x00000000000000FEull;
 
     string::string() :
         m_rawData(0)
@@ -63,21 +62,11 @@ namespace protean { namespace detail {
         std::swap(m_rawData, rhs.m_rawData);
     }
 
-    const std::string string::value() const
+    std::string string::value() const
     {
         if (onStack())
         {
-            size_t sz(size());
-            std::string temp(sz, '@');
-
-            boost::uint64_t data(m_rawData);
-            for(size_t n(1); n<= sz; ++n)
-            {
-                data>>=8;
-                temp[sz-n]=data&0xFF;
-            }
-
-            return temp;
+            return std::string(&m_stack[1]);
         }
         else
         {
@@ -87,15 +76,9 @@ namespace protean { namespace detail {
 
     void string::initialise( const char* value, size_t size )
     {
-        if ( size<8 )
+        if ( size<7 )
         {
-            m_rawData=0;
-            for(size_t n(0); n!= size; ++n)
-            {
-                m_rawData|=value[n];
-                m_rawData<<=8;
-            }
-            setStackSize(static_cast<boost::uint8_t>(size));
+			memcpy(&m_stack[1], value, size);
             setStackFlag();
         }
         else
@@ -121,7 +104,7 @@ namespace protean { namespace detail {
 
     size_t string::size() const {
         if (onStack())
-            return getStackSize();
+            return std::strlen(&m_stack[1]);
         else
             return std::strlen(heapPointer());
     }
@@ -159,18 +142,6 @@ namespace protean { namespace detail {
         m_rawData &= ~s_onStackMask;
     }
 
-    void string::setStackSize(boost::uint8_t sz)
-    {
-        m_rawData &= ~s_sizeMask;
-        m_rawData |= (sz << 1);
-    }
-
-    boost::uint8_t string::getStackSize() const
-    {
-        return static_cast<boost::uint8_t>( (m_rawData & s_sizeMask)  >> 1 );
-    }
-
-
     /*static*/ void* string::alignedMalloc(size_t size)
     {
         // malloc is guaranteed to have alignment suitable for any pod type in MSVC (we just need the lsb)
@@ -184,7 +155,7 @@ namespace protean { namespace detail {
 
     int string::compare(const string& rhs) const
     {
-        return value().compare(rhs.value());
+		return value().compare(rhs.value());
     }
 
     boost::uint64_t string::hash(boost::uint64_t seed) const
