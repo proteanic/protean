@@ -114,11 +114,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;;&quot;$(XERCES_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="_DEBUG;PROTEAN_SOURCE;PROTEAN_DYN_LINK"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				DebugInformationFormat="0"
+				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -380,11 +381,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;;&quot;$(XERCES_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="_DEBUG;PROTEAN_SOURCE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				DebugInformationFormat="0"
+				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
