@@ -17,7 +17,6 @@ namespace protean { namespace clr {
         NoHeader            = protean::xml_mode::NoHeader,
         Indent              = protean::xml_mode::Indent,
         StripSpace          = protean::xml_mode::StripSpace,
-        NativeFP            = protean::xml_mode::NativeFP,
         //CreateProxy = protean::xml_mode::CreateProxy, // not supported in CLR yet
         Default             = protean::xml_mode::Default
     };

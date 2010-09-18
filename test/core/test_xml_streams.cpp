@@ -595,38 +595,6 @@ BOOST_AUTO_TEST_CASE(test_xml_indent)
     BOOST_CHECK_EQUAL(formatted_xml, oss.str());
 }
 
-// see TRAC #46
-BOOST_AUTO_TEST_CASE(test_xml_native_fp)
-{
-    double value1 = 0.0034326330806188038;
-
-    variant v1(value1);
-
-    std::stringstream ss1;
-    xml_writer writer1(ss1, xml_mode::NativeFP);
-    writer1 << v1;
-
-    variant v2;
-    xml_reader reader1(ss1, xml_mode::NativeFP);
-    reader1 >> v2;
-
-    BOOST_CHECK_EQUAL(v2.as<double>(), value1);
-
-    float value2 = 0.0034326330806188038;
-
-    variant v3(value2);
-
-    std::stringstream ss2;
-    xml_writer writer2(ss2, xml_mode::NativeFP);
-    writer2 << v3;
-
-    variant v4;
-    xml_reader reader2(ss2, xml_mode::NativeFP);
-    reader2 >> v4;
-
-    BOOST_CHECK_EQUAL(v4.as<float>(), value2);
-}
-
 BOOST_AUTO_TEST_CASE(test_xml_double)
 {
     static const std::string xml =

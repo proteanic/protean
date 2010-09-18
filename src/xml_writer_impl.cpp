@@ -300,34 +300,11 @@ namespace protean { namespace detail {
                 }
             }
             case variant::Float:
-            {
-                if ((m_mode & xml_mode::NativeFP)!=0)
-                {
-                    m_os << start_tag();
-                    float value = element.as<float>();
-                    boost::uint32_t bits = *reinterpret_cast<boost::uint32_t*>(&value);
-                    write_text(variant(bits));
-                    m_os << end_tag();
-                    break;
-                }
-            }
             case variant::Double:
-            {
-                if ((m_mode & xml_mode::NativeFP)!=0)
-                {
-                    m_os << start_tag();
-                    double value = element.as<double>();
-                    boost::uint64_t bits = *reinterpret_cast<boost::uint64_t*>(&value);
-                    write_text(variant(bits));
-                    m_os << end_tag();
-                    break;
-                }
-            }
             case variant::Int32:
             case variant::UInt32:
             case variant::Int64:
             case variant::UInt64:
-            
             case variant::Boolean:
             case variant::Date:
             case variant::Time:

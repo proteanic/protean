@@ -262,27 +262,7 @@ namespace protean { namespace detail {
 
             if ((context->m_type & variant::Primitive)!=0)
             {
-                if ((m_mode & xml_mode::NativeFP)!=0)
-                {
-                    if (context->m_type==variant::Float)
-                    {
-                        boost::uint32_t bits = variant::lexical_cast<boost::uint32_t>(context->m_data);
-                        context->element() = *reinterpret_cast<float*>(&bits);
-                    }
-                    else if (context->m_type==variant::Double)
-                    {
-                        boost::uint64_t bits = variant::lexical_cast<boost::uint64_t>(context->m_data);
-                        context->element() = *reinterpret_cast<double*>(&bits);
-                    }
-                    else
-                    {
-                        context->element() = variant(context->m_type, context->m_data);
-                    }
-                }
-                else
-                {
-                    context->element() = variant(context->m_type, context->m_data);
-                }
+				context->element() = variant(context->m_type, context->m_data);
             }
             else if ( context->m_type==variant::Exception )
             {
