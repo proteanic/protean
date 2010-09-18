@@ -165,7 +165,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir)../;$(BOOST_INCLUDE_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;PROTEAN_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(BOOST_LIB64_PATH);$(XERCES_LIB64_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -218,7 +217,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir)../;$(BOOST_INCLUDE_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(BOOST_LIB64_PATH);$(XERCES_LIB64_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
