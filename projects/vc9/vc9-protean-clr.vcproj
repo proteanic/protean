@@ -24,7 +24,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -45,12 +45,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="PROTEAN_DYN_LINK"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -98,7 +96,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -120,12 +118,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
 				PreprocessorDefinitions="PROTEAN_DYN_LINK"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -172,7 +168,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="0"
@@ -198,7 +194,6 @@
 				PreprocessorDefinitions="PROTEAN_DYN_LINK"
 				RuntimeLibrary="2"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -244,7 +239,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -272,7 +267,6 @@
 				PreprocessorDefinitions="PROTEAN_DYN_LINK"
 				RuntimeLibrary="2"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -318,7 +312,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -339,12 +333,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG"
+				PreprocessorDefinitions="WIN32;"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -391,7 +383,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -413,12 +405,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG"
+				PreprocessorDefinitions="WIN32;"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -465,7 +455,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -488,10 +478,9 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG"
+				PreprocessorDefinitions="WIN32"
 				RuntimeLibrary="2"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -538,7 +527,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -562,10 +551,9 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG"
+				PreprocessorDefinitions="WIN32"
 				RuntimeLibrary="2"
 				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

@@ -7,5 +7,7 @@
 	<Tool
 		Name="VCCLCompilerTool"
 		PreprocessorDefinitions="_DEBUG"
+	  DebugInformationFormat="1"
+    Optimization="0"
 	/>
 </VisualStudioPropertySheet>

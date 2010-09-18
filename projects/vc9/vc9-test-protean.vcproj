@@ -24,7 +24,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="_DEBUG;PROTEAN_DYN_LINK"
+				PreprocessorDefinitions="PROTEAN_DYN_LINK"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 			/>
@@ -92,7 +92,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -113,12 +113,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="_DEBUG;PROTEAN_DYN_LINK"
+				PreprocessorDefinitions="PROTEAN_DYN_LINK"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -163,7 +161,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -229,7 +227,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -297,7 +295,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -318,7 +316,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 			/>
@@ -364,7 +361,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-debug.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -385,12 +382,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)../&quot;;&quot;$(BOOST_INCLUDE_PATH)&quot;"
-				PreprocessorDefinitions="_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				DebugInformationFormat="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -435,7 +429,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -500,7 +494,7 @@
 			OutputDirectory="build\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-compiler-test.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
+			InheritedPropertySheets=".\vc9-compiler.vsprops;.\vc9-compiler-release.vsprops;.\vc9-version.vsprops;.\vc9-paths.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
