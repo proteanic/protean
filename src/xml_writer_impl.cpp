@@ -5,6 +5,7 @@
 
 #include <protean/detail/xml_writer_impl.hpp>
 #include <protean/detail/xml_utility.hpp>
+#include <protean/detail/base64.hpp>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
@@ -478,8 +479,8 @@ namespace protean { namespace detail {
                 size_t size = element.size();
                 if (data!=NULL && size>0)
                 {
-                    XMLSize_t n = 0;
-                    boost::scoped_ptr<XMLByte> b64( xercesc::Base64::encode( reinterpret_cast<const XMLByte*>( data ), (unsigned int)size, &n ) );
+                    unsigned int n = 0;
+                    boost::scoped_ptr<char> b64(detail::b64_encode((const char*)data, (unsigned int)size, &n));
                     if (!b64.get())
                     {
                         boost::throw_exception(variant_error("Unable to base64 encode data"));
