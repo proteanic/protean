@@ -474,7 +474,7 @@ namespace protean { namespace detail {
             case variant::Buffer:
             {
                 m_os << start_tag();
-                void *data = element.as<void*>();
+                const void *data = element.as<void*>();
                 size_t size = element.size();
                 if (data!=NULL && size>0)
                 {

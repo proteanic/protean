@@ -143,7 +143,7 @@ namespace protean {
         as() const;
 
         template<typename T>
-        typename boost::enable_if<return_pointer<T>, const T>::type
+        typename boost::enable_if<return_pointer<T>, typename const boost::remove_pointer<T>::type*>::type
         as() const;
 
         template<typename T>
@@ -156,9 +156,6 @@ namespace protean {
         // Number -> T
         template<typename T>
         T numerical_cast() const;
-
-        DEPRECATED("** this is a deprecated method, please use any_cast instead **")
-        variant change_type(enum_type_t type) const;
 
     /* Collection interface */
     /************************/
@@ -223,7 +220,10 @@ namespace protean {
         variant select(const std::string& path) const;
 
         template<typename TARGET, typename SOURCE>
-        static TARGET lexical_cast(const SOURCE& toCast);
+        static TARGET lexical_cast(const SOURCE& arg);
+
+        template<typename TARGET>
+        static TARGET lexical_cast(const std::string& arg);
 
         boost::uint64_t hash(boost::uint64_t seed = 0) const;
 

@@ -62,15 +62,15 @@ namespace protean { namespace detail {
         std::swap(m_rawData, rhs.m_rawData);
     }
 
-    std::string string::value() const
+    const char* string::value() const
     {
         if (onStack())
         {
-            return std::string(&m_stack[1]);
+            return &m_stack[1];
         }
         else
         {
-            return std::string(heapPointer());
+            return heapPointer();
         }
     }
 
@@ -102,11 +102,9 @@ namespace protean { namespace detail {
         return (m_rawData&s_onStackMask) != 0;
     }
 
-    size_t string::size() const {
-        if (onStack())
-            return std::strlen(&m_stack[1]);
-        else
-            return std::strlen(heapPointer());
+    size_t string::size() const
+    {
+        return std::strlen(value());
     }
 
     bool string::empty() const
@@ -155,7 +153,7 @@ namespace protean { namespace detail {
 
     int string::compare(const string& rhs) const
     {
-		return value().compare(rhs.value());
+		return strcmp(value(), rhs.value());
     }
 
     boost::uint64_t string::hash(boost::uint64_t seed) const

@@ -32,6 +32,11 @@ namespace detail
         return update_crc64(seed, (const unsigned char*)value.c_str(), value.size());
     }
 
+    inline boost::uint64_t hash_value(const char* value, boost::uint64_t seed)
+    {
+        return update_crc64(seed, (const unsigned char*)value, strlen(value));
+    }
+
     inline boost::uint64_t hash_value(bool value, boost::uint64_t seed)
     {
         return update_crc64(seed, (const unsigned char*)&value, 1);

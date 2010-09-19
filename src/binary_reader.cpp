@@ -137,7 +137,7 @@ namespace protean {
                 read(size);
 
                 value = variant(variant::Buffer, size);
-                void* data = value.as<void*>();
+                void* data = (void*)value.as<void*>();
                 read(data, size);
 
                 break;

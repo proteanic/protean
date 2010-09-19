@@ -633,13 +633,13 @@ namespace protean {
     /*
      * variant::lexical_cast
      */
-    template<> bool variant::lexical_cast<bool>(const std::string& arg)
+    template<> bool variant::lexical_cast<bool>(const char* const& arg)
     {
-        if (arg=="true" || arg=="1")
+        if (strcmp(arg, "true")==0 || strcmp(arg, "1")==0)
         {
             return true;
         }
-        else if (arg=="false" || arg=="0")
+        else if (strcmp(arg, "false")==0 || strcmp(arg, "0")==0)
         {
             return false;
         }
@@ -648,17 +648,17 @@ namespace protean {
             boost::throw_exception(variant_error(std::string("Bad lexical cast: failed to interpret ") + arg + " as bool"));
         }
     }
-    template<> float variant::lexical_cast<float>(const std::string& arg)
+    template<> float variant::lexical_cast<float>(const char* const& arg)
     {
-        if (arg=="NaN")
+        if (strcmp(arg, "NaN")==0)
         {
             return std::numeric_limits<float>::quiet_NaN();
         }
-        else if (arg=="-INF")
+        else if (strcmp(arg, "-INF")==0)
         {
             return -std::numeric_limits<float>::infinity();
         }
-        else if (arg=="INF")
+        else if (strcmp(arg,"INF")==0)
         {
             return std::numeric_limits<float>::infinity();
         }
@@ -674,32 +674,32 @@ namespace protean {
             }
         }
     }
-    template<> double variant::lexical_cast<double>(const std::string& arg)
+    template<> double variant::lexical_cast<double>(const char* const& arg)
     {
-        if (arg=="NaN")
+        if (strcmp(arg, "NaN")==0)
         {
             return std::numeric_limits<double>::quiet_NaN();
         }
-        else if (arg=="-INF")
+        else if (strcmp(arg, "-INF")==0)
         {
             return -std::numeric_limits<double>::infinity();
         }
-        else if (arg=="INF")
+        else if (strcmp(arg, "INF")==0)
         {
             return std::numeric_limits<double>::infinity();
         }
         else
         {
             char *endp;
-            double result = strtod(arg.c_str(), &endp);
-            if (arg.c_str()==endp || *endp != '\0')
+            double result = strtod(arg, &endp);
+            if (arg==endp || *endp != '\0')
             {
                 boost::throw_exception(variant_error(std::string("Bad lexical cast: failed to interpret ") + arg + " as double"));
             }
             return result;
         }
     }
-    template<> variant::date_t variant::lexical_cast<variant::date_t>(const std::string& arg)
+    template<> variant::date_t variant::lexical_cast<variant::date_t>(const char* const& arg)
     {
         const boost::regex expr( "^\\d{4}-\\d{2}-\\d{2}$" );
         if ( boost::regex_match(arg, expr) )
@@ -710,7 +710,7 @@ namespace protean {
         boost::throw_exception(variant_error(std::string("Bad lexical cast: invalid date '") + arg + "' specified, expecting YYYY-MM-DD"));
     }
 
-    template<> variant::time_t variant::lexical_cast<variant::time_t>(const std::string& arg)
+    template<> variant::time_t variant::lexical_cast<variant::time_t>(const char* const& arg)
     {
         const boost::regex expr( "^\\d{2}:\\d{2}:\\d{2}(.\\d*)?$" );
         if ( boost::regex_match(arg, expr ))
@@ -723,9 +723,9 @@ namespace protean {
             // We assume this is a time duration (ISO 8601) under the form: PnYnMnDTnHnMnS
             const boost::regex expr( "^(-)?P(?:([0-9]+)Y)?(?:([0-9]+)M)?(?:([0-9]+)D)?(?:T(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?)?(?:.([0-9]+))?$" );
 
-            boost::smatch match;
+            boost::cmatch match;
             boost::regex_search(arg, match, expr);
-            if ( match[0].matched )
+            if (match[0].matched)
             {
                 bool sign = match[1].first!=match[1].second;
                 long years = (match[2].first!=match[2].second) ? boost::lexical_cast<long>(match[2]) : 0;
@@ -760,14 +760,14 @@ namespace protean {
         boost::throw_exception(variant_error(std::string("Bad lexical cast: invalid time '") + arg + "' specified, expecting expecting HH:MM:SS[.fff] or P[n]Y[n]M[n]DT[n]H[n]M[n]S"));
     }
 
-    template<> variant::date_time_t variant::lexical_cast<variant::date_time_t>(const std::string& arg)
+    template<> variant::date_time_t variant::lexical_cast<variant::date_time_t>(const char* const& arg)
     {
         const boost::regex expr( "^(.+)T(.+)$" );
-        boost::smatch matches;
+        boost::cmatch matches;
         if (boost::regex_match(arg, matches, expr))
         {
-            variant::date_t date = lexical_cast<variant::date_t>( matches[1].str() );
-            variant::time_t time = lexical_cast<variant::time_t>( matches[2].str() );
+            variant::date_t date = lexical_cast<variant::date_t>( matches[1].str().c_str() );
+            variant::time_t time = lexical_cast<variant::time_t>( matches[2].str().c_str() );
             variant::date_time_t value( date, time );
 
             if ( !value.is_special() ) return value;
@@ -908,115 +908,6 @@ namespace protean {
         END_TRANSLATE_ERROR();
     }
 
-    // Any -> Primitive (DEPRECATED)
-    variant variant::change_type(enum_type_t type) const
-    {
-        BEGIN_TRANSLATE_ERROR();
-
-        CHECK_VARIANT_FUNCTION(Primitive, "change_type()");
-
-        if ((type & Primitive)==0)
-        {
-            boost::throw_exception(
-                variant_error("Attempt to convert primitive variant to non-primitive type (" + enum_to_string(m_type) + " -> " + enum_to_string(type) + ")")
-            );
-        }
-
-        if (type==m_type)
-        {
-            return *this;
-        }
-
-        std::string value_as_string;
-
-        switch (m_type)
-        {
-        case Any:
-        case String:
-            value_as_string = as<std::string>();
-            break;
-        case Int32:
-            value_as_string = lexical_cast<std::string>(m_value.get<Int32>());
-            break;
-        case UInt32:
-            value_as_string = lexical_cast<std::string>(m_value.get<UInt32>());
-            break;
-        case Int64:
-            value_as_string = lexical_cast<std::string>(m_value.get<Int64>());
-            break;
-        case UInt64:
-            value_as_string = lexical_cast<std::string>(m_value.get<UInt64>());
-            break;
-        case Float:
-            value_as_string = lexical_cast<std::string>(m_value.get<Float>());
-            break;
-        case Double:
-            value_as_string = (boost::format("%|.20|") % m_value.get<Double>() ).str();
-            break;
-        case Boolean:
-            value_as_string = lexical_cast<std::string>(m_value.get<Boolean>());
-            break;
-        case Date:
-            value_as_string = lexical_cast<std::string>(m_value.get<Date>());
-            break;
-        case Time:
-            value_as_string = lexical_cast<std::string>(m_value.get<Time>());
-            break;
-        case DateTime:
-            value_as_string = lexical_cast<std::string>(m_value.get<DateTime>());
-            break;
-        default:
-            boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(m_type)));
-        }
-
-        variant result;
-
-        switch (type)
-        {
-        case Any:
-        case String:
-            result = value_as_string;
-            result.m_type = type;
-            break;
-        case Int32:
-            result = lexical_cast<boost::int32_t>(value_as_string);
-            break;
-        case UInt32:
-            result = lexical_cast<boost::uint32_t>(value_as_string);
-            break;
-        case Int64:
-            result = lexical_cast<boost::int64_t>(value_as_string);
-            break;
-        case UInt64:
-            result = lexical_cast<boost::uint64_t>(value_as_string);
-            break;
-        case Float:
-            result = lexical_cast<float>(value_as_string);
-            break;
-        case Double:
-            result = lexical_cast<double>(value_as_string);
-            break;
-        case Boolean:
-            result = lexical_cast<bool>(value_as_string);
-            break;
-        case Date:
-            result = lexical_cast<date_t>(value_as_string);
-            break;
-        case Time:
-            result = lexical_cast<time_t>(value_as_string);
-            break;
-        case DateTime:
-            result = lexical_cast<date_time_t>(value_as_string);
-            break;
-         default:
-             boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(type)));
-        }
-
-        return result;
-
-        END_TRANSLATE_ERROR();
-    }
-
     /*
      * variant::is
      */
@@ -1047,6 +938,18 @@ namespace protean {
 
         END_TRANSLATE_ERROR();
     }
+
+    template<> const char* variant::as<char*>() const
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(Any | String, "as<char*>()");
+
+        return m_value.get<String>().value();
+
+        END_TRANSLATE_ERROR();
+    }
+
     template<> bool variant::as<bool>() const
     {
         BEGIN_TRANSLATE_ERROR();
@@ -1145,6 +1048,17 @@ namespace protean {
         CHECK_VARIANT_FUNCTION(Object, "as<object>()");
 
         return *m_value.get<Object>();
+
+        END_TRANSLATE_ERROR();
+    }
+
+    template<> const void* variant::as<void*>() const
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(Buffer, "as<void*>()");
+
+        return m_value.get<Buffer>()->data();
 
         END_TRANSLATE_ERROR();
     }
@@ -1309,7 +1223,7 @@ namespace protean {
                 {
                     oss << "Buffer(";
 
-                    const unsigned char* byteArray(as<unsigned char*>());
+                    const unsigned char* byteArray((const unsigned char*)as<void*>());
                     if (byteArray!=NULL)
                     {
                         for(size_t i=0; i<size(); ++i)

@@ -109,13 +109,20 @@ namespace protean {
             boost::throw_exception(variant_error(std::string("Bad lexical cast: failed to interpret ") + typeid(SOURCE).name() + " as " + typeid(TARGET).name()));
         }
     }
+
     // std::string -> TARGET
-    template<> PROTEAN_DECL bool variant::lexical_cast<bool>(const std::string& arg);
-    template<> PROTEAN_DECL float variant::lexical_cast<float>(const std::string& arg);
-    template<> PROTEAN_DECL double variant::lexical_cast<double>(const std::string& arg);
-    template<> PROTEAN_DECL variant::date_t variant::lexical_cast<variant::date_t>(const std::string& arg);
-    template<> PROTEAN_DECL variant::time_t variant::lexical_cast<variant::time_t>(const std::string& arg);
-    template<> PROTEAN_DECL variant::date_time_t variant::lexical_cast<variant::date_time_t>(const std::string& arg);
+    template<> PROTEAN_DECL bool variant::lexical_cast<bool>(const char* const& arg);
+    template<> PROTEAN_DECL float variant::lexical_cast<float>(const char* const& arg);
+    template<> PROTEAN_DECL double variant::lexical_cast<double>(const char* const& arg);
+    template<> PROTEAN_DECL variant::date_t variant::lexical_cast<variant::date_t>(const char* const& arg);
+    template<> PROTEAN_DECL variant::time_t variant::lexical_cast<variant::time_t>(const char* const& arg);
+    template<> PROTEAN_DECL variant::date_time_t variant::lexical_cast<variant::date_time_t>(const char* const& arg);
+
+    template<typename TARGET>
+    TARGET variant::lexical_cast(const std::string& arg)
+    {
+        return lexical_cast<TARGET>(arg.c_str());
+    }
 
     // SOURCE -> std::string
     template<> PROTEAN_DECL std::string variant::lexical_cast<std::string>(const bool& arg);
@@ -190,25 +197,12 @@ namespace protean {
     }
 
     template<> PROTEAN_DECL std::string                 variant::as<std::string>()              const;
+    template<> PROTEAN_DECL const char*                 variant::as<char*>()                    const;
     template<> PROTEAN_DECL bool                        variant::as<bool>()                     const;
     template<> PROTEAN_DECL variant::date_t             variant::as<variant::date_t>()          const;
     template<> PROTEAN_DECL variant::time_t             variant::as<variant::time_t>()          const;
     template<> PROTEAN_DECL variant::date_time_t        variant::as<variant::date_time_t>()     const;
-
-    template<typename T>
-    typename boost::enable_if<variant::return_pointer<T>, const T>::type
-    variant::as() const
-    {
-        BEGIN_TRANSLATE_ERROR();
-
-        CHECK_VARIANT_FUNCTION(Buffer, "as<" + typeid(T).name() + ">()");
-
-        const handle<detail::buffer>& obj(m_value.get<Buffer>());
-
-        return reinterpret_cast<const T>(obj->data());
-
-        END_TRANSLATE_ERROR();
-    }
+    template<> PROTEAN_DECL const void*                 variant::as<void*>()                    const;
 
     template<typename T>
     typename boost::enable_if<variant::return_reference<T>, const T&>::type
