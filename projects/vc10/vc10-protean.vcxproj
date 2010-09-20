@@ -243,6 +243,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\array_iterator.cpp" />
     <ClCompile Include="..\..\src\bag.cpp" />
+    <ClCompile Include="..\..\src\base64.cpp" />
     <ClCompile Include="..\..\src\binary_reader.cpp" />
     <ClCompile Include="..\..\src\binary_writer.cpp" />
     <ClCompile Include="..\..\src\buffer.cpp" />
@@ -275,6 +276,7 @@
     <ClInclude Include="..\..\protean\binary_reader.hpp" />
     <ClInclude Include="..\..\protean\binary_writer.hpp" />
     <ClInclude Include="..\..\protean\config.hpp" />
+    <ClInclude Include="..\..\protean\detail\base64.hpp" />
     <ClInclude Include="..\..\protean\detail\crc64.hpp" />
     <ClInclude Include="..\..\protean\detail\scoped_xmlch.hpp" />
     <ClInclude Include="..\..\protean\detail\xerces_include.hpp" />

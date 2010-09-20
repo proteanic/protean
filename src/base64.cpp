@@ -124,17 +124,17 @@ namespace protean { namespace detail {
         return output_data;
     }
 
-    inline char set_octet_1(char b1, char b2)
+    static inline char set_octet_1(char b1, char b2)
     {
         return (( b1 << 2 ) | ( b2 >> 4 ));
     }
 
-    inline char set_octet_2(char b2, char b3)
+    static inline char set_octet_2(char b2, char b3)
     {
         return (( b2 << 4 ) | ( b3 >> 2 ));
     }
 
-    inline char set_octet_3(char b3, char b4)
+    static inline char set_octet_3(char b3, char b4)
     {
         return (( b3 << 6 ) | b4 );
     }

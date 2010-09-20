@@ -82,6 +82,9 @@
     <ClCompile Include="..\..\src\xml_common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\base64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\protean\array_iterator.hpp">
@@ -232,6 +235,9 @@
       <Filter>Header Files\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\..\protean\detail\crc64.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\detail\base64.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
   </ItemGroup>
