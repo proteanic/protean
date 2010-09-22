@@ -54,6 +54,23 @@ namespace protean {
             return Stack.CompareTo(rhsEx.Stack);
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(Class + '(' + Message + ')');
+
+            if (Source.Length>0)
+            {
+                sb.Append(" in: " + Source);
+            }
+
+            if (Stack.Length > 0)
+            {
+                sb.Append("\n" + Stack);
+            }
+
+            return sb.ToString();
+        }
+
         public string Class { get; set; }
         public string Message { get; set; }
         public string Source { get; set; }
