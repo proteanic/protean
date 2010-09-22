@@ -144,9 +144,16 @@ namespace protean {
 
         public byte[] AsBuffer()
         {
-            CheckType(EnumType.Buffer, "AsBuffer()");
+            CheckType(EnumType.Buffer | EnumType.Any, "AsBuffer()");
 
-            return ((VariantBuffer)Value).Value;
+            if (Value is VariantBuffer)
+            {
+                return ((VariantBuffer)Value).Value;
+            }
+            else
+            {
+                return System.Convert.FromBase64String(((VariantAny)Value).Value);
+            }
         }
 
         public DataTable AsDataTable()
