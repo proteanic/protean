@@ -242,6 +242,7 @@ namespace protean {
             case Variant.EnumType.None:
                 break;
             case Variant.EnumType.String:
+            case Variant.EnumType.Any:
                 Write(v.As<string>());
                 break;
             case Variant.EnumType.Float:
