@@ -211,9 +211,25 @@ namespace protean {
         public int Count
         {
             get {
-                CheckType(EnumType.Collection, "Count"); 
+                CheckType(EnumType.Collection | EnumType.Any, "Count");
 
-                return (Value as IVariantCollection).Count;
+                if (Value is IVariantCollection)
+                {
+                    return ((IVariantCollection)Value).Count;
+                }
+                else
+                {
+                    VariantAny any = (VariantAny)Value;
+                    if (any.Value.Length==0)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        throw new VariantException("Attempt to call Count on non-empty primitive");
+                    }
+                }
+
             }
         }
 
