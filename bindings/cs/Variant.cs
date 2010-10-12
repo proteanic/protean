@@ -174,28 +174,28 @@ namespace protean {
         // Bags/Dictionaries
         public bool ContainsKey(string key)
         {
-            CheckType(EnumType.Mapping, "ContainsKey");
+            CheckType(EnumType.Mapping, "ContainsKey('" + key + "')");
 
             return (Value as IVariantMapping).ContainsKey(key);
         }
 
         public void Add(string key, Variant value)
         {
-            CheckType(EnumType.Mapping, "Add");
+            CheckType(EnumType.Mapping, "Add('" + key + "')");
 
             (Value as IVariantMapping).Add(key, value);
         }
 
         public void Remove(string key)
         {
-            CheckType(EnumType.Mapping, "Remove");
+            CheckType(EnumType.Mapping, "Remove('" + key + "')");
 
             (Value as IVariantMapping).Remove(key);
         }
 
         public Variant Range(string key)
         {
-            CheckType(EnumType.Mapping, "Range");
+            CheckType(EnumType.Mapping, "Range('" + key + "')");
 
             return (Value as IVariantMapping).Range(key);
         }
@@ -260,12 +260,12 @@ namespace protean {
         public Variant this[string key]
         {
             get {
-                CheckType(EnumType.Mapping, "this[]");
+                CheckType(EnumType.Mapping, "this['" + key + "']");
 
                 return (Value as IVariantMapping)[key];
             }
             set {
-                CheckType(EnumType.Mapping, "this[]");
+                CheckType(EnumType.Mapping, "this['" + key + "']");
 
                 (Value as IVariantMapping)[key] = value;
             }
@@ -275,13 +275,13 @@ namespace protean {
         {
             
             get {
-                CheckType(EnumType.Sequence, "this[]");
+                CheckType(EnumType.Sequence, "this[" + index + "]");
 
                 return (Value as IVariantSequence)[index];
             }
 
             set  {
-                CheckType(EnumType.Sequence, "this[]");
+                CheckType(EnumType.Sequence, "this[" + index + "]");
 
                 (Value as IVariantSequence)[index] = value;
             }
