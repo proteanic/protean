@@ -171,6 +171,13 @@ namespace protean {
             (Value as VariantList).Value.Add(value);
         }
 
+        public void AddRange(IEnumerable<Variant> collection)
+        {
+            CheckType(EnumType.List, "AddRange");
+
+            (Value as VariantList).Value.AddRange(collection);
+        }
+
         // Bags/Dictionaries
         public bool ContainsKey(string key)
         {
