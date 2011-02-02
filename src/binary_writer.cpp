@@ -16,7 +16,7 @@ namespace protean {
     
     binary_writer::binary_writer(std::ostream &os, int mode) :
         m_os(os),
-        m_mode(mode)
+        m_mode(mode | binary_mode::DateTimeAsTicks)
     {
     }
 
@@ -216,49 +216,15 @@ namespace protean {
     }
     void binary_writer::write(const variant::date_t& value)
     {
-        if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
-        {
-            write((boost::uint32_t)(value - variant::min_date()).days());
-        }
-        else
-        {
-            boost::gregorian::greg_year_month_day ymd = value.year_month_day();
-
-            binary_date_t date;
-            date.year   = static_cast<short>(ymd.year);
-            date.month  = static_cast<char>(ymd.month);
-            date.day    = static_cast<char>(ymd.day);
-
-            write_bytes(reinterpret_cast<const char*>(&date), sizeof(binary_date_t));
-        }
+		write((boost::uint32_t)(value - variant::min_date()).days());
     }
     void binary_writer::write(const variant::time_t& value)
     {
-        if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
-        {
-            write((boost::int64_t)value.total_milliseconds());
-        }
-        else
-        {
-            binary_time_t time;
-            time.hour   = static_cast<char>(value.hours());
-            time.minute = static_cast<char>(value.minutes());
-            time.second = static_cast<char>(value.seconds());
-
-            write_bytes(reinterpret_cast<const char*>(&time), sizeof(binary_time_t));
-        }
+        write((boost::int64_t)value.total_milliseconds());
     }
     void binary_writer::write(const variant::date_time_t& value)
     {
-        if ((m_mode & binary_mode::DateTimeAsTicks)!=0)
-        {
-            write(value - variant::min_date_time());
-        }
-        else
-        {
-            write(value.date());
-            write(value.time_of_day());
-        }
+        write(value - variant::min_date_time());
     }
 
     void binary_writer::write(const void* data, size_t length)
