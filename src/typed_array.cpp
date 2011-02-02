@@ -9,6 +9,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/cast.hpp>
+#include <boost/function.hpp>
 
 namespace protean {
 

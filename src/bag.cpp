@@ -116,7 +116,7 @@ namespace protean { namespace detail {
             std::find_if(
                 m_value.begin(), 
                 m_value.end(), 
-                boost::lambda::bind(&container_type::value_type::first, boost::lambda::_1) == key
+				boost::lambda::bind<std::string>(&container_type::value_type::first, boost::lambda::_1) == key
             )
         );
         return itr;
@@ -128,7 +128,7 @@ namespace protean { namespace detail {
             std::find_if(
                 m_value.begin(), 
                 m_value.end(), 
-                boost::lambda::bind(&container_type::value_type::first, boost::lambda::_1) == key
+				boost::lambda::bind<std::string>(&container_type::value_type::first, boost::lambda::_1) == key
             )
         );
         return itr;
