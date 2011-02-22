@@ -143,7 +143,7 @@ namespace protean {
         as() const;
 
         template<typename T>
-        typename boost::enable_if<return_pointer<T>, typename const boost::remove_pointer<T>::type*>::type
+        typename boost::enable_if<return_pointer<T>, const typename boost::remove_pointer<T>::type *>::type
         as() const;
 
         template<typename T>
