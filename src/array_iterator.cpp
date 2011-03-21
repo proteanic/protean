@@ -39,7 +39,7 @@ namespace protean {
     template<typename ITERATOR_TRAITS>
     bool array_iterator<ITERATOR_TRAITS>::equal(const array_iterator<array_const_iterator_traits>& rhs) const
     {
-        return m_ref==rhs.m_ref;
+        return m_ref.m_value==rhs.m_ref.m_value;
     }
 
     template<typename ITERATOR_TRAITS>
@@ -81,5 +81,6 @@ namespace protean {
     // Explicit template instantiation
     template class array_iterator<array_const_iterator_traits>;
     template class array_iterator<array_iterator_traits>;
+
 
 } // namespace protean
