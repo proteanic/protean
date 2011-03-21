@@ -326,6 +326,7 @@
   <ItemGroup>
     <None Include="..\..\protean\handle.ipp" />
     <None Include="..\..\protean\variant.ipp" />
+    <None Include="..\..\protean\variant_ref.ipp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

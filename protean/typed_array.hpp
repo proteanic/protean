@@ -21,6 +21,8 @@ namespace protean {
     
     class PROTEAN_DECL typed_array : public detail::ref_counted
     {
+        template <typename> friend class range_array_iterator;
+
     public:
         typed_array(size_t size, variant_base::enum_type_t type);
         typed_array(size_t size, const variant& init);

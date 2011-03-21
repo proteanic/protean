@@ -150,6 +150,19 @@ namespace protean {
         typename boost::enable_if<return_reference<T>, const T&>::type
         as() const;
 
+    public:
+        template<typename T>
+        struct array_range_t
+        {
+            typedef boost::iterator_range<
+                range_array_iterator<T>
+            > type;
+        };
+
+        template<typename T>
+        typename array_range_t<T>::type
+        as_range() const;
+
         // Primitive -> Any
         variant any_cast() const;
 

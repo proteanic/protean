@@ -664,6 +664,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\protean\array_iterator.ipp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\protean\binary_common.hpp"
 				>
 			</File>
@@ -729,6 +733,10 @@
 			</File>
 			<File
 				RelativePath="..\..\protean\variant_ref.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\protean\variant_ref.ipp"
 				>
 			</File>
 			<File

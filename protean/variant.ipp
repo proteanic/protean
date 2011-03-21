@@ -234,10 +234,38 @@ namespace protean {
 
         END_TRANSLATE_ERROR();
     }
-    
+
     template<> PROTEAN_DECL const exception_data&       variant::as<exception_data>()           const;
     template<> PROTEAN_DECL const typed_array&          variant::as<typed_array>()              const;
     template<> PROTEAN_DECL const object&               variant::as<object>()                   const;
+
+    template<typename T>
+    typename variant::array_range_t<T>::type
+    variant::as_range() const
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(Array, "as_range<T>");
+
+        const typed_array &t = as<typed_array>();
+
+        if (!(t.type() | Number))
+        {
+            boost::throw_exception(variant_error(std::string("Only primitive types can return range iterators, type of array is") + enum_to_string(t.type())));
+        }
+
+        if (type_to_enum<T>::value != t.type())
+        {
+            boost::throw_exception(variant_error(std::string("Type of array != as_range type requested (") + enum_to_string(t.type()) + "!=" + typeid(T).name() + ")"));
+        }
+
+        return boost::make_iterator_range(
+            range_array_iterator<T>(t), 
+            range_array_iterator<T>(t, t.size())
+        );
+
+        END_TRANSLATE_ERROR();
+    }
 
     template<typename T>
     T variant::numerical_cast() const

@@ -80,23 +80,62 @@ namespace protean {
         typename boost::remove_const<typename ITERATOR_TRAITS::value_type>::type m_ref;
     };
 
-    // Copy constructor definitions
-    template<typename ITERATOR_TRAITS>
-    template<typename OTHER_TRAITS>
-    array_iterator<ITERATOR_TRAITS>::array_iterator(const array_iterator<OTHER_TRAITS>& rhs) :
-        m_ref(rhs.m_ref)
-    {
-    }
 
-    // Assignment operator definitions
-    template<typename ITERATOR_TRAITS>
-    template<typename OTHER_TRAITS>
-    const array_iterator<ITERATOR_TRAITS>& array_iterator<ITERATOR_TRAITS>::operator=(const array_iterator<OTHER_TRAITS>& rhs)
+
+
+    template <typename Value>
+    class range_array_iterator
+      : public boost::iterator_facade<
+            range_array_iterator<Value>
+          , Value
+          , boost::random_access_traversal_tag
+        >
     {
-        m_ref = rhs.m_ref;
-        return *this;
-    }
+        typedef typename boost::remove_cv<Value>::type no_cv_Value_t;
+    private:
+        struct enabler {};
+    public:
+        range_array_iterator();
+
+        explicit range_array_iterator(const typed_array &t);
+        explicit range_array_iterator(const typed_array &t, size_t offset);
+
+        template <typename OtherValue>
+        range_array_iterator(range_array_iterator<OtherValue> const& other, 
+            typename boost::enable_if<
+                boost::is_convertible<OtherValue*,Value*>, 
+                enabler
+            >::type = enabler()
+        );
+
+    private:
+        friend class boost::iterator_core_access;
+        template <typename> friend class range_array_iterator;
+
+        template <typename OtherValue>
+        bool equal(range_array_iterator<OtherValue> const& other) const;
+
+        void increment();
+
+        void decrement();
+
+        Value &dereference() const;
+
+        void advance(difference_type n);
+
+    private:
+        template<typename T, int N>
+        T get();
+
+        template<>
+        std::string get<std::string, protean::variant_base::String>();
+
+    private:
+        variant_base* m_data;
+    };
 
 } // protean
+
+#include <protean/array_iterator.ipp>
 
 #endif // PROTEAN_ARRAY_ITERATOR_HPP

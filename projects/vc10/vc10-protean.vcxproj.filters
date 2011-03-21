@@ -248,6 +248,9 @@
     <None Include="..\..\protean\variant.ipp">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="..\..\protean\variant_ref.ipp">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
