@@ -230,6 +230,52 @@ namespace protean {
             }
         }
 
+        private void Write(TypedArray arg)
+        {
+            WriteDelegate writer = null;
+            switch (arg.ElementType)
+            {
+                case VariantBase.EnumType.Float:
+                    writer = delegate(object o) { Write((float)o); };
+                    break;
+                case VariantBase.EnumType.Double:
+                    writer = delegate(object o) { Write((double)o); };
+                    break;
+                case VariantBase.EnumType.String:
+                    writer = delegate(object o) { Write((string)o); };
+                    break;
+                case VariantBase.EnumType.Boolean:
+                    writer = delegate(object o) { Write((bool)o); };
+                    break;
+                case VariantBase.EnumType.Int32:
+                    writer = delegate(object o) { Write((Int32)o); };
+                    break;
+                case VariantBase.EnumType.UInt32:
+                    writer = delegate(object o) { Write((UInt32)o); };
+                    break;
+                case VariantBase.EnumType.Int64:
+                    writer = delegate(object o) { Write((Int64)o); };
+                    break;
+                case VariantBase.EnumType.UInt64:
+                    writer = delegate(object o) { Write((UInt64)o); };
+                    break;
+                case VariantBase.EnumType.Time:
+                    writer = delegate(object o) { Write((TimeSpan)o); };
+                    break;
+                case VariantBase.EnumType.DateTime:
+                    writer = delegate(object o) { Write((DateTime)o); };
+                    break;
+            }
+
+            Write(arg.Count);
+            Write((int)arg.ElementType);
+
+            for (int i = 0; i < arg.Count; ++i)
+            {
+                writer(arg[i]);
+            }
+        }
+
         delegate void WriteDelegate(object arg);
 
         private void WriteVariant(Variant v)
@@ -316,6 +362,9 @@ namespace protean {
                 break;
             case Variant.EnumType.DataTable:
                 Write(v.AsDataTable());
+                break;
+            case Variant.EnumType.Array:
+                Write(v.AsArray());
                 break;
             default:
                 throw new VariantException("Case exhaustion: " + type.ToString());

@@ -216,6 +216,10 @@ namespace protean {
                 {
                      return new Variant(ReadDataTable());
                 }
+                case Variant.EnumType.Array:
+                {
+                    return new Variant(ReadArray());
+                }
                 default:
                     throw new VariantException("Case exhaustion: " + type.ToString());
             }
@@ -361,6 +365,56 @@ namespace protean {
             }
 
             return dt;
+        }
+
+        private TypedArray ReadArray()
+        {
+            int size = ReadInt32();
+            Variant.EnumType elementType = (Variant.EnumType)ReadInt32();
+
+            TypedArray array = new TypedArray(elementType, size);
+
+            ReadDelegate reader = null;
+            switch (elementType)
+            {
+                case VariantBase.EnumType.Float:
+                    reader = delegate() { return ReadFloat(); };
+                    break;
+                case VariantBase.EnumType.Double:
+                    reader = delegate() { return ReadDouble(); };
+                    break;
+                case VariantBase.EnumType.Boolean:
+                    reader = delegate() { return ReadBoolean(); };
+                    break;
+                case VariantBase.EnumType.String:
+                    reader = delegate() { return ReadString(); };
+                    break;
+                case VariantBase.EnumType.Int32:
+                    reader = delegate() { return ReadInt32(); };
+                    break;
+                case VariantBase.EnumType.UInt32:
+                    reader = delegate() { return ReadUInt32(); };
+                    break;
+                case VariantBase.EnumType.Int64:
+                    reader = delegate() { return ReadInt64(); };
+                    break;
+                case VariantBase.EnumType.UInt64:
+                    reader = delegate() { return ReadUInt64(); };
+                    break;
+                case VariantBase.EnumType.Time:
+                    reader = delegate() { return ReadTime(); };
+                    break;
+                case VariantBase.EnumType.DateTime:
+                    reader = delegate() { return ReadDateTime(); };
+                    break;
+            }
+
+            for (int i = 0; i < size; ++i)
+            {
+                array[i] = reader();
+            }
+
+            return array;
         }
 
         private System.IO.Stream m_stream;

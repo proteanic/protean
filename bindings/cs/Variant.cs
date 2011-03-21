@@ -98,6 +98,11 @@ namespace protean {
             Value = new VariantDataTable(arg);
         }
 
+        public Variant(TypedArray arg)
+        {
+            Value = arg;
+        }
+
         public IVariantObject AsObject()
         {
             CheckType(EnumType.Object, "AsObject()");
@@ -161,6 +166,13 @@ namespace protean {
             CheckType(EnumType.DataTable, "AsDataTable()");
 
             return ((VariantDataTable)Value).Value;
+        }
+
+        public TypedArray AsArray()
+        {
+            CheckType(EnumType.Array, "AsArray()");
+
+            return (TypedArray)Value;
         }
 
         // Lists
