@@ -95,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\test\bindings\cs\AssemblyInfo.cs" />
+    <Compile Include="..\..\test\bindings\cs\TestArray.cs">
+      <Link>TestArray.cs</Link>
+    </Compile>
     <Compile Include="..\..\test\bindings\cs\TestBinaryStreams.cs">
       <Link>TestBinaryStreams.cs</Link>
     </Compile>
