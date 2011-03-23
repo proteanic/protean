@@ -83,6 +83,12 @@
   <PropertyGroup>
     <AssemblyName>test-protean.net</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\bindings\cs\protean.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -130,14 +136,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="vc10-protean-clr.vcxproj">
-      <Project>{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}</Project>
-      <Name>vc10-protean-clr</Name>
-    </ProjectReference>
     <ProjectReference Include="vc10-protean.net.csproj">
       <Project>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</Project>
       <Name>vc10-protean.net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bindings\cs\protean.snk">
+      <Link>protean.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

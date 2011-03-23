@@ -8,13 +8,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9-test-protean", "vc9\vc9
 		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF} = {AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9-protean-clr", "vc9\vc9-protean-clr.vcproj", "{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF} = {AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc9-test-protean-clr", "vc9\vc9-test-protean-clr.csproj", "{FE65C748-71EF-4373-A2ED-5CB4F74E841B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc9-protean.net", "vc9\vc9-protean.net.csproj", "{007B367A-C2DD-4DDD-A702-44B40B8C09A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc9-test-protean.net", "vc9\vc9-test-protean.net.csproj", "{1234B6E6-DB7A-4DDC-BDA4-2AAFE7502054}"
@@ -63,38 +56,6 @@ Global
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Static Release|Win32.Build.0 = Static Release|Win32
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Static Release|x64.ActiveCfg = Static Release|x64
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.Static Release|x64.Build.0 = Static Release|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Debug|Win32.ActiveCfg = Debug|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Debug|Win32.Build.0 = Debug|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Debug|x64.ActiveCfg = Debug|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Debug|x64.Build.0 = Debug|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Release|Win32.ActiveCfg = Release|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Release|Win32.Build.0 = Release|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Release|x64.ActiveCfg = Release|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Release|x64.Build.0 = Release|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Debug|Win32.ActiveCfg = Static Debug|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Debug|Win32.Build.0 = Static Debug|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Debug|x64.ActiveCfg = Static Debug|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Debug|x64.Build.0 = Static Debug|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Release|Win32.ActiveCfg = Static Release|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Release|Win32.Build.0 = Static Release|Win32
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Release|x64.ActiveCfg = Static Release|x64
-		{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}.Static Release|x64.Build.0 = Static Release|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Debug|Win32.Build.0 = Debug|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Debug|x64.ActiveCfg = Debug|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Debug|x64.Build.0 = Debug|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Release|Win32.ActiveCfg = Release|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Release|Win32.Build.0 = Release|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Release|x64.ActiveCfg = Release|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Release|x64.Build.0 = Release|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Debug|Win32.ActiveCfg = Static Debug|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Debug|Win32.Build.0 = Static Debug|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Debug|x64.ActiveCfg = Static Debug|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Debug|x64.Build.0 = Static Debug|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Release|Win32.ActiveCfg = Static Release|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Release|Win32.Build.0 = Static Release|Win32
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Release|x64.ActiveCfg = Static Release|x64
-		{FE65C748-71EF-4373-A2ED-5CB4F74E841B}.Static Release|x64.Build.0 = Static Release|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.Debug|Win32.ActiveCfg = Debug|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.Debug|Win32.Build.0 = Debug|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.Debug|x64.ActiveCfg = Debug|x64

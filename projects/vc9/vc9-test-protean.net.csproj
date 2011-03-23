@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>protean.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,14 +131,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="vc9-protean-clr.vcproj">
-      <Project>{20E7BAA3-B05D-4375-8051-1E813FAE2EEA}</Project>
-      <Name>vc9-protean-clr</Name>
-    </ProjectReference>
     <ProjectReference Include="vc9-protean.net.csproj">
       <Project>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</Project>
       <Name>vc9-protean.net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="protean.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

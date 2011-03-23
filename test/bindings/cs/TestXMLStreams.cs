@@ -79,53 +79,6 @@ namespace protean.test
             Assert.AreEqual(Variant.EnumType.Any, v["element8"]["attr2"].Type);
         }
 
-        [Test]
-        // Test compatibility with CLR variant
-        public void TestCompatibility()
-        {
-            Int32 argInt32 = -1;
-            UInt32 argUInt32 = 0xffffffff;
-            Int64 argInt64 = -1;
-            UInt64 argUInt64 = 0xffffffffffffffff;
-            bool argBoolean = true;
-            double argDouble = 2.0;
-            string argString = "test string";
-
-            Variant v1 = new Variant(Variant.EnumType.Dictionary);
-            v1.Add("Int32", new Variant(argInt32));
-            v1.Add("UInt32", new Variant(argUInt32));
-            v1.Add("Int64", new Variant(argInt64));
-            v1.Add("UInt64", new Variant(argUInt64));
-            v1.Add("Boolean", new Variant(argBoolean));
-            v1.Add("Double", new Variant(argDouble));
-            v1.Add("String", new Variant(argString));
-            v1.Add("None", new Variant(Variant.EnumType.None));
-
-            string xml = XMLWriter.ToString(v1);
-
-            protean.clr.XMLReader reader = new protean.clr.XMLReader(new System.IO.StringReader(xml));
-
-            protean.clr.Variant v2 = reader.Read();
-
-            Assert.AreEqual(v2.Type, protean.clr.Variant.EnumType.Dictionary);
-            Assert.AreEqual(v2["String"].Type, protean.clr.Variant.EnumType.String);
-            Assert.AreEqual(v2["Int32"].Type, protean.clr.Variant.EnumType.Int32);
-            Assert.AreEqual(v2["UInt32"].Type, protean.clr.Variant.EnumType.UInt32);
-            Assert.AreEqual(v2["Int64"].Type, protean.clr.Variant.EnumType.Int64);
-            Assert.AreEqual(v2["UInt64"].Type, protean.clr.Variant.EnumType.UInt64);
-            Assert.AreEqual(v2["Boolean"].Type, protean.clr.Variant.EnumType.Boolean);
-            Assert.AreEqual(v2["Double"].Type, protean.clr.Variant.EnumType.Double);
-            Assert.AreEqual(v2["None"].Type, protean.clr.Variant.EnumType.None);
-
-            Assert.AreEqual(v2["String"].AsString(), argString);
-            Assert.AreEqual(v2["Int32"].AsInt32(), argInt32);
-            Assert.AreEqual(v2["UInt32"].AsUInt32(), argUInt32);
-            Assert.AreEqual(v2["Int64"].AsInt64(), argInt64);
-            Assert.AreEqual(v2["UInt64"].AsUInt64(), argUInt64);
-            Assert.AreEqual(v2["Boolean"].AsBoolean(), argBoolean);
-            Assert.AreEqual(v2["Double"].AsDouble(), argDouble);
-        }
-
         class TestObject1 : IVariantObject
         {
             public TestObject1(string value)

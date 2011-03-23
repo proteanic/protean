@@ -37,7 +37,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.*")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.3.*")]
+[assembly: AssemblyFileVersion("1.3.0.0")]
 
-[assembly: InternalsVisibleTo("test-protean.net")]
+[assembly: InternalsVisibleTo("test-protean.net, PublicKey=00240000048000009400000006020000002400005253413100040000010001000d99b67e6d167179a87734f7efeaf19a5665e3d6a3a6fe67e3cf00eb5dae80f8cfd29846731507b2cfe66e0eaf3d99060b86cfe2a795b50d1c986dc0fd3a88748922e41356e79f90f8c7086810b3956ce657e1620f3feb0f640a94facb94f98c6500aca973c4e2bff3aa698b8d0928575b482a545027d3d7468d9517eb6d74af")]

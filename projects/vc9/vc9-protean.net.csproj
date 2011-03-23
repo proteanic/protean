@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>protean.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
     <DebugSymbols>true</DebugSymbols>
@@ -114,6 +116,9 @@
     <Compile Include="..\..\bindings\cs\IVariantObjectFactory.cs">
       <Link>IVariantObjectFactory.cs</Link>
     </Compile>
+    <Compile Include="..\..\bindings\cs\TypedArray.cs">
+      <Link>TypedArray.cs</Link>
+    </Compile>
     <Compile Include="..\..\bindings\cs\Variant.cs">
       <Link>Variant.cs</Link>
     </Compile>
@@ -162,6 +167,11 @@
     <Compile Include="..\..\bindings\cs\XMLWriter.cs">
       <Link>XMLWriter.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bindings\cs\protean.snk">
+      <Link>protean.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

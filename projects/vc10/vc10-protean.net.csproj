@@ -83,6 +83,12 @@
   <PropertyGroup>
     <AssemblyName>protean.net</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\bindings\cs\protean.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -139,6 +145,11 @@
     <Compile Include="..\..\bindings\cs\XMLWriter.cs">
       <Link>XMLWriter.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bindings\cs\protean.snk">
+      <Link>protean.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
