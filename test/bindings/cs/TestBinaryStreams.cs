@@ -264,5 +264,19 @@ namespace protean.test
             Assert.AreEqual(x1.Source, x2.Source);
             Assert.AreEqual(x1.Stack, x2.Stack);
         }
+
+        [Test]
+        public void TestDateTime()
+        {
+            Variant v1 = new Variant(DateTime.MaxValue);
+            byte[] bytes1 = BinaryWriter.ToBytes(v1);
+            Variant v2 = BinaryReader.FromBytes(bytes1);
+            Assert.AreEqual(v1.As<DateTime>(), v2.As<DateTime>());
+
+            Variant v3 = new Variant(DateTime.MinValue);
+            byte[] bytes2 = BinaryWriter.ToBytes(v3);
+            Variant v4 = BinaryReader.FromBytes(bytes2);
+            Assert.AreEqual(v3.As<DateTime>(), v4.As<DateTime>());
+        }
     }
 }

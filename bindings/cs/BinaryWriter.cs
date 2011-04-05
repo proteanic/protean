@@ -84,9 +84,18 @@ namespace protean {
             Write((Int64)arg.TotalMilliseconds);
         }
 
+        static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks)/10000;
+
         private void Write(DateTime arg)
         {
-            Write((Int64)(arg - Variant.MinDateTime).TotalMilliseconds);
+            if (arg == DateTime.MaxValue)
+            {
+                Write(MaxDateTimeMillis);
+            }
+            else
+            {
+                Write((arg.Ticks - Variant.MinDateTime.Ticks)/10000);
+            }
         }
 
         private void Write(byte arg)

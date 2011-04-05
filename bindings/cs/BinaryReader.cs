@@ -288,11 +288,21 @@ namespace protean {
 
             return new TimeSpan(total_millis * 10000);
         }
+
+        static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
+
         private DateTime ReadDateTime()
         {
-            Int64 total_millis = ReadInt64();
+            long total_millis = ReadInt64();
 
-            return Variant.MinDateTime + new TimeSpan(total_millis * 10000);
+            if (total_millis == MaxDateTimeMillis)
+            {
+                return DateTime.MaxValue;
+            }
+            else
+            {
+                return new DateTime(Variant.MinDateTime.Ticks + total_millis * 10000);
+            }
         }
         private DataTable ReadDataTable()
         {
