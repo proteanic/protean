@@ -635,18 +635,25 @@ namespace protean {
         }
         public Object ToType(Type conversionType, IFormatProvider provider)
         {
-            Type[] types = new Type[] { typeof(Variant) };
+			if (conversionType == typeof(System.TimeSpan))
+			{
+				return As<System.TimeSpan>();
+			}
+			else
+			{
+				Type[] types = new Type[] { typeof(Variant) };
 
-            System.Reflection.MethodInfo conversionMethod = conversionType.GetMethod("op_Implicit", types);
+				System.Reflection.MethodInfo conversionMethod = conversionType.GetMethod("op_Implicit", types);
 
-            if (conversionMethod==null)
-            {
-                return null;
-            }
+				if (conversionMethod == null)
+				{
+					return null;
+				}
 
-            Object[] args = new Object[] { this };
+				Object[] args = new Object[] { this };
 
-            return conversionMethod.Invoke(null, args);
+				return conversionMethod.Invoke(null, args);
+			}
         }
         public ushort ToUInt16(IFormatProvider provider)
         {
