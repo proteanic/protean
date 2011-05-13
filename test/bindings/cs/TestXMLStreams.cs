@@ -197,5 +197,104 @@ namespace protean.test
             Assert.AreEqual(v2.Type, Variant.EnumType.Tuple);
             Assert.IsTrue(v1.Equals(v2));
         }
+
+        [Test]
+        public void TestXmlValidation()
+        {
+            string xml =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<Variant aBoolean=\"true\" aDate=\"2007-01-03\" aDateTime=\"2007-01-03T10:30:00\" aFloat=\"0.5\" aDouble=\"3.9\" aInteger=\"1\" aUnsigned=\"2\" aInt32=\"3\" aUInt32=\"4\" aInt64=\"5\" aUInt64=\"6\" aString=\"Element\" aTime=\"10:30:00\">\n" +
+                "  <Boolean>true</Boolean>\n" +
+                "  <Date>2007-01-03</Date>\n" +
+                "  <DateTime>2007-01-03T10:30:00</DateTime>\n" +
+                "  <Float>0.5</Float>\n" +
+                "  <Double>1</Double>\n" +
+                "  <Integer>1</Integer>\n" +
+                "  <Unsigned>2</Unsigned>\n" +
+                "  <Int32>3</Int32>\n" +
+                "  <UInt32>4</UInt32>\n" +
+                "  <Int64>5</Int64>\n" +
+                "  <UInt64>6</UInt64>\n" +
+                "  <String>Element</String>\n" +
+                "  <Time>10:30:00</Time>\n" +
+                "</Variant>";
+
+            string xsd =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
+                "  <xsd:element name=\"Variant\">\n" +
+                "    <xsd:complexType mixed=\"true\">\n" +
+                "      <xsd:all>\n" +
+                "        <xsd:element name=\"String\"   type=\"xsd:string\"/>\n" +
+                "        <xsd:element name=\"Boolean\"  type=\"xsd:boolean\"/>\n" +
+                "        <xsd:element name=\"Integer\"  type=\"xsd:integer\"/>\n" +
+                "        <xsd:element name=\"Unsigned\" type=\"xsd:positiveInteger\"/>\n" +
+                "        <xsd:element name=\"Int32\"    type=\"xsd:int\"/>\n" +
+                "        <xsd:element name=\"UInt32\"   type=\"xsd:unsignedInt\"/>\n" +
+                "        <xsd:element name=\"Int64\"    type=\"xsd:long\"/>\n" +
+                "        <xsd:element name=\"UInt64\"   type=\"xsd:unsignedLong\"/>\n" +
+                "        <xsd:element name=\"Float\"    type=\"xsd:float\"/>\n" +
+                "        <xsd:element name=\"Double\"   type=\"xsd:double\"/>\n" +
+                "        <xsd:element name=\"Date\"     type=\"xsd:date\"/>\n" +
+                "        <xsd:element name=\"Time\"     type=\"xsd:time\"/>\n" +
+                "        <xsd:element name=\"DateTime\" type=\"xsd:dateTime\"/>\n" +
+                "      </xsd:all>\n" +
+                "      <xsd:attribute name=\"variant\"   type=\"xsd:string\" use=\"optional\" default=\"Dictionary\"/>\n" +
+                "      <xsd:attribute name=\"aString\"   type=\"xsd:string\"/>\n" +
+                "      <xsd:attribute name=\"aBoolean\"  type=\"xsd:boolean\"/>\n" +
+                "      <xsd:attribute name=\"aInteger\"  type=\"xsd:integer\"/>\n" +
+                "      <xsd:attribute name=\"aUnsigned\" type=\"xsd:positiveInteger\"/>\n" +
+                "      <xsd:attribute name=\"aInt32\"    type=\"xsd:int\"/>\n" +
+                "      <xsd:attribute name=\"aUInt32\"   type=\"xsd:unsignedInt\"/>\n" +
+                "      <xsd:attribute name=\"aInt64\"    type=\"xsd:long\"/>\n" +
+                "      <xsd:attribute name=\"aUInt64\"   type=\"xsd:unsignedLong\"/>\n" +
+                "      <xsd:attribute name=\"aFloat\"    type=\"xsd:float\"/>\n" +
+                "      <xsd:attribute name=\"aDouble\"   type=\"xsd:double\"/>\n" +
+                "      <xsd:attribute name=\"aDate\"     type=\"xsd:date\"/>\n" +
+                "      <xsd:attribute name=\"aTime\"     type=\"xsd:time\"/>\n" +
+                "      <xsd:attribute name=\"aDateTime\" type=\"xsd:dateTime\"/>\n" +
+                "    </xsd:complexType>\n" +
+                "  </xsd:element>\n" +
+                "</xsd:schema>\n";
+
+            Variant v1;
+            using ( System.IO.StringReader xmlStream = new System.IO.StringReader(xml), 
+                                            xsdStream = new System.IO.StringReader(xsd) )
+            {
+                v1 = XMLReader.Create(stream: xmlStream, xsdStream: xsdStream);
+            }
+
+            Assert.AreEqual(v1.Type, Variant.EnumType.Dictionary);
+
+            // check attribute types
+            Assert.AreEqual(v1["aString"].Type, Variant.EnumType.String);
+            Assert.AreEqual(v1["aBoolean"].Type, Variant.EnumType.Boolean);
+            Assert.AreEqual(v1["aInteger"].Type, Variant.EnumType.Int64);
+            Assert.AreEqual(v1["aUnsigned"].Type, Variant.EnumType.UInt64);
+            Assert.AreEqual(v1["aInt32"].Type, Variant.EnumType.Int32);
+            Assert.AreEqual(v1["aUInt32"].Type, Variant.EnumType.UInt32);
+            Assert.AreEqual(v1["aInt64"].Type, Variant.EnumType.Int64);
+            Assert.AreEqual(v1["aUInt64"].Type, Variant.EnumType.UInt64);
+            Assert.AreEqual(v1["aFloat"].Type, Variant.EnumType.Double);
+            Assert.AreEqual(v1["aDouble"].Type, Variant.EnumType.Double);
+            Assert.AreEqual(v1["aDate"].Type, Variant.EnumType.DateTime);
+            Assert.AreEqual(v1["aTime"].Type, Variant.EnumType.Time);
+            Assert.AreEqual(v1["aDateTime"].Type, Variant.EnumType.DateTime);
+
+            // Check node types
+            Assert.AreEqual(v1["String"].Type, Variant.EnumType.String);
+            Assert.AreEqual(v1["Boolean"].Type, Variant.EnumType.Boolean);
+            Assert.AreEqual(v1["Integer"].Type, Variant.EnumType.Int64);
+            Assert.AreEqual(v1["Unsigned"].Type, Variant.EnumType.UInt64);
+            Assert.AreEqual(v1["Int32"].Type, Variant.EnumType.Int32);
+            Assert.AreEqual(v1["UInt32"].Type, Variant.EnumType.UInt32);
+            Assert.AreEqual(v1["Int64"].Type, Variant.EnumType.Int64);
+            Assert.AreEqual(v1["UInt64"].Type, Variant.EnumType.UInt64);
+            Assert.AreEqual(v1["Float"].Type, Variant.EnumType.Double);
+            Assert.AreEqual(v1["Double"].Type, Variant.EnumType.Double);
+            Assert.AreEqual(v1["Date"].Type, Variant.EnumType.DateTime);
+            Assert.AreEqual(v1["Time"].Type, Variant.EnumType.Time);
+            Assert.AreEqual(v1["DateTime"].Type, Variant.EnumType.DateTime);
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace protean {
     public class XMLReader
     {
 
-        public XMLReader(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory)
+        public XMLReader(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory, bool validateXsd, System.IO.TextReader xsdStream)
         {
             if ((mode & XMLMode.Preserve) != 0)
             {
@@ -21,13 +21,9 @@ namespace protean {
             }
             else
             {
-                m_parser = new XMLDefaultParser(stream, mode, factory);
+                m_parser = new XMLDefaultParser(stream, mode, factory, xsdStream, validateXsd);
             }
         }
-
-        public XMLReader(System.IO.TextReader stream) :
-            this(stream, XMLMode.Default, null)
-        {  }
 
         public Variant Read()
         {
@@ -35,12 +31,19 @@ namespace protean {
             return m_parser.Read();
         }
 
+        public static Variant Create(
+            System.IO.TextReader stream, XMLMode mode = XMLMode.Default, IVariantObjectFactory factory = null,
+            bool validateXsd = true, System.IO.TextReader xsdStream = null)
+        {
+            XMLReader reader = new XMLReader(stream, mode, factory, validateXsd, xsdStream);
+            return reader.Read();
+        }
+
         public static Variant FromString(string xml, XMLMode mode, IVariantObjectFactory factory)
         {
             using (System.IO.StringReader ms = new System.IO.StringReader(xml))
             {
-                XMLReader reader = new XMLReader(ms, mode, factory);
-                return reader.Read();
+                return Create(stream: ms, mode: mode, factory: factory);
             }
         }
 

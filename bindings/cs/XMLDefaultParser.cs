@@ -12,16 +12,16 @@ namespace protean {
 
     internal class XMLDefaultParser : XMLParserBase
     {
-        public XMLDefaultParser(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory) :
-            base(stream, mode, factory)
+        public XMLDefaultParser(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory, System.IO.TextReader xsdStream, bool validateXsd) :
+            base(stream, mode, factory, xsdStream, validateXsd)
         {
             m_stack = new Stack<ElementInfo>();
             m_result = new Variant();
         }
 
-        public override void StartElement(string name, Variant attributes)
+        public override void StartElement(string name, Variant attributes, Variant.EnumType variantType)
         {
-            ElementInfo context = new ElementInfo(name, attributes);
+            ElementInfo context = new ElementInfo(name, attributes, variantType);
 
             if (m_stack.Count!=0)
             {
@@ -360,13 +360,13 @@ namespace protean {
 
         class ElementInfo
         {
-            public ElementInfo(string name, Variant attributes)
+            public ElementInfo(string name, Variant attributes, Variant.EnumType variantType)
             {
                 m_name = name;
                 m_attributes = attributes;
                 m_element = new Variant(Variant.EnumType.Any);
-                m_isTyped = false;
-                m_type = Variant.EnumType.Any;
+                m_isTyped = variantType != Variant.EnumType.Any;
+                m_type = variantType;
                 m_data = "";
                 m_rowIndex = 0;
             }
