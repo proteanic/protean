@@ -78,7 +78,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>protean</RootNamespace>
+    <RootNamespace>Protean</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>protean.net</AssemblyName>
@@ -130,20 +130,20 @@
     </Compile>
     <Compile Include="..\..\bindings\cs\VariantObjectProxy.cs" />
     <Compile Include="..\..\bindings\cs\VariantPrimitive.cs" />
-    <Compile Include="..\..\bindings\cs\XMLDefaultParser.cs">
-      <Link>XMLDefaultParser.cs</Link>
+    <Compile Include="..\..\bindings\cs\XmlDefaultParser.cs">
+      <Link>XmlDefaultParser.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLMode.cs">
-      <Link>XMLMode.cs</Link>
+    <Compile Include="..\..\bindings\cs\XmlMode.cs">
+      <Link>XmlMode.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLParserBase.cs">
-      <Link>XMLParserBase.cs</Link>
+    <Compile Include="..\..\bindings\cs\XmlParserBase.cs">
+      <Link>XmlParserBase.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLReader.cs">
-      <Link>XMLReader.cs</Link>
+    <Compile Include="..\..\bindings\cs\XmlReader.cs">
+      <Link>XmlReader.cs</Link>
     </Compile>
-    <Compile Include="..\..\bindings\cs\XMLWriter.cs">
-      <Link>XMLWriter.cs</Link>
+    <Compile Include="..\..\bindings\cs\XmlWriter.cs">
+      <Link>XmlWriter.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

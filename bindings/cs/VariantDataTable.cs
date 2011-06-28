@@ -4,11 +4,9 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
-namespace protean {
+namespace Protean {
 
     // Primitives
     internal class VariantDataTable : IVariantData
@@ -117,4 +115,4 @@ namespace protean {
         }
     }
 
-} // protean
+} // Protean

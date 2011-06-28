@@ -5,9 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace protean {
+namespace Protean {
 
     public class DummyEnumerator :
         IEnumerator<VariantItem>
@@ -102,4 +101,4 @@ namespace protean {
         private System.Collections.IEnumerator m_enumerator;
     }
 
-} // protean
+} // Protean

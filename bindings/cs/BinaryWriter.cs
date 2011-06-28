@@ -4,11 +4,9 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
-namespace protean {
+namespace Protean {
 
     public class BinaryWriter
     {
@@ -383,4 +381,4 @@ namespace protean {
         private System.IO.Stream Stream, Filter;
         private BinaryMode Mode;
     }
-} // protean
+} // Protean

@@ -4,11 +4,8 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
-namespace protean
+namespace Protean
 {
     public sealed class TypedArray : IVariantData
     {

@@ -3,10 +3,10 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-namespace protean
+namespace Protean
 {
     [System.Flags]
-    public enum XMLMode
+    public enum XmlMode
     {
         None                = 0x00000000,
         Preserve            = 0x00000001,
@@ -17,7 +17,7 @@ namespace protean
         Default             = None
     }
 
-    public abstract class XMLConst 
+    public abstract class XmlConst 
     {
         public const string Default = "Variant";
         public const string Text = "__text__";
@@ -28,4 +28,4 @@ namespace protean
         public const string Data = "__data__";
     };
 
-} // protean
+} // Protean

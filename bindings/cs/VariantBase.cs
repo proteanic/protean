@@ -4,10 +4,8 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace protean {
+namespace Protean {
 
     public interface IVariantData :
         IComparable<IVariantData>
@@ -417,4 +415,4 @@ namespace protean {
         }
     }
 
-} // protean
+} // Protean

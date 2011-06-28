@@ -5,20 +5,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 
-namespace protean {
+namespace Protean {
 
-    public class XMLWriter
+    public class XmlWriter
     {
-        public XMLWriter(System.IO.TextWriter stream, XMLMode mode)
+        public XmlWriter(System.IO.TextWriter stream, XmlMode mode)
         {
             m_mode = mode;
             m_writer = new XmlTextWriter(stream);
 
             m_writer.Indentation = 2;
-            m_writer.Formatting = (mode & XMLMode.Indent) != 0 ? Formatting.Indented : Formatting.None;
+            m_writer.Formatting = (mode & XmlMode.Indent) != 0 ? Formatting.Indented : Formatting.None;
 
             m_stack = new Stack<ElementInfo>();
         }
@@ -28,11 +27,11 @@ namespace protean {
             WriteDocument(value);
         }
 
-        public static string ToString(Variant value, XMLMode mode)
+        public static string ToString(Variant value, XmlMode mode)
         {
             using (System.IO.TextWriter ms = new System.IO.StringWriter())
             {
-                XMLWriter writer = new XMLWriter(ms, mode);
+                XmlWriter writer = new XmlWriter(ms, mode);
                 writer.WriteDocument(value);
                 return ms.ToString();
             }
@@ -40,7 +39,7 @@ namespace protean {
 
         public static string ToString(Variant value)
         {
-            return ToString(value, XMLMode.Default);
+            return ToString(value, XmlMode.Default);
         }
 
         private Variant Push(string elementName)
@@ -66,30 +65,30 @@ namespace protean {
 
         void WriteDocument(Variant document)
         {
-            if ((m_mode & XMLMode.NoHeader) == 0)
+            if ((m_mode & XmlMode.NoHeader) == 0)
             {
                 WriteHeader();
             }
-            if ((m_mode & XMLMode.Preserve)!=0)
+            if ((m_mode & XmlMode.Preserve)!=0)
             {
                 string rootName = "";
                 if (document.Is(Variant.EnumType.Mapping))
                 {
                     foreach (VariantItem item in document)
                     {
-                        if (item.Key == XMLConst.Text)
+                        if (item.Key == XmlConst.Text)
                         {
                             throw new VariantException("Encountered text in document node");
                         }
-                        else if (item.Key == XMLConst.Attributes)
+                        else if (item.Key == XmlConst.Attributes)
                         {
                             throw new VariantException("Encountered attributes in document node");
                         }
-                        else if (item.Key == XMLConst.Instruction)
+                        else if (item.Key == XmlConst.Instruction)
                         {
                             WriteInstruction(item.Value);
                         }
-                        else if (item.Key == XMLConst.Comment)
+                        else if (item.Key == XmlConst.Comment)
                         {
                             WriteComment(item.Value);
                         }
@@ -125,13 +124,13 @@ namespace protean {
 
         void WriteInstruction(Variant instruction)
         {
-            if (instruction.Is(Variant.EnumType.Mapping) && instruction.ContainsKey(XMLConst.Target) && instruction.ContainsKey(XMLConst.Data))
+            if (instruction.Is(Variant.EnumType.Mapping) && instruction.ContainsKey(XmlConst.Target) && instruction.ContainsKey(XmlConst.Data))
             {
-                m_writer.WriteProcessingInstruction(instruction[XMLConst.Target].As<string>(), instruction[XMLConst.Data].As<string>());
+                m_writer.WriteProcessingInstruction(instruction[XmlConst.Target].As<string>(), instruction[XmlConst.Data].As<string>());
             }
             else
             {
-                throw new VariantException(string.Format("Expecting dictionary containing '{0}' and '{1}' for processing instruction", XMLConst.Target, XMLConst.Data));
+                throw new VariantException(string.Format("Expecting dictionary containing '{0}' and '{1}' for processing instruction", XmlConst.Target, XmlConst.Data));
             }
         }
 
@@ -148,7 +147,7 @@ namespace protean {
             if (m_stack.Count!=0)
             {
                 ElementInfo context = m_stack.Peek();
-                m_writer.WriteStartElement(context.m_name.Length==0 ? XMLConst.Default : context.m_name);
+                m_writer.WriteStartElement(context.m_name.Length==0 ? XmlConst.Default : context.m_name);
              }
         }
 
@@ -193,7 +192,7 @@ namespace protean {
 
         void WriteVariant(Variant value)
         {
-            if ((m_mode & XMLMode.Preserve)==0)
+            if ((m_mode & XmlMode.Preserve)==0)
             {
                 m_stack.Peek().m_attributes.Add("variant", new Variant(value.Type.ToString()));
             }
@@ -233,28 +232,28 @@ namespace protean {
             case Variant.EnumType.Bag:
             {
                 WriteAttributes(m_stack.Peek().m_attributes);
-                if ((m_mode & XMLMode.Preserve)!=0)
+                if ((m_mode & XmlMode.Preserve)!=0)
                 {
-                    if (element.ContainsKey(XMLConst.Attributes))
+                    if (element.ContainsKey(XmlConst.Attributes))
                     {
-                        WriteAttributes(element[XMLConst.Attributes]);
+                        WriteAttributes(element[XmlConst.Attributes]);
                     }
 
                     foreach(VariantItem item in element)
                     {
-                        if (item.Key==XMLConst.Attributes)
+                        if (item.Key==XmlConst.Attributes)
                         {
                              continue;
                         }
-                        else if (item.Key==XMLConst.Text)
+                        else if (item.Key==XmlConst.Text)
                         {
                             WriteText(item.Value);
                         }
-                        else if (item.Key==XMLConst.Instruction)
+                        else if (item.Key==XmlConst.Instruction)
                         {
                             WriteInstruction(item.Value);
                         }
-                        else if (item.Key==XMLConst.Comment)
+                        else if (item.Key==XmlConst.Comment)
                         {
                             WriteComment(item.Value);
                         }
@@ -417,7 +416,7 @@ namespace protean {
 
                 for (int i=0; i<array.Count; ++i)
                 {
-                    m_writer.WriteStartElement(XMLConst.Default);
+                    m_writer.WriteStartElement(XmlConst.Default);
                     writer(array[i]);
                     m_writer.WriteEndElement();
                 }
@@ -433,7 +432,7 @@ namespace protean {
         delegate void WriteDelegate(object arg);
 
         private XmlTextWriter m_writer;
-        private XMLMode m_mode;
+        private XmlMode m_mode;
 
         class ElementInfo
         {
@@ -450,4 +449,4 @@ namespace protean {
         Stack<ElementInfo>    m_stack;
     }
 
-} // protean
+} // Protean

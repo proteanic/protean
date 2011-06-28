@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Data;
 
-namespace protean {
+namespace Protean {
 
     public class Variant :
         VariantBase,
@@ -774,4 +774,4 @@ namespace protean {
     };
 
 
-} // protean
+} // Protean

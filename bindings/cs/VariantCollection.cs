@@ -5,10 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
-namespace protean {
+namespace Protean {
 
     internal class KeyValuePairComparer<TKey, TValue> :
         IComparer<KeyValuePair<TKey, TValue>>
@@ -458,4 +456,4 @@ namespace protean {
         public Variant[] Value { get; set; }
     }
 
-} // protean
+} // Protean

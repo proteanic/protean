@@ -4,14 +4,11 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace protean.test
+namespace Protean.Test
 {
     using NUnit.Framework;
-    using protean;
+    using Protean;
 
     [TestFixture]
     public class TestXMLStreams
@@ -41,8 +38,8 @@ namespace protean.test
             v1.Add("Time", new Variant(argTime));
             v1.Add("None", new Variant(Variant.EnumType.None));
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.IsTrue(v1.Equals(v2));
         }
@@ -65,7 +62,7 @@ namespace protean.test
                         <element8 attr2=""value""/>
                     </element1>";
 
-            Variant v = XMLReader.FromString(xml);
+            Variant v = XmlReader.FromString(xml);
 
             Assert.AreEqual(Variant.EnumType.Bag, v.Type);
             Assert.AreEqual(Variant.EnumType.Bag, v["element2"].Type);
@@ -116,8 +113,8 @@ namespace protean.test
 
             Variant v1 = new Variant(o1);
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.Object);
 
@@ -135,8 +132,8 @@ namespace protean.test
             v1.Add(new DateTime(2010, 1, 2, 3, 4, 5, 6), new Variant("value1"));
             v1.Add(new DateTime(2010, 1, 3, 3, 4, 5, 6), new Variant("value2"));
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.TimeSeries);
             Assert.IsTrue(v1.Equals(v2));
@@ -149,8 +146,8 @@ namespace protean.test
             v1.Add(new Variant("value1"));
             v1.Add(new Variant(1.0));
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.List);
             Assert.IsTrue(v1.Equals(v2));
@@ -163,8 +160,8 @@ namespace protean.test
             v1.Add("key1", new Variant("value1"));
             v1.Add("key2", new Variant(1.0));
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.Bag);
             Assert.IsTrue(v1.Equals(v2));
@@ -177,8 +174,8 @@ namespace protean.test
 
             Variant v1 = new Variant(bytes);
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.Buffer);
             Assert.IsTrue(v1.Equals(v2));
@@ -191,8 +188,8 @@ namespace protean.test
             v1[0] = new Variant("value");
             v1[1] = new Variant(1.0);
 
-            string xml = XMLWriter.ToString(v1);
-            Variant v2 = XMLReader.FromString(xml);
+            string xml = XmlWriter.ToString(v1);
+            Variant v2 = XmlReader.FromString(xml);
 
             Assert.AreEqual(v2.Type, Variant.EnumType.Tuple);
             Assert.IsTrue(v1.Equals(v2));
@@ -261,7 +258,7 @@ namespace protean.test
             using ( System.IO.StringReader xmlStream = new System.IO.StringReader(xml), 
                                             xsdStream = new System.IO.StringReader(xsd) )
             {
-                v1 = XMLReader.Create(stream: xmlStream, xsdStream: xsdStream);
+                v1 = XmlReader.Create(stream: xmlStream, xsdStream: xsdStream);
             }
 
             Assert.AreEqual(v1.Type, Variant.EnumType.Dictionary);

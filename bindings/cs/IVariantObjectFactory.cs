@@ -3,15 +3,11 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace protean {
+namespace Protean {
 
     public interface IVariantObjectFactory
     {
         IVariantObject Create(string className);
     }
 
-} // protean
+} // Protean

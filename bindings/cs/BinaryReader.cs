@@ -4,12 +4,9 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using System.Data;
 
-namespace protean {
+namespace Protean {
 
     public class BinaryReader
     {
@@ -433,4 +430,4 @@ namespace protean {
         private IVariantObjectFactory m_factory;
     }
 
-} // protean
+} // Protean

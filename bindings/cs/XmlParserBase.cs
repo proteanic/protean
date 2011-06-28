@@ -5,15 +5,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace protean {
+namespace Protean {
 
-    internal abstract class XMLParserBase
+    internal abstract class XmlParserBase
     {
-        public XMLParserBase(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory, System.IO.TextReader xsdStream, bool validateXsd)
+        public XmlParserBase(System.IO.TextReader stream, XmlMode mode, IVariantObjectFactory factory, System.IO.TextReader xsdStream, bool validateXsd)
         {
             m_mode = mode;
             m_factory = factory;
@@ -25,18 +24,18 @@ namespace protean {
                 if (xsdStream != null)
                 {
                     XmlSchemaSet sc = new XmlSchemaSet();
-                    sc.Add("", XmlReader.Create(xsdStream));
+                    sc.Add("", System.Xml.XmlReader.Create(xsdStream));
                     settings.Schemas = sc;
                 }
                 settings.ValidationType = ValidationType.Schema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
-                settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
-                m_reader = XmlReader.Create(stream, settings);
+                settings.ValidationEventHandler += ValidationCallBack;
+                m_reader = System.Xml.XmlReader.Create(stream, settings);
             }
             else
             {
-                m_reader = XmlReader.Create(stream);
+                m_reader = System.Xml.XmlReader.Create(stream);
             }
         }
 
@@ -148,9 +147,9 @@ namespace protean {
         public abstract void Comment(string comment);
         public abstract void ProcessingInstruction(string target, string data);
 
-        private XmlReader m_reader;
-        protected XMLMode m_mode;
+        private System.Xml.XmlReader m_reader;
+        protected XmlMode m_mode;
         protected IVariantObjectFactory m_factory;
     }
 
-} // protean
+} // Protean

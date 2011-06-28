@@ -4,14 +4,10 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace protean.test
+namespace Protean.Test
 {
     using NUnit.Framework;
-    using protean;
 
     [TestFixture]
     public class TestBinaryStreams

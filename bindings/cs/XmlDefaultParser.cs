@@ -5,14 +5,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
 
-namespace protean {
+namespace Protean {
 
-    internal class XMLDefaultParser : XMLParserBase
+    internal class XmlDefaultParser : XmlParserBase
     {
-        public XMLDefaultParser(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory, System.IO.TextReader xsdStream, bool validateXsd) :
+        public XmlDefaultParser(System.IO.TextReader stream, XmlMode mode, IVariantObjectFactory factory, System.IO.TextReader xsdStream, bool validateXsd) :
             base(stream, mode, factory, xsdStream, validateXsd)
         {
             m_stack = new Stack<ElementInfo>();
@@ -243,7 +241,7 @@ namespace protean {
                     {
                         obj = m_factory.Create(className);
 
-                        if (obj==null && (m_mode & XMLMode.CreateProxy)==0)
+                        if (obj==null && (m_mode & XmlMode.CreateProxy)==0)
                         {
                             throw new VariantException("Object of class " + className + " is not regsistered in factory");
                         }
@@ -385,4 +383,4 @@ namespace protean {
         Variant m_result;
     }
 
-} // protean
+} // Protean

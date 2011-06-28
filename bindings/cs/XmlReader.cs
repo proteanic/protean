@@ -3,25 +3,19 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
+namespace Protean {
 
-namespace protean {
-
-    public class XMLReader
+    public class XmlReader
     {
-
-        public XMLReader(System.IO.TextReader stream, XMLMode mode, IVariantObjectFactory factory, bool validateXsd, System.IO.TextReader xsdStream)
+        public XmlReader(System.IO.TextReader stream, XmlMode mode, IVariantObjectFactory factory, bool validateXsd, System.IO.TextReader xsdStream)
         {
-            if ((mode & XMLMode.Preserve) != 0)
+            if ((mode & XmlMode.Preserve) != 0)
             {
                 throw new VariantException("Preserve parser has not been implemented yet");
             }
             else
             {
-                m_parser = new XMLDefaultParser(stream, mode, factory, xsdStream, validateXsd);
+                m_parser = new XmlDefaultParser(stream, mode, factory, xsdStream, validateXsd);
             }
         }
 
@@ -32,14 +26,14 @@ namespace protean {
         }
 
         public static Variant Create(
-            System.IO.TextReader stream, XMLMode mode = XMLMode.Default, IVariantObjectFactory factory = null,
+            System.IO.TextReader stream, XmlMode mode = XmlMode.Default, IVariantObjectFactory factory = null,
             bool validateXsd = true, System.IO.TextReader xsdStream = null)
         {
-            XMLReader reader = new XMLReader(stream, mode, factory, validateXsd, xsdStream);
+            XmlReader reader = new XmlReader(stream, mode, factory, validateXsd, xsdStream);
             return reader.Read();
         }
 
-        public static Variant FromString(string xml, XMLMode mode, IVariantObjectFactory factory)
+        public static Variant FromString(string xml, XmlMode mode, IVariantObjectFactory factory)
         {
             using (System.IO.StringReader ms = new System.IO.StringReader(xml))
             {
@@ -49,10 +43,10 @@ namespace protean {
 
         public static Variant FromString(string xml)
         {
-            return FromString(xml, XMLMode.Default, null);
+            return FromString(xml, XmlMode.Default, null);
         }
 
-        private XMLParserBase m_parser;
+        private XmlParserBase m_parser;
     }
 
-} // protean
+} // Protean

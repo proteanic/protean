@@ -4,18 +4,20 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
-namespace protean {
+namespace Protean {
 
     public class VariantException :
         System.ApplicationException
     {
         public VariantException(String message) :
             base(message)
-        {
-        }
+        { }
+
+        protected VariantException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        { }
     }
 
-} // protean
+} // Protean

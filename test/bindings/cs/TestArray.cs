@@ -3,20 +3,9 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;
-
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-
-namespace protean.test
+namespace Protean.Test
 {
     using NUnit.Framework;
-    using protean;
 
     [TestFixture]
     public class TestArray
@@ -94,7 +83,7 @@ namespace protean.test
 
             Variant v1 = new Variant(a1);
 
-            string xml = XMLWriter.ToString(v1);
+            string xml = XmlWriter.ToString(v1);
 
             System.Console.WriteLine(xml);
 

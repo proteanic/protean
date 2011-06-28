@@ -4,10 +4,9 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 
-namespace protean {
+namespace Protean {
 
     public class VariantExceptionInfo : IVariantData
     {
@@ -77,4 +76,4 @@ namespace protean {
         public string Stack { get; set; }
     }
 
-} // protean
+} // Protean

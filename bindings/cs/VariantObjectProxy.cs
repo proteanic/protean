@@ -4,10 +4,8 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace protean {
+namespace Protean {
 
     public class VariantObjectProxy : IVariantObject
     {
@@ -53,4 +51,4 @@ namespace protean {
         Variant m_params;
     }
 
-} // protean
+} // Protean

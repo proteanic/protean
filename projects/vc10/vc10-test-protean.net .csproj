@@ -78,7 +78,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>protean.test</RootNamespace>
+    <RootNamespace>Protean.Test</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>test-protean.net</AssemblyName>
@@ -131,8 +131,8 @@
     <Compile Include="..\..\test\bindings\cs\TestTimeSeries.cs">
       <Link>TestTimeSeries.cs</Link>
     </Compile>
-    <Compile Include="..\..\test\bindings\cs\TestXMLStreams.cs">
-      <Link>TestXMLStreams.cs</Link>
+    <Compile Include="..\..\test\bindings\cs\TestXmlStreams.cs">
+      <Link>TestXmlStreams.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

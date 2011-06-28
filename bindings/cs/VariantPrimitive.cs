@@ -5,9 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace protean {
+namespace Protean {
 
     // Primitives
     internal abstract class VariantPrimitiveBase
@@ -147,4 +146,4 @@ namespace protean {
         public T Value { get; set; }
     }
 
-} // protean
+} // Protean
