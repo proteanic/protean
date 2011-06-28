@@ -25,19 +25,18 @@ namespace Protean {
             return m_parser.Read();
         }
 
-        public static Variant Create(
+        public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode = XmlMode.Default, IVariantObjectFactory factory = null,
             bool validateXsd = true, System.IO.TextReader xsdStream = null)
         {
-            XmlReader reader = new XmlReader(stream, mode, factory, validateXsd, xsdStream);
-            return reader.Read();
+            return new XmlReader(stream, mode, factory, validateXsd, xsdStream);
         }
 
         public static Variant FromString(string xml, XmlMode mode, IVariantObjectFactory factory)
         {
             using (System.IO.StringReader ms = new System.IO.StringReader(xml))
             {
-                return Create(stream: ms, mode: mode, factory: factory);
+                return Create(stream: ms, mode: mode, factory: factory).Read();
             }
         }
 

@@ -11,7 +11,7 @@ namespace Protean.Test
     using Protean;
 
     [TestFixture]
-    public class TestXMLStreams
+    public class TestXmlStreams
     {
         [Test]
         public void TestPrimitives()
@@ -258,7 +258,7 @@ namespace Protean.Test
             using ( System.IO.StringReader xmlStream = new System.IO.StringReader(xml), 
                                             xsdStream = new System.IO.StringReader(xsd) )
             {
-                v1 = XmlReader.Create(stream: xmlStream, xsdStream: xsdStream);
+                v1 = XmlReader.Create(stream: xmlStream, xsdStream: xsdStream).Read();
             }
 
             Assert.AreEqual(v1.Type, Variant.EnumType.Dictionary);
