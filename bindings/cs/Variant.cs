@@ -537,6 +537,35 @@ namespace Protean {
                     }
                     break;
                 }
+                case EnumType.Array:
+                {
+                    TypedArray a = AsArray();
+
+                    if (summarise)
+                    {
+                        result += "Array(size=" + a.Count + ", type=" + a.ElementType + ")";
+                    }
+                    else
+                    {
+                        result += "Array(\n";
+
+                        int lastIndex = a.Count - 1;
+                        for (int i = 0; i < a.Count; ++i)
+                        {
+                            result += a[i].ToString();
+
+                            if (i != lastIndex)
+                            {
+                                result += ",";
+                            }
+                            else
+                            {
+                                result += indent + ")";
+                            }
+                        }
+                    }
+                    break;
+                }
                 default:
                     result += "UNKNOWN<" + Type + ">";
                     break;
