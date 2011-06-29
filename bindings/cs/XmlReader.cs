@@ -7,16 +7,14 @@ namespace Protean {
 
     public class XmlReader
     {
-        public XmlReader(System.IO.TextReader stream, XmlMode mode, IVariantObjectFactory factory, bool validateXsd, System.IO.TextReader xsdStream)
+        public XmlReader(System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream)
         {
             if ((mode & XmlMode.Preserve) != 0)
             {
                 throw new VariantException("Preserve parser has not been implemented yet");
             }
-            else
-            {
-                m_parser = new XmlDefaultParser(stream, mode, factory, xsdStream, validateXsd);
-            }
+
+            m_parser = new XmlDefaultParser(stream, mode, xsdStream, validateXsd);
         }
 
         public Variant Read()
@@ -26,23 +24,49 @@ namespace Protean {
         }
 
         public static XmlReader Create(
-            System.IO.TextReader stream, XmlMode mode = XmlMode.Default, IVariantObjectFactory factory = null,
-            bool validateXsd = true, System.IO.TextReader xsdStream = null)
+            System.IO.TextReader stream)
         {
-            return new XmlReader(stream, mode, factory, validateXsd, xsdStream);
+            return new XmlReader(stream, XmlMode.Default, true, null);
+        }
+
+        public static XmlReader Create(
+            System.IO.TextReader stream, XmlMode mode)
+        {
+            return new XmlReader(stream, mode, true, null);
+        }
+
+        public static XmlReader Create(
+            System.IO.TextReader stream, XmlMode mode, bool validateXsd)
+        {
+            return new XmlReader(stream, mode, validateXsd, null);
+        }
+
+        public static XmlReader Create(
+            System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream)
+        {
+            return new XmlReader(stream, mode, validateXsd, xsdStream);
+        }
+
+        public XmlReader WithObjectFactory(IVariantObjectFactory factory)
+        {
+            m_parser.WithObjectFactory(factory);
+            return this;
         }
 
         public static Variant FromString(string xml, XmlMode mode, IVariantObjectFactory factory)
         {
-            using (System.IO.StringReader ms = new System.IO.StringReader(xml))
+            using (var ms = new System.IO.StringReader(xml))
             {
-                return Create(stream: ms, mode: mode, factory: factory).Read();
+                return Create(ms, mode).WithObjectFactory(factory).Read();
             }
         }
 
         public static Variant FromString(string xml)
         {
-            return FromString(xml, XmlMode.Default, null);
+            using (var ms = new System.IO.StringReader(xml))
+            {
+                return Create(ms, XmlMode.Default).Read();
+            }
         }
 
         private XmlParserBase m_parser;

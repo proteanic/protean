@@ -12,10 +12,9 @@ namespace Protean {
 
     internal abstract class XmlParserBase
     {
-        public XmlParserBase(System.IO.TextReader stream, XmlMode mode, IVariantObjectFactory factory, System.IO.TextReader xsdStream, bool validateXsd)
+        protected XmlParserBase(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd)
         {
             m_mode = mode;
-            m_factory = factory;
 
             if (validateXsd)
             {
@@ -146,6 +145,12 @@ namespace Protean {
         public abstract void Characters(string text);
         public abstract void Comment(string comment);
         public abstract void ProcessingInstruction(string target, string data);
+
+        public XmlParserBase WithObjectFactory(IVariantObjectFactory factory)
+        {
+            m_factory = factory;
+            return this;
+        }
 
         private System.Xml.XmlReader m_reader;
         protected XmlMode m_mode;

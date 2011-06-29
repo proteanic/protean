@@ -258,7 +258,7 @@ namespace Protean.Test
             using ( System.IO.StringReader xmlStream = new System.IO.StringReader(xml), 
                                             xsdStream = new System.IO.StringReader(xsd) )
             {
-                v1 = XmlReader.Create(stream: xmlStream, xsdStream: xsdStream).Read();
+                v1 = XmlReader.Create(xmlStream, XmlMode.Default, true, xsdStream).Read();
             }
 
             Assert.AreEqual(v1.Type, Variant.EnumType.Dictionary);
