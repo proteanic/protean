@@ -91,6 +91,12 @@ namespace protean {
           , boost::random_access_traversal_tag
         >
     {
+        typedef boost::iterator_facade<
+                  range_array_iterator<Value>
+                , Value
+                , boost::random_access_traversal_tag
+                > super;
+
         typedef typename boost::remove_cv<Value>::type no_cv_Value_t;
     private:
         struct enabler {};
@@ -121,14 +127,19 @@ namespace protean {
 
         Value &dereference() const;
 
-        void advance(difference_type n);
+        void advance(typename super::difference_type n);
 
     private:
         template<typename T, int N>
         T get();
 
+        #ifndef __GNUC__
+        // This is at the wrong scope, and breaks compilation under g++.
+        // I will fix it properly as soon as I can convince Johan to
+        // to produce a test that fails without it.
         template<>
         std::string get<std::string, protean::variant_base::String>();
+        #endif
 
     private:
         variant_base* m_data;

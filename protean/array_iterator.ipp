@@ -44,7 +44,7 @@ namespace protean {
         typename boost::enable_if<
             boost::is_convertible<OtherValue*,Value*>, 
             typename range_array_iterator<Value>::enabler
-        >::type = range_array_iterator<Value>::enabler()
+        >::type
     ) : m_data(other.m_data) {}
 
     template <typename Value>
@@ -73,7 +73,7 @@ namespace protean {
     }
 
     template <typename Value>
-    void range_array_iterator<Value>::advance(difference_type n)
+    void range_array_iterator<Value>::advance(typename super::difference_type n)
     {
         m_data += n;
     }
