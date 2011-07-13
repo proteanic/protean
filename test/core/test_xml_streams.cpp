@@ -615,7 +615,7 @@ BOOST_AUTO_TEST_CASE(test_xml_double)
     xml_reader reader(iss);
     reader >> v1;
 
-	BOOST_REQUIRE_EQUAL(v1.size(), 6);
+	BOOST_REQUIRE_EQUAL(v1.size(), 6u);
 	BOOST_CHECK(boost::math::fpclassify(v1[0].as<double>())==FP_NAN);
 	BOOST_CHECK(boost::math::fpclassify(v1[1].as<double>())==FP_INFINITE && v1[1].as<double>()<.0);
 	BOOST_CHECK(boost::math::fpclassify(v1[2].as<double>())==FP_INFINITE && v1[2].as<double>()>.0);
@@ -650,7 +650,7 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
     xml_reader reader(iss);
     reader >> v1;
 
-	BOOST_REQUIRE_EQUAL(v1.size(), 6);
+	BOOST_REQUIRE_EQUAL(v1.size(), 6u);
 	BOOST_CHECK(boost::math::fpclassify(v1[0].as<float>())==FP_NAN);
 	BOOST_CHECK(boost::math::fpclassify(v1[1].as<float>())==FP_INFINITE && v1[1].as<float>()<.0);
 	BOOST_CHECK(boost::math::fpclassify(v1[2].as<float>())==FP_INFINITE && v1[2].as<float>()>.0);
