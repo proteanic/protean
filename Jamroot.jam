@@ -30,7 +30,7 @@
 # run bjam in the directory this file is in. It will compile everything,
 # and then it will run the unit tests.
 
-PROTEAN_VERSION = 1_02 ;
+PROTEAN_VERSION = 1_04 ;
 
 include user-config.jam ;
 
