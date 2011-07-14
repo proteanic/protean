@@ -7,17 +7,15 @@
 #define PROTEAN_VARIANT_HPP
 
 #include <protean/config.hpp>
-#include <protean/typed_array.hpp>
 #include <protean/variant_base.hpp>
 #include <protean/variant_ref.hpp>
+#include <protean/array_iterator.hpp>
+#include <protean/typed_array.hpp>
 
 namespace protean {
 
     class variant_ref;
     class variant_cref;
-
-    template<typename T>
-    class range_array_iterator;
 
     class PROTEAN_DECL variant : public variant_base
     {
@@ -264,7 +262,5 @@ namespace protean {
 
 #include <protean/variant.ipp>
 #include <protean/variant_ref.ipp>
-#include <protean/array_iterator.hpp>
-
 
 #endif // PROTEAN_VARIANT_HPP

@@ -6,29 +6,19 @@
 #ifndef PROTEAN_TYPED_ARRAY_HPP
 #define PROTEAN_TYPED_ARRAY_HPP
 
-#ifdef PROTEAN_ARRAY_ITERATOR_HPP
-#error array_iterator.ipp depends on the definition of class typed_array but \
-  was probably included from array_iterator.hpp before that class was defined. \
-  MSVC ignores the problem, but g++ does not.
-#endif
-
 #include <protean/config.hpp>
 
 #include <protean/detail/ref_counted.hpp>
 #include <protean/variant_base.hpp>
+
+#include <protean/array_iterator.hpp>
 
 namespace protean {
 
     class variant;
     class variant_ref;
     class variant_cref;
-
-    struct array_iterator_traits;
-    struct array_const_iterator_traits;
-
-    template<typename T>
-    class array_iterator; 
-   
+    
     class PROTEAN_DECL typed_array : public detail::ref_counted
     {
         template <typename> friend class range_array_iterator;
