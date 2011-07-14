@@ -320,7 +320,7 @@ namespace Protean {
             }
         }
 
-        StringBuilder ToString(bool summarise, string indent, StringBuilder sb)
+        private StringBuilder ToString(bool summarise, string indent, StringBuilder sb)
         {
             const string tab = "   ";
             const string noIndent = "";
@@ -493,7 +493,7 @@ namespace Protean {
                             int count = Count;
                             foreach (VariantItem item in this)
                             {
-                                sb.Append(item.Value.ToString(false, indent + tab, sb));
+                                item.Value.ToString(false, indent + tab, sb);
                                 if (--count != 0)
                                 {
                                     sb.Append(",");
@@ -528,15 +528,13 @@ namespace Protean {
 
                         if (summarise)
                         {
-                            sb.Append(o.Class + "(version=" + o.Version + ")");
+                            sb.Append(o.Class).Append("(version=").Append(o.Version).Append(")");
                         }
                         else
                         {
-                            Variant param = o.Deflate();
-
-                            sb.Append(o.Class + "(version=" + o.Version + ")(\n");
-                            param.ToString(false, indent + tab, sb);
-                            sb.Append("\n" + indent + ")");
+                            sb.Append(o.Class).Append("(version=").Append(o.Version).Append(")(\n");
+                            o.Deflate().ToString(false, indent + tab, sb);
+                            sb.Append("\n").Append(indent).Append(")");
                         }
                         break;
                     }
@@ -550,21 +548,12 @@ namespace Protean {
                         }
                         else
                         {
-                            sb.Append("Array(\n");
+                            sb.Append("Array(");
 
                             int lastIndex = a.Count - 1;
                             for (int i = 0; i < a.Count; ++i)
                             {
-                                sb.Append(a[i].ToString());
-
-                                if (i != lastIndex)
-                                {
-                                    sb.Append(",");
-                                }
-                                else
-                                {
-                                    sb.Append(indent + ")");
-                                }
+                                sb.Append(a[i].ToString()).Append(i != lastIndex ? "," : ")");
                             }
                         }
                         break;
@@ -806,6 +795,5 @@ namespace Protean {
         public static readonly DateTime MinDateTime = new DateTime(1400, 1, 1);
         public static readonly DateTime MaxDateTime = new DateTime(9999, 12, 31, 23, 59, 59, 999);
     };
-
 
 } // Protean
