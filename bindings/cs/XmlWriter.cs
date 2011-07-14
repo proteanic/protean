@@ -14,10 +14,12 @@ namespace Protean {
         public XmlWriter(System.IO.TextWriter stream, XmlMode mode)
         {
             m_mode = mode;
-            m_writer = new XmlTextWriter(stream);
+            m_writer = new XmlTextWriter(stream)
+                           {
+                               Indentation = 2,
+                               Formatting = (mode & XmlMode.Indent) != 0 ? Formatting.Indented : Formatting.None
+                           };
 
-            m_writer.Indentation = 2;
-            m_writer.Formatting = (mode & XmlMode.Indent) != 0 ? Formatting.Indented : Formatting.None;
 
             m_stack = new Stack<ElementInfo>();
         }
@@ -383,35 +385,37 @@ namespace Protean {
                 switch (array.ElementType)
                 {
                     case VariantBase.EnumType.Float:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((float)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((float) o));
                         break;
                     case VariantBase.EnumType.Double:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((double)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((double) o));
                         break;
                     case VariantBase.EnumType.String:
-                        writer = delegate(object o) { m_writer.WriteString((string)o); };
+                        writer = o => m_writer.WriteString((string) o);
                         break;
                     case VariantBase.EnumType.Boolean:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((bool)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((bool) o));
                         break;
                     case VariantBase.EnumType.Int32:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((int)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((int) o));
                         break;
                     case VariantBase.EnumType.UInt32:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((uint)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((uint) o));
                         break;
                     case VariantBase.EnumType.Int64:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((long)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((long) o));
                         break;
                     case VariantBase.EnumType.UInt64:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((ulong)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((ulong) o));
                         break;
                     case VariantBase.EnumType.Time:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((TimeSpan)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((TimeSpan) o));
                         break;
                     case VariantBase.EnumType.DateTime:
-                        writer = delegate(object o) { m_writer.WriteString(VariantBase.ToString((DateTime)o)); };
+                        writer = o => m_writer.WriteString(VariantBase.ToString((DateTime) o));
                         break;
+                    default:
+                        throw new VariantException("Case exhaustion: " + array.ElementType); 
                 }
 
                 for (int i=0; i<array.Count; ++i)

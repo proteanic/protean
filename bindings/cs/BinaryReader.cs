@@ -281,24 +281,24 @@ namespace Protean {
         }
         private TimeSpan ReadTime()
         {
-            Int64 total_millis = ReadInt64();
+            Int64 totalMillis = ReadInt64();
 
-            return new TimeSpan(total_millis * 10000);
+            return new TimeSpan(totalMillis * 10000);
         }
 
         static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
 
         private DateTime ReadDateTime()
         {
-            long total_millis = ReadInt64();
+            long totalMillis = ReadInt64();
 
-            if (total_millis == MaxDateTimeMillis)
+            if (totalMillis == MaxDateTimeMillis)
             {
                 return DateTime.MaxValue;
             }
             else
             {
-                return new DateTime(Variant.MinDateTime.Ticks + total_millis * 10000);
+                return new DateTime(Variant.MinDateTime.Ticks + totalMillis * 10000);
             }
         }
         private DataTable ReadDataTable()
@@ -316,35 +316,37 @@ namespace Protean {
                 switch (colTypes[i])
                 {
                     case VariantBase.EnumType.Float:
-                        colReaders[i] = delegate() { return ReadFloat(); };
+                        colReaders[i] = () => ReadFloat();
                         break;
                     case VariantBase.EnumType.Double:
-                        colReaders[i] = delegate() { return ReadDouble(); };
+                        colReaders[i] = () => ReadDouble();
                         break;
                     case VariantBase.EnumType.Boolean:
-                        colReaders[i] = delegate() { return ReadBoolean(); };
+                        colReaders[i] = () => ReadBoolean();
                         break;
                     case VariantBase.EnumType.String:
-                        colReaders[i] = delegate() { return ReadString(); };
+                        colReaders[i] = () => ReadString();
                         break;
                     case VariantBase.EnumType.Int32:
-                        colReaders[i] = delegate() { return ReadInt32(); };
+                        colReaders[i] = () => ReadInt32();
                         break;
                     case VariantBase.EnumType.UInt32:
-                        colReaders[i] = delegate() { return ReadUInt32(); };
+                        colReaders[i] = () => ReadUInt32();
                         break;
                     case VariantBase.EnumType.Int64:
-                        colReaders[i] = delegate() { return ReadInt64(); };
+                        colReaders[i] = () => ReadInt64();
                         break;
                     case VariantBase.EnumType.UInt64:
-                        colReaders[i] = delegate() { return ReadUInt64(); };
+                        colReaders[i] = () => ReadUInt64();
                         break;
                     case VariantBase.EnumType.Time:
-                        colReaders[i] = delegate() { return ReadTime(); };
+                        colReaders[i] = () => ReadTime();
                         break;
                     case VariantBase.EnumType.DateTime:
-                        colReaders[i] = delegate() { return ReadDateTime(); };
+                        colReaders[i] = () => ReadDateTime();
                         break;
+                    default:
+                        throw new VariantException("Case exhaustion: " + colTypes[i]); 
                 }
             }
 
@@ -385,35 +387,37 @@ namespace Protean {
             switch (elementType)
             {
                 case VariantBase.EnumType.Float:
-                    reader = delegate() { return ReadFloat(); };
+                    reader = () => ReadFloat();
                     break;
                 case VariantBase.EnumType.Double:
-                    reader = delegate() { return ReadDouble(); };
+                    reader = () => ReadDouble();
                     break;
                 case VariantBase.EnumType.Boolean:
-                    reader = delegate() { return ReadBoolean(); };
+                    reader = () => ReadBoolean();
                     break;
                 case VariantBase.EnumType.String:
-                    reader = delegate() { return ReadString(); };
+                    reader = () => ReadString();
                     break;
                 case VariantBase.EnumType.Int32:
-                    reader = delegate() { return ReadInt32(); };
+                    reader = () => ReadInt32();
                     break;
                 case VariantBase.EnumType.UInt32:
-                    reader = delegate() { return ReadUInt32(); };
+                    reader = () => ReadUInt32();
                     break;
                 case VariantBase.EnumType.Int64:
-                    reader = delegate() { return ReadInt64(); };
+                    reader = () => ReadInt64();
                     break;
                 case VariantBase.EnumType.UInt64:
-                    reader = delegate() { return ReadUInt64(); };
+                    reader = () => ReadUInt64();
                     break;
                 case VariantBase.EnumType.Time:
-                    reader = delegate() { return ReadTime(); };
+                    reader = () => ReadTime();
                     break;
                 case VariantBase.EnumType.DateTime:
-                    reader = delegate() { return ReadDateTime(); };
+                    reader = () => ReadDateTime();
                     break;
+                default:
+                    throw new VariantException("Case exhaustion: " + array.ElementType); 
             }
 
             for (int i = 0; i < size; ++i)
@@ -424,10 +428,10 @@ namespace Protean {
             return array;
         }
 
-        private System.IO.Stream m_stream;
+        private readonly System.IO.Stream m_stream;
         private System.IO.Stream m_filter;
         private BinaryMode m_mode;
-        private IVariantObjectFactory m_factory;
+        private readonly IVariantObjectFactory m_factory;
     }
 
 } // Protean

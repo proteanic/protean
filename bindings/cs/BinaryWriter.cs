@@ -173,35 +173,37 @@ namespace Protean {
                 switch (colTypes[i])
                 {
                     case VariantBase.EnumType.Float:
-                        colWriters[i] = delegate(object o) { Write((float)o); };
+                        colWriters[i] = o => Write((float) o);
                         break;
                     case VariantBase.EnumType.Double:
-                        colWriters[i] = delegate(object o) { Write((double)o); };
+                        colWriters[i] = o => Write((double) o);
                         break;
                     case VariantBase.EnumType.String:
-                        colWriters[i] = delegate(object o) { Write((string)o); };
+                        colWriters[i] = o => Write((string) o);
                         break;
                     case VariantBase.EnumType.Boolean:
-                        colWriters[i] = delegate(object o) { Write((bool)o); };
+                        colWriters[i] = o => Write((bool) o);
                         break;
                     case VariantBase.EnumType.Int32:
-                        colWriters[i] = delegate(object o) { Write((Int32)o); };
+                        colWriters[i] = o => Write((Int32) o);
                         break;
                     case VariantBase.EnumType.UInt32:
-                        colWriters[i] = delegate(object o) { Write((UInt32)o); };
+                        colWriters[i] = o => Write((UInt32) o);
                         break;
                     case VariantBase.EnumType.Int64:
-                        colWriters[i] = delegate(object o) { Write((Int64)o); };
+                        colWriters[i] = o => Write((Int64) o);
                         break;
                     case VariantBase.EnumType.UInt64:
-                        colWriters[i] = delegate(object o) { Write((UInt64)o); };
+                        colWriters[i] = o => Write((UInt64) o);
                         break;
                     case VariantBase.EnumType.Time:
-                        colWriters[i] = delegate(object o) { Write((TimeSpan)o); };
+                        colWriters[i] = o => Write((TimeSpan) o);
                         break;
                     case VariantBase.EnumType.DateTime:
-                        colWriters[i] = delegate(object o) { Write((DateTime)o); };
+                        colWriters[i] = o => Write((DateTime) o);
                         break;
+                    default:
+                        throw new VariantException("Case exhaustion: " + colTypes[i]);
                 }
             }
 
@@ -243,35 +245,37 @@ namespace Protean {
             switch (arg.ElementType)
             {
                 case VariantBase.EnumType.Float:
-                    writer = delegate(object o) { Write((float)o); };
+                    writer = o => Write((float) o);
                     break;
                 case VariantBase.EnumType.Double:
-                    writer = delegate(object o) { Write((double)o); };
+                    writer = o => Write((double) o);
                     break;
                 case VariantBase.EnumType.String:
-                    writer = delegate(object o) { Write((string)o); };
+                    writer = o => Write((string) o);
                     break;
                 case VariantBase.EnumType.Boolean:
-                    writer = delegate(object o) { Write((bool)o); };
+                    writer = o => Write((bool) o);
                     break;
                 case VariantBase.EnumType.Int32:
-                    writer = delegate(object o) { Write((Int32)o); };
+                    writer = o => Write((Int32) o);
                     break;
                 case VariantBase.EnumType.UInt32:
-                    writer = delegate(object o) { Write((UInt32)o); };
+                    writer = o => Write((UInt32) o);
                     break;
                 case VariantBase.EnumType.Int64:
-                    writer = delegate(object o) { Write((Int64)o); };
+                    writer = o => Write((Int64) o);
                     break;
                 case VariantBase.EnumType.UInt64:
-                    writer = delegate(object o) { Write((UInt64)o); };
+                    writer = o => Write((UInt64) o);
                     break;
                 case VariantBase.EnumType.Time:
-                    writer = delegate(object o) { Write((TimeSpan)o); };
+                    writer = o => Write((TimeSpan) o);
                     break;
                 case VariantBase.EnumType.DateTime:
-                    writer = delegate(object o) { Write((DateTime)o); };
+                    writer = o => Write((DateTime) o);
                     break;
+                default:
+                    throw new VariantException("Case exhaustion: " + arg.ElementType);
             }
 
             Write(arg.Count);
@@ -378,7 +382,8 @@ namespace Protean {
             }
         }
 
-        private System.IO.Stream Stream, Filter;
-        private BinaryMode Mode;
+        private readonly System.IO.Stream Stream;
+        private System.IO.Stream Filter;
+        private readonly BinaryMode Mode;
     }
 } // Protean

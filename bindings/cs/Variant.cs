@@ -320,23 +320,23 @@ namespace Protean {
             }
         }
 
-        string ToString(bool summarise, string indent)
+        StringBuilder ToString(bool summarise, string indent, StringBuilder sb)
         {
             const string tab = "   ";
-            const string no_indent = "";
+            const string noIndent = "";
 
-            string result = indent;
-        
+            sb.Append(indent);
+
             switch (Type)
             {
                 case EnumType.None:
-                    result += "None";
+                    sb.Append("None");
                     break;
                 case EnumType.Any:
-                    result += "Any('" + As<string>() + "')";
+                    sb.Append("Any('" + As<string>() + "')");
                     break;
                 case EnumType.String:
-                    result += "'" + As<string>() + "'";
+                    sb.Append("'" + As<string>() + "'");
                     break;
                 case EnumType.Int32:
                 case EnumType.UInt32:
@@ -346,241 +346,246 @@ namespace Protean {
                 case EnumType.Boolean:
                 case EnumType.Time:
                 case EnumType.DateTime:
-                    result += Value.ToString();
+                    sb.Append(Value.ToString());
                     break;
                 case EnumType.List:
-                {
-                    if (summarise)
                     {
-                        result += "List(size=" + Count.ToString() + ")";
-                    }
-                    else
-                    {
-                        result += "[\n";
-                        int count = Count;
-                        foreach (VariantItem item in this)
+                        if (summarise)
                         {
-                            result += item.Value.ToString(false, indent+tab);
-                            if (--count>0)
-                            {
-                                result += ",";
-                            }
-                            result += "\n";
+                            sb.Append("List(size=" + Count.ToString() + ")");
                         }
-                        result += indent + "]";
+                        else
+                        {
+                            sb.Append("[\n");
+                            int count = Count;
+                            foreach (VariantItem item in this)
+                            {
+                                item.Value.ToString(false, indent + tab, sb);
+                                if (--count > 0)
+                                {
+                                    sb.Append(",");
+                                }
+                                sb.Append("\n");
+                            }
+                            sb.Append(indent + "]");
+                        }
+                        break;
                     }
-                    break;
-                }
                 case EnumType.Dictionary:
-                {
-                    if (summarise)
                     {
-                        result += "Dictionary(size=" + Count.ToString() + ")";
-                    }
-                    else
-                    {
-                        result += "{\n";
-                        int count = Count;
-                        foreach (VariantItem item in this)
+                        if (summarise)
                         {
-                            result += indent + tab + item.Key + ": ";
-                            if (item.Value.Is(EnumType.Primitive | EnumType.None))
-                            {
-                                result += item.Value.ToString(false, no_indent);
-                            }
-                            else
-                            {
-                                result += "\n" + item.Value.ToString(false, indent + tab + tab);
-                            }
-                            if (--count!=0)
-                            {
-                                result += ",";
-                            }
-                            result += "\n";
+                            sb.Append("Dictionary(size=" + Count.ToString() + ")");
                         }
-                        result += indent + "}";
+                        else
+                        {
+                            sb.Append("{\n");
+                            int count = Count;
+                            foreach (VariantItem item in this)
+                            {
+                                sb.Append(indent + tab + item.Key + ": ");
+                                if (item.Value.Is(EnumType.Primitive | EnumType.None))
+                                {
+                                    item.Value.ToString(false, noIndent, sb);
+                                }
+                                else
+                                {
+                                    sb.Append("\n");
+                                    item.Value.ToString(false, indent + tab + tab, sb);
+                                }
+                                if (--count != 0)
+                                {
+                                    sb.Append(",");
+                                }
+                                sb.Append("\n");
+                            }
+                            sb.Append(indent + "}");
+                        }
+                        break;
                     }
-                    break;
-                }
                 case EnumType.Bag:
-                {
-                    if (summarise)
                     {
-                        result += "Bag(size=" + Count + ")";
-                    }
-                    else
-                    {
-                        result += "[\n";
-                        int count = Count;
-                        foreach (VariantItem item in this)
+                        if (summarise)
                         {
-                            result += indent + tab + "(" + item.Key + ", ";
-                            if (item.Value.Is(EnumType.Primitive))
-                            {
-                                result += item.Value.ToString(false, no_indent);
-                            }
-                            else
-                            {
-                                result += "\n" + item.Value.ToString(false, indent+tab);
-                            }
-                            result += ")";
-                            if (--count!=0)
-                            {
-                                result += ",";
-                            }
-                            result += "\n";
+                            sb.Append("Bag(size=" + Count + ")");
                         }
-                        result += indent + "]";
+                        else
+                        {
+                            sb.Append("[\n");
+                            int count = Count;
+                            foreach (VariantItem item in this)
+                            {
+                                sb.Append(indent + tab + "(" + item.Key + ", ");
+                                if (item.Value.Is(EnumType.Primitive))
+                                {
+                                    item.Value.ToString(false, noIndent, sb);
+                                }
+                                else
+                                {
+                                    sb.Append("\n");
+                                    item.Value.ToString(false, indent + tab, sb);
+                                }
+                                sb.Append(")");
+                                if (--count != 0)
+                                {
+                                    sb.Append(",");
+                                }
+                                sb.Append("\n");
+                            }
+                            sb.Append(indent + "]");
+                        }
+                        break;
                     }
-                    break;
-                }
                 case EnumType.TimeSeries:
-                {
-                    if (summarise)
                     {
-                        result += "TimeSeries(size=" + Count + ")";
-                    }
-                    else
-                    {
-                        result += "TimeSeries(\n";
-                        int count = Count;
-                        foreach (VariantItem item in this)
+                        if (summarise)
                         {
-                            result += indent + tab + "(" + item.Time + ", ";
-                            if (item.Value.Is(EnumType.Primitive))
-                            {
-                                result += item.Value.ToString(false, no_indent);
-                            }
-                            else
-                            {
-                                result += "\n" + item.Value.ToString(false, indent + tab);
-                            }
-                            result += ")";
-                            if (--count!=0)
-                            {
-                                result += ",";
-                            }
-                            result += "\n";
+                            sb.Append("TimeSeries(size=" + Count + ")");
                         }
-                        result += indent + ")";
+                        else
+                        {
+                            sb.Append("TimeSeries(\n");
+                            int count = Count;
+                            foreach (VariantItem item in this)
+                            {
+                                sb.Append(indent + tab + "(" + item.Time + ", ");
+                                if (item.Value.Is(EnumType.Primitive))
+                                {
+                                    item.Value.ToString(false, noIndent, sb);
+                                }
+                                else
+                                {
+                                    sb.Append("\n");
+                                    item.Value.ToString(false, indent + tab, sb);
+                                }
+                                sb.Append(")");
+                                if (--count != 0)
+                                {
+                                    sb.Append(",");
+                                }
+                                sb.Append("\n");
+                            }
+                            sb.Append(indent + ")");
+                        }
+                        break;
                     }
-                    break;
-                }
                 case EnumType.Buffer:
-                {
-                    if (summarise)
                     {
-                        result += "Buffer(size=" + Count + ")";
+                        if (summarise)
+                        {
+                            sb.Append("Buffer(size=" + Count + ")");
+                        }
+                        else
+                        {
+                            sb.Append("Buffer(" + ASCIIEncoding.ASCII.GetString(AsBuffer()) + ')');
+                        }
+                        break;
                     }
-                    else
-                    {
-                        result += "Buffer(" + ASCIIEncoding.ASCII.GetString(AsBuffer()) + ')';
-                    }
-                    break;
-                }
                 case EnumType.Tuple:
-                {
-                    if (summarise)
                     {
-                        result += "Tuple(size=" + Count + ")";
-                    }
-                    else
-                    {
-                        result += "(\n";
-                        int count = Count;
-                        foreach (VariantItem item in this)
+                        if (summarise)
                         {
-                            result += item.Value.ToString(false, indent+tab);
-                            if (--count!=0)
-                            {
-                                result += ",";
-                            }
-                            result += "\n";
-
+                            sb.Append("Tuple(size=" + Count + ")");
                         }
-                        result += indent + ")";
+                        else
+                        {
+                            sb.Append("(\n");
+                            int count = Count;
+                            foreach (VariantItem item in this)
+                            {
+                                sb.Append(item.Value.ToString(false, indent + tab, sb));
+                                if (--count != 0)
+                                {
+                                    sb.Append(",");
+                                }
+                                sb.Append("\n");
+
+                            }
+                            sb.Append(indent + ")");
+                        }
+                        break;
                     }
-                    break;
-                }
                 case EnumType.Exception:
-                {
-                    VariantExceptionInfo x = AsException();
+                    {
+                        VariantExceptionInfo x = AsException();
 
-                    result += x.Class + "('" + x.Message + "')";
-                    
-                    if (x.Source.Length>0)
-                    {
-                        result += " in: " + x.Source;
-                    }
+                        sb.Append(x.Class + "('" + x.Message + "')");
 
-                    if (x.Stack.Length>0)
-                    {
-                        result += "\n" + x.Stack;
-                    }
-                    break;
-                }
-                case EnumType.Object:
-                {
-                    IVariantObject o = AsObject();
-
-                    if (summarise)
-                    {
-                        result += o.Class + "(version=" + o.Version + ")";
-                    }
-                    else
-                    {
-                        Variant param = o.Deflate();
-                        
-                        result += o.Class + "(version=" + o.Version + ")(\n";
-                        result += param.ToString(false, indent + tab);
-                        result += "\n" + indent + ")";
-                    }
-                    break;
-                }
-                case EnumType.Array:
-                {
-                    TypedArray a = AsArray();
-
-                    if (summarise)
-                    {
-                        result += "Array(size=" + a.Count + ", type=" + a.ElementType + ")";
-                    }
-                    else
-                    {
-                        result += "Array(\n";
-
-                        int lastIndex = a.Count - 1;
-                        for (int i = 0; i < a.Count; ++i)
+                        if (x.Source.Length > 0)
                         {
-                            result += a[i].ToString();
+                            sb.Append(" in: " + x.Source);
+                        }
 
-                            if (i != lastIndex)
+                        if (x.Stack.Length > 0)
+                        {
+                            sb.Append("\n" + x.Stack);
+                        }
+                        break;
+                    }
+                case EnumType.Object:
+                    {
+                        IVariantObject o = AsObject();
+
+                        if (summarise)
+                        {
+                            sb.Append(o.Class + "(version=" + o.Version + ")");
+                        }
+                        else
+                        {
+                            Variant param = o.Deflate();
+
+                            sb.Append(o.Class + "(version=" + o.Version + ")(\n");
+                            param.ToString(false, indent + tab, sb);
+                            sb.Append("\n" + indent + ")");
+                        }
+                        break;
+                    }
+                case EnumType.Array:
+                    {
+                        TypedArray a = AsArray();
+
+                        if (summarise)
+                        {
+                            sb.Append("Array(size=" + a.Count + ", type=" + a.ElementType + ")");
+                        }
+                        else
+                        {
+                            sb.Append("Array(\n");
+
+                            int lastIndex = a.Count - 1;
+                            for (int i = 0; i < a.Count; ++i)
                             {
-                                result += ",";
-                            }
-                            else
-                            {
-                                result += indent + ")";
+                                sb.Append(a[i].ToString());
+
+                                if (i != lastIndex)
+                                {
+                                    sb.Append(",");
+                                }
+                                else
+                                {
+                                    sb.Append(indent + ")");
+                                }
                             }
                         }
+                        break;
                     }
-                    break;
-                }
                 default:
-                    result += "UNKNOWN<" + Type + ">";
+                    sb.Append("UNKNOWN<" + Type + ">");
                     break;
             }
-            return result;
+            return sb;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            return ToString(false, "");
+            var sb = new StringBuilder();
+            return ToString(false, "", sb).ToString();
         }
 
         public new string ToString(bool summarise)
         {
-            return ToString(summarise, "");
+            var sb = new StringBuilder();
+            return ToString(summarise, "", sb).ToString();
         }
 
         public IEnumerator<VariantItem> GetEnumerator()
