@@ -473,11 +473,11 @@ namespace Protean {
                     {
                         if (summarise)
                         {
-                            sb.Append("Buffer(size=" + Count + ")");
+                            sb.Append("Buffer(size=").Append(Count).Append(")");
                         }
                         else
                         {
-                            sb.Append("Buffer(" + ASCIIEncoding.ASCII.GetString(AsBuffer()) + ')');
+                            sb.Append("Buffer(").Append(Encoding.ASCII.GetString(AsBuffer())).Append(')');
                         }
                         break;
                     }
@@ -485,11 +485,11 @@ namespace Protean {
                     {
                         if (summarise)
                         {
-                            sb.Append("Tuple(size=" + Count + ")");
+                            sb.Append("Tuple(size=").Append(Count).Append(")");
                         }
                         else
                         {
-                            sb.Append("(\n");
+                            sb.Append("(").AppendLine();
                             int count = Count;
                             foreach (VariantItem item in this)
                             {
@@ -498,10 +498,9 @@ namespace Protean {
                                 {
                                     sb.Append(",");
                                 }
-                                sb.Append("\n");
-
+                                sb.AppendLine();
                             }
-                            sb.Append(indent + ")");
+                            sb.Append(indent).Append(")");
                         }
                         break;
                     }
@@ -509,16 +508,16 @@ namespace Protean {
                     {
                         VariantExceptionInfo x = AsException();
 
-                        sb.Append(x.Class + "('" + x.Message + "')");
+                        sb.Append(x.Class).Append("('").Append(x.Message).Append("')");
 
                         if (x.Source.Length > 0)
                         {
-                            sb.Append(" in: " + x.Source);
+                            sb.Append(" in: ").Append(x.Source);
                         }
 
                         if (x.Stack.Length > 0)
                         {
-                            sb.Append("\n" + x.Stack);
+                            sb.AppendLine().Append(x.Stack);
                         }
                         break;
                     }
@@ -532,9 +531,9 @@ namespace Protean {
                         }
                         else
                         {
-                            sb.Append(o.Class).Append("(version=").Append(o.Version).Append(")(\n");
+                            sb.Append(o.Class).Append("(version=").Append(o.Version).Append(")(").AppendLine();
                             o.Deflate().ToString(false, indent + tab, sb);
-                            sb.Append("\n").Append(indent).Append(")");
+                            sb.AppendLine().Append(indent).Append(")");
                         }
                         break;
                     }
@@ -544,7 +543,7 @@ namespace Protean {
 
                         if (summarise)
                         {
-                            sb.Append("Array(size=" + a.Count + ", type=" + a.ElementType + ")");
+                            sb.Append("Array(size=").Append(a.Count).Append(", type=").Append(a.ElementType).Append(")");
                         }
                         else
                         {
@@ -559,7 +558,7 @@ namespace Protean {
                         break;
                     }
                 default:
-                    sb.Append("UNKNOWN<" + Type + ">");
+                    sb.Append("UNKNOWN<").Append(Type).Append(">");
                     break;
             }
             return sb;
@@ -567,8 +566,7 @@ namespace Protean {
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            return ToString(false, "", sb).ToString();
+            return ToString(false);
         }
 
         public new string ToString(bool summarise)
