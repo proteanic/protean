@@ -422,6 +422,11 @@ namespace protean {
         m_filter.reset();
     }
 
+	bool binary_reader::eof() const
+	{
+		return m_filter.eof();
+	}
+
     binary_reader& operator>>(binary_reader& reader, variant& v)
     {
         reader.setup();

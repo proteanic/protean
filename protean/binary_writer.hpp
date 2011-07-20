@@ -42,13 +42,14 @@ namespace protean {
         void write_bytes(const char* value, size_t length);
         void write_value(const variant& value);
 
+	protected:
+		void setup();
+        void close();
+
     private:
         std::ostream&                       m_os;
         boost::iostreams::filtering_ostream m_filter;
         int                                 m_mode;
-
-        void setup();
-        void close();
 
         friend PROTEAN_DECL binary_writer& operator<<(binary_writer& writer, const variant& v);
     };

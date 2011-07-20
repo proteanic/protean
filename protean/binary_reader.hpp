@@ -45,6 +45,9 @@ namespace protean {
         void read_value(variant::enum_type_t type, variant& value);
 
         void set_factory(object_factory& factory);
+	
+	protected:
+		bool eof() const;
 
     private:
         std::istream&                           m_is;
