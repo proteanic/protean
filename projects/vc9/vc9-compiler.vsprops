@@ -6,6 +6,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
+		PreprocessorDefinitions="BOOST_FILESYSTEM_VERSION=2"
 		DebugInformationFormat="3"
 	/>
 	<UserMacro
