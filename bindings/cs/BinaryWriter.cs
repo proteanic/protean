@@ -37,7 +37,7 @@ namespace Protean {
             {
                 BinaryWriter writer = new BinaryWriter(ms, mode);
                 writer.Write(value);
-                return ms.GetBuffer();
+                return ms.ToArray();
             }
         }
 
