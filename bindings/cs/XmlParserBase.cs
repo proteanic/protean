@@ -40,7 +40,7 @@ namespace Protean {
 
         private static void ValidationCallBack(object sender, ValidationEventArgs e)
         {
-            Console.WriteLine("Validation Error: {0}", e.Message);
+		    throw new VariantException(String.Format("Validation Error: {0}" ,e.Message));
         }
 
         // Useful visual plot of how datatypes are derived in XML Schema:
@@ -80,7 +80,7 @@ namespace Protean {
                     return XmlType2VariantType[schemaType.TypeCode];
 
                 schemaType = schemaType.BaseXmlSchemaType;
-                if (schemaType.TypeCode == XmlTypeCode.Item || schemaType.TypeCode == XmlTypeCode.AnyAtomicType)
+                if (schemaType == null || schemaType.TypeCode == XmlTypeCode.Item || schemaType.TypeCode == XmlTypeCode.AnyAtomicType)
                     return Variant.EnumType.Any;
             }
         }
@@ -135,6 +135,10 @@ namespace Protean {
                 {
                     EndElement();
                 }
+				else if (nType == XmlNodeType.CDATA)
+				{
+					Characters(m_reader.Value);
+				}
             }
         }
 

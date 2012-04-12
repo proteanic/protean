@@ -16,10 +16,10 @@ namespace Protean {
         IEnumerable<VariantItem>,
         IConvertible,
         IEquatable<Variant>,
-        IComparable<Variant>
+        IComparable<Variant>,
+        IComparable
     {
-        public Variant() :
-            base()
+        public Variant()
         { } 
 
         public Variant(Variant arg) :
@@ -566,8 +566,15 @@ namespace Protean {
 
         public override string ToString()
         {
-            return ToString(false);
+            var sb = new StringBuilder();
+            return ToString(false, "", sb).ToString();
         }
+
+		public string ToString(string indent)
+		{
+			var sb = new StringBuilder();
+			return ToString(false, indent, sb).ToString();
+		}
 
         public new string ToString(bool summarise)
         {
@@ -763,11 +770,52 @@ namespace Protean {
             return Value.CompareTo(rhs.Value);
         }
 
+        public int CompareTo(object obj)
+        {
+            if (obj is Variant)
+            {
+                return CompareTo((Variant)obj);
+            }
+
+            throw new ArgumentException("Object is not a Variant");
+        }
+
         // System.IEquatable<Variant>
         public bool Equals(Variant rhs)
         {
+            if (ReferenceEquals(rhs, null)) return false;
+            if (ReferenceEquals(rhs, this)) return true;
+
             // lazy, this could be implemented efficiently if required
             return CompareTo(rhs)==0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(obj, null)) return false;
+            if (ReferenceEquals(obj, this)) return true;
+
+            return Equals(obj as Variant);
+        }
+
+		public override int GetHashCode()
+		{
+			return  base.GetHashCode();
+		}
+
+        public static bool operator ==(Variant lhs, Variant rhs)
+        {
+            if (ReferenceEquals(lhs, null))
+            {
+                return ReferenceEquals(rhs, null);
+            }
+
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Variant lhs, Variant rhs)
+        {
+            return !(lhs == rhs);
         }
 
         // helpers

@@ -9,6 +9,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Static Debug|Win32' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +46,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Static Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +55,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <OutputPath>build\$(Platform)\$(Configuration)\</OutputPath>
@@ -61,6 +64,7 @@
     <DebugType>pdbonly</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Static Release|x64' ">
     <OutputPath>build\$(Platform)\$(Configuration)\</OutputPath>
@@ -69,6 +73,7 @@
     <DebugType>pdbonly</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>

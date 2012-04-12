@@ -89,6 +89,7 @@ namespace Protean {
 
     public abstract class VariantBase
     {
+		[Flags]
         public enum EnumType
         {
             None                    = 0x00000001,

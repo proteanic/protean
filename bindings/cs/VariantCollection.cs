@@ -174,8 +174,28 @@ namespace Protean {
         }
         public Variant this[string key]
         {
-            get { return Value[key]; }
-            set { Value[key] = value; }
+            get
+            {
+                try
+                {
+                    return Value[key];
+                }
+                catch (KeyNotFoundException)
+                {
+                    throw new KeyNotFoundException(string.Format("Key '{0}' not found in Dictionary", key));
+                }
+            }
+            set
+            {
+                try
+                {
+                    Value[key] = value;
+                }
+                catch (KeyNotFoundException)
+                {
+                    throw new KeyNotFoundException(string.Format("Key '{0}' not found in Dictionary", key));
+                }
+            }
         }
         public void Remove(string key)
         {
@@ -204,7 +224,7 @@ namespace Protean {
 
         public int CompareTo(IVariantData rhs)
         {
-            return SequenceComparer.Compare(Value, ((VariantDictionary)rhs).Value, new KeyValuePairComparer<string, Variant>());
+            return Value.Compare(((VariantDictionary)rhs).Value, new KeyValuePairComparer<string, Variant>());
         }
 
         // Use a sorted dictionary, so we can easily compare
@@ -245,19 +265,19 @@ namespace Protean {
         public Variant this[string key]
         {
             get {
-                int index = Value.FindIndex(delegate(KeyValuePair<string, Variant> kv) { return kv.Key==key; });
-                if (index==-1)
+                int index = Value.FindIndex(kv => kv.Key == key);
+                if (index == -1)
                 {
-                    throw new VariantException(string.Format("Key {0} does not Exist in Bag", key));
+                    throw new VariantException(string.Format("Key {0} does not exist in Bag", key));
                 }
                 return Value[index].Value;
             }
 
             set {
-                int index = Value.FindIndex(delegate(KeyValuePair<string, Variant> kv) { return kv.Key==key; });
-                if (index==-1)
+                int index = Value.FindIndex(kv => kv.Key == key);
+                if (index == -1)
                 {
-                    throw new VariantException(string.Format("Key {0} does not Exist in Bag", key));
+                    throw new VariantException(string.Format("Key {0} does not exist in Bag", key));
                 }
                 Value[index] = new KeyValuePair<string, Variant>(key, value);
             }

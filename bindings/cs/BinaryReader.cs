@@ -5,21 +5,32 @@
 
 using System;
 using System.Data;
+using System.IO;
+using System.Text;
 
 namespace Protean {
 
     public class BinaryReader
     {
-        public BinaryReader(System.IO.Stream stream, BinaryMode mode, IVariantObjectFactory factory)
+        public BinaryReader(System.IO.Stream stream, BinaryMode mode, IVariantObjectFactory factory, bool requireSeekableReader)
         {
             m_mode = mode;
             m_factory = factory;
             m_stream = stream;
+        	m_requireSeekableReader = requireSeekableReader;
         }
 
-        public BinaryReader(System.IO.Stream stream) :
-            this(stream, BinaryMode.Default, null)
-        { }
+        public BinaryReader(System.IO.Stream stream, BinaryMode mode, IVariantObjectFactory factory) :
+            this(stream, BinaryMode.Default, null, false)
+        {}
+
+		public BinaryReader(System.IO.Stream stream, bool requireSeekableReader) :
+            this(stream, BinaryMode.Default, null, requireSeekableReader)
+        {}
+
+		public BinaryReader(System.IO.Stream stream) :
+            this(stream, BinaryMode.Default, null, false)
+        {}
     
         public Variant Read()
         {
@@ -36,12 +47,36 @@ namespace Protean {
             }
         }
 
-        public static Variant FromBytes(byte[] bytes)
+        unsafe public static Variant FromBytes(byte* bytes, long length)
         {
-            return FromBytes(bytes, BinaryMode.Default, null);
+            return FromBytes(bytes, length, BinaryMode.Default, null);
         }
 
-        private void ReadHeader()
+		unsafe public static Variant FromBytes(byte* bytes, long length, BinaryMode mode, IVariantObjectFactory factory)
+		{
+			using (System.IO.UnmanagedMemoryStream ms = new System.IO.UnmanagedMemoryStream(bytes, length))
+			{
+				BinaryReader reader = new BinaryReader(ms, mode, factory);
+				return reader.Read();
+			}
+		}
+
+		public static Variant FromBytes(byte[] bytes)
+		{
+			return FromBytes(bytes, BinaryMode.Default, null);
+		}
+
+    	protected long Position
+    	{
+			get { return m_filter.Position; }
+    	}
+
+		protected void Seek(long position, SeekOrigin origin)
+		{
+			m_filter.Seek(position, origin);
+		}
+
+    	protected void ReadHeader()
         {
             byte[] bytes = new byte[4];
             m_stream.Read(bytes, 0, 4);
@@ -65,7 +100,25 @@ namespace Protean {
                     throw new VariantException("Binary data appears to contain ZLIB header which is currently not supported in the protean.NET BinaryReader");
                 }
 
-                m_filter = new System.IO.Compression.DeflateStream(m_stream, System.IO.Compression.CompressionMode.Decompress, true);
+                System.IO.Compression.DeflateStream deflateStream = new System.IO.Compression.DeflateStream(m_stream, System.IO.Compression.CompressionMode.Decompress, true);
+
+				if (m_requireSeekableReader)
+				{
+					MemoryStream deflatedStream = new MemoryStream();
+
+					int value;
+
+					while ((value = deflateStream.ReadByte()) != -1)
+					{
+						deflatedStream.WriteByte((byte)value);
+					}
+
+					m_filter = new MemoryStream(deflatedStream.GetBuffer(), 0, (int)deflatedStream.Length, false);
+				}
+				else
+				{
+					m_filter = deflateStream;
+				}
             }
             else
             {
@@ -75,11 +128,11 @@ namespace Protean {
 
         delegate object ReadDelegate();
 
-        private Variant ReadVariant()
+        protected Variant ReadVariant()
         {
-            Variant.EnumType type = (Variant.EnumType)ReadUInt32();
+        	Variant.EnumType type = ReadType();
 
-            switch (type)
+        	switch (type)
             {
                 case Variant.EnumType.None:
                     return new Variant(Variant.EnumType.None);
@@ -222,13 +275,19 @@ namespace Protean {
             }
         }
 
-        private byte[] ReadBytes(int length, bool readPadding)
+    	protected Variant.EnumType ReadType()
+    	{
+    		return (Variant.EnumType)ReadUInt32();
+    	}
+
+    	private byte[] ReadBytes(int length, bool readPadding)
         {
             byte[] bytes = ReadBytes(length);
 
             if (readPadding)
             {
                 int residual = (4 - (length % 4)) % 4;
+
                 for (int i = 0; i < residual; ++i)
                 {
                     m_filter.ReadByte();
@@ -237,49 +296,63 @@ namespace Protean {
 
             return bytes;
         }
-        private byte[] ReadBytes(int length)
+		protected byte[] ReadBytes(int length)
         {
             byte[] bytes = new byte[length];
             m_filter.Read(bytes, 0, length);
             return bytes;
         }
-        private bool ReadBoolean()
+		protected bool ReadBoolean()
         {
             return ReadInt32()!=0;
         }
 
-        private string ReadString()
+		protected string ReadString()
         {
-            Int32 length = ReadInt32();
-            byte[] bytes = ReadBytes(length, true);
+			Int32 length = ReadInt32();
 
-            return System.Text.Encoding.ASCII.GetString(bytes, 0, length);
+			if (length > 0)
+			{
+				byte[] bytes = ReadBytes(length, true);
+
+				unsafe
+				{
+					fixed (byte* ptr = bytes)
+					{
+						return new string((sbyte*) ptr, 0, length);
+					}
+				}
+			}
+			else
+			{
+				return "";
+			}
         }
-        private float ReadFloat()
+		protected float ReadFloat()
         {
             return System.BitConverter.ToSingle(ReadBytes(sizeof(float)), 0);
         }
-        private double ReadDouble()
+		protected double ReadDouble()
         {
             return System.BitConverter.Int64BitsToDouble(ReadInt64());
         }
-        private Int32 ReadInt32()
+		protected Int32 ReadInt32()
         {
             return System.BitConverter.ToInt32(ReadBytes(sizeof(Int32)), 0);
         }
-        private UInt32 ReadUInt32()
+		protected UInt32 ReadUInt32()
         {
             return System.BitConverter.ToUInt32(ReadBytes(sizeof(UInt32)), 0);
         }
-        private Int64 ReadInt64()
+		protected Int64 ReadInt64()
         {
             return System.BitConverter.ToInt64(ReadBytes(sizeof(Int64)), 0);
         }
-        private UInt64 ReadUInt64()
+		protected UInt64 ReadUInt64()
         {
             return System.BitConverter.ToUInt64(ReadBytes(sizeof(UInt64)), 0);
         }
-        private TimeSpan ReadTime()
+		protected TimeSpan ReadTime()
         {
             Int64 totalMillis = ReadInt64();
 
@@ -288,7 +361,7 @@ namespace Protean {
 
         static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
 
-        private DateTime ReadDateTime()
+		protected DateTime ReadDateTime()
         {
             long totalMillis = ReadInt64();
 
@@ -301,7 +374,7 @@ namespace Protean {
                 return new DateTime(Variant.MinDateTime.Ticks + totalMillis * 10000);
             }
         }
-        private DataTable ReadDataTable()
+		protected DataTable ReadDataTable()
         {
             int numCols = ReadInt32();
             int numRows = ReadInt32();
@@ -428,10 +501,309 @@ namespace Protean {
             return array;
         }
 
-        private readonly System.IO.Stream m_stream;
+		protected void SkipVariant()
+		{
+			Variant.EnumType type = ReadType();
+
+			switch (type)
+			{
+				case Variant.EnumType.None:
+					break;
+				case Variant.EnumType.String:
+					SkipString();
+					break;
+				case Variant.EnumType.Any:
+					SkipString();
+					break;
+				case Variant.EnumType.Float:
+					SkipFloat();
+					break;
+				case Variant.EnumType.Double:
+					SkipDouble();
+					break;
+				case Variant.EnumType.Int32:
+					SkipInt32();
+					break;
+				case Variant.EnumType.UInt32:
+					SkipUInt32();
+					break;
+				case Variant.EnumType.Int64:
+					SkipInt64();
+					break;
+				case Variant.EnumType.UInt64:
+					SkipUInt64();
+					break;
+				case Variant.EnumType.Boolean:
+					SkipBoolean();
+					break;
+				case Variant.EnumType.Time:
+					if ((m_mode & BinaryMode.DateTimeAsTicks) == 0)
+					{
+						throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
+					}
+					SkipTime();
+					break;
+				case Variant.EnumType.DateTime:
+					if ((m_mode & BinaryMode.DateTimeAsTicks) == 0)
+					{
+						throw new VariantException("Binary data has DateTimeAsTicks mode disabled which is not supported in the protean.NET BinaryReader");
+					}
+					SkipDateTime();
+					break;
+				case Variant.EnumType.Date:
+					throw new VariantException("Attempt to read Date variant which is no longer supported");
+				case Variant.EnumType.Tuple:
+				case Variant.EnumType.List:
+					{
+						int length = ReadInt32();
+
+						for (int i = 0; i < length; ++i)
+						{
+							SkipVariant();
+						}
+					}
+					break;
+				case Variant.EnumType.Dictionary:
+				case Variant.EnumType.Bag:
+					{
+						int length = ReadInt32();
+
+						for (int i = 0; i < length; ++i)
+						{
+							SkipString();
+							SkipVariant();
+						}
+					}
+					break;
+				case Variant.EnumType.TimeSeries:
+					{
+						int length = ReadInt32();
+
+						for (int i = 0; i < length; ++i)
+						{
+							SkipDateTime();
+							SkipVariant();
+						}
+					}
+					break;
+				case Variant.EnumType.Object:
+					{
+						SkipString();
+						SkipInt32();
+						SkipVariant();
+					}
+					break;
+				case Variant.EnumType.Exception:
+					{
+						SkipString();
+						SkipString();
+						SkipString();
+						SkipString();
+					}
+					break;
+				case Variant.EnumType.Buffer:
+					{
+						int length = ReadInt32();
+						SkipBytes(length, true);
+					}
+					break;
+				case Variant.EnumType.DataTable:
+					{
+						SkipDataTable();
+					}
+					break;
+				case Variant.EnumType.Array:
+					{
+						SkipArray();
+					}
+					break;
+				default:
+					throw new VariantException("Case exhaustion: " + type.ToString());
+			}
+		}
+
+		private void SkipBytes(int length, bool readPadding)
+		{
+			m_filter.Position += length;
+
+			if (readPadding)
+			{
+				m_filter.Position += (4 - (length % 4)) % 4;
+			}
+		}
+
+		private void SkipBytes(int length)
+		{
+			m_filter.Seek(length, SeekOrigin.Current);
+		}
+
+		private void SkipDataTable()
+		{
+			int numCols = ReadInt32();
+			int numRows = ReadInt32();
+
+			Action[] columnSkippers = new Action[numCols];
+			Variant.EnumType[] colTypes = new Variant.EnumType[numCols];
+
+			for (int i = 0; i < numCols; ++i)
+			{
+				colTypes[i] = (Variant.EnumType)ReadInt32();
+
+				switch (colTypes[i])
+				{
+					case VariantBase.EnumType.Float:
+						columnSkippers[i] = SkipFloat;
+						break;
+					case VariantBase.EnumType.Double:
+						columnSkippers[i] = SkipDouble;
+						break;
+					case VariantBase.EnumType.Boolean:
+						columnSkippers[i] = SkipBoolean;
+						break;
+					case VariantBase.EnumType.String:
+						columnSkippers[i] = SkipString;
+						break;
+					case VariantBase.EnumType.Int32:
+						columnSkippers[i] = SkipInt32;
+						break;
+					case VariantBase.EnumType.UInt32:
+						columnSkippers[i] = SkipUInt32;
+						break;
+					case VariantBase.EnumType.Int64:
+						columnSkippers[i] = SkipInt64;
+						break;
+					case VariantBase.EnumType.UInt64:
+						columnSkippers[i] = SkipUInt64;
+						break;
+					case VariantBase.EnumType.Time:
+						columnSkippers[i] = SkipTime;
+						break;
+					case VariantBase.EnumType.DateTime:
+						columnSkippers[i] = SkipDateTime;
+						break;
+					default:
+						throw new VariantException("Case exhaustion: " + colTypes[i]);
+				}
+			}
+
+			for (int i = 0; i < numCols; ++i)
+			{
+				SkipString();
+			}
+
+			for (int i = 0; i < numRows; ++i)
+			{
+				for (int j = 0; j < numCols; ++j)
+				{
+					columnSkippers[j]();
+				}
+			}
+		}
+
+		private void SkipArray()
+		{
+			int size = ReadInt32();
+			Variant.EnumType elementType = (Variant.EnumType)ReadInt32();
+
+			Action skipper;
+
+			switch (elementType)
+			{
+				case VariantBase.EnumType.Float:
+					skipper = SkipFloat;
+					break;
+				case VariantBase.EnumType.Double:
+					skipper = SkipDouble;
+					break;
+				case VariantBase.EnumType.Boolean:
+					skipper = SkipBoolean;
+					break;
+				case VariantBase.EnumType.String:
+					skipper = SkipString;
+					break;
+				case VariantBase.EnumType.Int32:
+					skipper = SkipInt32;
+					break;
+				case VariantBase.EnumType.UInt32:
+					skipper = SkipUInt32;
+					break;
+				case VariantBase.EnumType.Int64:
+					skipper = SkipInt64;
+					break;
+				case VariantBase.EnumType.UInt64:
+					skipper = SkipUInt64;
+					break;
+				case VariantBase.EnumType.Time:
+					skipper = SkipTime;
+					break;
+				case VariantBase.EnumType.DateTime:
+					skipper = SkipDateTime;
+					break;
+				default:
+					throw new VariantException("Case exhaustion: " + elementType);
+			}
+
+			for (int i = 0; i < size; ++i)
+			{
+				skipper();
+			}
+		}
+
+		private void SkipDateTime()
+		{
+			SkipInt64();
+		}
+
+		private void SkipTime()
+		{
+			SkipInt64();
+		}
+
+		private void SkipBoolean()
+		{
+			SkipInt32();
+		}
+
+		private void SkipUInt64()
+		{
+			SkipBytes(sizeof(UInt64));
+		}
+
+		private void SkipInt64()
+		{
+			SkipBytes(sizeof(Int64));
+		}
+
+		private void SkipUInt32()
+		{
+			SkipBytes(sizeof(UInt32));
+		}
+
+		private void SkipInt32()
+		{
+			SkipBytes(sizeof(Int32));
+		}
+
+		private void SkipDouble()
+		{
+			SkipInt64();
+		}
+
+		private void SkipFloat()
+		{
+			SkipBytes(sizeof(float));
+		}
+
+    	private void SkipString()
+    	{
+			SkipBytes(ReadInt32(), true);
+    	}
+
+    	private readonly System.IO.Stream m_stream;
         private System.IO.Stream m_filter;
         private BinaryMode m_mode;
         private readonly IVariantObjectFactory m_factory;
+    	private readonly bool m_requireSeekableReader;
     }
 
 } // Protean

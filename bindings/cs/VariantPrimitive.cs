@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace Protean {
 
     // Primitives
-    internal abstract class VariantPrimitiveBase
+    public abstract class VariantPrimitiveBase
     {
-        static Dictionary<Type, VariantBase.EnumType> m_typeToEnumMapping =
+        static readonly Dictionary<Type, VariantBase.EnumType> m_typeToEnumMapping =
             new Dictionary<Type, VariantBase.EnumType> {
 		        { typeof(string), VariantBase.EnumType.String },
 		        { typeof(bool), VariantBase.EnumType.Boolean },
@@ -25,7 +25,7 @@ namespace Protean {
                 { typeof(TimeSpan), VariantBase.EnumType.Time }
             };
 
-        static Dictionary<VariantBase.EnumType, Type> m_enumToTypeMapping =
+        static readonly Dictionary<VariantBase.EnumType, Type> m_enumToTypeMapping =
             new Dictionary<VariantBase.EnumType, Type> {
 		        { VariantBase.EnumType.String, typeof(string) },
 		        { VariantBase.EnumType.Boolean, typeof(bool) },
@@ -87,28 +87,28 @@ namespace Protean {
             }
         }
 
-        public static VariantBase.EnumType TypeToEnum(Type type)
+		public static VariantBase.EnumType TypeToEnum(Type type)
         {
-            if (m_typeToEnumMapping.ContainsKey(type))
-            {
-                return m_typeToEnumMapping[type];
-            }
-            else
-            {
-                throw new VariantException("Case exhaustion: " + type.Name);
-            }
+			VariantBase.EnumType enumType;
+
+			if (!m_typeToEnumMapping.TryGetValue(type, out enumType))
+			{
+				throw new VariantException("Case exhaustion: " + type.Name);
+			}
+
+			return enumType;
         }
 
         public static Type EnumToType(Variant.EnumType type)
         {
-            if (m_enumToTypeMapping.ContainsKey(type))
-            {
-                return m_enumToTypeMapping[type];
-            }
-            else
+        	Type result;
+
+            if (!m_enumToTypeMapping.TryGetValue(type, out result))
             {
                 throw new VariantException("Case exhaustion: " + type);
             }
+
+        	return result;
         }
     }
 

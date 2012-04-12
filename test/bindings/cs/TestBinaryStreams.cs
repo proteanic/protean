@@ -94,28 +94,28 @@ namespace Protean.Test
             v1.Add("String", new Variant(argString));
             v1.Add("None", new Variant(Variant.EnumType.None));
 
-            byte[] bytesCompressed = BinaryWriter.ToBytes(v1, BinaryMode.Compress);
-            byte[] bytesDefault = BinaryWriter.ToBytes(v1);
-
             const int numIterations = 50000;
+
+            Variant v2 = new Variant(Variant.EnumType.List);
+
+            for (int i = 0; i < numIterations; ++i)
+            {
+                v2.Add(v1);
+            }
 
             DateTime t1 = DateTime.Now;
 
             // C# serialisation, compressed
-            for (int i = 0; i < numIterations; ++i)
-            {
-                byte[] bytes = BinaryWriter.ToBytes(v1, BinaryMode.Compress);
-                Assert.DoesNotThrow(delegate { BinaryReader.FromBytes(bytes); });
-            }
+            byte[] bytes = BinaryWriter.ToBytes(v2, BinaryMode.Compress);
+            System.Console.WriteLine(bytes.Length);
+            Assert.DoesNotThrow(() => BinaryReader.FromBytes(bytes));
 
             DateTime t2 = DateTime.Now;
 
             // C# serialisation, default
-            for (int i = 0; i < numIterations; ++i)
-            {
-                byte[] bytes = BinaryWriter.ToBytes(v1);
-                Assert.DoesNotThrow(delegate { BinaryReader.FromBytes(bytes); });
-            }
+            bytes = BinaryWriter.ToBytes(v2);
+            System.Console.WriteLine(bytes.Length);
+            Assert.DoesNotThrow(() => BinaryReader.FromBytes(bytes));
 
             DateTime t3 = DateTime.Now;
 

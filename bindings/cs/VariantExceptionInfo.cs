@@ -57,12 +57,12 @@ namespace Protean {
         {
             StringBuilder sb = new StringBuilder(Class + '(' + Message + ')');
 
-            if (Source.Length>0)
+            if (!string.IsNullOrEmpty(Source))
             {
                 sb.Append(" in: " + Source);
             }
 
-            if (Stack.Length > 0)
+            if (!string.IsNullOrEmpty(Stack))
             {
                 sb.Append("\n" + Stack);
             }
