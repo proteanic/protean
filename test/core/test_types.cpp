@@ -161,6 +161,14 @@ BOOST_AUTO_TEST_CASE( ms_specific_types )
         BOOST_CHECK(v.is<unsigned __int64>());
         BOOST_CHECK_EQUAL(v.as<unsigned __int64>(), 0);
     }
+
+	{
+        variant i(3);
+        variant j(4);
+		i<j;
+		BOOST_CHECK(i<j);
+	}
+
 #   endif
 }
 

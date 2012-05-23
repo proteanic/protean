@@ -200,7 +200,7 @@ namespace protean {
     template<typename T>
     static int compare_using_less(const T& lhs, const T& rhs)
     {
-        if (lhs==lhs)
+        if (lhs==rhs)
         {
             return 0;
         }
