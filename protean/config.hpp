@@ -27,9 +27,17 @@
 
 #if !defined(XERCES_BINARY)
 #if defined(_DEBUG)
-#   define XERCES_BINARY "xerces-c_3D"
+#    if defined XERCES_STATIC_LIBRARY
+#       define XERCES_BINARY "xerces-c_static_3D"
+#    else
+#       define XERCES_BINARY "xerces-c_3D"
+#    endif
 #else
-#   define XERCES_BINARY "xerces-c_3"
+#    if defined XERCES_STATIC_LIBRARY
+#       define XERCES_BINARY "xerces-c_static_3"
+#    else
+#       define XERCES_BINARY "xerces-c_3"
+#    endif
 #endif
 #endif
 
