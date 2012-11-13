@@ -5,10 +5,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <_PropertySheetDisplayName>Compiler Settings (vc100)</_PropertySheetDisplayName>
+    <_PropertySheetDisplayName>Compiler Settings</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../;$(BOOST_INCLUDE_PATH);$(XERCES_INCLUDE_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BOOST_FILESYSTEM_VERSION=2;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -18,3 +19,4 @@
     </BuildMacro>
   </ItemGroup>
 </Project>
+
