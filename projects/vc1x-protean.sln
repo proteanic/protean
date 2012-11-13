@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc10-protean", "vc10\vc10-protean.vcxproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-protean", "vc1x\vc1x-protean.vcxproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc10-test-protean", "vc10\vc10-test-protean.vcxproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-test-protean", "vc1x\vc1x-test-protean.vcxproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc10-protean.net", "vc10\vc10-protean.net.csproj", "{007B367A-C2DD-4DDD-A702-44B40B8C09A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-protean.net", "vc1x\vc1x-protean.net.csproj", "{007B367A-C2DD-4DDD-A702-44B40B8C09A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc10-test-protean.net ", "vc10\vc10-test-protean.net.csproj", "{867F4343-F062-4937-BD8E-2C00F64AB160}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-test-protean.net ", "vc1x\vc1x-test-protean.net.csproj", "{867F4343-F062-4937-BD8E-2C00F64AB160}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

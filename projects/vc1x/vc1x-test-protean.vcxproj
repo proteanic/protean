@@ -77,90 +77,90 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-release.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-static.props" />
+    <Import Project="vc1x-x86.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-release.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-static.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-debug.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-static.props" />
+    <Import Project="vc1x-x86.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-debug.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-static.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-release.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-dynamic.props" />
+    <Import Project="vc1x-x86.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-release.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-dynamic.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-debug.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-dynamic.props" />
+    <Import Project="vc1x-x86.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-debug.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-dynamic.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86_64.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-release.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-static.props" />
+    <Import Project="vc1x-x86_64.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-release.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-static.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86_64.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-debug.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-static.props" />
+    <Import Project="vc1x-x86_64.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-debug.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-static.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86_64.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-release.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-dynamic.props" />
+    <Import Project="vc1x-x86_64.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-release.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-dynamic.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc10-x86_64.props" />
-    <Import Project="vc10-paths.props" />
-    <Import Project="vc10-version.props" />
-    <Import Project="vc10-compiler.props" />
-    <Import Project="vc10-compiler-debug.props" />
-    <Import Project="vc10-linker.props" />
-    <Import Project="vc10-output-dynamic.props" />
+    <Import Project="vc1x-x86_64.props" />
+    <Import Project="vc1x-paths.props" />
+    <Import Project="vc1x-version.props" />
+    <Import Project="vc1x-compiler.props" />
+    <Import Project="vc1x-compiler-debug.props" />
+    <Import Project="vc1x-linker.props" />
+    <Import Project="vc1x-output-dynamic.props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -191,7 +191,7 @@
     <ClCompile Include="..\..\test\core\test_xml_streams.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="vc10-protean.vcxproj">
+    <ProjectReference Include="vc1x-protean.vcxproj">
       <Project>{aa074fa4-0f64-4ee6-9397-4eb25b17f4af}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

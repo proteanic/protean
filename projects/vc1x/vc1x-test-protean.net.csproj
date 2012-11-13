@@ -140,7 +140,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="vc10-protean.net.csproj">
+    <ProjectReference Include="vc1x-protean.net.csproj">
       <Project>{007B367A-C2DD-4DDD-A702-44B40B8C09A1}</Project>
       <Name>vc10-protean.net</Name>
     </ProjectReference>
