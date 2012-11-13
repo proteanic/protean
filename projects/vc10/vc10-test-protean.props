@@ -9,4 +9,8 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
+  <PropertyGroup>
+    <LocalDebuggerEnvironment>PATH=$(XERCES_BIN_PATH);%PATH%
+$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+  </PropertyGroup>
 </Project>
