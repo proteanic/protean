@@ -7,6 +7,11 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>64bit Settings</_PropertySheetDisplayName>
   </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="LABEL64OREMPTY">
       <Value>$(LABEL64OREMPTY)</Value>
