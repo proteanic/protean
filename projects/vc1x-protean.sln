@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-protean", "vc1x\vc1x-protean.vcxproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-test-protean", "vc1x\vc1x-test-protean.vcxproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"

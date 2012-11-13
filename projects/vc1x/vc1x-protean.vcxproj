@@ -77,6 +77,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -88,6 +89,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -99,6 +101,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -110,6 +113,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -121,6 +125,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86_64.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -132,6 +137,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86_64.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -143,6 +149,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86_64.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -154,6 +161,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="vc1x-toolset.props" />
     <Import Project="vc1x-x86_64.props" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
@@ -167,7 +175,7 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir>build\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>bin\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>tmp\$(TOOLSET)\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">protean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Static Debug|Win32'">libprotean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">protean-$(CompilerFlag)-mt-$(VersionString)</TargetName>
@@ -176,6 +184,12 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Static Debug|x64'">libprotean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">protean-$(CompilerFlag)-mt-$(VersionString)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">protean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TOOLSET)'=='vc100'" Label="Configuration">
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TOOLSET)'=='vc110'" Label="Configuration">
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\array_iterator.cpp" />
