@@ -20,8 +20,12 @@
 #   define PROTEAN_LIB_TOOLSET "vc80"
 #elif (_MSC_VER == 1500)
 #   define PROTEAN_LIB_TOOLSET "vc90"
-#elif (_MSC_VER >= 1600)
+#elif (_MSC_VER == 1600)
 #   define PROTEAN_LIB_TOOLSET "vc100"
+#elif (_MSC_VER == 1700)
+#   define PROTEAN_LIB_TOOLSET "vc110"
+#else
+#   define PROTEAN_LIB_TOOLSET "undefined"
 #endif
 
 #if defined(_MT) || defined(__MT__)

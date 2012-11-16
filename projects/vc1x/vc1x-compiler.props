@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Label="UserMacros">
-    <CompilerFlag>$(TOOLSET)</CompilerFlag>
-  </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>Compiler Settings</_PropertySheetDisplayName>
@@ -13,10 +10,5 @@
       <PreprocessorDefinitions>BOOST_FILESYSTEM_VERSION=3;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <BuildMacro Include="CompilerFlag">
-      <Value>$(CompilerFlag)</Value>
-    </BuildMacro>
-  </ItemGroup>
 </Project>
 

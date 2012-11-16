@@ -4,6 +4,9 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>Debug Compiler Settings</_PropertySheetDisplayName>
   </PropertyGroup>
+  <PropertyGroup>
+    <OptimsationSymbol>gd-</OptimsationSymbol>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

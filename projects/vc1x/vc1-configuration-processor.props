@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <_PropertySheetDisplayName>Toolset vc110 Settings</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc100 Release' or '$(Configuration)'=='Release'">
+    <ConfiguredOptimisation>release</ConfiguredOptimisation>
+    <ConfiguredOutput>dynamic</ConfiguredOutput>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc100 Debug' or '$(Configuration)'=='Debug'">
+    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
+    <ConfiguredOutput>dynamic</ConfiguredOutput>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc100 Static Release'">
+    <ConfiguredOptimisation>release</ConfiguredOptimisation>
+    <ConfiguredOutput>static</ConfiguredOutput>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc100 Static Debug'">
+    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
+    <ConfiguredOutput>static</ConfiguredOutput>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc110 Release'">
+    <ConfiguredOptimisation>release</ConfiguredOptimisation>
+    <ConfiguredOutput>dynamic</ConfiguredOutput>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc110 Debug'">
+    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
+    <ConfiguredOutput>dynamic</ConfiguredOutput>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc110 Static Release'">
+    <ConfiguredOptimisation>release</ConfiguredOptimisation>
+    <ConfiguredOutput>static</ConfiguredOutput>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='vc110 Static Debug'">
+    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
+    <ConfiguredOutput>static</ConfiguredOutput>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+
+</Project>
+

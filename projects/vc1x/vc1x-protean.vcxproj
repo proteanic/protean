@@ -1,36 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="vc100 Debug|Win32">
+      <Configuration>vc100 Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="vc100 Debug|x64">
+      <Configuration>vc100 Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="vc100 Release|Win32">
+      <Configuration>vc100 Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="vc100 Release|x64">
+      <Configuration>vc100 Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Static Debug|Win32">
-      <Configuration>Static Debug</Configuration>
+    <ProjectConfiguration Include="vc100 Static Debug|Win32">
+      <Configuration>vc100 Static Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Static Debug|x64">
-      <Configuration>Static Debug</Configuration>
+    <ProjectConfiguration Include="vc100 Static Debug|x64">
+      <Configuration>vc100 Static Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Static Release|Win32">
-      <Configuration>Static Release</Configuration>
+    <ProjectConfiguration Include="vc100 Static Release|Win32">
+      <Configuration>vc100 Static Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Static Release|x64">
-      <Configuration>Static Release</Configuration>
+    <ProjectConfiguration Include="vc100 Static Release|x64">
+      <Configuration>vc100 Static Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Debug|Win32">
+      <Configuration>vc110 Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Debug|x64">
+      <Configuration>vc110 Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Release|Win32">
+      <Configuration>vc110 Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Release|x64">
+      <Configuration>vc110 Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Static Debug|Win32">
+      <Configuration>vc110 Static Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Static Debug|x64">
+      <Configuration>vc110 Static Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Static Release|Win32">
+      <Configuration>vc110 Static Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc110 Static Release|x64">
+      <Configuration>vc110 Static Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -40,156 +72,38 @@
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|Win32'" Label="Configuration">
+  <Import Project="vc1-configuration-processor.props" />
+  <PropertyGroup Condition="'$(ConfiguredOutput)'=='static'">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(ConfiguredOutput)'=='dynamic'">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|Win32'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86.props" />
+    <Import Project="vc$(PlatformToolsetVersion)-toolset.props" />
+    <Import Project="vc1x-x86.props" Condition="'$(Platform)'=='Win32'" />
+    <Import Project="vc1x-x86_64.props" Condition="'$(Platform)'=='x64'" />
     <Import Project="vc1x-paths.props" />
     <Import Project="vc1x-version.props" />
     <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-release.props" />
+    <Import Project="vc1x-compiler-$(ConfiguredOptimisation).props" />
     <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-static.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-debug.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-static.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-release.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-dynamic.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-debug.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-dynamic.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86_64.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-release.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-static.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Static Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86_64.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-debug.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-static.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86_64.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-release.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-dynamic.props" />
-    <Import Project="$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="vc1x-toolset.props" />
-    <Import Project="vc1x-x86_64.props" />
-    <Import Project="vc1x-paths.props" />
-    <Import Project="vc1x-version.props" />
-    <Import Project="vc1x-compiler.props" />
-    <Import Project="vc1x-compiler-debug.props" />
-    <Import Project="vc1x-linker.props" />
-    <Import Project="vc1x-output-dynamic.props" />
+    <Import Project="vc1x-output-$(ConfiguredOutput).props" />
     <Import Project="$(ProjectName).props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir>build\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>tmp\$(TOOLSET)\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">protean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Static Debug|Win32'">libprotean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">protean-$(CompilerFlag)-mt-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Static Release|Win32'">libprotean-$(CompilerFlag)-mt-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Static Release|x64'">libprotean-$(CompilerFlag)-mt-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Static Debug|x64'">libprotean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">protean-$(CompilerFlag)-mt-$(VersionString)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">protean-$(CompilerFlag)-mt-gd-$(VersionString)</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TOOLSET)'=='vc100'" Label="Configuration">
-    <PlatformToolset>v100</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TOOLSET)'=='vc110'" Label="Configuration">
-    <PlatformToolset>v110</PlatformToolset>
+    <IntDir>tmp\vc$(PlatformToolsetVersion)\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(ConfiguredOutput)'=='dynamic'">protean-vc$(PlatformToolsetVersion)-mt-$(OptimsationSymbol)$(VersionString)</TargetName>
+    <TargetName Condition="'$(ConfiguredOutput)'== 'static'">libprotean-vc$(PlatformToolsetVersion)-mt-$(OptimsationSymbol)$(VersionString)</TargetName>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\array_iterator.cpp" />

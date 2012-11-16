@@ -4,6 +4,9 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>Release Compiler Settings</_PropertySheetDisplayName>
   </PropertyGroup>
+  <PropertyGroup>
+    <OptimsationSymbol></OptimsationSymbol>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
