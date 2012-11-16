@@ -4,45 +4,26 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>Toolset vc110 Settings</_PropertySheetDisplayName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc100 Release' or '$(Configuration)'=='Release'">
+
+  <PropertyGroup Condition="'$(Configuration.Contains(`Release`))'=='True'">
     <ConfiguredOptimisation>release</ConfiguredOptimisation>
-    <ConfiguredOutput>dynamic</ConfiguredOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration.Contains(`Debug`))'=='True'">
+    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration.Contains(`vc100`))'=='True'">
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc100 Debug' or '$(Configuration)'=='Debug'">
-    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
+  <PropertyGroup Condition="'$(Configuration.Contains(`vc110`))'=='True'">
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration.Contains(`Static`))'=='True'">
+    <ConfiguredOutput>static</ConfiguredOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration.Contains(`Static`))'=='False'">
     <ConfiguredOutput>dynamic</ConfiguredOutput>
-    <PlatformToolset>v100</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc100 Static Release'">
-    <ConfiguredOptimisation>release</ConfiguredOptimisation>
-    <ConfiguredOutput>static</ConfiguredOutput>
-    <PlatformToolset>v100</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc100 Static Debug'">
-    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
-    <ConfiguredOutput>static</ConfiguredOutput>
-    <PlatformToolset>v100</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc110 Release'">
-    <ConfiguredOptimisation>release</ConfiguredOptimisation>
-    <ConfiguredOutput>dynamic</ConfiguredOutput>
-    <PlatformToolset>v110</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc110 Debug'">
-    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
-    <ConfiguredOutput>dynamic</ConfiguredOutput>
-    <PlatformToolset>v110</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc110 Static Release'">
-    <ConfiguredOptimisation>release</ConfiguredOptimisation>
-    <ConfiguredOutput>static</ConfiguredOutput>
-    <PlatformToolset>v110</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='vc110 Static Debug'">
-    <ConfiguredOptimisation>debug</ConfiguredOptimisation>
-    <ConfiguredOutput>static</ConfiguredOutput>
-    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
 
 </Project>
