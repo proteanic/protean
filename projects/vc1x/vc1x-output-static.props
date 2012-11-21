@@ -5,5 +5,8 @@
     <_PropertySheetDisplayName>Output static Settings</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>XERCES_STATIC_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
 </Project>

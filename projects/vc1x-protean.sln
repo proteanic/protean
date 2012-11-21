@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-test-protean", "vc1x\v
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-protean.net", "vc1x\vc1x-protean.net.csproj", "{007B367A-C2DD-4DDD-A702-44B40B8C09A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-test-protean.net ", "vc1x\vc1x-test-protean.net.csproj", "{867F4343-F062-4937-BD8E-2C00F64AB160}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-test-protean.net", "vc1x\vc1x-test-protean.net.csproj", "{867F4343-F062-4937-BD8E-2C00F64AB160}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,13 +102,9 @@ Global
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Release|x64.ActiveCfg = Release|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Release|x64.Build.0 = Release|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|Win32.ActiveCfg = Static Debug|Win32
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|Win32.Build.0 = Static Debug|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|x64.ActiveCfg = Static Debug|x64
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|x64.Build.0 = Static Debug|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|Win32.ActiveCfg = Static Release|Win32
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|Win32.Build.0 = Static Release|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|x64.ActiveCfg = Static Release|x64
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|x64.Build.0 = Static Release|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|Win32.ActiveCfg = Debug|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|Win32.Build.0 = Debug|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|x64.ActiveCfg = Debug|x64
@@ -118,13 +114,9 @@ Global
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Release|x64.ActiveCfg = Release|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Release|x64.Build.0 = Release|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|Win32.ActiveCfg = Static Debug|Win32
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|Win32.Build.0 = Static Debug|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|x64.ActiveCfg = Static Debug|x64
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|x64.Build.0 = Static Debug|x64
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|Win32.ActiveCfg = Static Release|Win32
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|Win32.Build.0 = Static Release|Win32
 		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|x64.ActiveCfg = Static Release|x64
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|x64.Build.0 = Static Release|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|Win32.ActiveCfg = Debug|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|Win32.Build.0 = Debug|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|x64.ActiveCfg = Debug|x64
@@ -134,13 +126,9 @@ Global
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Release|x64.ActiveCfg = Release|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Release|x64.Build.0 = Release|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|Win32.ActiveCfg = Static Debug|Win32
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|Win32.Build.0 = Static Debug|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|x64.ActiveCfg = Static Debug|x64
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|x64.Build.0 = Static Debug|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|Win32.ActiveCfg = Static Release|Win32
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|Win32.Build.0 = Static Release|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|x64.ActiveCfg = Static Release|x64
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|x64.Build.0 = Static Release|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|Win32.ActiveCfg = Debug|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|Win32.Build.0 = Debug|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|x64.ActiveCfg = Debug|x64
@@ -150,13 +138,9 @@ Global
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Release|x64.ActiveCfg = Release|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Release|x64.Build.0 = Release|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|Win32.ActiveCfg = Static Debug|Win32
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|Win32.Build.0 = Static Debug|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|x64.ActiveCfg = Static Debug|x64
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|x64.Build.0 = Static Debug|x64
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|Win32.ActiveCfg = Static Release|Win32
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|Win32.Build.0 = Static Release|Win32
 		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|x64.ActiveCfg = Static Release|x64
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|x64.Build.0 = Static Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
