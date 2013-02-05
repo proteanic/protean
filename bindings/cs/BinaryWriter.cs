@@ -39,10 +39,6 @@ namespace Protean
         public void Dispose()
         {
             Dispose(true);
-
-            // Use SupressFinalize in case a subclass
-            // of this type implements a finalizer.
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -53,7 +49,7 @@ namespace Protean
             {
                 if (disposing)
                 {
-                    if (m_filter != null)
+                    if (m_filter != null && (m_mode & BinaryMode.Compress) != 0)
                     {
                         m_filter.Dispose();
                     }
@@ -418,7 +414,7 @@ namespace Protean
 		private readonly Stream m_stream;
 		private Stream m_filter;
 		private readonly BinaryMode m_mode;
-        private const int c_bufferSize = 65536;
+	    private const int c_bufferSize = 4*1024;
         private bool m_disposed;
 	}
 }

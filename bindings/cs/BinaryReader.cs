@@ -17,6 +17,7 @@ namespace Protean {
             m_mode = mode;
             m_factory = factory;
             m_stream = stream;
+        	m_filter = stream;
         	m_requireSeekableReader = requireSeekableReader;
         }
 
@@ -119,10 +120,6 @@ namespace Protean {
 				{
 					m_filter = deflateStream;
 				}
-            }
-            else
-            {
-                m_filter = m_stream;
             }
         }
 
