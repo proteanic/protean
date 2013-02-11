@@ -1,0 +1,1 @@
+You can either install the attached .vsix or else drop the .natvis file into your %VSINSTALLDIR%\Common7\Packages\Debugger\Visualizers (requires admin access) or %USERPROFILE%\My Documents\Visual Studio 2012\Visualizers\ folder to install it.

@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010" xsi:schemaLocation="http://schemas.microsoft.com/vstudio/debugger/natvis/2010 file:///C:/Program%20Files%20(x86)/Microsoft%20Visual%20Studio%2011.0/Xml/Schemas/1033/natvis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Type Name="protean::variant">
+    <DisplayString Condition="m_type == protean::variant::None">None</DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Any &amp;&amp; ((protean::detail::string*)&amp;m_value.m_val)->m_stack[0] &amp; 0x1">
+      Any = {&amp;((protean::detail::string*)&amp;m_value.m_val)-&gt;m_stack[1],s}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Any">
+      Any = {((protean::detail::string*)&amp;m_value.m_val)-&gt;m_heapPtr,s}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::String &amp;&amp; ((protean::detail::string*)&amp;m_value.m_val)->m_stack[0] &amp; 0x1">
+      String = {&amp;((protean::detail::string*)&amp;m_value.m_val)-&gt;m_stack[1],s}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::String">
+      String = {((protean::detail::string*)&amp;m_value.m_val)-&gt;m_heapPtr,s}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Boolean">
+      Boolean = {(bool)m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Int32">
+      Int32 = {(int32_t)m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::UInt32">
+      UInt32 = {(uint32_t)m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Int64">
+      Int64 = {(int64_t)m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::UInt64">
+      UInt64 = {(uint64_t)m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Float">
+      Float = {*(float*)&amp;m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Double">
+      Double = {*(double*)&amp;m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Date">
+      Date = {*(boost::gregorian::date*)&amp;m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Time">
+      Time = {*(boost::posix_time::time_duration*)&amp;m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::DateTime">
+      DateTime = {*(boost::posix_time::ptime*)&amp;m_value.m_val}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::List">
+      List = [{((protean::detail::list*)m_value.m_ptr)-&gt;m_value._Mylast-((protean::detail::list*)m_value.m_ptr)-&gt;m_value._Myfirst}]
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Dictionary">
+      Dictionary = [{((protean::detail::dictionary*)m_value.m_ptr)-&gt;m_value._Mysize}]
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Bag">
+      Bag = [{((protean::detail::bag*)m_value.m_ptr)-&gt;m_value._Mysize}]
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Buffer">
+      Buffer = [{((protean::handle&lt;protean::detail::buffer&gt;*)m_value.m_val)-&gt;m_pointee-&gt;m_size}]
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Tuple">
+      Tuple = [{((protean::detail::tuple*)m_value.m_ptr)-&gt;m_size}]
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Exception">
+      Exception = {((protean::exception_data*)m_value.m_ptr)-&gt;m_type}
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::TimeSeries">
+      TimeSeries = [{((protean::detail::timeseries*)m_value.m_ptr)-&gt;m_value._Mylast-((protean::detail::timeseries*)m_value.m_ptr)-&gt;m_value._Myfirst}]
+    </DisplayString>
+    <DisplayString Condition="m_type == protean::variant::Tuple">
+      Object = {((protean::handle&lt;protean::object&gt;*)m_value.m_val)-&gt;m_pointee}]
+    </DisplayString>
+    <DisplayString>
+      Unknown variant type = {m_type}
+    </DisplayString>
+    <Expand>
+      <Item Condition="m_type == protean::variant::Any &amp;&amp; ((protean::detail::string*)&amp;m_value.m_val)->m_stack[0] &amp; 0x1" Name="Any">
+        &amp;((protean::detail::string*)&amp;m_value.m_val)-&gt;m_stack[1],s
+      </Item>
+      <Item Condition="m_type == protean::variant::Any &amp;&amp; !(((protean::detail::string*)&amp;m_value.m_val)->m_stack[0] &amp; 0x1)" Name="Any">
+        ((protean::detail::string*)&amp;m_value.m_val)-&gt;m_heapPtr,s
+      </Item>
+      <Item Condition="m_type == protean::variant::String &amp;&amp; ((protean::detail::string*)&amp;m_value.m_val)->m_stack[0] &amp; 0x1" Name="String">
+        &amp;((protean::detail::string*)&amp;m_value.m_val)-&gt;m_stack[1],s
+      </Item>
+      <Item Condition="m_type == protean::variant::String &amp;&amp; !(((protean::detail::string*)&amp;m_value.m_val)->m_stack[0] &amp; 0x1)" Name="String">
+        ((protean::detail::string*)&amp;m_value.m_val)-&gt;m_heapPtr,s
+      </Item>
+      <Item Condition="m_type == protean::variant::Boolean" Name="Boolean">
+        (bool)m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::Int32" Name="Int32">
+        (int32_t)m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::UInt32" Name="UInt32">
+        (uint32_t)m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::Int64" Name="Int64">
+        (int64_t)m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::UInt64" Name="UInt64">
+        (uint64_t)m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::Float" Name="Float">
+        *(float*)&amp;m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::Double" Name="Double">
+        *(double*)&amp;m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::Date" Name="Date">
+        *(boost::gregorian::date*)&amp;m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::Time" Name="Time">
+        *(boost::posix_time::time_duration*)&amp;m_value.m_val
+      </Item>
+      <Item Condition="m_type == protean::variant::DateTime" Name="DateTime">
+        *(boost::posix_time::ptime*)&amp;m_value.m_val
+      </Item>
+      <ArrayItems Condition="m_type == protean::variant::List">
+        <Size>((protean::detail::list*)m_value.m_ptr)-&gt;m_value._Mylast-((protean::detail::list*)m_value.m_ptr)-&gt;m_value._Myfirst</Size>
+        <ValuePointer>((protean::detail::list*)m_value.m_ptr)-&gt;m_value._Myfirst</ValuePointer>
+      </ArrayItems>
+      <TreeItems Condition="m_type == protean::variant::Dictionary">
+        <Size>((protean::detail::dictionary*)m_value.m_ptr)-&gt;m_value._Mysize</Size>
+        <HeadPointer>((protean::detail::dictionary*)m_value.m_ptr)-&gt;m_value._Myhead-&gt;_Parent</HeadPointer>
+        <LeftPointer>_Left</LeftPointer>
+        <RightPointer>_Right</RightPointer>
+        <ValueNode Condition="_Isnil == 0">_Myval</ValueNode>
+      </TreeItems>
+      <LinkedListItems Condition="m_type == protean::variant::Bag">
+        <Size> ((protean::detail::bag*)m_value.m_ptr)-&gt;m_value._Mysize</Size>
+        <HeadPointer> ((protean::detail::bag*)m_value.m_ptr)-&gt;m_value._Myhead-&gt;_Next</HeadPointer>
+        <NextPointer>_Next</NextPointer>
+        <ValueNode>_Myval</ValueNode>
+      </LinkedListItems>
+      <ArrayItems Condition="m_type == protean::variant::Buffer">
+        <Size>((protean::handle&lt;protean::detail::buffer&gt;*)&amp;m_value.m_val)-&gt;m_pointee-&gt;m_size</Size>
+        <ValuePointer>(unsigned char*)((protean::handle&lt;protean::detail::buffer&gt;*)&amp;m_value.m_val)-&gt;m_pointee-&gt;m_data</ValuePointer>
+      </ArrayItems>
+      <ArrayItems Condition="m_type == protean::variant::Tuple">
+        <Size>((protean::detail::tuple*)m_value.m_ptr)-&gt;m_size</Size>
+        <ValuePointer>((protean::detail::tuple*)m_value.m_ptr)-&gt;m_value</ValuePointer>
+      </ArrayItems>
+      <Item Condition="m_type == protean::variant::Exception" Name="Exception">
+        *(protean::exception_data*)m_value.m_ptr
+      </Item>
+      <ArrayItems Condition="m_type == protean::variant::TimeSeries">
+        <Size>((protean::detail::timeseries*)m_value.m_ptr)-&gt;m_value._Mylast-((protean::detail::timeseries*)m_value.m_ptr)-&gt;m_value._Myfirst</Size>
+        <ValuePointer>((protean::detail::timeseries*)m_value.m_ptr)-&gt;m_value._Myfirst</ValuePointer>
+      </ArrayItems>
+      <Item Condition="m_type == protean::variant::Object" Name="Object">
+        ((protean::handle&lt;protean::object&gt;*)&amp;m_value.m_val)-&gt;m_pointee
+      </Item>
+    </Expand>
+  </Type>
+</AutoVisualizer>
+
