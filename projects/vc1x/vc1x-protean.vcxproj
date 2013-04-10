@@ -105,6 +105,11 @@
     <TargetName Condition="'$(ConfiguredOutput)'=='dynamic'">protean-vc$(PlatformToolsetVersion)-mt-$(OptimsationSymbol)$(VersionString)</TargetName>
     <TargetName Condition="'$(ConfiguredOutput)'== 'static'">libprotean-vc$(PlatformToolsetVersion)-mt-$(OptimsationSymbol)$(VersionString)</TargetName>
   </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\array_iterator.cpp" />
     <ClCompile Include="..\..\src\bag.cpp" />
