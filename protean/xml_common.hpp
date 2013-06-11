@@ -40,6 +40,7 @@ namespace protean {
     extern PROTEAN_DECL const char* xml_default_element;
 
     extern PROTEAN_DECL const char* xml_text;
+    extern PROTEAN_DECL const char* xml_cdata;
     extern PROTEAN_DECL const char* xml_comment;
     extern PROTEAN_DECL const char* xml_instruction;
     extern PROTEAN_DECL const char* xml_attributes;

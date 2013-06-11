@@ -665,4 +665,25 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
+BOOST_AUTO_TEST_CASE(test_xml_cdata)
+{
+	variant root1(variant::Bag);
+	variant body(variant::Bag);
+	variant inner(variant::Bag);
+	variant cdata("some cdata");
+	inner.insert(xml_cdata, cdata);
+	body.insert("inner", inner);
+	root1.insert("body", body);
+
+    std::stringstream ss;
+    xml_writer writer(ss);
+    writer << root1;
+
+    variant root2;
+    xml_reader reader(ss);
+    reader >> root2;
+
+    BOOST_CHECK(root1.compare(root2)==0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
