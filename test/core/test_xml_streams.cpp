@@ -665,4 +665,26 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
     BOOST_CHECK_EQUAL(iss.str(), oss.str());
 }
 
+BOOST_AUTO_TEST_CASE(test_xml_cdata)
+{
+    static const std::string xml =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<body>\n"
+        "<inner><![CDATA[some cdata]]></inner>\n"
+        "</body>";
+
+    std::stringstream iss;
+    iss << xml;
+
+    variant v;
+    xml_reader reader(iss, xml_mode::Preserve);
+    reader >> v;
+
+    std::stringstream ss;
+    xml_writer writer(ss, xml_mode::Preserve);
+    writer << v;
+
+    BOOST_CHECK(xml.compare(ss.str()) == 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

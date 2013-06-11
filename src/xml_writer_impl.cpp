@@ -143,6 +143,10 @@ namespace protean { namespace detail {
                         {
                             boost::throw_exception(variant_error("Encountered text in document node"));
                         }
+                        else if (it.key()==xml_cdata)
+                        {
+                            boost::throw_exception(variant_error("Encountered CDATA in document node"));
+                        }
                         else if (it.key()==xml_attributes)
                         {
                             boost::throw_exception(variant_error("Encountered attributes in document node"));
@@ -222,6 +226,11 @@ namespace protean { namespace detail {
     void xml_writer_impl::write_comment(const variant& comment)
     {
         m_os << "<!--" << comment.as<std::string>() << "-->";
+    }
+
+    void xml_writer_impl::write_cdata(const variant& cdata)
+    {
+        m_os << "<![CDATA[" << cdata.as<std::string>() << "]]>";
     }
 
     void xml_writer_impl::write_text(const variant& text)
@@ -345,6 +354,11 @@ namespace protean { namespace detail {
                         else if (it.key()==xml_text)
                         {
                             write_text(it.value());
+                            prev_is_text = true;
+                        }
+                        else if (it.key()==xml_cdata)
+                        {
+                            write_cdata(it.value());
                             prev_is_text = true;
                         }
                         else if (it.key()==xml_instruction)

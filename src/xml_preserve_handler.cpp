@@ -12,7 +12,7 @@
 namespace protean { namespace detail {
 
     xml_preserve_handler::xml_preserve_handler(variant& result, int mode) :
-        xml_handler_base(result, mode)
+        xml_handler_base(result, mode), m_withinCdata(false)
     {
         // Create document node
         m_result = variant(variant::Bag);
@@ -110,7 +110,8 @@ namespace protean { namespace detail {
                 else
                 {
                     std::string text(xml_utility::transcode(chars));
-                    m_stack.top()->m_element->insert(xml_text, variant(variant::Any, text));
+                    const char* xml_type = m_withinCdata ? xml_cdata : xml_text;
+                    m_stack.top()->m_element->insert(xml_type, variant(variant::Any, text));
                 }
             }
         }
@@ -147,6 +148,16 @@ namespace protean { namespace detail {
             instruction.insert(xml_target, variant(target_str));
             instruction.insert(xml_data, variant(data_str));
         }
+    }
+
+    void xml_preserve_handler::startCDATA()
+    {
+        m_withinCdata = true;
+    }
+
+    void xml_preserve_handler::endCDATA()
+    {
+        m_withinCdata = false;
     }
 
     void xml_preserve_handler::comment(
