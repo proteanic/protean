@@ -22,11 +22,12 @@ One method, which is known to work on Windows, is the following:
 * Install [Boost](http://www.boost.org/). (Known to work with version `1.53.0`.)
 * Install [Xerces](http://xerces.apache.org/). (Known to work with version
   `3.1.1`.)
-* Edit `projects/vc1x/vc1x-paths.props`, setting `BOOST_VERSION`, `BOOST_ROOT`, and
-  `XERCES_ROOT` appropriately.
+* Copy `projects/vc1x/vc1x-paths.props.template` to `projects/vc1x/vc1x-paths.props`,
+  and edit `projects/vc1x/vc1x-paths.props`, setting `BOOST_VERSION`, `BOOST_ROOT`,
+  and `XERCES_ROOT` appropriately.
 * Open `projects/vc1x-protean.sln` in Visual Studio 2010/2012.
-* If you don't have [NUnit](http://nunit.org) installed, unload project
-  "vc1x-test-protean.net".
+* If you don't have [NUnit](http://nunit.org) installed, install NUnit or unload
+  project "vc1x-test-protean.net".
 * Choose a configuration, e.g. `vc110 Debug` and `x64`, and Build Solution.
 
 ## Usage examples ##
