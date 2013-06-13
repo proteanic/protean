@@ -139,6 +139,16 @@ namespace protean {
     {
         m_factory = &factory;
     }
+    
+    /*static*/ void xml_reader::initialiseXerces()
+    {
+        xercesc::XMLPlatformUtils::Initialize();
+    }
+
+    /*static*/ void xml_reader::shutdownXerces()
+    {
+        xercesc::XMLPlatformUtils::Terminate();
+    }
 
     xml_reader& operator>>(xml_reader& reader, variant& variant)
     {

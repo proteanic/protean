@@ -35,6 +35,12 @@ namespace protean {
         void add_entity_stream(const std::string& id, std::istream& is);
         void set_factory(object_factory& factory);
 
+        // If you need to perform many xml reads then the performance impact of initialising the xerces library each
+        // time may be significant, in which case the following functions can be used to explicitly initialise
+        // the library, mitigating the cost.
+        static void initialiseXerces();
+        static void shutdownXerces();
+
     private:
         std::istream&       m_is;
         int                 m_mode;

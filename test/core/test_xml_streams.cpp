@@ -16,8 +16,13 @@ using boost::unit_test::test_suite;
 #include <protean/object_factory.hpp>
 using namespace protean;
 
+struct XmlFixture
+{
+    XmlFixture()  { xml_reader::initialiseXerces(); }
+    ~XmlFixture() { xml_reader::shutdownXerces(); }
+};
 
-BOOST_AUTO_TEST_SUITE(xml_streams_suite);
+BOOST_FIXTURE_TEST_SUITE(xml_streams_suite, XmlFixture)
 
 BOOST_AUTO_TEST_CASE(test_xml_primitives)
 {
@@ -600,12 +605,12 @@ BOOST_AUTO_TEST_CASE(test_xml_double)
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
         "<Variant variant=\"List\">\n"
-		"  <Variant variant=\"Double\">NaN</Variant>\n"
-		"  <Variant variant=\"Double\">-INF</Variant>\n"
-		"  <Variant variant=\"Double\">INF</Variant>\n"
-		"  <Variant variant=\"Any\">NaN</Variant>\n"
-		"  <Variant variant=\"Any\">-INF</Variant>\n"
-		"  <Variant variant=\"Any\">INF</Variant>\n"
+        "  <Variant variant=\"Double\">NaN</Variant>\n"
+        "  <Variant variant=\"Double\">-INF</Variant>\n"
+        "  <Variant variant=\"Double\">INF</Variant>\n"
+        "  <Variant variant=\"Any\">NaN</Variant>\n"
+        "  <Variant variant=\"Any\">-INF</Variant>\n"
+        "  <Variant variant=\"Any\">INF</Variant>\n"
         "</Variant>";
 
     std::stringstream iss;
@@ -615,13 +620,13 @@ BOOST_AUTO_TEST_CASE(test_xml_double)
     xml_reader reader(iss);
     reader >> v1;
 
-	BOOST_REQUIRE_EQUAL(v1.size(), 6u);
-	BOOST_CHECK(boost::math::fpclassify(v1[0].as<double>())==FP_NAN);
-	BOOST_CHECK(boost::math::fpclassify(v1[1].as<double>())==FP_INFINITE && v1[1].as<double>()<.0);
-	BOOST_CHECK(boost::math::fpclassify(v1[2].as<double>())==FP_INFINITE && v1[2].as<double>()>.0);
-	BOOST_CHECK(boost::math::fpclassify(v1[3].as<double>())==FP_NAN);
-	BOOST_CHECK(boost::math::fpclassify(v1[4].as<double>())==FP_INFINITE && v1[4].as<double>()<.0);
-	BOOST_CHECK(boost::math::fpclassify(v1[5].as<double>())==FP_INFINITE && v1[5].as<double>()>.0);
+    BOOST_REQUIRE_EQUAL(v1.size(), 6u);
+    BOOST_CHECK(boost::math::fpclassify(v1[0].as<double>())==FP_NAN);
+    BOOST_CHECK(boost::math::fpclassify(v1[1].as<double>())==FP_INFINITE && v1[1].as<double>()<.0);
+    BOOST_CHECK(boost::math::fpclassify(v1[2].as<double>())==FP_INFINITE && v1[2].as<double>()>.0);
+    BOOST_CHECK(boost::math::fpclassify(v1[3].as<double>())==FP_NAN);
+    BOOST_CHECK(boost::math::fpclassify(v1[4].as<double>())==FP_INFINITE && v1[4].as<double>()<.0);
+    BOOST_CHECK(boost::math::fpclassify(v1[5].as<double>())==FP_INFINITE && v1[5].as<double>()>.0);
 
     std::ostringstream oss;
     xml_writer writer(oss, xml_mode::Indent);
@@ -635,12 +640,12 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
     static const std::string xml =
         "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
         "<Variant variant=\"List\">\n"
-		"  <Variant variant=\"Float\">NaN</Variant>\n"
-		"  <Variant variant=\"Float\">-INF</Variant>\n"
-		"  <Variant variant=\"Float\">INF</Variant>\n"
-		"  <Variant variant=\"Any\">NaN</Variant>\n"
-		"  <Variant variant=\"Any\">-INF</Variant>\n"
-		"  <Variant variant=\"Any\">INF</Variant>\n"
+        "  <Variant variant=\"Float\">NaN</Variant>\n"
+        "  <Variant variant=\"Float\">-INF</Variant>\n"
+        "  <Variant variant=\"Float\">INF</Variant>\n"
+        "  <Variant variant=\"Any\">NaN</Variant>\n"
+        "  <Variant variant=\"Any\">-INF</Variant>\n"
+        "  <Variant variant=\"Any\">INF</Variant>\n"
         "</Variant>";
 
     std::stringstream iss;
@@ -650,13 +655,13 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
     xml_reader reader(iss);
     reader >> v1;
 
-	BOOST_REQUIRE_EQUAL(v1.size(), 6u);
-	BOOST_CHECK(boost::math::fpclassify(v1[0].as<float>())==FP_NAN);
-	BOOST_CHECK(boost::math::fpclassify(v1[1].as<float>())==FP_INFINITE && v1[1].as<float>()<.0);
-	BOOST_CHECK(boost::math::fpclassify(v1[2].as<float>())==FP_INFINITE && v1[2].as<float>()>.0);
-	BOOST_CHECK(boost::math::fpclassify(v1[3].as<float>())==FP_NAN);
-	BOOST_CHECK(boost::math::fpclassify(v1[4].as<float>())==FP_INFINITE && v1[4].as<float>()<.0);
-	BOOST_CHECK(boost::math::fpclassify(v1[5].as<float>())==FP_INFINITE && v1[5].as<float>()>.0);
+    BOOST_REQUIRE_EQUAL(v1.size(), 6u);
+    BOOST_CHECK(boost::math::fpclassify(v1[0].as<float>())==FP_NAN);
+    BOOST_CHECK(boost::math::fpclassify(v1[1].as<float>())==FP_INFINITE && v1[1].as<float>()<.0);
+    BOOST_CHECK(boost::math::fpclassify(v1[2].as<float>())==FP_INFINITE && v1[2].as<float>()>.0);
+    BOOST_CHECK(boost::math::fpclassify(v1[3].as<float>())==FP_NAN);
+    BOOST_CHECK(boost::math::fpclassify(v1[4].as<float>())==FP_INFINITE && v1[4].as<float>()<.0);
+    BOOST_CHECK(boost::math::fpclassify(v1[5].as<float>())==FP_INFINITE && v1[5].as<float>()>.0);
 
     std::ostringstream oss;
     xml_writer writer(oss, xml_mode::Indent);
