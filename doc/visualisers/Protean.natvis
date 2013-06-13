@@ -15,7 +15,7 @@
       String = {((protean::detail::string*)&amp;m_value.m_val)-&gt;m_heapPtr,s}
     </DisplayString>
     <DisplayString Condition="m_type == protean::variant::Boolean">
-      Boolean = {(bool)m_value.m_val}
+      Boolean = {*(bool*)&amp;m_value.m_val}
     </DisplayString>
     <DisplayString Condition="m_type == protean::variant::Int32">
       Int32 = {(int32_t)m_value.m_val}

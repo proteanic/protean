@@ -36,7 +36,7 @@ protean::variant {
         )
       )
     )
-    #case 0x00000008 ( #("Boolean = ",    (bool)$e.m_value.m_val) )
+    #case 0x00000008 ( #("Boolean = ",    *(bool*)(&$e.m_value.m_val)) )
     #case 0x00000010 ( #("Int32 = ",      (signed int)$e.m_value.m_val) )
     #case 0x00000020 ( #("UInt32 = ",     (unsigned)$e.m_value.m_val) )
     #case 0x00000040 ( #("Int64 = ",      (signed __int64)$e.m_value.m_val) )
