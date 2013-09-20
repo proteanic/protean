@@ -297,6 +297,54 @@ namespace protean {
         END_TRANSLATE_ERROR();
     }
 
+
+    template <typename TUPLE>
+    variant& variant::push_back(const TUPLE& value)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(DataTable, "push_back<TUPLE>()");
+
+        m_value.get<DataTable>().push_back(value);
+        return *this;
+
+        END_TRANSLATE_ERROR();
+    }
+
+    #define DATA_TABLE_BEGIN_ITERATOR(z, n, t)                                                         \
+        template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), variant::enum_type_t t)>                    \
+        data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> variant::begin()              \
+        {                                                                                              \
+            return m_value.get<DataTable>().begin<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>();      \
+        }
+
+    #define DATA_TABLE_END_ITERATOR(z, n, t)                                                           \
+        template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), variant::enum_type_t t)>                    \
+        data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> variant::end()                \
+        {                                                                                              \
+            return m_value.get<DataTable>().end<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>();        \
+        }
+
+    #define DATA_TABLE_BEGIN_CONST_ITERATOR(z, n, t)                                                   \
+        template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), variant::enum_type_t t)>                    \
+        data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> variant::begin() const  \
+        {                                                                                              \
+            return m_value.get<DataTable>().begin<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>();      \
+        }
+
+    #define DATA_TABLE_END_CONST_ITERATOR(z, n, t)                                                     \
+        template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), variant::enum_type_t t)>                    \
+        data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> variant::end() const    \
+        {                                                                                              \
+            return m_value.get<DataTable>().end<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>();        \
+        }
+
+    BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_BEGIN_ITERATOR,       DATA_TABLE_COLUMN_TYPE_PREFIX)
+    BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_END_ITERATOR,         DATA_TABLE_COLUMN_TYPE_PREFIX)
+    BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_BEGIN_CONST_ITERATOR, DATA_TABLE_COLUMN_TYPE_PREFIX)
+    BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_END_CONST_ITERATOR,   DATA_TABLE_COLUMN_TYPE_PREFIX)
+
+
     template<typename T>
     variant make_object(const variant& params)
     {

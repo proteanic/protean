@@ -12,7 +12,11 @@
 #include <protean/object_proxy.hpp>
 #include <protean/object_factory.hpp>
 #include <protean/variant_base.hpp>
+#include <protean/detail/data_table.hpp>
+#include <protean/detail/data_table_column_serializers.hpp>
 
+#include <boost/foreach.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>
 
 namespace protean {
@@ -157,6 +161,41 @@ namespace protean {
                 }
                 break;
             }
+            case variant::DataTable:
+            {
+                boost::uint32_t rows;
+                read(rows);
+
+                value = variant(variant::DataTable, rows);
+
+                variant columns;
+                read(columns);
+                for (size_t i = 0; i < columns.size(); ++i)
+                    value.add_column(
+                        variant::string_to_enum(columns.at(i).at(0).as<std::string>()),
+                        columns.at(i).at(1).as<std::string>()
+                    );
+
+                detail::data_table& dt = value.m_value.get<variant::DataTable>();
+                BOOST_FOREACH(detail::data_table::column_container_type::reference column, dt.columns())
+                {
+                    // Default-allocate `rows' column values to be read into (no reallocation required since
+                    // capacity of `rows' was specified in DataTable construction)
+                    column.resize(rows);
+
+                    boost::scoped_ptr<detail::data_table_column_reader> column_reader(
+                        detail::make_data_table_column_binary_reader(column, *this)
+                    );
+
+                    while (column_reader->has_next())
+                    {
+                        column_reader->read();
+                        column_reader->advance();
+                    }
+                }
+
+                break;
+            }
             case variant::Object:
             {
                 std::string class_name;
@@ -249,6 +288,15 @@ namespace protean {
         read_bytes(buffer.get(), length);
         value = std::string(buffer.get(), length);
 
+    }
+    void binary_reader::read(detail::string& value)
+    {
+        boost::uint32_t length;
+        read(length);
+
+        boost::scoped_array<char> buffer( new char[length] );
+        read_bytes(buffer.get(), length);
+        value.initialise(buffer.get(), length);
     }
     void binary_reader::read(bool& value)
     {

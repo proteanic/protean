@@ -209,6 +209,57 @@ BOOST_AUTO_TEST_CASE(test_xml_collection)
 
         BOOST_CHECK(v1.compare(v2)==0);
     }
+
+    {
+        variant v1(variant::DataTable);
+        v1.add_column(variant::DateTime).add_column(variant::Int32).add_column(variant::Double);
+
+        variant::date_time_t time1(variant::date_t(2007, 1, 3), variant::time_t(10, 30, 0));
+        variant::date_time_t time2(variant::date_t(2007, 1, 4), variant::time_t(11, 30, 0));
+
+        v1.push_back( make_tuple(time1, 42, 3.141) );
+        v1.push_back( make_tuple(time2, 1, 2.718) );
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss;
+        iss << oss.str();
+        xml_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+
+        // Default constructed, no columns
+        variant d1(variant::DataTable);
+        std::ostringstream oss2;
+        xml_writer writer2(oss2);
+        writer2 << d1;
+
+        variant d2;
+        std::stringstream iss2(oss2.str());
+        xml_reader reader2(iss2);
+        reader2 >> d2;
+
+        BOOST_CHECK(d1.compare(d2)==0);
+
+        // Columns, but empty (no rows)
+        variant e1(variant::DataTable);
+        e1.add_column(variant::DateTime, "Time")
+          .add_column(variant::Double,   "Price");
+        std::ostringstream oss3;
+        xml_writer writer3(oss3);
+        writer3 << e1;
+
+        variant e2;
+        std::stringstream iss3(oss3.str());
+        xml_reader reader3(iss3);
+        reader3 >> e2;
+
+        BOOST_CHECK(e1.compare(e2)==0);
+    }
 }
 
 class testing_object : public object

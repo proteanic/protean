@@ -85,6 +85,9 @@
     <ClCompile Include="..\..\src\base64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\data_table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\protean\array_iterator.hpp">
@@ -240,16 +243,49 @@
     <ClInclude Include="..\..\protean\detail\base64.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\protean\detail\data_table.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\detail\data_table_column.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\detail\data_table_types.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\detail\data_table_variant_iterator.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\detail\data_table_column_serializers.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\data_table_iterator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\protean\detail\data_table.ipp">
+      <Filter>Implementation Files</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_column.ipp">
+      <Filter>Implementation Files</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_variant_iterator.ipp">
+      <Filter>Implementation Files</Filter>
+    </None>
     <None Include="..\..\protean\handle.ipp">
-      <Filter>Header Files</Filter>
+      <Filter>Implementation Files</Filter>
     </None>
     <None Include="..\..\protean\variant.ipp">
-      <Filter>Header Files</Filter>
+      <Filter>Implementation Files</Filter>
     </None>
     <None Include="..\..\protean\variant_ref.ipp">
-      <Filter>Header Files</Filter>
+      <Filter>Implementation Files</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_types.ipp">
+      <Filter>Implementation Files</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_column_serializers.ipp">
+      <Filter>Implementation Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +300,11 @@
     </Filter>
     <Filter Include="Header Files\config">
       <UniqueIdentifier>{3c16a781-4905-4b01-ad19-47e9ecc69858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementation Files">
+      <UniqueIdentifier>{24cb90e6-2003-4535-855a-c42f465e5c76}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
     </Filter>
   </ItemGroup>
 </Project>

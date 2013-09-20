@@ -9,8 +9,11 @@
 
 #include <protean/binary_writer.hpp>
 #include <protean/variant.hpp>
+#include <protean/detail/data_table.hpp>
+#include <protean/detail/data_table_column_serializers.hpp>
 
 #include <boost/foreach.hpp>
+#include <boost/scoped_ptr.hpp>
 
 namespace protean {
     
@@ -119,6 +122,35 @@ namespace protean {
                 }
                 break;
             }
+            case variant::DataTable:
+            {
+                const detail::data_table& dt = value.m_value.get<variant::DataTable>();
+
+                write(static_cast<boost::uint32_t>(dt.size()));
+
+                variant columns(variant::Tuple, dt.columns().size());
+                for (size_t i = 0; i < dt.columns().size(); ++i)
+                {
+                    columns.at(i) = variant(variant::Tuple, 2);
+                    columns.at(i).at(0) = variant(variant::enum_to_string(dt.columns()[i].type()));
+                    columns.at(i).at(1) = variant(dt.columns()[i].name());
+                }
+                write(columns);
+
+                BOOST_FOREACH(detail::data_table::column_container_type::const_reference column, dt.columns())
+                {
+                    boost::scoped_ptr<detail::data_table_column_writer> column_writer(
+                        detail::make_data_table_column_binary_writer(column, *this)
+                    );
+
+                    while (column_writer->has_next())
+                    {
+                        column_writer->write();
+                        column_writer->advance();
+                    }
+                }
+                break;
+            }
             case variant::Object:
             {
                 const object& obj(value.as<object>());
@@ -183,6 +215,16 @@ namespace protean {
         if (length>0)
         {
             write_bytes(value.c_str(), length);
+        }
+    }
+    void binary_writer::write(const detail::string& value)
+    {
+        size_t length = value.size();
+
+        write(static_cast<boost::uint32_t>(length));
+        if (length>0)
+        {
+            write_bytes(value.value(), length);
         }
     }
     void binary_writer::write(bool arg)

@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\test\core\master.cpp" />
     <ClCompile Include="..\..\test\core\test_array.cpp" />
     <ClCompile Include="..\..\test\core\test_binary_streams.cpp" />
+    <ClCompile Include="..\..\test\core\test_data_table.cpp" />
     <ClCompile Include="..\..\test\core\test_iterator.cpp" />
     <ClCompile Include="..\..\test\core\test_list.cpp" />
     <ClCompile Include="..\..\test\core\test_number.cpp" />

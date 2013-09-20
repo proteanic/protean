@@ -41,6 +41,7 @@ namespace protean {
 
     namespace detail {
          class xml_default_handler;
+         class data_table;
     }
 
     class PROTEAN_DECL variant_base
@@ -71,6 +72,7 @@ namespace protean {
             TimeSeries              = 0x00080000,
             Object                  = 0x00100000,
             Array                   = 0x00200000,
+            DataTable               = 0x00400000,
 
             // The following enums represent groupings of variants
             Integer                 = Boolean | Int32 | UInt32 | Int64 | UInt64,
@@ -78,7 +80,7 @@ namespace protean {
             Primitive               = Number | Date | Time | DateTime | Any | String,
             Sequence                = List | Tuple,
             Mapping                 = Dictionary | Bag,
-            Collection              = Sequence | Mapping | TimeSeries
+            Collection              = Sequence | Mapping | TimeSeries | DataTable
         };
 
         typedef detail::variant_impl<
@@ -106,7 +108,8 @@ namespace protean {
             detail::tagged_type<Tuple,              detail::tuple,                      detail::alloc_new,          boost::mpl::string<'Tupl','e'> >,
             detail::tagged_type<Buffer,             handle<detail::buffer>,             detail::alloc_placement,    boost::mpl::string<'Buff','er'> >,
             detail::tagged_type<Exception,          exception_data,                     detail::alloc_new,          boost::mpl::string<'Exce','ptio','n'> >,
-            detail::tagged_type<Array,              handle<typed_array>,                detail::alloc_placement,    boost::mpl::string<'Arra','y'> >
+            detail::tagged_type<Array,              handle<typed_array>,                detail::alloc_placement,    boost::mpl::string<'Arra','y'> >,
+            detail::tagged_type<DataTable,          detail::data_table,                 detail::alloc_new,          boost::mpl::string<'Data','Tabl','e'> >
         > variant_impl_t;
         
         variant_impl_t m_value;

@@ -11,6 +11,12 @@
 #include <protean/variant_ref.hpp>
 #include <protean/array_iterator.hpp>
 #include <protean/typed_array.hpp>
+#include <protean/data_table_iterator.hpp>
+#include <protean/detail/data_table.hpp>
+
+#include <boost/preprocessor/repetition/repeat.hpp>
+#include <boost/preprocessor/repetition/enum_params.hpp>
+#include <boost/preprocessor/repetition/enum.hpp>
 
 namespace protean {
 
@@ -197,6 +203,36 @@ namespace protean {
     /************************/
     public:
         variant& push_back(const date_time_t& time, const variant& value, enum_return_trait_t ret = ReturnSelf);
+
+    /* DataTable interface */
+    /***********************/
+    public:
+        variant& add_column(enum_type_t type);
+        variant& add_column(enum_type_t type, const std::string& name);
+
+        template <typename TUPLE>
+        variant& push_back(const TUPLE& value);
+
+        #define DATA_TABLE_BEGIN_ITERATOR_DECL(z, n, t)                                            \
+            template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), enum_type_t t)>                     \
+            data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> begin();
+
+        #define DATA_TABLE_END_ITERATOR_DECL(z, n, t)                                              \
+            template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), enum_type_t t)>                     \
+            data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> end();
+
+        #define DATA_TABLE_BEGIN_CONST_ITERATOR_DECL(z, n, t)                                      \
+            template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), enum_type_t t)>                     \
+            data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> begin() const;
+
+        #define DATA_TABLE_END_CONST_ITERATOR_DECL(z, n, t)                                        \
+            template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), enum_type_t t)>                     \
+            data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> end() const;
+
+        BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_BEGIN_ITERATOR_DECL,       DATA_TABLE_COLUMN_TYPE_PREFIX)
+        BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_END_ITERATOR_DECL,         DATA_TABLE_COLUMN_TYPE_PREFIX)
+        BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_BEGIN_CONST_ITERATOR_DECL, DATA_TABLE_COLUMN_TYPE_PREFIX)
+        BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_END_CONST_ITERATOR_DECL,   DATA_TABLE_COLUMN_TYPE_PREFIX)
 
     /* Sequence interface */
     /*********************/

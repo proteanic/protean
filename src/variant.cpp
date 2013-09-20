@@ -13,6 +13,7 @@
 
 #include <protean/detail/dummy_iterator.hpp>
 #include <protean/detail/hash.hpp>
+#include <protean/detail/data_table.hpp>
 #include <protean/variant_ref.hpp>
 
 #include <protean/detail/variant_macros_define.hpp>
@@ -357,6 +358,32 @@ namespace protean {
         variant& result = m_value.get<TimeSeries>().push_back(time, value);
 
         return (ret==ReturnSelf ? *this : result);
+
+        END_TRANSLATE_ERROR();
+    }
+
+    variant& variant::add_column(enum_type_t type)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(DataTable, "add_column()");
+
+        m_value.get<DataTable>().add_column(type);
+
+        return *this;
+
+        END_TRANSLATE_ERROR();
+    }
+
+    variant& variant::add_column(enum_type_t type, const std::string& name)
+    {
+        BEGIN_TRANSLATE_ERROR();
+
+        CHECK_VARIANT_FUNCTION(DataTable, "add_column()");
+
+        m_value.get<DataTable>().add_column(type, name);
+
+        return *this;
 
         END_TRANSLATE_ERROR();
     }
@@ -1207,6 +1234,54 @@ namespace protean {
                         {
                             oss << ",";
                         }
+                        oss << "\n";
+                    }
+                    oss << indent << ")";
+                }
+                break;
+            }
+            case DataTable:
+            {
+                if (summarise)
+                {
+                    const detail::data_table& dt = m_value.get<DataTable>();
+
+                    oss << "DataTable(rows=" << size();
+                    oss << ", columns=" << dt.columns().size();
+
+                    oss << ", types=(";
+                    detail::data_table::column_container_type::const_iterator        it = dt.columns().begin();
+                    const detail::data_table::column_container_type::const_iterator end = dt.columns().end();
+                    while (it != end)
+                    {
+                        oss << variant_base::enum_to_string(it->type());
+                        if (++it != end)
+                            oss << ", ";
+                    }
+                    oss << "))";
+                }
+                else
+                {
+                    oss << "DataTable(\n";
+                    variant::const_iterator it  = variant::begin(),
+                                            end = variant::end();
+                    while (it != end)
+                    {
+                        oss << indent << tab << "(";
+
+                        const variant& row = *it;
+                        variant::const_iterator row_iter = row.begin(),
+                                                row_end  = row.end();
+                        while (row_iter != row_end)
+                        {
+                            oss << row_iter->str(false, no_indent);
+                            if (++row_iter != row_end)
+                                oss << ", ";
+                        }
+
+                        oss << ")";
+                        if (++it != end)
+                            oss << ",";
                         oss << "\n";
                     }
                     oss << indent << ")";

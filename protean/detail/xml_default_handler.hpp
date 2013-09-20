@@ -10,6 +10,7 @@
 
 #include <protean/detail/xml_handler_base.hpp>
 #include <protean/variant.hpp>
+#include <protean/detail/data_table_column_serializers.hpp>
 
 namespace protean {
 
@@ -64,7 +65,12 @@ namespace protean {
                 m_typed(false),
                 m_num_rows(0),
                 m_num_row(0),
-                m_item_type(variant::None)
+                m_item_type(variant::None),
+                m_column(std::string()),
+                m_column_reader(NULL),
+                m_num_columns(0),
+                m_num_column(0),
+                m_in_columns(false)
             {}
         public:
             variant& attributes()        { return m_attributes; }
@@ -79,6 +85,18 @@ namespace protean {
             // used for serialising tuples and arrays
             size_t                  m_num_rows;
             size_t                  m_num_row;
+
+            // used for data tables
+            std::string             m_column;
+            boost::shared_ptr<
+                std::stringstream
+            >                       m_column_data;
+            boost::shared_ptr<
+                data_table_column_reader
+            >                       m_column_reader;
+            bool                    m_in_columns;
+            size_t                  m_num_columns;
+            size_t                  m_num_column;
 
             // used for arrays
             variant::enum_type_t    m_item_type;

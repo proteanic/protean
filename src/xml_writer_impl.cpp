@@ -6,6 +6,8 @@
 #include <protean/detail/xml_writer_impl.hpp>
 #include <protean/detail/xml_utility.hpp>
 #include <protean/detail/base64.hpp>
+#include <protean/detail/data_table.hpp>
+#include <protean/detail/data_table_column_serializers.hpp>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
@@ -278,7 +280,7 @@ namespace protean { namespace detail {
     {
         try
         {
-            if (element.is<variant::Collection>() && element.empty())
+            if (element.is<variant::Collection>() && element.empty() && element.type() != variant::DataTable)
             {
                 write_empty_element();
                 return;
@@ -470,6 +472,67 @@ namespace protean { namespace detail {
 
                 m_os << indent();
                 m_os << end_tag();
+                break;
+            }
+            case variant::DataTable:
+            {
+                const data_table& dt = element.m_value.get<variant::DataTable>();
+
+                m_stack.top().m_attributes
+                    .insert("rows",    variant(dt.size()))
+                    .insert("columns", variant(dt.columns().size()));
+                m_os << start_tag();
+
+                if (!dt.columns().empty())
+                {
+                    push("Columns");
+                    m_os << indent() << start_tag();
+
+                    for (data_table::column_container_type::const_iterator column_iter = dt.columns().begin()
+                           ; column_iter != dt.columns().end()
+                           ; ++column_iter)
+                    {
+                        push("Column")
+                            .insert("name", variant(column_iter->name()))
+                            .insert("type", variant(variant::enum_to_string(column_iter->type())));
+                        m_os << indent();
+                        write_empty_element();
+                        pop();
+                    }
+
+                    m_os << indent() << end_tag();
+                    pop();
+                }
+
+                for (data_table::column_container_type::const_iterator column_iter = dt.columns().begin()
+                       ; column_iter != dt.columns().end()
+                       ; ++column_iter)
+                {
+                    push("Column").insert("name", variant(column_iter->name()));
+                    m_os << indent() << start_tag();
+
+                    boost::scoped_ptr<data_table_column_writer> column_writer(
+                        make_data_table_column_stream_writer(*column_iter, m_os)
+                    );
+
+                    while (column_writer->has_next())
+                    {
+                        push("V");
+                        m_os << indent() << start_tag();
+                        column_writer->write();
+                        m_os << end_tag();
+                        pop();
+
+                        column_writer->advance();
+                    }
+
+                    m_os << indent() << end_tag();
+                    pop();
+                }
+
+                m_os << indent();
+                m_os << end_tag();
+
                 break;
             }
             case variant::Buffer:

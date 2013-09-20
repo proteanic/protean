@@ -1,5 +1,6 @@
 #include <protean/variant.hpp>
 #include <protean/detail/hash.hpp>
+#include <protean/detail/data_table.hpp>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -33,6 +34,9 @@ namespace protean {
                     break;
                 case TimeSeries:
                     m_value.set<TimeSeries>(detail::timeseries());
+                    break;
+                case DataTable:
+                    m_value.set<DataTable>(detail::data_table(size));
                     break;
                 case Any:
                     m_value.set<Any>(detail::string());
@@ -106,6 +110,9 @@ namespace protean {
                 case TimeSeries:
                     m_value.set<TimeSeries>(rhs.m_value.get<TimeSeries>());
                     break;
+                case DataTable:
+                    m_value.set<DataTable>(rhs.m_value.get<DataTable>());
+                    break;
                 case Buffer:
                     m_value.set<Buffer>(rhs.m_value.get<Buffer>());
                     break;
@@ -166,6 +173,9 @@ namespace protean {
                     break;
                 case TimeSeries:
                     m_value.destroy<TimeSeries>();
+                    break;
+                case DataTable:
+                    m_value.destroy<DataTable>();
                     break;
                 case Buffer:
                     m_value.destroy<Buffer>();
@@ -254,6 +264,7 @@ namespace protean {
             case Dictionary:
             case Bag:
             case TimeSeries:
+            case DataTable:
                 return m_value.get<Collection>().compare(rhs.m_value.get<Collection>());
             case Exception:
                 return m_value.get<Exception>().compare(rhs.m_value.get<Exception>());
@@ -302,6 +313,7 @@ namespace protean {
             case Dictionary:
             case Bag:
             case TimeSeries:
+            case DataTable:
             {
                 return m_value.get<Collection>().hash(seed);
             }

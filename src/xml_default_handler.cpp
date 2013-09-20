@@ -9,6 +9,7 @@
 #include <protean/object_proxy.hpp>
 #include <protean/object_factory.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
+#include <protean/detail/data_table.hpp>
 
 #include <boost/regex.hpp>
 #include <boost/format.hpp>
@@ -95,6 +96,10 @@ namespace protean { namespace detail {
                         boost::throw_exception(variant_error("Missing 'time' attribute from TimeSeries member"));
                     }
                     break;
+                case variant::DataTable:
+                    context->m_type = variant::DataTable;
+                    context->m_typed = true;
+                    break;
                 case variant::Exception:
                 case variant::Object:
                     // Exception and Object are serialised using a Dictionary
@@ -165,6 +170,103 @@ namespace protean { namespace detail {
                 case variant::TimeSeries:
                     context->element() = variant(context->m_type);
                     break;
+                case variant::DataTable:
+                {
+                    if (element_name == "Variant")
+                    {
+                        if (!context->attributes().has_key("rows"))
+                            boost::throw_exception(variant_error("Missing 'rows' attribute for DataTable variant"));
+                        if (!context->attributes().has_key("columns"))
+                            boost::throw_exception(variant_error("Missing 'columns' attribute for DataTable variant"));
+
+                        context->m_num_rows = context->attributes()["rows"].as<size_t>();
+                        context->m_num_columns = context->attributes()["columns"].as<size_t>();
+                        context->element() = variant(variant::DataTable, context->m_num_rows);
+
+                        context->attributes().remove("rows");
+                        context->attributes().remove("columns");
+                    }
+
+                    else if (element_name == "Column" && parent_context->m_in_columns)
+                    {
+                        if (!context->attributes().has_key("name"))
+                            boost::throw_exception(variant_error("Missing 'name' attribute for DataTable column declaration"));
+                        if (!context->attributes().has_key("type"))
+                            boost::throw_exception(variant_error("Missing 'type' attribute for DataTable column declaration"));
+
+                        context->m_element = &parent_context->element();
+                        context->element().add_column(
+                            variant::string_to_enum(context->attributes()["type"].as<std::string>()),
+                            context->attributes()["name"].as<std::string>()
+                        );
+
+                        context->m_in_columns = true;
+                        ++parent_context->m_num_column;
+
+                        context->attributes().remove("name");
+                        context->attributes().remove("type");
+                    }
+
+                    else if (element_name == "Column")
+                    {
+                        if (parent_context->m_num_column++ >= parent_context->m_num_columns)
+                            boost::throw_exception(variant_error("Too many column definitions for DataTable"));
+                        if (!context->attributes().has_key("name"))
+                            boost::throw_exception(variant_error("Missing 'name' attribute for DataTable column"));
+
+                        context->m_element = &parent_context->element();
+                        data_table& dt = context->element().m_value.get<variant::DataTable>();
+
+                        std::string column_name = context->attributes()["name"].as<std::string>();
+                        try
+                        {
+                            context->m_num_rows = parent_context->m_num_rows;
+                            context->m_num_columns = parent_context->m_num_columns;
+                            context->m_column = context->attributes()["name"].as<std::string>();
+                            context->attributes().remove("name");
+
+                            data_table_column_base& column = dt.get_column(column_name);
+
+                            // Default-allocate `rows' column values to be read into (no reallocation required since
+                            // capacity of `rows' was specified in DataTable construction)
+                            column.resize(context->m_num_rows);
+
+                            context->m_column_data.reset(new std::stringstream());
+                            context->m_column_reader.reset(
+                                make_data_table_column_stream_reader(column, context->m_column_data)
+                            );
+                        }
+                        catch (const variant_error& e)
+                        {
+                            boost::throw_exception(variant_error(boost::str(
+                                boost::format("No such column '%s' was declared for DataTable variant") % column_name
+                            )));
+                        }
+                    }
+
+                    else if (element_name == "Columns")
+                    {
+                        context->m_element = &parent_context->element();
+                        context->m_in_columns = true;
+                        context->m_num_columns = parent_context->m_num_columns;
+                    }
+
+                    else
+                    {
+                        if (parent_context->m_column.empty())
+                            boost::throw_exception(variant_error("Unrecognised DataTable entry encountered"));
+
+                        context->m_element = &parent_context->element();
+                        context->m_column_data = parent_context->m_column_data;
+                        context->m_column_reader = parent_context->m_column_reader;
+                        context->m_column = parent_context->m_column;
+                        context->m_num_row = parent_context->m_num_row++;
+                        context->m_num_rows = parent_context->m_num_rows;
+                        context->m_num_columns = parent_context->m_num_columns;
+                    }
+
+                    break;
+                }
                 case variant::Exception:
                 case variant::Object:
                     // Exception and Object are parsed via a dictionary for convenience.
@@ -233,7 +335,7 @@ namespace protean { namespace detail {
     void xml_default_handler::endElement(
         const XMLCh* const /*uri*/,
         const XMLCh* const /*localname*/,
-        const XMLCh* const /*qname*/ )
+        const XMLCh* const qname )
     {
         try
         {
@@ -337,6 +439,37 @@ namespace protean { namespace detail {
                 }
                 context->element() = a;
             }
+            else if ( context->m_type==variant::DataTable )
+            {
+                const std::string element_name = xml_utility::transcode(qname);
+
+                if (element_name == "V")
+                {
+                    if (context->m_num_row >= context->m_num_rows)
+                        boost::throw_exception(variant_error("Too many rows in DataTable column definition"));
+
+                    context->m_column_data->clear();
+                    *context->m_column_data << context->m_data;
+
+                    context->m_column_reader->read();
+                    context->m_column_reader->advance();
+                }
+                else if (element_name == "Columns")
+                {
+                    if (context->m_num_column != context->m_num_columns)
+                        boost::throw_exception(variant_error("Unexpected number of column declarations for DataTable"));
+                }
+                else if (element_name == "Column" && !context->m_in_columns)
+                {
+                    if (context->m_num_row != context->m_num_rows)
+                        boost::throw_exception(variant_error("Insufficient number of rows provided for DataTable"));
+                }
+                else if (element_name == "Variant")
+                {
+                    if (context->m_num_column != context->m_num_columns)
+                        boost::throw_exception(variant_error("Insufficient number of column definitions for DataTable"));
+                }
+            }
             m_stack.pop();
         }
         catch(const std::exception &e)
@@ -383,6 +516,7 @@ namespace protean { namespace detail {
             case variant::Time:
             case variant::DateTime:
             case variant::Buffer:
+            case variant::DataTable:
                 context->m_data.append(xml_utility::transcode(chars));
                 break;
             case variant::None:
