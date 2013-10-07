@@ -6,7 +6,7 @@ Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.
 Python conversion functions for reading from and writing to
 protean variants
 
-Protean Project: http://sf.net/projects/protean
+Protean Project: https://github.com/proteanic/protean
 
 Notes: 
  * Date, Float and Object protean types not supported (types are likely to be dropped from protean)
