@@ -29,18 +29,21 @@ namespace protean { namespace detail {
     /*******************************************************************************/
 
     // Column iterator -- returns a variant copy for each value in the column
-    template <typename T>
+    template <
+          typename T
+        , typename IteratorTraits = const_iterator_traits
+    >
     class data_table_column_variant_iterator_interface
-        : public variant_iterator_interface<const_iterator_traits>
+        : public variant_iterator_interface<IteratorTraits>
     {
     private:
-        typedef variant_iterator_interface<const_iterator_traits> base;
+        typedef IteratorTraits                                traits;
+        typedef variant_iterator_interface<traits>            base;
 
-        typedef const_iterator_traits                             traits;
-        typedef variant                                           variant_type;
-        typedef typename data_table_column<T>::const_iterator     source_iterator_type;
-        typedef typename traits::list_iterator_type               iterator_type;
-        typedef typename traits::value_type&                      reference;
+        typedef typename base::date_time_t                    date_time_t;
+        typedef typename data_table_column<T>::const_iterator source_iterator_type;
+        typedef typename traits::list_iterator_type           iterator_type;
+        typedef typename traits::value_type&                  reference;
 
     public:
         data_table_column_variant_iterator_interface(const source_iterator_type& iterator);
@@ -65,13 +68,16 @@ namespace protean { namespace detail {
         template <>
         void make_copy<detail::string>() const
         {
-            m_copy = variant_type(variant_base::String);
+            m_copy = variant(variant_base::String);
             m_copy.m_value.set<variant_base::String>(*m_iterator);
         }
 
     private:
         source_iterator_type m_iterator;
-        mutable variant_type m_copy;
+        mutable variant      m_copy;
+
+        template <class, class>
+        friend class data_table_column_variant_iterator_interface;
     };
 
     // Row iterator -- returns a variant tuple (whose entries come from the variant
@@ -84,11 +90,11 @@ namespace protean { namespace detail {
         : public Base
     {
     private:
-        typedef variant_iterator<const_iterator_traits> column_iterator;
-        typedef std::vector<column_iterator>            column_iterator_container;
+        typedef IteratorTraits traits;
+        typedef variant_iterator<traits>     column_iterator;
+        typedef std::vector<column_iterator> column_iterator_container;
 
-        typedef variant                                 variant_type;
-        typedef typename IteratorTraits::value_type&    reference;
+        typedef typename traits::value_type& reference;
 
     public:
         data_table_variant_iterator_interface(const column_iterator_container& column_iterators);
@@ -106,12 +112,12 @@ namespace protean { namespace detail {
         Base* clone();
         variant_const_iterator_base* to_const() const;
 
-    public:
-        const column_iterator_container& column_iterators() const;
-
     private:
         column_iterator_container m_column_iterators;
-        mutable variant_type m_copy;
+        mutable variant           m_copy;
+
+        template <class, class>
+        friend class data_table_variant_iterator_interface;
     };
 
 }} // namespace protean::detail

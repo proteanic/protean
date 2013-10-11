@@ -62,8 +62,8 @@ namespace protean { namespace detail {
         // Variant iterators
         virtual variant_const_iterator_base* begin() const = 0;
         virtual variant_const_iterator_base* end() const   = 0;
-        virtual variant_const_iterator_base* begin()       = 0;
-        virtual variant_const_iterator_base* end()         = 0;
+        virtual variant_iterator_base* begin()       = 0;
+        virtual variant_iterator_base* end()         = 0;
 
     /* Typed method interfaces */
     /***************************/
@@ -140,8 +140,8 @@ namespace protean { namespace detail {
         // Variant iterators
         virtual variant_const_iterator_base* begin() const;
         virtual variant_const_iterator_base* end() const;
-        virtual variant_const_iterator_base* begin();
-        virtual variant_const_iterator_base* end();
+        virtual variant_iterator_base* begin();
+        virtual variant_iterator_base* end();
 
     /* Typed method implementations */
     /********************************/

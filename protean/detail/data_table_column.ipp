@@ -100,17 +100,15 @@ namespace protean { namespace detail {
     }
 
     template <typename T>
-    variant_const_iterator_base* data_table_column<T>::begin()
+    variant_iterator_base* data_table_column<T>::begin()
     {
-        const data_table_column<T>& const_this = *this;
-        return const_this.begin();
+        return new data_table_column_variant_iterator_interface<T, iterator_traits>(m_values.begin());
     }
 
     template <typename T>
-    variant_const_iterator_base* data_table_column<T>::end()
+    variant_iterator_base* data_table_column<T>::end()
     {
-        const data_table_column<T>& const_this = *this;
-        return const_this.end();
+        return new data_table_column_variant_iterator_interface<T, iterator_traits>(m_values.end());
     }
 
     /* Typed method implementation template-dispatchers */

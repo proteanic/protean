@@ -3,51 +3,54 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
+#include <algorithm>
+
 namespace protean { namespace detail {
 
     /* Column iterator implementations */
     /***********************************/
-    template <typename T>
-    data_table_column_variant_iterator_interface<T>::
+    template <typename T, typename IteratorTraits>
+    data_table_column_variant_iterator_interface<T, IteratorTraits>::
     data_table_column_variant_iterator_interface(const source_iterator_type& iterator)
         : m_iterator(iterator)
     {}
 
-    template <typename T>
-    const std::string& data_table_column_variant_iterator_interface<T>::key() const
+    template <typename T, typename IteratorTraits>
+    const std::string& data_table_column_variant_iterator_interface<T, IteratorTraits>::key() const
     {
         boost::throw_exception(variant_error("Attempt to call key() on data table column variant iterator"));
     }
 
-    template <typename T>
-    const typename data_table_column_variant_iterator_interface<T>::base::date_time_t&
-    data_table_column_variant_iterator_interface<T>::time() const
+    template <typename T, typename IteratorTraits>
+    //const typename data_table_column_variant_iterator_interface<T, IteratorTraits>::base::date_time_t&
+    const typename data_table_column_variant_iterator_interface<T, IteratorTraits>::date_time_t&
+    data_table_column_variant_iterator_interface<T, IteratorTraits>::time() const
     {
         boost::throw_exception(variant_error("Attempt to call time() on data table column variant iterator"));
     }
 
-    template <typename T>
-    typename data_table_column_variant_iterator_interface<T>::reference
-    data_table_column_variant_iterator_interface<T>::value() const
+    template <typename T, typename IteratorTraits>
+    typename data_table_column_variant_iterator_interface<T, IteratorTraits>::reference
+    data_table_column_variant_iterator_interface<T, IteratorTraits>::value() const
     {
         make_copy<T>();
         return m_copy;
     }
 
-    template <typename T>
-    void data_table_column_variant_iterator_interface<T>::increment()
+    template <typename T, typename IteratorTraits>
+    void data_table_column_variant_iterator_interface<T, IteratorTraits>::increment()
     {
         ++m_iterator;
     }
 
-    template <typename T>
-    void data_table_column_variant_iterator_interface<T>::decrement()
+    template <typename T, typename IteratorTraits>
+    void data_table_column_variant_iterator_interface<T, IteratorTraits>::decrement()
     {
         --m_iterator;
     }
 
-    template <typename T>
-    bool data_table_column_variant_iterator_interface<T>::equal(const variant_const_iterator_base* rhs) const
+    template <typename T, typename IteratorTraits>
+    bool data_table_column_variant_iterator_interface<T, IteratorTraits>::equal(const variant_const_iterator_base* rhs) const
     {
         const data_table_column_variant_iterator_interface<T>* cast_rhs =
             dynamic_cast<const data_table_column_variant_iterator_interface<T>*>(rhs);
@@ -58,17 +61,17 @@ namespace protean { namespace detail {
         return m_iterator == cast_rhs->m_iterator;
     }
 
-    template <typename T>
-    typename data_table_column_variant_iterator_interface<T>::base*
-    data_table_column_variant_iterator_interface<T>::clone()
+    template <typename T, typename IteratorTraits>
+    typename data_table_column_variant_iterator_interface<T, IteratorTraits>::base*
+    data_table_column_variant_iterator_interface<T, IteratorTraits>::clone()
     {
-        return new data_table_column_variant_iterator_interface<T>(m_iterator);
+        return new data_table_column_variant_iterator_interface(m_iterator);
     }
 
-    template <typename T>
-    variant_const_iterator_base* data_table_column_variant_iterator_interface<T>::to_const() const
+    template <typename T, typename IteratorTraits>
+    variant_const_iterator_base* data_table_column_variant_iterator_interface<T, IteratorTraits>::to_const() const
     {
-        return new data_table_column_variant_iterator_interface<T>(m_iterator);
+        return new data_table_column_variant_iterator_interface<T, const_iterator_traits>(m_iterator);
     }
 
 
@@ -153,11 +156,11 @@ namespace protean { namespace detail {
         if (cast_rhs == 0)
             boost::throw_exception(variant_error("Unable to convert iterator to data table variant iterator"));
 
-        if (m_column_iterators.size() != cast_rhs->column_iterators().size())
+        if (m_column_iterators.size() != cast_rhs->m_column_iterators.size())
             boost::throw_exception(variant_error("Unable to compare variant iterators of two DataTables that have a different number of columns"));
 
         for (size_t i = 0; i < m_column_iterators.size(); ++i)
-            if (m_column_iterators[i] != cast_rhs->column_iterators()[i])
+            if (m_column_iterators[i] != cast_rhs->m_column_iterators[i])
                 return false;
 
         return true;
@@ -178,17 +181,13 @@ namespace protean { namespace detail {
     >
     variant_const_iterator_base* data_table_variant_iterator_interface<IteratorTraits, Base>::to_const() const
     {
-        return new data_table_variant_iterator_interface<const_iterator_traits>(m_column_iterators);
-    }
+        typedef typename data_table_variant_iterator_interface<const_iterator_traits>::column_iterator_container
+            const_column_iterator_container;
 
-    template <
-        typename IteratorTraits,
-        typename Base
-    >
-    const typename data_table_variant_iterator_interface<IteratorTraits, Base>::column_iterator_container&
-    data_table_variant_iterator_interface<IteratorTraits, Base>::column_iterators() const
-    {
-        return m_column_iterators;
+        const_column_iterator_container const_column_iterators(m_column_iterators.size());
+        std::copy(m_column_iterators.begin(), m_column_iterators.end(), const_column_iterators.begin());
+
+        return new data_table_variant_iterator_interface<const_iterator_traits>(const_column_iterators);
     }
 
 }} // namespace protean::detail

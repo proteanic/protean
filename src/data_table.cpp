@@ -175,7 +175,7 @@ namespace protean { namespace detail {
 
     variant_iterator_base* data_table::begin()
     {
-        std::vector<variant_iterator<const_iterator_traits> > column_iterators;
+        std::vector<variant_iterator<iterator_traits> > column_iterators;
         for (column_container_type::iterator iter = m_columns.begin(); iter != m_columns.end(); ++iter)
             column_iterators.push_back(iter->begin());
 
@@ -184,7 +184,7 @@ namespace protean { namespace detail {
 
     variant_iterator_base* data_table::end()
     {
-        std::vector<variant_iterator<const_iterator_traits> > column_iterators;
+        std::vector<variant_iterator<iterator_traits> > column_iterators;
         for (column_container_type::iterator iter = m_columns.begin(); iter != m_columns.end(); ++iter)
             column_iterators.push_back(iter->end());
 
