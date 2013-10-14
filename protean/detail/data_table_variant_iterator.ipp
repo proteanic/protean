@@ -23,7 +23,7 @@ namespace protean { namespace detail {
 
     template <typename T, typename IteratorTraits>
     //const typename data_table_column_variant_iterator_interface<T, IteratorTraits>::base::date_time_t&
-    const typename data_table_column_variant_iterator_interface<T, IteratorTraits>::date_time_t&
+    const typename data_table_column_variant_iterator_interface<T, IteratorTraits>::date_time_type&
     data_table_column_variant_iterator_interface<T, IteratorTraits>::time() const
     {
         boost::throw_exception(variant_error("Attempt to call time() on data table column variant iterator"));
@@ -72,6 +72,73 @@ namespace protean { namespace detail {
     variant_const_iterator_base* data_table_column_variant_iterator_interface<T, IteratorTraits>::to_const() const
     {
         return new data_table_column_variant_iterator_interface<T, const_iterator_traits>(m_iterator);
+    }
+
+    /* Variant column specialization */
+    /*********************************/
+    template <typename IteratorTraits>
+    data_table_column_variant_iterator_interface<variant, IteratorTraits>::
+    data_table_column_variant_iterator_interface(const source_iterator_type& iterator)
+        : m_iterator(iterator)
+    {}
+
+    template <typename IteratorTraits>
+    const std::string& data_table_column_variant_iterator_interface<variant, IteratorTraits>::key() const
+    {
+        boost::throw_exception(variant_error("Attempt to call key() on data table column variant iterator"));
+    }
+
+    template <typename IteratorTraits>
+    const typename data_table_column_variant_iterator_interface<variant, IteratorTraits>::date_time_type&
+    data_table_column_variant_iterator_interface<variant, IteratorTraits>::time() const
+    {
+        boost::throw_exception(variant_error("Attempt to call time() on data table column variant iterator"));
+    }
+
+    template <typename IteratorTraits>
+    typename data_table_column_variant_iterator_interface<variant, IteratorTraits>::reference
+    data_table_column_variant_iterator_interface<variant, IteratorTraits>::value() const
+    {
+        return *m_iterator;
+    }
+
+    template <typename IteratorTraits>
+    void data_table_column_variant_iterator_interface<variant, IteratorTraits>::increment()
+    {
+        ++m_iterator;
+    }
+
+    template <typename IteratorTraits>
+    void data_table_column_variant_iterator_interface<variant, IteratorTraits>::decrement()
+    {
+        --m_iterator;
+    }
+
+    template <typename IteratorTraits>
+    bool data_table_column_variant_iterator_interface<variant, IteratorTraits>::
+    equal(const variant_const_iterator_base* rhs) const
+    {
+        const data_table_column_variant_iterator_interface<variant>* cast_rhs =
+            dynamic_cast<const data_table_column_variant_iterator_interface<variant>*>(rhs);
+
+        if (cast_rhs == 0)
+            boost::throw_exception(variant_error("Unable to convert iterator to data table column variant iterator"));
+
+        return m_iterator == cast_rhs->m_iterator;
+    }
+
+    template <typename IteratorTraits>
+    typename data_table_column_variant_iterator_interface<variant, IteratorTraits>::base*
+    data_table_column_variant_iterator_interface<variant, IteratorTraits>::clone()
+    {
+        return new data_table_column_variant_iterator_interface(m_iterator);
+    }
+
+    template <typename IteratorTraits>
+    variant_const_iterator_base* data_table_column_variant_iterator_interface<variant, IteratorTraits>::
+    to_const() const
+    {
+        return new data_table_column_variant_iterator_interface<variant, const_iterator_traits>(m_iterator);
     }
 
 

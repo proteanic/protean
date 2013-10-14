@@ -37,13 +37,14 @@ namespace protean { namespace detail {
         : public variant_iterator_interface<IteratorTraits>
     {
     private:
-        typedef IteratorTraits                                traits;
-        typedef variant_iterator_interface<traits>            base;
+        typedef IteratorTraits                           traits;
+        typedef variant_iterator_interface<traits>       base;
 
-        typedef typename base::date_time_t                    date_time_t;
-        typedef typename data_table_column<T>::const_iterator source_iterator_type;
-        typedef typename traits::list_iterator_type           iterator_type;
-        typedef typename traits::value_type&                  reference;
+        typedef typename base::date_time_t               date_time_type;
+        typedef typename const_iterator_traits::template
+            column_iterator_type<T>::type                source_iterator_type;
+        typedef typename traits::list_iterator_type      iterator_type;
+        typedef typename traits::value_type&             reference;
 
     public:
         data_table_column_variant_iterator_interface(const source_iterator_type& iterator);
@@ -75,6 +76,46 @@ namespace protean { namespace detail {
     private:
         source_iterator_type m_iterator;
         mutable variant      m_copy;
+
+        template <class, class>
+        friend class data_table_column_variant_iterator_interface;
+    };
+
+    // Variant specialization for variant fallback -- allows proper mutation
+    template <
+        typename IteratorTraits
+    >
+    class data_table_column_variant_iterator_interface<variant, IteratorTraits>
+        : public variant_iterator_interface<IteratorTraits>
+    {
+    private:
+        typedef IteratorTraits                             traits;
+        typedef variant_iterator_interface<IteratorTraits> base;
+
+        typedef typename base::date_time_t                 date_time_type;
+        typedef typename traits::template
+            column_iterator_type<variant>::type            source_iterator_type;
+        typedef typename traits::list_iterator_type        iterator_type;
+        typedef typename traits::value_type&               reference;
+
+    public:
+        data_table_column_variant_iterator_interface(const source_iterator_type& iterator);
+
+        const std::string& key() const;
+        const typename base::date_time_t& time() const;
+
+        reference value() const;
+
+        void increment();
+        void decrement();
+
+        bool equal(const variant_const_iterator_base* rhs) const;
+
+        base* clone();
+        variant_const_iterator_base* to_const() const;
+
+    private:
+        source_iterator_type m_iterator;
 
         template <class, class>
         friend class data_table_column_variant_iterator_interface;

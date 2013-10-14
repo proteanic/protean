@@ -33,6 +33,7 @@ namespace protean {
         typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::const_iterator timeseries_iterator_type;
         typedef const variant* tuple_iterator_type;
         typedef size_t difference_type;
+        template <typename T> struct column_iterator_type { typedef typename std::vector<T>::const_iterator type; };
     };
 
     struct iterator_traits
@@ -44,6 +45,7 @@ namespace protean {
         typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::iterator timeseries_iterator_type;
         typedef variant* tuple_iterator_type;
         typedef size_t difference_type;
+        template <typename T> struct column_iterator_type { typedef typename std::vector<T>::iterator type; };
     };
 
 
