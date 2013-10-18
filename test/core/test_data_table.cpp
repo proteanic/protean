@@ -34,9 +34,9 @@ BOOST_AUTO_TEST_CASE(test_data_table_basic)
       .add_column(variant::Int32)
       .add_column(variant::Double);
 
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row1 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 09:00:00.000"), 42, 3.141);
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row2 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 10:00:00.000"), 1, 2.718);
 
     v1.push_back(row1)
@@ -81,9 +81,9 @@ BOOST_AUTO_TEST_CASE(test_data_table_types)
 
     BOOST_CHECK_THROW(v1.push_back( boost::tuples::make_tuple(std::string("Incompatible columns")) ), variant_error);
 
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row1 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 09:00:00.000"), 42, 3.141);
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row2 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 10:00:00.000"), 1, 2.718);
 
     v1.push_back(row1)
@@ -108,9 +108,9 @@ BOOST_AUTO_TEST_CASE(test_data_table_iterator)
 
     BOOST_CHECK(empty_begin==empty_end);
 
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row1 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 09:00:00.000"), 42, 3.141);
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row2 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 10:00:00.000"), 666, 2.718);
 
     v1.push_back(row1)
@@ -158,9 +158,9 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_iterator)
     BOOST_CHECK(v1.begin()==v1.end());
 
     // Or one can write: data_table<variant::DateTime, variant::Int32, variant::Double>::value_type row1 = ...
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row1 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 09:00:00.000"), 42, 3.141);
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         row2 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 10:00:00.000"), 1, 2.718);
 
     v1.push_back(row1)
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_iterator)
     BOOST_CHECK(begin->at(1).is<variant::Int32>());
     BOOST_CHECK(begin->at(2).is<variant::Double>());
 
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         tuple1 = boost::tuples::make_tuple(
             begin->at(0).as<variant::date_time_t>(),
             begin->at(1).as<boost::int32_t>(),
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_iterator)
 
     ++begin;
 
-    data_table_tuple<variant::DateTime, variant::Int32, variant::Double>::type
+    data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
         tuple2 = boost::tuples::make_tuple(
             begin->at(0).as<variant::date_time_t>(),
             begin->at(1).as<boost::int32_t>(),
@@ -204,6 +204,35 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_iterator)
     ++begin;
 
     BOOST_CHECK(begin==end);
+}
+
+BOOST_AUTO_TEST_CASE(test_data_table_large_number_of_columns)
+{
+    variant dt(variant::DataTable);
+
+    #define NUM_COLUMNS 30
+
+    for (int i = 0; i < NUM_COLUMNS; ++i)
+        dt.add_column(variant::Int32);
+
+    data_table_row<
+        BOOST_PP_ENUM(NUM_COLUMNS, IDENTITY, variant::Int32)
+    >::type row =
+        make_row(BOOST_PP_ENUM_PARAMS(NUM_COLUMNS, (int)));
+
+    dt.push_back(row);
+
+    data_table_const_iterator<
+        BOOST_PP_ENUM(NUM_COLUMNS, IDENTITY, variant::Int32)
+    > begin =
+        dt.begin<
+            BOOST_PP_ENUM(NUM_COLUMNS, IDENTITY, variant::Int32)
+        >();
+
+    #define CHECK_EQUAL_TUPLE_ELEMENT_N(z, n, _) \
+        BOOST_CHECK_EQUAL(begin->get<n>(), boost::get<n>(row));
+
+    BOOST_PP_REPEAT(NUM_COLUMNS, CHECK_EQUAL_TUPLE_ELEMENT_N, _)
 }
 
 BOOST_AUTO_TEST_CASE(test_data_table_binary_serialization_performance)

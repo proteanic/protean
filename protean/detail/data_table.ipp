@@ -19,6 +19,9 @@ namespace protean { namespace detail {
         if (!m_columns.empty() && !get_column(0).empty())
             boost::throw_exception(variant_error("Cannot add a column since values have been inserted"));
 
+        if (m_columns.size() >= DATA_TABLE_MAX_COLUMNS)
+            boost::throw_exception(variant_error("Reached maximum column capacity"));
+
         BOOST_FOREACH(column_container_type::reference column, m_columns)
             if (column.name() == name)
                 boost::throw_exception(variant_error("Column name already in use"));
@@ -75,7 +78,7 @@ namespace protean { namespace detail {
         data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> data_table::begin()                \
         {                                                                                                   \
             return data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>(                        \
-                boost::make_tuple( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_BEGIN_ITERATOR, t) )            \
+                make_row( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_BEGIN_ITERATOR, t) )                     \
             );                                                                                              \
         }
 
@@ -84,7 +87,7 @@ namespace protean { namespace detail {
         data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> data_table::end()                  \
         {                                                                                                   \
             return data_table_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>(                        \
-                boost::make_tuple( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_END_ITERATOR, t) )              \
+                make_row( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_END_ITERATOR, t) )                       \
             );                                                                                              \
         }
 
@@ -93,7 +96,7 @@ namespace protean { namespace detail {
         data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> data_table::begin() const    \
         {                                                                                                   \
             return data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>(                  \
-                boost::make_tuple( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_BEGIN_ITERATOR, t) )            \
+                make_row( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_BEGIN_ITERATOR, t) )                     \
             );                                                                                              \
         }
 
@@ -102,7 +105,7 @@ namespace protean { namespace detail {
         data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> data_table::end() const      \
         {                                                                                                   \
             return data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)>(                  \
-                boost::make_tuple( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_END_ITERATOR, t) )              \
+                make_row( BOOST_PP_ENUM(BOOST_PP_ADD(n, 1), COLUMN_END_ITERATOR, t) )                       \
             );                                                                                              \
         }
 

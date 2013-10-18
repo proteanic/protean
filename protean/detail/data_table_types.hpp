@@ -76,7 +76,7 @@ namespace protean { namespace detail {
 
     /* Maximum number of data table columns (currently limited by maximum size of Boost.Tuple */
     /******************************************************************************************/
-    #define DATA_TABLE_MAX_COLUMNS 10
+    #define DATA_TABLE_MAX_COLUMNS 50
 
     /* Prefix used for template type/enum parameters; e.g. if T, then T0, T1, ... T9 */
     /*********************************************************************************/
