@@ -210,10 +210,12 @@ BOOST_AUTO_TEST_CASE(test_data_table_large_number_of_columns)
 {
     variant dt(variant::DataTable);
 
-    #define NUM_COLUMNS 30
+    #define NUM_COLUMNS 50
 
     for (int i = 0; i < NUM_COLUMNS; ++i)
         dt.add_column(variant::Int32);
+
+    BOOST_CHECK_THROW(dt.add_column(variant::Int32), variant_error);
 
     data_table_row<
         BOOST_PP_ENUM(NUM_COLUMNS, IDENTITY, variant::Int32)
