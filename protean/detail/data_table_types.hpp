@@ -112,19 +112,29 @@ namespace protean { namespace detail {
         const std::string& error_message = "Cannot use non-primitive type '%s' with DataTable");
 
     /* Implementation helper for runtime mapper: traverses an MPL sequence, executing `method' */
-    /* and returning early if `pred' is true for an element                                    */
+    /* and returning early if `pred' is true for an element.                                   */
+    /* (Note: separating decl/def into .hpp/.ipp breaks compilation in VC10 (VS 2010).)        */
     template <typename Begin, typename End, typename TypePredicateFunctor, typename TypeFunctor>
     struct call_if
     {
         static boost::optional<typename TypeFunctor::result_type>
-        call(const TypePredicateFunctor& pred, TypeFunctor& method);
+        call(const TypePredicateFunctor& pred, TypeFunctor& method)
+        {
+            if (pred(static_cast<typename Begin::type*>(0)))
+                return boost::optional<typename TypeFunctor::result_type>(method(static_cast<typename Begin::type*>(0)));
+
+            return call_if<typename boost::mpl::next<Begin>::type, End, TypePredicateFunctor, TypeFunctor>::call(pred, method);
+        }
     };
 
     template <typename End, typename TypePredicateFunctor, typename TypeFunctor>
     struct call_if<End, End, TypePredicateFunctor, TypeFunctor>
     {
         static boost::optional<typename TypeFunctor::result_type>
-        call(const TypePredicateFunctor&, TypeFunctor&);
+        call(const TypePredicateFunctor&, TypeFunctor&)
+        {
+            return boost::optional<typename TypeFunctor::result_type>();
+        }
     };
 
     // Default enum comparer (returns true iff enum_type_t matches)

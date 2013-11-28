@@ -5,24 +5,6 @@
 
 namespace protean { namespace detail {
 
-    template <typename Begin, typename End, typename TypePredicateFunctor, typename TypeFunctor>
-    boost::optional<typename TypeFunctor::result_type>
-    call_if<Begin, End, TypePredicateFunctor, TypeFunctor>::call(const TypePredicateFunctor& pred, TypeFunctor& method)
-    {
-        if (pred(static_cast<typename Begin::type*>(0)))
-            return boost::optional<typename TypeFunctor::result_type>(method(static_cast<typename Begin::type*>(0)));
-
-        return call_if<typename boost::mpl::next<Begin>::type, End, TypePredicateFunctor, TypeFunctor>::call(pred, method);
-    }
-
-    template <typename End, typename TypePredicateFunctor, typename TypeFunctor>
-    boost::optional<typename TypeFunctor::result_type>
-    call_if<End, End, TypePredicateFunctor, TypeFunctor>::call(const TypePredicateFunctor&, TypeFunctor&)
-    {
-        return boost::optional<typename TypeFunctor::result_type>();
-    }
-
-
     template <typename TypeFunctor>
     typename TypeFunctor::result_type data_table_runtime_type_map(
         variant_base::enum_type_t enum_type,
