@@ -15,6 +15,9 @@ using boost::unit_test::test_suite;
 #include <boost/date_time.hpp>
 #include <protean/binary_writer.hpp>
 #include <protean/binary_reader.hpp>
+#include <iostream>
+#include <boost/chrono/chrono.hpp>
+#include <boost/chrono/chrono_io.hpp>
 using namespace protean;
 
 BOOST_AUTO_TEST_SUITE(data_table_suite);
@@ -237,47 +240,117 @@ BOOST_AUTO_TEST_CASE(test_data_table_large_number_of_columns)
     BOOST_PP_REPEAT(NUM_COLUMNS, CHECK_EQUAL_TUPLE_ELEMENT_N, _)
 }
 
+template <typename Duration>
+void duration_checkpoint(std::ostream& os, const std::string& type_name, const std::string& operation_name,
+    const boost::chrono::high_resolution_clock::time_point& start, const boost::chrono::high_resolution_clock::time_point& finish)
+{
+    os << "[" << type_name << "] "
+       << operation_name << " took "
+       << Duration(boost::chrono::duration_cast<Duration>(finish - start).count()) << "." << std::endl;
+}
+
 BOOST_AUTO_TEST_CASE(test_data_table_binary_serialization_performance)
 {
     /* // Start of commented-out performance test (uncomment to run)
+
+    static const size_t rows = 1000000;
+
+    boost::chrono::high_resolution_clock::time_point start;
+    boost::chrono::high_resolution_clock::time_point finish;
+    typedef boost::chrono::milliseconds duration_resolution;
+
+    {
+        variant ts(variant::TimeSeries);
+
+        const boost::posix_time::ptime initial_time = boost::posix_time::time_from_string("2002-01-20 09:00:00.000");
+
+        start = boost::chrono::high_resolution_clock::now();
+        for (int i = 0; i < rows; ++i)
+        {
+            boost::posix_time::ptime datetime = initial_time + boost::posix_time::hours(i);
+            variant value(variant::Tuple, 4);
+            value.at(0) = variant(static_cast<double>(100.4 + i));
+            value.at(1) = variant("value0");
+            value.at(2) = variant(static_cast<boost::int32_t>(0 + i));
+            value.at(3) = variant(static_cast<float>(1.25f + i));
+
+            ts.push_back(datetime, value);
+        }
+        finish = boost::chrono::high_resolution_clock::now();
+
+        duration_checkpoint<duration_resolution>(std::cout, "TimeSeries", "Construction", start, finish);
+
+        std::ostringstream oss;
+        binary_writer bw(oss);
+
+        start = boost::chrono::high_resolution_clock::now();
+        bw << ts;
+        finish = boost::chrono::high_resolution_clock::now();
+
+        duration_checkpoint<duration_resolution>(std::cout, "TimeSeries", "Serialization", start, finish);
+
+        std::istringstream iss(oss.str());
+        binary_reader br(iss);
+        variant deserialized_ts;
+
+        start = boost::chrono::high_resolution_clock::now();
+        br >> deserialized_ts;
+        finish = boost::chrono::high_resolution_clock::now();
+
+        duration_checkpoint<duration_resolution>(std::cout, "TimeSeries", "Deserialization", start, finish);
+
+        start = boost::chrono::high_resolution_clock::now();
+    }
+    finish = boost::chrono::high_resolution_clock::now();
+    duration_checkpoint<duration_resolution>(std::cout, "TimeSeries", "Destruction", start, finish);
+
     {
         variant dt(variant::DataTable);
         dt.add_column(variant::DateTime, "Time")
           .add_column(variant::Double,   "Price")
-          .add_column(variant::String,   "Data");
+          .add_column(variant::String,   "Data")
+          .add_column(variant::Int32,    "Volume")
+          .add_column(variant::Float,    "Col5");
 
         const boost::posix_time::ptime initial_time = boost::posix_time::time_from_string("2002-01-20 09:00:00.000");
 
-        clock_t start = clock();
-        for (int i = 0; i < 1000000; ++i)
+        start = boost::chrono::high_resolution_clock::now();
+        for (int i = 0; i < rows; ++i)
             dt.push_back(boost::tuples::make_tuple(
                 initial_time + boost::posix_time::hours(i),
                 100.4 + i,
-                detail::string("value0")
+                detail::string("value0"),
+                0 + i,
+                1.25f + i
             ));
-        clock_t finish = clock();
+        finish = boost::chrono::high_resolution_clock::now();
 
-        std::cout << "Construction took " << static_cast<double>(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
+        duration_checkpoint<duration_resolution>(std::cout, "DataTable", "Construction", start, finish);
 
-        std::ostringstream oss2;
-        binary_writer bw2(oss2);
+        std::ostringstream oss;
+        binary_writer bw(oss);
 
-        start = clock();
-        bw2 << dt;
-        finish = clock();
+        start = boost::chrono::high_resolution_clock::now();
+        bw << dt;
+        finish = boost::chrono::high_resolution_clock::now();
 
-        std::cout << "Serialization took " << static_cast<double>(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
+        duration_checkpoint<duration_resolution>(std::cout, "DataTable", "Serialization", start, finish);
 
-        std::istringstream iss2(oss2.str());
-        binary_reader br2(iss2);
-        variant read_dt;
+        std::istringstream iss(oss.str());
+        binary_reader br(iss);
+        variant deserialized_dt;
 
-        start = clock();
-        br2 >> read_dt;
-        finish = clock();
+        start = boost::chrono::high_resolution_clock::now();
+        br >> deserialized_dt;
+        finish = boost::chrono::high_resolution_clock::now();
 
-        std::cout << "Deserialization took " << static_cast<double>(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
+        duration_checkpoint<duration_resolution>(std::cout, "DataTable", "Deserialization", start, finish);
+
+        start = boost::chrono::high_resolution_clock::now();
     }
+    finish = boost::chrono::high_resolution_clock::now();
+    duration_checkpoint<duration_resolution>(std::cout, "DataTable", "Destruction", start, finish);
+
     */ // End of commented-out performance test (uncomment to run)
 }
 
