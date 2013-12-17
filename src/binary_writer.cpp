@@ -139,14 +139,24 @@ namespace protean {
 
                 BOOST_FOREACH(detail::data_table::column_container_type::const_reference column, dt.columns())
                 {
-                    boost::scoped_ptr<detail::data_table_column_writer> column_writer(
-                        detail::make_data_table_column_binary_writer(column, *this)
-                    );
-
-                    while (column_writer->has_next())
+                    if (column.type() & variant_base::Primitive)
                     {
-                        column_writer->write();
-                        column_writer->advance();
+                        boost::scoped_ptr<detail::data_table_column_writer> column_writer(
+                            detail::make_data_table_column_binary_writer(column, *this)
+                        );
+
+                        while (column_writer->has_next())
+                        {
+                            column_writer->write();
+                            column_writer->advance();
+                        }
+                    }
+                    else
+                    {
+		                variant::const_iterator iter(column.begin());
+		                variant::const_iterator end(column.end());
+		                while (iter != end)
+		                    write(*(iter++));
                     }
                 }
                 break;

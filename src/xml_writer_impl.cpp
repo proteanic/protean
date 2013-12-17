@@ -511,19 +511,34 @@ namespace protean { namespace detail {
                     push("Column").insert("name", variant(column_iter->name()));
                     m_os << indent() << start_tag();
 
-                    boost::scoped_ptr<data_table_column_writer> column_writer(
-                        make_data_table_column_stream_writer(*column_iter, m_os)
-                    );
-
-                    while (column_writer->has_next())
+                    if (column_iter->type() & variant_base::Primitive)
                     {
-                        push("V");
-                        m_os << indent() << start_tag();
-                        column_writer->write();
-                        m_os << end_tag();
-                        pop();
+                        boost::scoped_ptr<data_table_column_writer> column_writer(
+                            make_data_table_column_stream_writer(*column_iter, m_os)
+                        );
 
-                        column_writer->advance();
+                        while (column_writer->has_next())
+                        {
+                            push("V");
+                            m_os << indent() << start_tag();
+                            column_writer->write();
+                            m_os << end_tag();
+                            pop();
+
+                            column_writer->advance();
+                        }
+                    }
+                    else
+                    {
+                        variant::const_iterator iter(column_iter->begin());
+                        variant::const_iterator end(column_iter->end());
+                        while (iter != end)
+                        {
+                            push("V");
+                            m_os << indent();
+                            write_variant(*(iter++));
+                            pop();
+                        }
                     }
 
                     m_os << indent() << end_tag();

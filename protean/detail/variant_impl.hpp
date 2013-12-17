@@ -309,8 +309,6 @@ namespace protean { namespace detail {
             }
             return citr->second;
         }
-
-        friend class data_table_type_pairs;
     };
 
     template<BOOST_PP_ENUM_PARAMS(VARIANT_MAX_ARITY, class T)>

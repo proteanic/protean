@@ -10,7 +10,13 @@
 #include <protean/variant_base.hpp>
 
 #include <boost/preprocessor/tuple/elem.hpp>
+#include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/seq/transform.hpp>
+#include <boost/preprocessor/seq/enum.hpp>
+#include <boost/mpl/filter_view.hpp>
+#include <boost/mpl/not_equal_to.hpp>
+#include <boost/mpl/lambda.hpp>
+
 #include <boost/mpl/fold.hpp>
 #include <boost/mpl/map.hpp>
 #include <boost/mpl/if.hpp>
@@ -32,47 +38,91 @@
 
 namespace protean { namespace detail {
 
-    /* Pairs that associate each supported variant_base::enum_type_t with its corresponding type */
-    /*********************************************************************************************/
-    struct data_table_type_pairs :
+    /* Supported column types. *Have to manually keep up-to-date*, as they cannot be defined programmatically */
+    /**********************************************************************************************************/
+    #define COLUMN_TYPES                                                \
+        ((variant_base::Boolean,    bool))                              \
+        ((variant_base::DateTime,   boost::posix_time::ptime))          \
+        ((variant_base::Time,       boost::posix_time::time_duration))  \
+        ((variant_base::Date,       boost::gregorian::date))            \
+        ((variant_base::Double,     double))                            \
+        ((variant_base::Float,      float))                             \
+        ((variant_base::UInt64,     boost::uint64_t))                   \
+        ((variant_base::Int64,      boost::int64_t))                    \
+        ((variant_base::UInt32,     boost::uint32_t))                   \
+        ((variant_base::Int32,      boost::int32_t))                    \
+        ((variant_base::Any,        detail::string))                    \
+        ((variant_base::String,     detail::string))                    \
+        ((variant_base::List,       variant))                           \
+        ((variant_base::Tuple,      variant))                           \
+        ((variant_base::Dictionary, variant))                           \
+        ((variant_base::Bag,        variant))
+
+    /* Selects first and second element from tuple pair, respectively */
+    /******************************************************************/
+    #define GET_ENUM(pair)  BOOST_PP_TUPLE_ELEM(2, 0, pair)
+    #define GET_TYPE(pair)  BOOST_PP_TUPLE_ELEM(2, 1, pair)
+
+    /* Supported primitive types: effectively the image of the COLUMN_TYPES mapping minus the variant type */
+    /*******************************************************************************************************/
+    #define SUPPORTED_TYPES                 \
+        (bool)                              \
+        (boost::posix_time::ptime)          \
+        (boost::posix_time::time_duration)  \
+        (boost::gregorian::date)            \
+        (double)                            \
+        (float)                             \
+        (boost::uint64_t)                   \
+        (boost::int64_t)                    \
+        (boost::uint32_t)                   \
+        (boost::int32_t)                    \
+        (detail::string)
+
+    /* Compile-time mapping from variant_base::enum_type_t to corresponding type; undefined if no such pair. */
+    /*********************************************************************************************************/
+    template <variant_base::enum_type_t E>
+    struct data_table_type_map;
+
+    template <>
+    struct data_table_type_map<variant_base::None>
+    {
+        typedef boost::tuples::null_type type;
+    };
+
+    #define COLUMN_TYPE_MAP_SPECIALIZATION(r, data, elem)  \
+        template <>                                        \
+        struct data_table_type_map<GET_ENUM(elem)>         \
+        {                                                  \
+            typedef GET_TYPE(elem) type;                   \
+        };
+
+    BOOST_PP_SEQ_FOR_EACH(COLUMN_TYPE_MAP_SPECIALIZATION, _, COLUMN_TYPES)
+
+    /* MPL vector of the mpl::int-wrapped column enums */
+    /***************************************************/
+    #define MAKE_MPL_ENUM(s, data, elem) boost::mpl::int_<GET_ENUM(elem)>
+
+    typedef boost::mpl::vector<
+        BOOST_PP_SEQ_ENUM( BOOST_PP_SEQ_TRANSFORM(MAKE_MPL_ENUM, , COLUMN_TYPES) )
+    > data_table_column_enums;
+
+    /* Filtering of data_table_column_enums type vector to include only primitive enum types */
+    /*****************************************************************************************/
+    struct data_table_column_primitive_enums :
         boost::mpl::fold<
-            variant_base::variant_impl_t::mpl_types_info_by_enum,
-            boost::mpl::map<>,
+            data_table_column_enums,
+            boost::mpl::vector<>,
             boost::mpl::if_<
                 boost::mpl::not_equal_to<
-                    boost::mpl::bitand_<
-                        boost::mpl::first<boost::mpl::_2>,
-                        boost::mpl::int_<variant_base::Primitive>
-                    >,
+                    boost::mpl::bitand_<boost::mpl::int_<variant_base::Primitive>, boost::mpl::_2>,
                     boost::mpl::int_<0>
                 >,
-                boost::mpl::insert<
-                    boost::mpl::_1,
-                    boost::mpl::pair<
-                        boost::mpl::first<boost::mpl::_2>,
-                        boost::mpl::front<boost::mpl::second<boost::mpl::_2> >
-                    >
-                >,
+                boost::mpl::push_back<boost::mpl::_1, boost::mpl::_2>,
                 boost::mpl::_1
             >
         >::type
     {};
 
-    /* Supported column types -- a projection of the second column of data_table_type_pairs; that is, all */
-    /* primitive variant types. Have to manually keep up-to-date as cannot be defined programmatically.   */
-    /******************************************************************************************************/
-    #define PROTEAN_DETAIL_DATA_TABLE_COLUMN_SUPPORTED_TYPES \
-        (bool)                                               \
-        (boost::posix_time::ptime)                           \
-        (boost::posix_time::time_duration)                   \
-        (boost::gregorian::date)                             \
-        (double)                                             \
-        (float)                                              \
-        (boost::uint64_t)                                    \
-        (boost::int64_t)                                     \
-        (boost::uint32_t)                                    \
-        (boost::int32_t)                                     \
-        (detail::string)
 
     /* Maximum number of data table columns (currently limited by maximum size of Boost.Tuple */
     /******************************************************************************************/
@@ -82,76 +132,38 @@ namespace protean { namespace detail {
     /*********************************************************************************/
     #define DATA_TABLE_COLUMN_TYPE_PREFIX T
 
-    /* Compile-time mapping from variant_base::enum_type_t to corresponding type; undefined if no such pair */
-    /********************************************************************************************************/
-    template <variant_base::enum_type_t T>
-    struct data_table_type_map
-        : public boost::enable_if_c<
-            static_cast<bool>(T & variant_base::Primitive),
-            typename boost::mpl::at<data_table_type_pairs, boost::mpl::int_<T> >::type
-          >
-    {};
 
-    template <>
-    struct data_table_type_map<variant_base::None>
-    {
-        typedef boost::tuples::null_type type;
-    };
-
-    /* Runtime mapper that takes a variant_base::enum_type_t value and calls the given functor's    */
-    /* operator() with the associated type as a *template* parameter.  Replaces need to write large */
-    /* repetitive switch statements that need to be manually updated:                               */
-    /* switch (enum_type) { case DateTime: method<DateTime>(args); break; ... lots more cases ... } */
+    /* Runtime mapper that takes a type-wrapped enum value and calls the given functor's operator() */
+    /* with the assocaited type as a *template* parameter.  Replaces the need to write large and    */
+    /* repetitive switch statements that need to be manually updated when the enum values change:   */
+    /* switch(enum_value) { case A: method<A>(args); break; ... lots more cases ... }               */
     /*   <=>                                                                                        */
-    /* data_table_runtime_type_map(enum_type, method_functor(args));                                */
-    /************************************************************************************************/
-    template <typename TypeFunctor>
-    typename TypeFunctor::result_type data_table_runtime_type_map(
-        variant_base::enum_type_t enum_type,
-        TypeFunctor& method,
-        const std::string& error_message = "Cannot use non-primitive type '%s' with DataTable");
+    /* enum_runtime_map(enum_value, method, "Error message on case exhaustion")                     */
+    template <
+        typename Sequence,
+        template <class> class TypePredicate,
+        typename EnumType,
+        typename TypeFunctor
+    >
+    typename TypeFunctor::result_type
+    enum_runtime_map(EnumType enum_value, TypeFunctor& method, const std::string& error_message);
 
-    /* Implementation helper for runtime mapper: traverses an MPL sequence, executing `method' */
-    /* and returning early if `pred' is true for an element.                                   */
-    /* (Note: separating decl/def into .hpp/.ipp breaks compilation in VC10 (VS 2010).)        */
-    template <typename Begin, typename End, typename TypePredicateFunctor, typename TypeFunctor>
-    struct call_if
+    // Compile-time enum equality comparer
+    template <typename Enum>
+    struct enum_equality_comparer
     {
-        static boost::optional<typename TypeFunctor::result_type>
-        call(const TypePredicateFunctor& pred, TypeFunctor& method)
-        {
-            if (pred(static_cast<typename Begin::type*>(0)))
-                return boost::optional<typename TypeFunctor::result_type>(method(static_cast<typename Begin::type*>(0)));
-
-            return call_if<typename boost::mpl::next<Begin>::type, End, TypePredicateFunctor, TypeFunctor>::call(pred, method);
-        }
-    };
-
-    template <typename End, typename TypePredicateFunctor, typename TypeFunctor>
-    struct call_if<End, End, TypePredicateFunctor, TypeFunctor>
-    {
-        static boost::optional<typename TypeFunctor::result_type>
-        call(const TypePredicateFunctor&, TypeFunctor&)
-        {
-            return boost::optional<typename TypeFunctor::result_type>();
-        }
-    };
-
-    // Default enum comparer (returns true iff enum_type_t matches)
-    struct data_table_runtime_type_comparer
-    {
-        data_table_runtime_type_comparer(variant_base::enum_type_t type)
-            : m_type(type)
+        enum_equality_comparer(Enum value)
+            : m_value(value)
         {}
 
-        template <typename DataTableTypePair>
-        bool operator()(DataTableTypePair* = 0) const
+        template <typename TypedEnum>
+        bool operator()(TypedEnum* = 0) const
         {
-            return DataTableTypePair::first::value == m_type;
+            return TypedEnum::value == m_value;
         }
 
     private:
-        const variant_base::enum_type_t m_type;
+        const Enum m_value;
     };
 
 }} // namespace protean::detail

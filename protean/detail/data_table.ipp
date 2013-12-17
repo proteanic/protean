@@ -13,8 +13,8 @@ namespace protean { namespace detail {
 
     /* Column setup implementation */
     /*******************************/
-    template <typename T>
-    data_table& data_table::add_column(const std::string& name, variant_base::enum_type_t type)
+    template <variant_base::enum_type_t E>
+    data_table& data_table::add_column(const std::string& name)
     {
         if (!m_columns.empty() && !get_column(0).empty())
             boost::throw_exception(variant_error("Cannot add a column since values have been inserted"));
@@ -26,7 +26,7 @@ namespace protean { namespace detail {
             if (column.name() == name)
                 boost::throw_exception(variant_error("Column name already in use"));
 
-        m_columns.push_back(new data_table_column<T>(name, type, m_capacity));
+        m_columns.push_back(new data_table_column<E>(name, m_capacity));
 
         return *this;
     }
@@ -68,10 +68,10 @@ namespace protean { namespace detail {
     /* Typed iterators implementation */
     /**********************************/
     #define COLUMN_BEGIN_ITERATOR(z, n, t) \
-        get_column(n).begin<typename data_table_type_map<t ## n>::type>()
+        get_column(n).begin<t ## n>()
 
     #define COLUMN_END_ITERATOR(z, n, t) \
-        get_column(n).end<typename data_table_type_map<t ## n>::type>()
+        get_column(n).end<t ## n>()
 
     #define BEGIN_ITERATOR_DEF(z, n, t)                                                                     \
         template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), variant_base::enum_type_t t)>                    \

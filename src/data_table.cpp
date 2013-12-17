@@ -18,33 +18,32 @@ namespace protean { namespace detail {
     {}
 
     /* Type-parameterised functor to add columns, used as operation performed */
-    /* in data_table_runtime_type_map dynamic enum mapping.                   */
+    /* in enum_runtime_type_map dynamic enum mapping.                         */
     struct data_table::column_adder
     {
         typedef data_table& result_type;
 
-        column_adder(data_table& dt, const std::string& name, variant_base::enum_type_t type)
+        column_adder(data_table& dt, const std::string& name)
             : m_dt(dt),
-              m_name(name),
-              m_type(type)
+              m_name(name)
         {}
 
-        template <typename DataTableTypePair>
-        result_type operator()(DataTableTypePair* = 0)
+        template <typename TypedEnum>
+        result_type operator()(TypedEnum* = 0)
         {
-            return m_dt.add_column<typename DataTableTypePair::second>(m_name, m_type);
+            return m_dt.add_column<static_cast<variant_base::enum_type_t>(TypedEnum::value)>(m_name);
         }
 
     private:
-        data_table&                     m_dt;
-        const std::string&              m_name;
-        const variant_base::enum_type_t m_type;
+        data_table&        m_dt;
+        const std::string& m_name;
     };
 
     data_table& data_table::add_column(variant_base::enum_type_t type, const std::string& name)
     {
-        data_table_runtime_type_map(type, column_adder(*this, name, type), "Columns of type '%s' are not supported");
-        return *this;
+        return enum_runtime_map<detail::data_table_column_enums, detail::enum_equality_comparer>(
+            type, column_adder(*this, name), "Columns of type " + variant_base::enum_to_string(type) + " are not supported"
+        );
     }
 
     data_table& data_table::add_column(variant_base::enum_type_t type)
@@ -120,9 +119,9 @@ namespace protean { namespace detail {
                                                    this_column_end  = m_columns.end(),
                                                    rhs_column_iter  = cast_rhs->m_columns.begin(),
                                                    rhs_column_end   = cast_rhs->m_columns.end()
-             ; this_column_iter != this_column_end
-                 && rhs_column_iter != rhs_column_end
-             ; ++this_column_iter, ++rhs_column_iter) {
+                ; this_column_iter != this_column_end && rhs_column_iter != rhs_column_end
+                ; ++this_column_iter, ++rhs_column_iter)
+        {
             if (this_column_iter->type() != rhs_column_iter->type())
                 boost::throw_exception(variant_error("Cannot compare two data tables with different column types"));
         }

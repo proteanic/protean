@@ -211,6 +211,7 @@ BOOST_AUTO_TEST_CASE(test_xml_collection)
     }
 
     {
+        /* DataTable with primitive column types */
         variant v1(variant::DataTable);
         v1.add_column(variant::DateTime).add_column(variant::Int32).add_column(variant::Double);
 
@@ -259,6 +260,39 @@ BOOST_AUTO_TEST_CASE(test_xml_collection)
         reader3 >> e2;
 
         BOOST_CHECK(e1.compare(e2)==0);
+    }
+
+    {
+        /* DataTable including a variant column type */
+        variant v1(variant::DataTable);
+        v1.add_column(variant::Int32).add_column(variant::Tuple).add_column(variant::String);
+
+        int x0 = 42;
+        variant x1(variant::Tuple, 2);
+            x1.at(0) = variant(3.14);
+            x1.at(1) = variant(true);
+        std::string x2("Hello");
+
+        v1.push_back( make_row(x0, x1, x2) );
+
+        int y0 = 1729;
+        variant y1(variant::Tuple, 1);
+            y1.at(0) = variant(variant::date_t(2008, 1, 3));
+        std::string y2("Bonjour");
+
+        v1.push_back( make_row(y0, y1, y2) );
+
+        std::ostringstream oss;
+        xml_writer writer(oss);
+        writer << v1;
+
+        //variant v2;
+        //std::stringstream iss;
+        //iss << oss.str();
+        //xml_reader reader(iss);
+        //reader >> v2;
+
+        //BOOST_CHECK(v1.compare(v2)==0);
     }
 }
 

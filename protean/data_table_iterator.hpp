@@ -25,7 +25,7 @@ namespace protean {
 
     // Forward declaration
     namespace detail {
-        template <typename T>
+        template <variant_base::enum_type_t E>
         class data_table_column;
     }
 
@@ -34,7 +34,9 @@ namespace protean {
     /* row<T0, ..., TN>::type is type-equivalent to tuple<T0, ..., TN> if N were allowed to be large for       */
     /* boost::tuples::tuple. They are compatible with boost::tuples::tuple.                                    */
     /***********************************************************************************************************/
+    #define ENUM_PREFIX E
     #define TYPE_PREFIX T
+    #define ELEMENT_0(prefix) BOOST_PP_ENUM_PARAMS(1, prefix)
     #define IDENTITY(z, n, text) text
 
     template <
@@ -96,14 +98,14 @@ namespace protean {
     template <
         BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(
             DATA_TABLE_MAX_COLUMNS,
-            variant_base::enum_type_t DATA_TABLE_COLUMN_TYPE_PREFIX,
+            variant_base::enum_type_t ENUM_PREFIX,
             variant_base::None
         )
     >
     struct data_table_row
     {
         typedef typename row<
-            BOOST_PP_ENUM(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_ENUM_TO_TYPE, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_ENUM_TO_TYPE, ENUM_PREFIX)
         >::type type;
     };
 
@@ -113,13 +115,13 @@ namespace protean {
     /*******************************************************************************/
 
     // Typed const DataTable iterator
-    #define DATA_TABLE_COLUMN_CONST_ITERATOR_TYPE(z, n, data) \
-        typename detail::data_table_column<DATA_TABLE_ENUM_TO_TYPE(z, n, data)>::const_iterator
+    #define DATA_TABLE_COLUMN_CONST_ITERATOR_TYPE(z, n, e) \
+        typename detail::data_table_column<e ## n>::const_iterator
 
     template <
         BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(
             DATA_TABLE_MAX_COLUMNS,
-            variant_base::enum_type_t DATA_TABLE_COLUMN_TYPE_PREFIX,
+            variant_base::enum_type_t ENUM_PREFIX,
             variant_base::None
         )
     >
@@ -129,7 +131,7 @@ namespace protean {
                 BOOST_PP_ENUM(
                     DATA_TABLE_MAX_COLUMNS,
                     DATA_TABLE_COLUMN_CONST_ITERATOR_TYPE,
-                    DATA_TABLE_COLUMN_TYPE_PREFIX
+                    ENUM_PREFIX
                 )
             >::type
         >
@@ -139,14 +141,14 @@ namespace protean {
             BOOST_PP_ENUM(
                 DATA_TABLE_MAX_COLUMNS,
                 DATA_TABLE_COLUMN_CONST_ITERATOR_TYPE,
-                DATA_TABLE_COLUMN_TYPE_PREFIX
+                ENUM_PREFIX
             )
         >::type iterator_tuple_type;
 
         typedef boost::zip_iterator<iterator_tuple_type> super;
 
         typedef typename data_table_row<
-            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
         >::type value_type;
 
     public:
@@ -161,7 +163,7 @@ namespace protean {
             : super(other.get_iterator_tuple())
         {}
 
-        const typename detail::data_table_type_map<T0>::type& time() const
+        const typename detail::data_table_type_map<ELEMENT_0(ENUM_PREFIX)>::type& time() const
         {
             return boost::get<0>(*(*this));
         }
@@ -177,13 +179,13 @@ namespace protean {
 
 
     // Typed non-const DataTable iterator
-    #define DATA_TABLE_COLUMN_ITERATOR_TYPE(z, n, data) \
-        typename detail::data_table_column<DATA_TABLE_ENUM_TO_TYPE(z, n, data)>::iterator
+    #define DATA_TABLE_COLUMN_ITERATOR_TYPE(z, n, e) \
+        typename detail::data_table_column<e ## n>::iterator
 
     template <
         BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(
             DATA_TABLE_MAX_COLUMNS,
-            variant_base::enum_type_t DATA_TABLE_COLUMN_TYPE_PREFIX,
+            variant_base::enum_type_t ENUM_PREFIX,
             variant_base::None
         )
     >
@@ -193,7 +195,7 @@ namespace protean {
                 BOOST_PP_ENUM(
                     DATA_TABLE_MAX_COLUMNS,
                     DATA_TABLE_COLUMN_ITERATOR_TYPE,
-                    DATA_TABLE_COLUMN_TYPE_PREFIX
+                    ENUM_PREFIX
                 )
             >::type
         >
@@ -203,14 +205,14 @@ namespace protean {
             BOOST_PP_ENUM(
                 DATA_TABLE_MAX_COLUMNS,
                 DATA_TABLE_COLUMN_ITERATOR_TYPE,
-                DATA_TABLE_COLUMN_TYPE_PREFIX
+                ENUM_PREFIX
             )
         >::type iterator_tuple_type;
 
         typedef boost::zip_iterator<iterator_tuple_type> super;
 
         typedef typename data_table_row<
-            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
         >::type value_type;
 
     public:
@@ -225,7 +227,7 @@ namespace protean {
             : super(other.get_iterator_tuple())
         {}
 
-        typename detail::data_table_type_map<T0>::type& time()
+        typename detail::data_table_type_map<ELEMENT_0(ENUM_PREFIX)>::type& time()
         {
             return boost::get<0>(*(*this));
         }
@@ -240,11 +242,11 @@ namespace protean {
 
         // Implicit conversion to non-const DataTable iterator
         operator data_table_const_iterator<
-            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
         >()
         {
             return data_table_const_iterator<
-                BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+                BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
             >(get_iterator_tuple());
         }
     };
@@ -255,22 +257,22 @@ namespace protean {
     template <
         BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(
             DATA_TABLE_MAX_COLUMNS,
-            variant_base::enum_type_t DATA_TABLE_COLUMN_TYPE_PREFIX,
+            variant_base::enum_type_t ENUM_PREFIX,
             variant_base::None
         )
     >
     struct data_table
     {
         typedef typename data_table_row<
-            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
         >::type value_type;
 
         typedef data_table_iterator<
-            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
         > iterator;
 
         typedef data_table_const_iterator<
-            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, DATA_TABLE_COLUMN_TYPE_PREFIX)
+            BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
         > const_iterator;
     };
 

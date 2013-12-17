@@ -183,14 +183,24 @@ namespace protean {
                     // capacity of `rows' was specified in DataTable construction)
                     column.resize(rows);
 
-                    boost::scoped_ptr<detail::data_table_column_reader> column_reader(
-                        detail::make_data_table_column_binary_reader(column, *this)
-                    );
-
-                    while (column_reader->has_next())
+                    if (column.type() & variant_base::Primitive)
                     {
-                        column_reader->read();
-                        column_reader->advance();
+                        boost::scoped_ptr<detail::data_table_column_reader> column_reader(
+                            detail::make_data_table_column_binary_reader(column, *this)
+                        );
+
+                        while (column_reader->has_next())
+                        {
+                            column_reader->read();
+                            column_reader->advance();
+                        }
+                    }
+                    else
+                    {
+                        variant::iterator iter(column.begin());
+                        variant::iterator end(column.end());
+                        while (iter != end)
+                            read(*(iter++));
                     }
                 }
 

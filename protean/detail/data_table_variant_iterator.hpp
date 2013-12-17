@@ -19,7 +19,7 @@
 namespace protean { namespace detail {
 
     // Forward declaration
-    template <typename T>
+    template <variant_base::enum_type_t E>
     class data_table_column;
 
 

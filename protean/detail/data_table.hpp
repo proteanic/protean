@@ -41,8 +41,8 @@ namespace protean { namespace detail {
         data_table& add_column(variant_base::enum_type_t type, const std::string& name);
 
     private:
-        template <typename T>
-        data_table& add_column(const std::string& name, variant_base::enum_type_t type);
+        template <variant_base::enum_type_t E>
+        data_table& add_column(const std::string& name);
 
         class column_adder;
 
@@ -107,13 +107,13 @@ namespace protean { namespace detail {
             template <BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), variant_base::enum_type_t t)>         \
             data_table_const_iterator<BOOST_PP_ENUM_PARAMS(BOOST_PP_ADD(n, 1), t)> end() const;
 
-        // data_table_iterator<T0, ..., Tn> begin();
+        // data_table_iterator<E0, ..., En> begin();
         BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, BEGIN_ITERATOR, DATA_TABLE_COLUMN_TYPE_PREFIX)
-        // data_table_iterator<T0, ..., Tn> end();
+        // data_table_iterator<E0, ..., En> end();
         BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, END_ITERATOR, DATA_TABLE_COLUMN_TYPE_PREFIX)
-        // data_table_const_iterator<T0, ..., Tn> begin() const;
+        // data_table_const_iterator<E0, ..., En> begin() const;
         BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, BEGIN_CONST_ITERATOR, DATA_TABLE_COLUMN_TYPE_PREFIX)
-        // data_table_const_iterator<T0, ..., Tn> end() const;
+        // data_table_const_iterator<E0, ..., En> end() const;
         BOOST_PP_REPEAT(DATA_TABLE_MAX_COLUMNS, END_CONST_ITERATOR, DATA_TABLE_COLUMN_TYPE_PREFIX)
 
     /* Friend classes for deserialisation */

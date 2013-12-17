@@ -304,6 +304,41 @@ BOOST_AUTO_TEST_CASE(test_binary_collection)
 
         BOOST_CHECK(e1.compare(e2)==0);
     }
+
+    {
+        variant v1(variant::DataTable);
+        v1.add_column(variant::Int32).add_column(variant::Tuple).add_column(variant::String).add_column(variant::Dictionary);
+
+        int x0 = 42;
+        variant x1(variant::Tuple, 2);
+            x1.at(0) = variant(3.14);
+            x1.at(1) = variant(true);
+        std::string x2("Hello");
+        variant x3(variant::Dictionary, 2);
+            x3.insert("foo", variant(variant::date_t(2007, 1, 3)));
+            x3.insert("bar", variant(variant::time_t(10, 30, 0)));
+
+        v1.push_back( make_row(x0, x1, x2, x3) );
+
+        int y0 = 1729;
+        variant y1(variant::Tuple, 1);
+            y1.at(0) = variant(variant::date_t(2008, 1, 3));
+        std::string y2("Bonjour");
+        variant y3(variant::Dictionary);
+
+        v1.push_back( make_row(y0, y1, y2, y3) );
+
+        std::ostringstream oss;
+        binary_writer writer(oss);
+        writer << v1;
+
+        variant v2;
+        std::stringstream iss(oss.str());
+        binary_reader reader(iss);
+        reader >> v2;
+
+        BOOST_CHECK(v1.compare(v2)==0);
+    }
 }
 
 class testing_object : public object

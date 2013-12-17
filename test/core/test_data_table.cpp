@@ -74,7 +74,6 @@ BOOST_AUTO_TEST_CASE(test_data_table_types)
 {
     variant v1(variant::DataTable);
     
-    BOOST_CHECK_THROW(v1.add_column(variant::Dictionary), variant_error);
     BOOST_CHECK_THROW(v1.add_column(variant::Collection), variant_error);
     BOOST_CHECK_THROW(v1.add_column(variant::DataTable), variant_error);
 
@@ -94,6 +93,76 @@ BOOST_AUTO_TEST_CASE(test_data_table_types)
 
     BOOST_CHECK_THROW(v1.begin<variant::String>(), variant_error);
     BOOST_CHECK_THROW(v1.end<variant::String>(), variant_error);
+}
+
+BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_types)
+{
+    variant dt(variant::DataTable);
+
+    dt.add_column(variant::Int32)
+      .add_column(variant::Double)
+      .add_column(variant::Tuple);
+
+    int x1 = 42;
+    double x2 = 3.14;
+    variant x3(variant::Tuple, 3);
+    x3.at(0) = variant(100);
+    x3.at(1) = variant(std::string("Hello"));
+    x3.at(2) = variant(true);
+
+    dt.push_back( make_row(x1, x2, x3) );
+
+    variant wrong_variant(variant::Dictionary, 2);
+    wrong_variant.insert("foo", variant(variant::date_t(2007, 1, 3)));
+    wrong_variant.insert("bar", variant(variant::time_t(10, 30, 0)));
+
+    // Wrong variant type for variant column
+    BOOST_CHECK_THROW(dt.push_back( make_row(x1, x2, wrong_variant) ), variant_error);
+
+    // Variant for typed column
+    BOOST_CHECK_THROW(dt.push_back( make_row(wrong_variant, x2, x3) ), variant_error);
+}
+
+BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_iterators)
+{
+    variant v1(variant::DataTable);
+    v1.add_column(variant::Int32)
+      .add_column(variant::Tuple);
+
+    variant t1(variant::Tuple, 2);
+    t1.at(0) = variant(std::string("foo"));
+    t1.at(1) = variant(2.718);
+    v1.push_back( make_row(1, t1) );
+
+    variant t2(variant::Tuple, 1);
+    t2.at(0) = variant(42);
+    v1.push_back( make_row(2, t2) );
+
+    // Runtime error if we specify the wrong column type
+    // data_table<variant::Int32, variant::Double>::const_iterator incorrect_column_type = v1.begin<variant::Int32, variant::Double>();
+
+    // Runtime error if we specify the wrong column variant type
+    // data_table<variant::Int32, variant::List>::const_iterator incorrect_column_variant_type = v1.begin<variant::Int32, variant::List>();
+
+    data_table<variant::Int32, variant::Tuple>::const_iterator typed_iter = v1.begin<variant::Int32, variant::Tuple>();
+    data_table<variant::Int32, variant::Tuple>::const_iterator typed_end  = v1.end<variant::Int32, variant::Tuple>();
+
+    BOOST_CHECK(typed_iter != typed_end);
+    BOOST_CHECK(typed_iter->get<1>() == t1);
+    ++typed_iter;
+    BOOST_CHECK(typed_iter->get<1>() == t2);
+    ++typed_iter;
+    BOOST_CHECK(typed_iter == typed_end);
+
+    variant::const_iterator variant_iter = v1.begin();
+    variant::const_iterator variant_end = v1.end();
+
+    BOOST_CHECK(variant_iter != variant_end);
+    BOOST_CHECK(variant_iter->at(1) == t1);
+    ++variant_iter;
+    BOOST_CHECK(variant_iter->at(1) == t2);
+    ++variant_iter;
+    BOOST_CHECK(variant_iter == variant_end);
 }
 
 BOOST_AUTO_TEST_CASE(test_data_table_iterator)
