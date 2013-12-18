@@ -53,10 +53,14 @@ namespace protean { namespace detail {
         ((variant_base::Int32,      boost::int32_t))                    \
         ((variant_base::Any,        detail::string))                    \
         ((variant_base::String,     detail::string))                    \
+        ((variant_base::Sequence,   variant))                           \
         ((variant_base::List,       variant))                           \
         ((variant_base::Tuple,      variant))                           \
+        ((variant_base::Mapping,    variant))                           \
         ((variant_base::Dictionary, variant))                           \
-        ((variant_base::Bag,        variant))
+        ((variant_base::Bag,        variant))                           \
+        ((variant_base::Collection, variant))                           \
+        ((variant_base::TimeSeries, variant))
 
     /* Selects first and second element from tuple pair, respectively */
     /******************************************************************/

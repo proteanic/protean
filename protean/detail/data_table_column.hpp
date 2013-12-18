@@ -136,6 +136,21 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
     struct is_same_column<E, E> : public boost::true_type {};
 
+    template <variant_base::enum_type_t E, variant_base::enum_type_t F>
+    struct is_compatible_column : public
+        boost::mpl::if_c<
+            (E & variant_base::enum_type_t::Primitive) != 0,
+            boost::mpl::bool_<E == F>,
+            boost::mpl::and_<
+                boost::mpl::less_equal<boost::mpl::int_<F>, boost::mpl::int_<E> >,
+                boost::mpl::not_equal_to<
+                    boost::mpl::bitand_<boost::mpl::int_<F>, boost::mpl::int_<E> >,
+                    boost::mpl::int_<0>
+                >
+            >
+        >::type
+    {};
+
     /* Used in conjunction with boost::enable(disable)_if and SFINAE for variant fallback column operations. */
     /* Second template param is unused but needs to be there in order for boost::enable(disable)_if to work. */
     /*********************************************************************************************************/
@@ -222,31 +237,31 @@ namespace protean { namespace detail {
 
         // const_iterator begin() const
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::const_iterator begin_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type p = 0) const;
+        typename column_traits<F>::const_iterator begin_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type p = 0) const;
 
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::const_iterator begin_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type p = 0) const;
+        typename column_traits<F>::const_iterator begin_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type p = 0) const;
 
         // const_iterator end() const
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::const_iterator end_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type = 0) const;
+        typename column_traits<F>::const_iterator end_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type = 0) const;
 
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::const_iterator end_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type = 0) const;
+        typename column_traits<F>::const_iterator end_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type = 0) const;
 
         // iterator begin()
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::iterator begin_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type = 0);
+        typename column_traits<F>::iterator begin_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type = 0);
 
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::iterator begin_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type = 0);
+        typename column_traits<F>::iterator begin_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type = 0);
 
         // iterator end()
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::iterator end_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type = 0);
+        typename column_traits<F>::iterator end_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type = 0);
 
         template <variant_base::enum_type_t F>
-        typename column_traits<F>::iterator end_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type = 0);
+        typename column_traits<F>::iterator end_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type = 0);
 
     /* Member variables */
     /********************/

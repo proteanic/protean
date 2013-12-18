@@ -73,8 +73,7 @@ BOOST_AUTO_TEST_CASE(test_data_table_basic)
 BOOST_AUTO_TEST_CASE(test_data_table_types)
 {
     variant v1(variant::DataTable);
-    
-    BOOST_CHECK_THROW(v1.add_column(variant::Collection), variant_error);
+
     BOOST_CHECK_THROW(v1.add_column(variant::DataTable), variant_error);
 
     v1.add_column(variant::DateTime)
@@ -121,6 +120,26 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_types)
 
     // Variant for typed column
     BOOST_CHECK_THROW(dt.push_back( make_row(wrong_variant, x2, x3) ), variant_error);
+
+
+    /* Check push_back and typed iterators adhere to the variant enum inheritance hierarchy */
+    variant dt2(variant::DataTable);
+    dt2.add_column(variant::Int32)
+       .add_column(variant::Sequence);
+
+    variant xs(variant::List, 2);
+    xs.at(0) = variant(0);
+    xs.at(1) = variant(1);
+    variant t(variant::Tuple);
+    variant dict(variant::Dictionary);
+
+    dt2.push_back( make_row(1, xs) ); // OK since xs is a variant list which is a variant sequence
+    dt2.push_back( make_row(2, t) );  // OK since t is a variant tuple which is a variant sequence
+    BOOST_CHECK_THROW(dt2.push_back( make_row(3, dict) ), variant_error);
+
+    dt2.begin<variant::Int32, variant::Sequence>();
+    dt2.begin<variant::Int32, variant::List>();
+    BOOST_CHECK_THROW(( dt2.begin<variant::Int32, variant::Dictionary>() ), variant_error);
 }
 
 BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_iterators)
@@ -139,10 +158,10 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_iterators)
     v1.push_back( make_row(2, t2) );
 
     // Runtime error if we specify the wrong column type
-    // data_table<variant::Int32, variant::Double>::const_iterator incorrect_column_type = v1.begin<variant::Int32, variant::Double>();
+    BOOST_CHECK_THROW(( v1.begin<variant::Int32, variant::Double>() ), variant_error);
 
     // Runtime error if we specify the wrong column variant type
-    // data_table<variant::Int32, variant::List>::const_iterator incorrect_column_variant_type = v1.begin<variant::Int32, variant::List>();
+    BOOST_CHECK_THROW(( v1.begin<variant::Int32, variant::List>() ), variant_error);
 
     data_table<variant::Int32, variant::Tuple>::const_iterator typed_iter = v1.begin<variant::Int32, variant::Tuple>();
     data_table<variant::Int32, variant::Tuple>::const_iterator typed_end  = v1.end<variant::Int32, variant::Tuple>();
