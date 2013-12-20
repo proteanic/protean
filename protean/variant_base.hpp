@@ -80,7 +80,9 @@ namespace protean {
             Primitive               = Number | Date | Time | DateTime | Any | String,
             Sequence                = List | Tuple,
             Mapping                 = Dictionary | Bag,
-            Collection              = Sequence | Mapping | TimeSeries | DataTable
+            Collection              = Sequence | Mapping | TimeSeries | DataTable,
+
+            Variant                 = Primitive | Collection
         };
 
         typedef detail::variant_impl<
@@ -109,7 +111,8 @@ namespace protean {
             detail::tagged_type<Buffer,             handle<detail::buffer>,             detail::alloc_placement,    boost::mpl::string<'Buff','er'> >,
             detail::tagged_type<Exception,          exception_data,                     detail::alloc_new,          boost::mpl::string<'Exce','ptio','n'> >,
             detail::tagged_type<Array,              handle<typed_array>,                detail::alloc_placement,    boost::mpl::string<'Arra','y'> >,
-            detail::tagged_type<DataTable,          detail::data_table,                 detail::alloc_new,          boost::mpl::string<'Data','Tabl','e'> >
+            detail::tagged_type<DataTable,          detail::data_table,                 detail::alloc_new,          boost::mpl::string<'Data','Tabl','e'> >,
+            detail::tagged_type<Variant,            boost::blank,                       detail::alloc_placement,    boost::mpl::string<'Vari','ant'> >
         > variant_impl_t;
         
         variant_impl_t m_value;

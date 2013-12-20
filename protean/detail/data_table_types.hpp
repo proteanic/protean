@@ -13,10 +13,12 @@
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/seq/transform.hpp>
 #include <boost/preprocessor/seq/enum.hpp>
+#include <boost/preprocessor/seq/size.hpp>
 #include <boost/mpl/filter_view.hpp>
 #include <boost/mpl/not_equal_to.hpp>
 #include <boost/mpl/lambda.hpp>
 
+#include <boost/mpl/vector/vector30.hpp>
 #include <boost/mpl/fold.hpp>
 #include <boost/mpl/map.hpp>
 #include <boost/mpl/if.hpp>
@@ -59,8 +61,10 @@ namespace protean { namespace detail {
         ((variant_base::Mapping,    variant))                           \
         ((variant_base::Dictionary, variant))                           \
         ((variant_base::Bag,        variant))                           \
+        ((variant_base::TimeSeries, variant))                           \
+        ((variant_base::DataTable,  variant))                           \
         ((variant_base::Collection, variant))                           \
-        ((variant_base::TimeSeries, variant))
+        ((variant_base::Variant,    variant))
 
     /* Selects first and second element from tuple pair, respectively */
     /******************************************************************/
@@ -106,7 +110,9 @@ namespace protean { namespace detail {
     /***************************************************/
     #define MAKE_MPL_ENUM(s, data, elem) boost::mpl::int_<GET_ENUM(elem)>
 
-    typedef boost::mpl::vector<
+    #define DATA_TABLE_MPL_VECTOR_SIZED_TYPE(seq) BOOST_PP_CAT(boost::mpl::vector, BOOST_PP_SEQ_SIZE(seq))
+
+    typedef DATA_TABLE_MPL_VECTOR_SIZED_TYPE(COLUMN_TYPES) <
         BOOST_PP_SEQ_ENUM( BOOST_PP_SEQ_TRANSFORM(MAKE_MPL_ENUM, , COLUMN_TYPES) )
     > data_table_column_enums;
 
@@ -117,9 +123,15 @@ namespace protean { namespace detail {
             data_table_column_enums,
             boost::mpl::vector<>,
             boost::mpl::if_<
-                boost::mpl::not_equal_to<
-                    boost::mpl::bitand_<boost::mpl::int_<variant_base::Primitive>, boost::mpl::_2>,
-                    boost::mpl::int_<0>
+                boost::mpl::and_<
+                    boost::mpl::not_equal_to<
+                        boost::mpl::bitand_<boost::mpl::int_<variant_base::Primitive>, boost::mpl::_2>,
+                        boost::mpl::int_<0>
+                    >,
+                    boost::mpl::not_equal_to<
+                        boost::mpl::_2,
+                        boost::mpl::int_<variant_base::Variant>
+                    >
                 >,
                 boost::mpl::push_back<boost::mpl::_1, boost::mpl::_2>,
                 boost::mpl::_1

@@ -36,7 +36,7 @@ namespace protean {
     /***********************************************************************************************************/
     #define ENUM_PREFIX E
     #define TYPE_PREFIX T
-    #define ELEMENT_0(prefix) BOOST_PP_ENUM_PARAMS(1, prefix)
+    #define ELEMENT_0(prefix) BOOST_PP_CAT(prefix, 0)
     #define IDENTITY(z, n, text) text
 
     template <

@@ -74,7 +74,8 @@ BOOST_AUTO_TEST_CASE(test_data_table_types)
 {
     variant v1(variant::DataTable);
 
-    BOOST_CHECK_THROW(v1.add_column(variant::DataTable), variant_error);
+    static const int InvalidColumnTypeSpecifier = 3;
+    BOOST_CHECK_THROW(v1.add_column(static_cast<variant::enum_type_t>(InvalidColumnTypeSpecifier)), variant_error);
 
     v1.add_column(variant::DateTime)
       .add_column(variant::Int32)
@@ -138,8 +139,21 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_types)
     BOOST_CHECK_THROW(dt2.push_back( make_row(3, dict) ), variant_error);
 
     dt2.begin<variant::Int32, variant::Sequence>();
-    dt2.begin<variant::Int32, variant::List>();
+    BOOST_CHECK_THROW(( dt2.begin<variant::Int32, variant::List>() ), variant_error);
     BOOST_CHECK_THROW(( dt2.begin<variant::Int32, variant::Dictionary>() ), variant_error);
+
+    variant dt3(variant::DataTable);
+    dt3.add_column(variant::Variant);
+
+    dt3.push_back( make_row(xs) );
+    dt3.push_back( make_row(t) );
+    dt3.push_back( make_row(dict) );
+    dt3.push_back( make_row(variant(42)) );
+    dt3.push_back( make_row(variant(std::string("a string"))) );
+
+    dt3.begin<variant::Variant>();
+    BOOST_CHECK_THROW(( dt3.begin<variant::Collection>() ), variant_error);
+    BOOST_CHECK_THROW(( dt3.begin<variant::Int32>() ), variant_error);
 }
 
 BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_iterators)

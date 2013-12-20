@@ -301,14 +301,16 @@ namespace protean {
     template <typename TUPLE>
     variant& variant::push_back(const TUPLE& value)
     {
-        BEGIN_TRANSLATE_ERROR();
+        /* Including BEGIN/END_TRANSLATE_ERROR causes a runtime error in the debug build when attempting */
+        /* push_back a row with an incorrectly-typed variant column -- needs looking into                */
+        // BEGIN_TRANSLATE_ERROR();
 
         CHECK_VARIANT_FUNCTION(DataTable, "push_back<TUPLE>()");
 
         m_value.get<DataTable>().push_back(value);
         return *this;
 
-        END_TRANSLATE_ERROR();
+        // END_TRANSLATE_ERROR();
     }
 
     #define DATA_TABLE_BEGIN_ITERATOR(z, n, t)                                                         \

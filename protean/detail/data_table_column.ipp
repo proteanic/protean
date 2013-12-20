@@ -184,7 +184,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::const_iterator
-        data_table_column<E>::begin_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type /* = 0 */) const
+        data_table_column<E>::begin_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type /* = 0 */) const
         {
             return m_values.begin();
         }
@@ -192,7 +192,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::const_iterator
-        data_table_column<E>::begin_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type /* = 0 */) const
+        data_table_column<E>::begin_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type /* = 0 */) const
         {
             boost::throw_exception(variant_error("Column types do not match in call to const begin()"));
         }
@@ -201,7 +201,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::const_iterator
-        data_table_column<E>::end_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type /* = 0 */) const
+        data_table_column<E>::end_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type /* = 0 */) const
         {
             return m_values.end();
         }
@@ -209,7 +209,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::const_iterator
-        data_table_column<E>::end_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type /* = 0 */) const
+        data_table_column<E>::end_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type /* = 0 */) const
         {
             boost::throw_exception(variant_error("Column types do not match in call to const end()"));
         }
@@ -218,7 +218,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::iterator
-        data_table_column<E>::begin_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type /* = 0 */)
+        data_table_column<E>::begin_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type /* = 0 */)
         {
             return m_values.begin();
         }
@@ -226,7 +226,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::iterator
-        data_table_column<E>::begin_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type /* = 0 */)
+        data_table_column<E>::begin_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type /* = 0 */)
         {
             boost::throw_exception(variant_error("Column types do not match in call to begin()"));
         }
@@ -235,7 +235,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::iterator
-        data_table_column<E>::end_impl_tmpl(typename boost::enable_if<is_compatible_column<E, F>, void*>::type /* = 0 */)
+        data_table_column<E>::end_impl_tmpl(typename boost::enable_if<is_same_column<E, F>, void*>::type /* = 0 */)
         {
             return m_values.end();
         }
@@ -243,7 +243,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <variant_base::enum_type_t F>
         typename column_traits<F>::iterator
-        data_table_column<E>::end_impl_tmpl(typename boost::disable_if<is_compatible_column<E, F>, void*>::type /* = 0 */)
+        data_table_column<E>::end_impl_tmpl(typename boost::disable_if<is_same_column<E, F>, void*>::type /* = 0 */)
         {
             boost::throw_exception(variant_error("Column types do not match in call to end()"));
         }

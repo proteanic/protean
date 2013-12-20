@@ -12,7 +12,7 @@ namespace protean { namespace detail {
         /* returns an empty boost::optional value                                                       */
         /************************************************************************************************/
         template <typename Begin, typename End, typename TypePredicateFunctor, typename TypeFunctor>
-        struct new_call_if
+        struct call_if
         {
             static boost::optional<typename TypeFunctor::result_type>
             apply(const TypePredicateFunctor& pred, TypeFunctor& method)
@@ -20,12 +20,12 @@ namespace protean { namespace detail {
                 if (pred(static_cast<typename Begin::type*>(0)))
                     return boost::optional<typename TypeFunctor::result_type>(method(static_cast<typename Begin::type*>(0)));
 
-                return new_call_if<typename boost::mpl::next<Begin>::type, End, TypePredicateFunctor, TypeFunctor>::apply(pred, method);
+                return call_if<typename boost::mpl::next<Begin>::type, End, TypePredicateFunctor, TypeFunctor>::apply(pred, method);
             }
         };
 
         template <typename End, typename TypePredicateFunctor, typename TypeFunctor>
-        struct new_call_if<End, End, TypePredicateFunctor, TypeFunctor>
+        struct call_if<End, End, TypePredicateFunctor, TypeFunctor>
         {
             static boost::optional<typename TypeFunctor::result_type>
             apply(const TypePredicateFunctor&, TypeFunctor&)
@@ -48,7 +48,7 @@ namespace protean { namespace detail {
         typedef typename boost::mpl::end<Sequence>::type   end;
 
         boost::optional<typename TypeFunctor::result_type> result =
-            new_call_if<begin, end, TypePredicate<EnumType>, TypeFunctor>::apply(
+            call_if<begin, end, TypePredicate<EnumType>, TypeFunctor>::apply(
                 TypePredicate<EnumType>(enum_value),
                 method
             );
