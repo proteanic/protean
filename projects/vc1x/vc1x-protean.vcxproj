@@ -65,6 +65,38 @@
       <Configuration>vc110 Static Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Debug|Win32">
+      <Configuration>vc120 Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Debug|x64">
+      <Configuration>vc120 Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Release|Win32">
+      <Configuration>vc120 Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Release|x64">
+      <Configuration>vc120 Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Debug|Win32">
+      <Configuration>vc120 Static Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Debug|x64">
+      <Configuration>vc120 Static Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Release|Win32">
+      <Configuration>vc120 Static Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Release|x64">
+      <Configuration>vc120 Static Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}</ProjectGuid>
@@ -117,7 +149,6 @@
     <ClCompile Include="..\..\src\binary_reader.cpp" />
     <ClCompile Include="..\..\src\binary_writer.cpp" />
     <ClCompile Include="..\..\src\buffer.cpp" />
-    <ClCompile Include="..\..\src\data_table.cpp" />
     <ClCompile Include="..\..\src\dictionary.cpp" />
     <ClCompile Include="..\..\src\exception_data.cpp" />
     <ClCompile Include="..\..\src\list.cpp" />
@@ -147,14 +178,8 @@
     <ClInclude Include="..\..\protean\binary_reader.hpp" />
     <ClInclude Include="..\..\protean\binary_writer.hpp" />
     <ClInclude Include="..\..\protean\config.hpp" />
-    <ClInclude Include="..\..\protean\data_table_iterator.hpp" />
     <ClInclude Include="..\..\protean\detail\base64.hpp" />
     <ClInclude Include="..\..\protean\detail\crc64.hpp" />
-    <ClInclude Include="..\..\protean\detail\data_table.hpp" />
-    <ClInclude Include="..\..\protean\detail\data_table_column.hpp" />
-    <ClInclude Include="..\..\protean\detail\data_table_column_serializers.hpp" />
-    <ClInclude Include="..\..\protean\detail\data_table_types.hpp" />
-    <ClInclude Include="..\..\protean\detail\data_table_variant_iterator.hpp" />
     <ClInclude Include="..\..\protean\detail\scoped_xmlch.hpp" />
     <ClInclude Include="..\..\protean\detail\xerces_include.hpp" />
     <ClInclude Include="..\..\protean\detail\xml_default_handler.hpp" />
@@ -201,11 +226,6 @@
     <ClInclude Include="..\..\protean\config\auto_link.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\protean\detail\data_table.ipp" />
-    <None Include="..\..\protean\detail\data_table_column.ipp" />
-    <None Include="..\..\protean\detail\data_table_column_serializers.ipp" />
-    <None Include="..\..\protean\detail\data_table_types.ipp" />
-    <None Include="..\..\protean\detail\data_table_variant_iterator.ipp" />
     <None Include="..\..\protean\handle.ipp" />
     <None Include="..\..\protean\variant.ipp" />
     <None Include="..\..\protean\variant_ref.ipp" />

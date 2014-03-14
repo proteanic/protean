@@ -65,6 +65,38 @@
       <Configuration>vc110 Static Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Debug|Win32">
+      <Configuration>vc120 Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Debug|x64">
+      <Configuration>vc120 Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Release|Win32">
+      <Configuration>vc120 Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Release|x64">
+      <Configuration>vc120 Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Debug|Win32">
+      <Configuration>vc120 Static Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Debug|x64">
+      <Configuration>vc120 Static Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Release|Win32">
+      <Configuration>vc120 Static Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc120 Static Release|x64">
+      <Configuration>vc120 Static Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}</ProjectGuid>
@@ -72,7 +104,7 @@
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <Import Project="vc1-configuration-processor.props" />
+  <Import Project="vc1x-configuration-processor.props" />
   <PropertyGroup>
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
@@ -105,7 +137,6 @@
     <ClCompile Include="..\..\test\core\master.cpp" />
     <ClCompile Include="..\..\test\core\test_array.cpp" />
     <ClCompile Include="..\..\test\core\test_binary_streams.cpp" />
-    <ClCompile Include="..\..\test\core\test_data_table.cpp" />
     <ClCompile Include="..\..\test\core\test_iterator.cpp" />
     <ClCompile Include="..\..\test\core\test_list.cpp" />
     <ClCompile Include="..\..\test\core\test_number.cpp" />
