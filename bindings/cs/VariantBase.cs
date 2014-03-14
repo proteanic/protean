@@ -4,6 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
+using System.Collections.Generic;
 
 namespace Protean {
 
@@ -157,8 +158,11 @@ namespace Protean {
                 case EnumType.UInt64:
                     Value = new VariantPrimitive<UInt64>(UInt64.Parse(value));
                     break;
+                case EnumType.Float:
+                    Value = new VariantPrimitive<float>(ParseSingle(value));
+                    break;
                 case EnumType.Double:
-                    Value = new VariantPrimitive<double>(double.Parse(value));
+                    Value = new VariantPrimitive<double>(ParseDouble(value));
                     break;
                 case EnumType.DateTime:
                     Value = new VariantPrimitive<DateTime>(ParseDateTime(value));
@@ -328,20 +332,56 @@ namespace Protean {
             return (type & Value._Type)!=0;
         }
 
-        public static double ParseDouble(string str)
+        public static float ParseSingle(string value)
         {
-            if (str == "INF")
+            float singleValue;
+
+            try
             {
-                return double.PositiveInfinity;
+                singleValue = float.Parse(value);
             }
-            else if (str == "-INF")
+            catch (FormatException)
             {
-                return double.NegativeInfinity;
+                if (!s_nonRoundTripSingleSpecialValues.TryGetValue(value, out singleValue))
+                {
+                    throw;
+                }
             }
-            else
+            catch (OverflowException)
             {
-                return double.Parse(str);
+                if (!s_nonRoundTripSingleSpecialValues.TryGetValue(value, out singleValue))
+                {
+                    throw;
+                }
             }
+
+            return singleValue;
+        }
+
+        public static double ParseDouble(string value)
+        {
+            double doubleValue;
+
+            try
+            {
+                doubleValue = double.Parse(value);
+            }
+            catch (FormatException)
+            {
+                if (!s_nonRoundTripDoubleSpecialValues.TryGetValue(value, out doubleValue))
+                {
+                    throw;
+                }
+            }
+            catch (OverflowException)
+            {
+                if (!s_nonRoundTripDoubleSpecialValues.TryGetValue(value, out doubleValue))
+                {
+                    throw;
+                }
+            }
+
+            return doubleValue;
         }
 
         public static bool ParseBoolean(string str)
@@ -374,6 +414,24 @@ namespace Protean {
             return arg ? "true" : "false";
         }
 
+
+        public static string ToString(float arg)
+        {
+            if (float.IsPositiveInfinity(arg))
+            {
+                return "INF";
+            }
+            else if(float.IsNegativeInfinity(arg))
+            {
+                return "-INF";
+            }
+            else
+            {
+                return arg.ToString("R");
+            }
+        }
+
+
         public static string ToString(double arg)
         {
             if (double.IsPositiveInfinity(arg))
@@ -386,9 +444,78 @@ namespace Protean {
             }
             else
             {
+                return arg.ToString("R");
+            }
+        }
+
+
+        public static string ToString(int arg)
+        {
+            if (int.MaxValue == arg)
+            {
+                return "INF";
+            }
+            else if (int.MinValue == arg)
+            {
+                return "-INF";
+            }
+            else
+            {
                 return arg.ToString();
             }
         }
+
+
+        public static string ToString(uint arg)
+        {
+            if (uint.MaxValue == arg)
+            {
+                return "INF";
+            }
+            else if (uint.MinValue == arg)
+            {
+                return "-INF";
+            }
+            else
+            {
+                return arg.ToString();
+            }
+        }
+
+
+        public static string ToString(ulong arg)
+        {
+            if (ulong.MaxValue == arg)
+            {
+                return "INF";
+            }
+            else if (uint.MinValue == arg)
+            {
+                return "-INF";
+            }
+            else
+            {
+                return arg.ToString();
+            }
+        }
+
+
+        public static string ToString(long arg)
+        {
+            if (long.MaxValue == arg)
+            {
+                return "INF";
+            }
+            else if (long.MinValue == arg)
+            {
+                return "-INF";
+            }
+            else
+            {
+                return arg.ToString();
+            }
+        }
+        
 
         public static string ToString(DateTime arg)
         {
@@ -414,6 +541,28 @@ namespace Protean {
                 return dt.ToString("HH:mm:ss.fff");
             }
         }
+
+        private readonly static Dictionary<string, float> s_nonRoundTripSingleSpecialValues =
+            new Dictionary<string, float>
+                {
+                    {float.MaxValue.ToString(), float.MaxValue},
+                    {float.MinValue.ToString(), float.MinValue},
+                    {float.PositiveInfinity.ToString(), float.PositiveInfinity},
+                    {float.NegativeInfinity.ToString(), float.NegativeInfinity},
+                    {"INF", float.PositiveInfinity},
+                    {"-INF", float.NegativeInfinity},
+                };
+
+        private readonly static Dictionary<string, double> s_nonRoundTripDoubleSpecialValues =
+            new Dictionary<string, double>
+                {
+                    {double.MaxValue.ToString(), double.MaxValue},
+                    {double.MinValue.ToString(), double.MinValue},
+                    {double.PositiveInfinity.ToString(), double.PositiveInfinity},
+                    {double.NegativeInfinity.ToString(), double.NegativeInfinity},
+                    {"INF", double.PositiveInfinity},
+                    {"-INF", double.NegativeInfinity},
+                };
     }
 
 } // Protean

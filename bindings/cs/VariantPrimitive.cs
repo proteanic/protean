@@ -75,6 +75,8 @@ namespace Protean {
                 TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
                 switch (typeCode)
                 {
+                    case TypeCode.Single:
+                        return (T)Convert.ChangeType(VariantBase.ParseSingle(value), typeof(T));
                     case TypeCode.Double:
                         return (T)Convert.ChangeType(VariantBase.ParseDouble(value), typeof(T));
                     case TypeCode.Boolean:
