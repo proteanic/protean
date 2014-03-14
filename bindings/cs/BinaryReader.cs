@@ -6,13 +6,12 @@
 using System;
 using System.Data;
 using System.IO;
-using System.Text;
 
 namespace Protean {
 
     public class BinaryReader
     {
-        public BinaryReader(System.IO.Stream stream, BinaryMode mode, IVariantObjectFactory factory, bool requireSeekableReader)
+        public BinaryReader(Stream stream, BinaryMode mode, IVariantObjectFactory factory, bool requireSeekableReader)
         {
             m_mode = mode;
             m_factory = factory;
@@ -21,15 +20,15 @@ namespace Protean {
         	m_requireSeekableReader = requireSeekableReader;
         }
 
-        public BinaryReader(System.IO.Stream stream, BinaryMode mode, IVariantObjectFactory factory) :
-            this(stream, BinaryMode.Default, null, false)
+        public BinaryReader(Stream stream, BinaryMode mode, IVariantObjectFactory factory) :
+            this(stream, mode, factory, false)
         {}
 
-		public BinaryReader(System.IO.Stream stream, bool requireSeekableReader) :
+		public BinaryReader(Stream stream, bool requireSeekableReader) :
             this(stream, BinaryMode.Default, null, requireSeekableReader)
         {}
 
-		public BinaryReader(System.IO.Stream stream) :
+		public BinaryReader(Stream stream) :
             this(stream, BinaryMode.Default, null, false)
         {}
     
@@ -41,7 +40,7 @@ namespace Protean {
 
         public static Variant FromBytes(byte[] bytes, BinaryMode mode, IVariantObjectFactory factory)
         {
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes))
+            using (MemoryStream ms = new MemoryStream(bytes))
             {
                 BinaryReader reader = new BinaryReader(ms, mode, factory);
                 return reader.Read();
@@ -55,7 +54,7 @@ namespace Protean {
 
 		unsafe public static Variant FromBytes(byte* bytes, long length, BinaryMode mode, IVariantObjectFactory factory)
 		{
-			using (System.IO.UnmanagedMemoryStream ms = new System.IO.UnmanagedMemoryStream(bytes, length))
+			using (UnmanagedMemoryStream ms = new UnmanagedMemoryStream(bytes, length))
 			{
 				BinaryReader reader = new BinaryReader(ms, mode, factory);
 				return reader.Read();
@@ -82,7 +81,7 @@ namespace Protean {
             byte[] bytes = new byte[4];
             m_stream.Read(bytes, 0, 4);
 
-            UInt32 magicNumber = System.BitConverter.ToUInt32(bytes, 0);
+            UInt32 magicNumber = BitConverter.ToUInt32(bytes, 0);
             if (magicNumber != BinaryConstants.PROTEAN_MAGIC)
             {
                 throw new VariantException("Invalid magic number");
@@ -327,27 +326,27 @@ namespace Protean {
         }
 		protected float ReadFloat()
         {
-            return System.BitConverter.ToSingle(ReadBytes(sizeof(float)), 0);
+            return BitConverter.ToSingle(ReadBytes(sizeof(float)), 0);
         }
 		protected double ReadDouble()
         {
-            return System.BitConverter.Int64BitsToDouble(ReadInt64());
+            return BitConverter.Int64BitsToDouble(ReadInt64());
         }
 		protected Int32 ReadInt32()
         {
-            return System.BitConverter.ToInt32(ReadBytes(sizeof(Int32)), 0);
+            return BitConverter.ToInt32(ReadBytes(sizeof(Int32)), 0);
         }
 		protected UInt32 ReadUInt32()
         {
-            return System.BitConverter.ToUInt32(ReadBytes(sizeof(UInt32)), 0);
+            return BitConverter.ToUInt32(ReadBytes(sizeof(UInt32)), 0);
         }
 		protected Int64 ReadInt64()
         {
-            return System.BitConverter.ToInt64(ReadBytes(sizeof(Int64)), 0);
+            return BitConverter.ToInt64(ReadBytes(sizeof(Int64)), 0);
         }
 		protected UInt64 ReadUInt64()
         {
-            return System.BitConverter.ToUInt64(ReadBytes(sizeof(UInt64)), 0);
+            return BitConverter.ToUInt64(ReadBytes(sizeof(UInt64)), 0);
         }
 		protected TimeSpan ReadTime()
         {
@@ -375,50 +374,12 @@ namespace Protean {
         {
             int numCols = ReadInt32();
             int numRows = ReadInt32();
-                    
-            ReadDelegate[] colReaders = new ReadDelegate[numCols];
+
             Variant.EnumType[] colTypes = new Variant.EnumType[numCols];
-
-            for (int i = 0; i < numCols; ++i)
-            {
-                colTypes[i] = (Variant.EnumType)ReadInt32();
-
-                switch (colTypes[i])
-                {
-                    case VariantBase.EnumType.Float:
-                        colReaders[i] = () => ReadFloat();
-                        break;
-                    case VariantBase.EnumType.Double:
-                        colReaders[i] = () => ReadDouble();
-                        break;
-                    case VariantBase.EnumType.Boolean:
-                        colReaders[i] = () => ReadBoolean();
-                        break;
-                    case VariantBase.EnumType.String:
-                        colReaders[i] = () => ReadString();
-                        break;
-                    case VariantBase.EnumType.Int32:
-                        colReaders[i] = () => ReadInt32();
-                        break;
-                    case VariantBase.EnumType.UInt32:
-                        colReaders[i] = () => ReadUInt32();
-                        break;
-                    case VariantBase.EnumType.Int64:
-                        colReaders[i] = () => ReadInt64();
-                        break;
-                    case VariantBase.EnumType.UInt64:
-                        colReaders[i] = () => ReadUInt64();
-                        break;
-                    case VariantBase.EnumType.Time:
-                        colReaders[i] = () => ReadTime();
-                        break;
-                    case VariantBase.EnumType.DateTime:
-                        colReaders[i] = () => ReadDateTime();
-                        break;
-                    default:
-                        throw new VariantException("Case exhaustion: " + colTypes[i]); 
-                }
-            }
+		    for (int i = 0; i < numCols; ++i)
+		    {
+		        colTypes[i] = (Variant.EnumType)ReadInt32();
+		    }
 
             string[] colNames = new string[numCols];
             for (int i = 0; i < numCols; ++i)
@@ -433,16 +394,62 @@ namespace Protean {
             };
 
             // Write number of rows
-            for (int i=0; i<numRows; ++i)
-            {
-                DataRow dr = dt.NewRow();
-                for (int j = 0; j < numCols; ++j)
-                {
-                    dr[j] = colReaders[j]();
-                }
-                dt.Rows.Add(dr);
-            }
+		    for (int col = 0; col < numCols; ++col)
+		    {
+		        ReadDelegate colReader;
+                switch (colTypes[col])
+		        {
+		            case VariantBase.EnumType.Float:
+                        colReader = () => ReadFloat();
+		                break;
+		            case VariantBase.EnumType.Double:
+                        colReader = () => ReadDouble();
+		                break;
+		            case VariantBase.EnumType.Boolean:
+                        colReader = () => ReadBoolean();
+		                break;
+		            case VariantBase.EnumType.String:
+                        colReader = () => ReadString();
+		                break;
+		            case VariantBase.EnumType.Int32:
+                        colReader = () => ReadInt32();
+		                break;
+		            case VariantBase.EnumType.UInt32:
+                        colReader = () => ReadUInt32();
+		                break;
+		            case VariantBase.EnumType.Int64:
+                        colReader = () => ReadInt64();
+		                break;
+		            case VariantBase.EnumType.UInt64:
+                        colReader = () => ReadUInt64();
+		                break;
+		            case VariantBase.EnumType.Time:
+                        colReader = () => ReadTime();
+		                break;
+		            case VariantBase.EnumType.DateTime:
+                        colReader = () => ReadDateTime();
+		                break;
+		            default:
+                        throw new VariantException("Case exhaustion: " + colTypes[col]);
+		        }
 
+		        for (int row = 0; row < numRows; ++row)
+		        {
+		            DataRow dr;
+		            if (col == 0)
+		            {
+                        dr = dt.NewRow();
+                        dt.Rows.Add(dr);
+		            }
+		            else
+		            {
+		                dr = dt.Rows[row];
+		            }
+
+                    dr[col] = colReader();
+		        }
+		    }
+        
             return dt;
         }
 

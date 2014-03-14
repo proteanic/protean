@@ -184,89 +184,90 @@ namespace Protean
 			}
 		}
 
-		protected void Write(DataTable arg)
-		{
-			int numCols = arg.Columns.Count;
-			int numRows = arg.Rows.Count;
+	    protected void Write(DataTable arg)
+	    {
+	        int numCols = arg.Columns.Count;
+	        int numRows = arg.Rows.Count;
 
-			WriteDelegate[] colWriters = new WriteDelegate[numCols];
-			VariantBase.EnumType[] colTypes = new VariantBase.EnumType[numCols];
-			string[] colNames = new string[numCols];
+	        VariantBase.EnumType[] colTypes = new VariantBase.EnumType[numCols];
+	        string[] colNames = new string[numCols];
 
-			for (int i = 0; i < numCols; ++i)
-			{
-				DataColumn col = arg.Columns[i];
-				colTypes[i] = VariantPrimitiveBase.TypeToEnum(col.DataType);
-				colNames[i] = col.ColumnName;
+	        for (int i = 0; i < numCols; ++i)
+	        {
+	            DataColumn col = arg.Columns[i];
+	            colTypes[i] = VariantPrimitiveBase.TypeToEnum(col.DataType);
+	            colNames[i] = col.ColumnName;
+	        }
 
-				switch (colTypes[i])
-				{
-					case VariantBase.EnumType.Float:
-						colWriters[i] = o => Write((float)o);
-						break;
-					case VariantBase.EnumType.Double:
-						colWriters[i] = o => Write((double)o);
-						break;
-					case VariantBase.EnumType.String:
-						colWriters[i] = o => Write((string)o);
-						break;
-					case VariantBase.EnumType.Boolean:
-						colWriters[i] = o => Write((bool)o);
-						break;
-					case VariantBase.EnumType.Int32:
-						colWriters[i] = o => Write((Int32)o);
-						break;
-					case VariantBase.EnumType.UInt32:
-						colWriters[i] = o => Write((UInt32)o);
-						break;
-					case VariantBase.EnumType.Int64:
-						colWriters[i] = o => Write((Int64)o);
-						break;
-					case VariantBase.EnumType.UInt64:
-						colWriters[i] = o => Write((UInt64)o);
-						break;
-					case VariantBase.EnumType.Time:
-						colWriters[i] = o => Write((TimeSpan)o);
-						break;
-					case VariantBase.EnumType.DateTime:
-						colWriters[i] = o => Write((DateTime)o);
-						break;
-					default:
-						throw new VariantException("Case exhaustion: " + colTypes[i]);
-				}
-			}
+	        // Write number of columns
+	        Write(numCols);
 
-			// Write number of columns
-			Write(numCols);
+	        // Write number of rows
+	        Write(numRows);
 
-			// Write number of rows
-			Write(numRows);
+	        // Write column types
+	        foreach (VariantBase.EnumType colType in colTypes)
+	        {
+	            Write((int)colType);
+	        }
 
-			// Write column types
-			foreach (VariantBase.EnumType colType in colTypes)
-			{
-				Write((int)colType);
-			}
+	        // Write column names
+	        foreach (string colName in colNames)
+	        {
+	            Write(colName);
+	        }
 
-			// Write column names
-			foreach (string colName in colNames)
-			{
-				Write(colName);
-			}
+	        // Write columns
+	        for (int i = 0; i < numCols; ++i)
+	        {
+	            WriteDelegate colWriter;
 
-			// Write rows
-			foreach (DataRow item in arg.Rows)
-			{
-				for (int i = 0; i < numCols; ++i)
-				{
-					if (item.IsNull(i))
-					{
-						throw new VariantException("Cannot serialise DataTables containing null elements.");
-					}
-					colWriters[i](item[i]);
-				}
-			}
-		}
+                switch (colTypes[i])
+                {
+                    case VariantBase.EnumType.Float:
+                        colWriter = o => Write((float)o);
+                        break;
+                    case VariantBase.EnumType.Double:
+                        colWriter = o => Write((double)o);
+                        break;
+                    case VariantBase.EnumType.String:
+                        colWriter = o => Write((string)o);
+                        break;
+                    case VariantBase.EnumType.Boolean:
+                        colWriter = o => Write((bool)o);
+                        break;
+                    case VariantBase.EnumType.Int32:
+                        colWriter = o => Write((Int32)o);
+                        break;
+                    case VariantBase.EnumType.UInt32:
+                        colWriter = o => Write((UInt32)o);
+                        break;
+                    case VariantBase.EnumType.Int64:
+                        colWriter = o => Write((Int64)o);
+                        break;
+                    case VariantBase.EnumType.UInt64:
+                        colWriter = o => Write((UInt64)o);
+                        break;
+                    case VariantBase.EnumType.Time:
+                        colWriter = o => Write((TimeSpan)o);
+                        break;
+                    case VariantBase.EnumType.DateTime:
+                        colWriter = o => Write((DateTime)o);
+                        break;
+                    default:
+                        throw new VariantException("Case exhaustion: " + colTypes[i]);
+                }
+
+	            foreach (DataRow item in arg.Rows)
+	            {
+	                if (item.IsNull(i))
+	                {
+	                    throw new VariantException("Cannot serialise DataTables containing null elements.");
+	                }
+                    colWriter(item[i]);
+	            }
+	        }
+	    }
 
 		private void Write(TypedArray arg)
 		{
@@ -286,16 +287,16 @@ namespace Protean
 					writer = o => Write((bool)o);
 					break;
 				case VariantBase.EnumType.Int32:
-					writer = o => Write((Int32)o);
+					writer = o => Write((int)o);
 					break;
 				case VariantBase.EnumType.UInt32:
-					writer = o => Write((UInt32)o);
+					writer = o => Write((uint)o);
 					break;
 				case VariantBase.EnumType.Int64:
-					writer = o => Write((Int64)o);
+					writer = o => Write((long)o);
 					break;
 				case VariantBase.EnumType.UInt64:
-					writer = o => Write((UInt64)o);
+					writer = o => Write((ulong)o);
 					break;
 				case VariantBase.EnumType.Time:
 					writer = o => Write((TimeSpan)o);
