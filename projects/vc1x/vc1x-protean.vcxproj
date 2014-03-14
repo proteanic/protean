@@ -149,6 +149,7 @@
     <ClCompile Include="..\..\src\binary_reader.cpp" />
     <ClCompile Include="..\..\src\binary_writer.cpp" />
     <ClCompile Include="..\..\src\buffer.cpp" />
+    <ClCompile Include="..\..\src\data_table.cpp" />
     <ClCompile Include="..\..\src\dictionary.cpp" />
     <ClCompile Include="..\..\src\exception_data.cpp" />
     <ClCompile Include="..\..\src\list.cpp" />
@@ -180,6 +181,11 @@
     <ClInclude Include="..\..\protean\config.hpp" />
     <ClInclude Include="..\..\protean\detail\base64.hpp" />
     <ClInclude Include="..\..\protean\detail\crc64.hpp" />
+    <ClInclude Include="..\..\protean\detail\data_table.hpp" />
+    <ClInclude Include="..\..\protean\detail\data_table_column.hpp" />
+    <ClInclude Include="..\..\protean\detail\data_table_column_serializers.hpp" />
+    <ClInclude Include="..\..\protean\detail\data_table_types.hpp" />
+    <ClInclude Include="..\..\protean\detail\data_table_variant_iterator.hpp" />
     <ClInclude Include="..\..\protean\detail\scoped_xmlch.hpp" />
     <ClInclude Include="..\..\protean\detail\xerces_include.hpp" />
     <ClInclude Include="..\..\protean\detail\xml_default_handler.hpp" />
