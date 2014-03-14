@@ -104,7 +104,7 @@
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <Import Project="vc1-configuration-processor.props" />
+  <Import Project="vc1x-configuration-processor.props" />
   <PropertyGroup Condition="'$(ConfiguredOutput)'=='static'">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
