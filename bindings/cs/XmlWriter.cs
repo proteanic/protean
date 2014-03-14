@@ -149,7 +149,7 @@ namespace Protean {
             if (m_stack.Count!=0)
             {
                 ElementInfo context = m_stack.Peek();
-                m_writer.WriteStartElement(context.m_name.Length==0 ? XmlConst.Default : context.m_name);
+                m_writer.WriteStartElement(XmlConvert.EncodeLocalName(context.m_name.Length == 0 ? XmlConst.Default : context.m_name));
              }
         }
 

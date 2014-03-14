@@ -93,7 +93,7 @@ namespace Protean {
 
                 if (nType == XmlNodeType.Element)
                 {
-                    string name = m_reader.Name;
+                    string name = XmlConvert.DecodeName(m_reader.Name);
                     bool isEmptyElement = m_reader.IsEmptyElement;
 
                     Variant.EnumType elementType = getVariantTypeFromSchema();
@@ -104,11 +104,11 @@ namespace Protean {
                         Variant.EnumType attrType = getVariantTypeFromSchema();
                         if (attrType != Variant.EnumType.Buffer)
                         {
-                            attributes.Add(m_reader.Name, new Variant(attrType, m_reader.Value));
+                            attributes.Add(XmlConvert.DecodeName(m_reader.Name), new Variant(attrType, m_reader.Value));
                         }
                         else
                         {
-                            attributes.Add(m_reader.Name, new Variant(System.Convert.FromBase64String(m_reader.Value)));
+                            attributes.Add(XmlConvert.DecodeName(m_reader.Name), new Variant(System.Convert.FromBase64String(m_reader.Value)));
                         }
                     }
 
@@ -129,7 +129,7 @@ namespace Protean {
                 }
                 else if (nType == XmlNodeType.ProcessingInstruction)
                 {
-                    ProcessingInstruction(m_reader.Name, m_reader.Value);
+                    ProcessingInstruction(XmlConvert.DecodeName(m_reader.Name), m_reader.Value);
                 }
                 else if (nType == XmlNodeType.EndElement)
                 {
