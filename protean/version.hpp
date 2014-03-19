@@ -8,7 +8,7 @@
 
 #define PROTEAN_MAJOR_VERSION 1
 #define PROTEAN_MINOR_VERSION 7
-#define PROTEAN_PATCH_VERSION 0
+#define PROTEAN_PATCH_VERSION 1
 
 //
 //  PROTEAN_VERSION % 100 is the patch level
