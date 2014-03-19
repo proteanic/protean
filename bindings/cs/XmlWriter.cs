@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Xml;
 
 namespace Protean {
@@ -424,6 +425,79 @@ namespace Protean {
                     writer(array[i]);
                     m_writer.WriteEndElement();
                 }
+                break;
+            }
+            case Variant.EnumType.DataTable:
+            {
+                DataTable dataTable = element.AsDataTable();
+
+                m_stack.Peek().m_attributes.Add("rows", new Variant(dataTable.Rows.Count));
+                m_stack.Peek().m_attributes.Add("columns", new Variant(dataTable.Columns.Count));
+
+                WriteAttributes(m_stack.Peek().m_attributes);
+
+                foreach (DataColumn col in dataTable.Columns)
+                {
+                    Push("Column");
+                    m_stack.Peek().m_attributes.Add("name", new Variant(col.ColumnName));
+                    m_stack.Peek().m_attributes.Add("type", new Variant(VariantPrimitiveBase.TypeToEnum(col.DataType).ToString()));
+
+                    WriteElement(new Variant());
+                    Pop();
+                }
+
+                foreach (DataColumn col in dataTable.Columns)
+                {
+                    Action<object> writer;
+                    switch (VariantPrimitiveBase.TypeToEnum(col.DataType))
+                    {
+                        case VariantBase.EnumType.Float:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((float)o));
+                            break;
+                        case VariantBase.EnumType.Double:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((double)o));
+                            break;
+                        case VariantBase.EnumType.String:
+                            writer = o => m_writer.WriteString((string)o);
+                            break;
+                        case VariantBase.EnumType.Boolean:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((bool)o));
+                            break;
+                        case VariantBase.EnumType.Int32:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((int)o));
+                            break;
+                        case VariantBase.EnumType.UInt32:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((uint)o));
+                            break;
+                        case VariantBase.EnumType.Int64:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((long)o));
+                            break;
+                        case VariantBase.EnumType.UInt64:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((ulong)o));
+                            break;
+                        case VariantBase.EnumType.Time:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((TimeSpan)o));
+                            break;
+                        case VariantBase.EnumType.DateTime:
+                            writer = o => m_writer.WriteString(VariantBase.ToString((DateTime)o));
+                            break;
+                        default:
+                            throw new VariantException("Case exhaustion: " + VariantPrimitiveBase.TypeToEnum(col.DataType));
+                    }
+
+                    Push("Column").Add("name", new Variant(col.ColumnName));
+                    WriteStartTag("s");
+                    WriteAttributes(m_stack.Peek().m_attributes);
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        m_writer.WriteStartElement(XmlConst.Default);
+                        writer(row[col]);
+                        m_writer.WriteEndElement();
+                    }
+                    WriteEndTag();
+                    Pop();
+                }
+
                 break;
             }
             default:

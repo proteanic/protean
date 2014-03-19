@@ -4,6 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 using System;
+using System.Data;
 
 namespace Protean.Test
 {
@@ -292,6 +293,26 @@ namespace Protean.Test
             Assert.AreEqual(v1["Date"].Type, Variant.EnumType.DateTime);
             Assert.AreEqual(v1["Time"].Type, Variant.EnumType.Time);
             Assert.AreEqual(v1["DateTime"].Type, Variant.EnumType.DateTime);
+        }
+
+        [Test]
+        public void TestDataTable()
+        {
+            System.Data.DataTable dt1 = new DataTable();
+            dt1.Columns.Add(new DataColumn("Column1", typeof(double)));
+            dt1.Columns.Add(new DataColumn("Column2", typeof(string)));
+
+            DataRow dr = dt1.NewRow();
+            dr[0] = 1.0;
+            dr[1] = "value";
+
+            dt1.Rows.Add(dr);
+
+            Variant v1 = new Variant(dt1);
+
+            string xml = XmlWriter.ToString(v1);
+
+            System.Console.WriteLine(xml);
         }
     }
 }
