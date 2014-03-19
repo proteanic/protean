@@ -269,6 +269,24 @@
     <None Include="..\..\protean\variant_ref.ipp">
       <Filter>Implementation Files</Filter>
     </None>
+    <None Include="..\..\protean\array_iterator.ipp">
+      <Filter>Implementation Files</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_column.ipp">
+      <Filter>Implementation Files\detail</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_column_serializers.ipp">
+      <Filter>Implementation Files\detail</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_types.ipp">
+      <Filter>Implementation Files\detail</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table_variant_iterator.ipp">
+      <Filter>Implementation Files\detail</Filter>
+    </None>
+    <None Include="..\..\protean\detail\data_table.ipp">
+      <Filter>Implementation Files\detail</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -287,6 +305,9 @@
       <UniqueIdentifier>{24cb90e6-2003-4535-855a-c42f465e5c76}</UniqueIdentifier>
       <Extensions>
       </Extensions>
+    </Filter>
+    <Filter Include="Implementation Files\detail">
+      <UniqueIdentifier>{93c22d93-1606-486c-9047-4030ea1e26b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

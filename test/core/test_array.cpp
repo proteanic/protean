@@ -87,7 +87,11 @@ BOOST_AUTO_TEST_CASE(test_array_iterators)
     BOOST_CHECK(it2==a1.end());
 }
 
-bool is_range_type_failure( std::exception const& ex ) { return ex.what() != "Type of array != as_range type requested (Double!=int)"; }
+bool is_range_type_failure( std::exception const& ex )
+{
+	std::string message(ex.what());
+	return message != "Type of array != as_range type requested (Double!=int)";
+}
 
 BOOST_AUTO_TEST_CASE(test_array_variant_as_range)
 {

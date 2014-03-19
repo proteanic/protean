@@ -52,7 +52,7 @@ namespace protean {
         variant(const variant& value);
 
         template<typename T>
-        variant(T value, typename boost::enable_if<boost::is_arithmetic<T> >::type* dummy = 0);
+		explicit variant(T value, typename boost::enable_if<boost::is_arithmetic<T> >::type* dummy = 0);
 
         explicit variant(enum_type_t type, size_t size=0);
         explicit variant(enum_type_t type, const std::string& arg);

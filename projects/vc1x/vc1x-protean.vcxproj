@@ -137,11 +137,6 @@
     <TargetName Condition="'$(ConfiguredOutput)'=='dynamic'">protean-vc$(PlatformToolsetVersion)-mt-$(OptimsationSymbol)$(VersionString)</TargetName>
     <TargetName Condition="'$(ConfiguredOutput)'== 'static'">libprotean-vc$(PlatformToolsetVersion)-mt-$(OptimsationSymbol)$(VersionString)</TargetName>
   </PropertyGroup>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <DisableSpecificWarnings>4503</DisableSpecificWarnings>
-    </ClCompile>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\array_iterator.cpp" />
     <ClCompile Include="..\..\src\bag.cpp" />
@@ -232,6 +227,12 @@
     <ClInclude Include="..\..\protean\config\auto_link.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\protean\array_iterator.ipp" />
+    <None Include="..\..\protean\detail\data_table.ipp" />
+    <None Include="..\..\protean\detail\data_table_column.ipp" />
+    <None Include="..\..\protean\detail\data_table_column_serializers.ipp" />
+    <None Include="..\..\protean\detail\data_table_types.ipp" />
+    <None Include="..\..\protean\detail\data_table_variant_iterator.ipp" />
     <None Include="..\..\protean\handle.ipp" />
     <None Include="..\..\protean\variant.ipp" />
     <None Include="..\..\protean\variant_ref.ipp" />

@@ -8,6 +8,20 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)../;$(BOOST_INCLUDE_PATH);$(XERCES_INCLUDE_PATH);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BOOST_FILESYSTEM_VERSION=3;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level4</WarningLevel>
+      <DisableSpecificWarnings>
+        4239; <!-- This type conversion is not allowed by the C++ standard, but it is permitted here as an extension. -->
+        4251; <!-- 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2' -->
+        4258; <!-- 'variable' : definition from the for loop is ignored; the definition from the enclosing scope is used" -->
+        4275; <!-- non – DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier' -->
+        4503; <!-- 'identifier' : decorated name length exceeded, name was truncated -->
+        4505; <!-- 'function' : unreferenced local function has been removed -->
+        4512; <!-- 'class' : assignment operator could not be generated -->
+        4714; <!-- function 'function' marked as __forceinline not inlined --><!-- deprecated in vc100 -->
+        4822; <!-- 'member' : local class member function does not have a body -->
+        4913; <!-- user defined binary operator ',' exists but no overload could convert all operands, default built-in binary operator ',' used -->
+        %(DisableSpecificWarnings)
+      </DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
 </Project>

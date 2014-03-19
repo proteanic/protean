@@ -138,9 +138,17 @@ namespace protean { namespace detail {
     void data_table_column<E>::push_back_impl(const variant& value, variant* p = 0)
     { push_back_variant_impl_tmpl<variant>(value, p); }
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable:4702)
+#endif
+
     BOOST_PP_SEQ_FOR_EACH(PROTEAN_DETAIL_DT_COLUMN_VIRTUAL_PUSH_BACK_IMPL_DEF, , SUPPORTED_TYPES)
     BOOST_PP_SEQ_FOR_EACH(PROTEAN_DETAIL_DT_COLUMN_VIRTUAL_IMPLS_IMPLS, , COLUMN_TYPES)
     
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
     /* Typed method template implementations */
     /*****************************************/
@@ -157,7 +165,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
         template <typename V>
         void data_table_column<E>::
-        push_back_impl_tmpl(const V& value, typename boost::disable_if<boost::is_same<V, typename data_table_column<E>::value_type>, void*>::type /* = 0 */)
+        push_back_impl_tmpl(const V& /*value*/, typename boost::disable_if<boost::is_same<V, typename data_table_column<E>::value_type>, void*>::type /* = 0 */)
         {
             boost::throw_exception(variant_error("Column types do not match in call to push_back()"));
         }
@@ -175,7 +183,7 @@ namespace protean { namespace detail {
 
     template <variant_base::enum_type_t E>
         template <typename V>
-        void data_table_column<E>::push_back_variant_impl_tmpl(const variant& value, typename boost::disable_if<is_variant<value_type, V>, void*>::type /* = 0 */)
+        void data_table_column<E>::push_back_variant_impl_tmpl(const variant& /*value*/, typename boost::disable_if<is_variant<value_type, V>, void*>::type /* = 0 */)
         {
             boost::throw_exception(variant_error("Column types do not match in call to variant push_back()"));
         }

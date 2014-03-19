@@ -163,14 +163,14 @@ namespace protean { namespace detail {
     void xml_preserve_handler::handleAttributesPSVI(
         const XMLCh* const /*localName*/, 
         const XMLCh* const /*uri*/, 
-        xercesc::PSVIAttributeList* psviAttributes )
+        xercesc::PSVIAttributeList* /*psviAttributes*/ )
     { }
         
 
     void xml_preserve_handler::handleElementPSVI(
         const XMLCh* const /*localName*/,
         const XMLCh* const /*uri*/,
-        xercesc::PSVIElement* elementInfo )
+        xercesc::PSVIElement* /*elementInfo*/ )
     {  }
 
 }} // namespace protean::detail

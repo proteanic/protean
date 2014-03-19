@@ -44,7 +44,7 @@ namespace protean { namespace detail {
         template <variant_base::enum_type_t E>
         data_table& add_column(const std::string& name);
 
-        class column_adder;
+        struct column_adder;
 
     /* Column access */
     /*****************/

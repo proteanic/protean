@@ -63,8 +63,6 @@ namespace protean { namespace detail {
 
         int line_count = (quad_count + quads_per_line-1) / quads_per_line;
 
-        char char_array_4[4];
-
         char  b1, b2, b3, b4;
 
         unsigned int input_index = 0;

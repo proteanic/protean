@@ -236,7 +236,7 @@ namespace protean { namespace detail {
                                 make_data_table_column_stream_reader(column, context->m_column_data)
                             );
                         }
-                        catch (const variant_error& e)
+                        catch (const variant_error& /*e*/)
                         {
                             boost::throw_exception(variant_error(boost::str(
                                 boost::format("No such column '%s' was declared for DataTable variant") % column_name
