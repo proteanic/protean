@@ -56,7 +56,7 @@ public:
         params.insert("count",  variant(m_count));
         params.insert("id",     variant(m_id));
     }
-    void inflate(const variant& params, int version)
+    void inflate(const variant& params, int /*version*/)
     {
         m_count = params["count"].as<boost::int32_t>();
         m_id = params["id"].as<std::string>();

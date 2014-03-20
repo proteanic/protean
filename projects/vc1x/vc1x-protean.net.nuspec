@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Protean.Net</id>
+    <version>$version$</version>
+    <authors>Johan Ditmar, Karel Hruda, Paul O'Neill</authors>
+    <owners>Johan Ditmar, Karel Hruda, Paul O'Neill</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Protean .NET</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>Protean</tags>
+  </metadata>
+</package>
