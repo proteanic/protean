@@ -184,6 +184,7 @@ BOOST_AUTO_TEST_CASE(lexical_cast)
     BOOST_CHECK_EQUAL(variant(variant::UInt64,  "10").as<boost::uint64_t>(),    10u);
     BOOST_CHECK_EQUAL(variant(variant::Float,   "10").as<float>(),              10.);
     BOOST_CHECK_EQUAL(variant(variant::Double,  "10").as<double>(),             10.);
+	BOOST_CHECK_EQUAL(variant(variant::DateTime, "2014-03-21T15:50:31").as<variant::date_time_t>(), variant::date_time_t(variant::date_t(2014, 3, 21), variant::time_t(15, 50, 31)));
 
     BOOST_CHECK_THROW(variant(variant::Boolean, "###"),   variant_error);
     BOOST_CHECK_THROW(variant(variant::Boolean, "###"),   variant_error);
@@ -195,6 +196,7 @@ BOOST_AUTO_TEST_CASE(lexical_cast)
     BOOST_CHECK_THROW(variant(variant::UInt64,  "###"),   variant_error);
     BOOST_CHECK_THROW(variant(variant::Float,   "###"),   variant_error);
     BOOST_CHECK_THROW(variant(variant::Double,  "###"),   variant_error);
+	BOOST_CHECK_THROW(variant(variant::DateTime, "###"),  variant_error);
 }
 
 BOOST_AUTO_TEST_CASE(numerical_cast)

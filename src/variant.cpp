@@ -180,8 +180,6 @@ namespace protean {
 	variant::variant(enum_type_t type, const std::string& arg) :
         m_type(type)
     {
-        BEGIN_TRANSLATE_ERROR();
-
         if ((type & Primitive)==0)
         {
             boost::throw_exception(
@@ -228,8 +226,6 @@ namespace protean {
          default:
              boost::throw_exception(variant_error("Case exhaustion: " + enum_to_string(type)));
         }
-
-        END_TRANSLATE_ERROR();
     }
 
     variant::~variant()
