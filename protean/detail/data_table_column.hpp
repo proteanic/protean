@@ -255,15 +255,18 @@ namespace protean { namespace detail {
     };
 
 
-    ///* Specialised typedefs used in static data table iterators as types to denote empty tuple entry */
-    ///*************************************************************************************************/
-    //template <>
-    //class data_table_column<variant_base::None> : public data_table_column_base
-    //{
-    //public:
-    //    typedef boost::tuples::null_type iterator;
-    //    typedef boost::tuples::null_type const_iterator;
-    //};
+    /* Specialised typedefs used in static data table iterators as types to denote empty tuple entry */
+    /*************************************************************************************************/
+    template <>
+    class data_table_column<variant_base::None> : public data_table_column_base
+    {
+    public:
+        typedef boost::tuples::null_type iterator;
+        typedef boost::tuples::null_type const_iterator;
+
+	private:
+		data_table_column(); // Silence compiler warning; is never constructed
+    };
 
 }} // namespace protean::detail
 

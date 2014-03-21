@@ -163,25 +163,31 @@ namespace protean {
             }
             case variant::DataTable:
             {
-                boost::uint32_t rows;
-                read(rows);
+                boost::int32_t numRows, numCols;
+                read( numCols );
+                read( numRows );
 
-                value = variant(variant::DataTable, rows);
+                value = variant( variant::DataTable, numRows );
 
-                variant columns;
-                read(columns);
-                for (size_t i = 0; i < columns.size(); ++i)
-                    value.add_column(
-                        variant::string_to_enum(columns.at(i).at(0).as<std::string>()),
-                        columns.at(i).at(1).as<std::string>()
-                    );
+				{
+					std::vector<boost::int32_t> colTypes( numCols );
+					BOOST_FOREACH( boost::int32_t& colType, colTypes )
+						read( colType );
+
+					std::vector<std::string> colNames( numCols );
+					BOOST_FOREACH( std::string& colName, colNames )
+						read( colName );
+
+					for ( boost::int32_t i( 0 ); i != numCols; ++i )
+						value.add_column( static_cast<variant::enum_type_t>( colTypes[i] ), colNames[i] );
+				}
 
                 detail::data_table& dt = value.m_value.get<variant::DataTable>();
                 BOOST_FOREACH(detail::data_table::column_container_type::reference column, dt.columns())
                 {
                     // Default-allocate `rows' column values to be read into (no reallocation required since
                     // capacity of `rows' was specified in DataTable construction)
-                    column.resize(rows);
+                    column.resize( numRows );
 
                     if (column.type() & variant_base::Primitive)
                     {

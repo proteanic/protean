@@ -251,8 +251,9 @@ namespace protean { namespace detail {
         typedef typename data_table_variant_iterator_interface<const_iterator_traits>::column_iterator_container
             const_column_iterator_container;
 
-        const_column_iterator_container const_column_iterators(m_column_iterators.size());
-        std::copy(m_column_iterators.begin(), m_column_iterators.end(), const_column_iterators.begin());
+        const_column_iterator_container const_column_iterators;
+		const_column_iterators.reserve( m_column_iterators.size() );
+        std::copy( m_column_iterators.begin(), m_column_iterators.end(), std::back_inserter( const_column_iterators ) );
 
         return new data_table_variant_iterator_interface<const_iterator_traits>(const_column_iterators);
     }
