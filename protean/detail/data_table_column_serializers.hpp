@@ -50,8 +50,8 @@ namespace protean { namespace detail {
         virtual void advance();
 
     protected:
-        typename data_table_column<E>::container_type::const_iterator       m_iter;
-        const typename data_table_column<E>::container_type::const_iterator m_end;
+		typename column_traits<E>::container_type::const_iterator       m_iter;
+		const typename column_traits<E>::container_type::const_iterator m_end;
     };
 
     /* Binary writer: writing to a binary_writer */
@@ -138,8 +138,8 @@ namespace protean { namespace detail {
         virtual void advance();
 
     protected:
-        typename data_table_column<E>::container_type::iterator       m_iter;
-        const typename data_table_column<E>::container_type::iterator m_end;
+		typename column_traits<E>::container_type::iterator       m_iter;
+		const typename column_traits<E>::container_type::iterator m_end;
     };
 
     /* Binary reader: reading from a binary_reader */
@@ -153,7 +153,7 @@ namespace protean { namespace detail {
     template <>
     struct binary_reader_traits<variant_base::Boolean>
     {
-        static void read(binary_reader& reader, data_table_column<variant_base::Boolean>::container_type::reference value);
+		static void read(binary_reader& reader, column_traits<variant_base::Boolean>::container_type::reference value);
     };
 
     template <variant_base::enum_type_t E>
@@ -182,7 +182,7 @@ namespace protean { namespace detail {
     template <>
     struct stream_reader_traits<variant_base::Boolean>
     {
-        static void read(std::istream& is, data_table_column<variant_base::Boolean>::container_type::reference value);
+		static void read(std::istream& is, column_traits<variant_base::Boolean>::container_type::reference value);
     };
 
     template <>

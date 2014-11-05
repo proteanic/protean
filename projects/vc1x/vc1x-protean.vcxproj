@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="vc100 Debug|Win32">
       <Configuration>vc100 Debug</Configuration>
@@ -104,6 +104,54 @@
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Release|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Release|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Static Debug|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Static Debug|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Static Release|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Debug|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Debug|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Static Release|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Release|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Release|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Static Debug|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Static Debug|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Static Release|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc100 Static Release|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Debug|x64'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='vc110 Debug|Win32'">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
   <Import Project="vc1x-configuration-processor.props" />
   <PropertyGroup Condition="'$(ConfiguredOutput)'=='static'">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -174,10 +222,12 @@
     <ClInclude Include="..\..\protean\binary_reader.hpp" />
     <ClInclude Include="..\..\protean\binary_writer.hpp" />
     <ClInclude Include="..\..\protean\config.hpp" />
+    <ClInclude Include="..\..\protean\data_table_iterator.hpp" />
     <ClInclude Include="..\..\protean\detail\base64.hpp" />
     <ClInclude Include="..\..\protean\detail\crc64.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_column.hpp" />
+    <ClInclude Include="..\..\protean\detail\data_table_column_base.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_column_serializers.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_types.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_variant_iterator.hpp" />
@@ -230,6 +280,7 @@
     <None Include="..\..\protean\array_iterator.ipp" />
     <None Include="..\..\protean\detail\data_table.ipp" />
     <None Include="..\..\protean\detail\data_table_column.ipp" />
+    <None Include="..\..\protean\detail\data_table_column_base.ipp" />
     <None Include="..\..\protean\detail\data_table_column_serializers.ipp" />
     <None Include="..\..\protean\detail\data_table_types.ipp" />
     <None Include="..\..\protean\detail\data_table_variant_iterator.ipp" />

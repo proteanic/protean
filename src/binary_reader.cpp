@@ -182,8 +182,7 @@ namespace protean {
 						value.add_column( static_cast<variant::enum_type_t>( colTypes[i] ), colNames[i] );
 				}
 
-                detail::data_table& dt = value.m_value.get<variant::DataTable>();
-                BOOST_FOREACH(detail::data_table::column_container_type::reference column, dt.columns())
+				BOOST_FOREACH(variant::column_collection_t::reference column, value.columns())
                 {
                     // Default-allocate `rows' column values to be read into (no reallocation required since
                     // capacity of `rows' was specified in DataTable construction)

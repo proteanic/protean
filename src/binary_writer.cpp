@@ -124,18 +124,17 @@ namespace protean {
             }
             case variant::DataTable:
             {
-                const detail::data_table& dt( value.m_value.get<variant::DataTable>() );
-				const auto& columns( dt.columns() );
+				const auto& columns(value.columns());
 
-				write( static_cast<boost::int32_t>( columns.size() ) );
-                write( static_cast<boost::int32_t>( dt.size() ) );
+				write(static_cast<boost::int32_t>(columns.size()));
+				write(static_cast<boost::int32_t>(value.size()));
 
                 BOOST_FOREACH( const auto& column, columns )
 					write( static_cast<boost::int32_t>( column.type() ) );
                 BOOST_FOREACH( const auto& column, columns )
 					write( column.name() );
 
-                BOOST_FOREACH(detail::data_table::column_container_type::const_reference column, columns)
+                BOOST_FOREACH(variant::column_collection_t::const_reference column, columns)
                 {
                     if (column.type() & variant_base::Primitive)
                     {

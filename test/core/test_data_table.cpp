@@ -18,6 +18,7 @@ using boost::unit_test::test_suite;
 #include <iostream>
 #include <boost/chrono/chrono.hpp>
 #include <boost/chrono/chrono_io.hpp>
+
 using namespace protean;
 
 BOOST_AUTO_TEST_SUITE(data_table_suite);
@@ -309,6 +310,50 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_iterator)
     ++begin;
 
     BOOST_CHECK(begin==end);
+}
+
+BOOST_AUTO_TEST_CASE(test_data_table_column_iterator)
+{
+	variant v1(variant::DataTable);
+
+	BOOST_CHECK(v1.begin() == v1.end());
+
+	v1.add_column(variant::DateTime)
+		.add_column(variant::Int32)
+		.add_column(variant::Double);
+
+	BOOST_CHECK(v1.begin() == v1.end());
+
+	// Or one can write: data_table<variant::DateTime, variant::Int32, variant::Double>::value_type row1 = ...
+	data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
+		row1 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 09:00:00.000"), 42, 3.141);
+	data_table_row<variant::DateTime, variant::Int32, variant::Double>::type
+		row2 = boost::tuples::make_tuple(boost::posix_time::time_from_string("2002-01-20 10:00:00.000"), 1, 2.718);
+
+	v1.push_back(row1)
+	  .push_back(row2);
+
+	const detail::data_table::column_container_type& columns = v1.columns();
+
+	BOOST_CHECK_EQUAL(3, columns.size());
+
+	variant::const_iterator end = columns[0].end();
+	for (variant::const_iterator it=columns[0].begin(); it!=end; ++it)
+	{
+		BOOST_CHECK(it->is<boost::posix_time::ptime>());
+	}
+
+	end = columns[1].end();
+	for (variant::const_iterator it = columns[1].begin(); it != end; ++it)
+	{
+		BOOST_CHECK(it->is<int>());
+	}
+
+	end = columns[2].end();
+	for (variant::const_iterator it = columns[2].begin(); it != end; ++it)
+	{
+		BOOST_CHECK(it->is<double>());
+	}
 }
 
 BOOST_AUTO_TEST_CASE(test_data_table_large_number_of_columns)

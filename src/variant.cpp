@@ -384,6 +384,28 @@ namespace protean {
         END_TRANSLATE_ERROR();
     }
 
+	const variant::column_collection_t& variant::columns() const
+	{
+		BEGIN_TRANSLATE_ERROR();
+
+		CHECK_VARIANT_FUNCTION(DataTable, "columns()");
+
+		return m_value.get<DataTable>().columns();
+
+		END_TRANSLATE_ERROR();
+	}
+
+	variant::column_collection_t& variant::columns()
+	{
+		BEGIN_TRANSLATE_ERROR();
+
+		CHECK_VARIANT_FUNCTION(DataTable, "columns()");
+
+		return m_value.get<DataTable>().columns();
+
+		END_TRANSLATE_ERROR();
+	}
+
     variant& variant::insert(const std::string& key, const variant& value, enum_return_trait_t ret)
     {
         BEGIN_TRANSLATE_ERROR();

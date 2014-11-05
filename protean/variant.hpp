@@ -13,10 +13,12 @@
 #include <protean/typed_array.hpp>
 #include <protean/data_table_iterator.hpp>
 #include <protean/detail/data_table.hpp>
+#include <protean/detail/data_table_column_base.hpp>
 
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 
 namespace protean {
 
@@ -35,6 +37,8 @@ namespace protean {
         typedef const value_type*                   const_pointer;
         typedef value_type&                         reference;
         typedef const value_type&                   const_reference;
+
+		typedef boost::ptr_vector<detail::data_table_column_base> column_collection_t;
 
         typedef const_iterator_traits::difference_type  difference_type;
         typedef std::bidirectional_iterator_tag         iterator_category;
@@ -209,6 +213,9 @@ namespace protean {
     public:
         variant& add_column(enum_type_t type);
         variant& add_column(enum_type_t type, const std::string& name);
+
+		const column_collection_t& columns() const;
+		column_collection_t& columns();
 
         template <typename TUPLE>
         variant& push_back(const TUPLE& value);

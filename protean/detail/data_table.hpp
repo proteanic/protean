@@ -7,7 +7,7 @@
 #define PROTEAN_DETAIL_DATA_TABLE_HPP
 
 #include <protean/config.hpp>
-#include <protean/detail/data_table_column.hpp>
+#include <protean/detail/data_table_column_base.hpp>
 #include <protean/data_table_iterator.hpp>
 #include <protean/variant_base.hpp>
 #include <protean/detail/string.hpp>
@@ -53,7 +53,6 @@ namespace protean { namespace detail {
         const data_table_column_base& get_column(const std::string& name) const;
         const column_container_type& columns() const;
 
-    private:
         data_table_column_base& get_column(const size_t i);
         data_table_column_base& get_column(const std::string& name);
         column_container_type& columns();

@@ -117,7 +117,7 @@ namespace protean { namespace detail {
         reader.read(value);
     }
 
-    inline void binary_reader_traits<variant_base::Boolean>::read(binary_reader& reader, data_table_column<variant_base::Boolean>::container_type::reference value)
+    inline void binary_reader_traits<variant_base::Boolean>::read(binary_reader& reader, column_traits<variant_base::Boolean>::container_type::reference value)
     {
         bool tmp;
         reader.read(tmp);
@@ -145,7 +145,7 @@ namespace protean { namespace detail {
         is >> value;
     }
 
-    inline void stream_reader_traits<variant_base::Boolean>::read(std::istream& is, data_table_column<variant_base::Boolean>::container_type::reference value)
+    inline void stream_reader_traits<variant_base::Boolean>::read(std::istream& is, column_traits<variant_base::Boolean>::container_type::reference value)
     {
         bool tmp;
         is >> tmp;
