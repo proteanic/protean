@@ -27,6 +27,7 @@ namespace Protean {
                     settings.Schemas = sc;
                 }
                 settings.ValidationType = ValidationType.Schema;
+                settings.DtdProcessing = DtdProcessing.Ignore;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
                 settings.ValidationEventHandler += ValidationCallBack;
