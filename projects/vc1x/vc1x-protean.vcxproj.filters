@@ -258,6 +258,12 @@
     <ClInclude Include="..\..\protean\detail\data_table_variant_iterator.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\protean\data_table_iterator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protean\data_table_column_base.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\protean\handle.ipp">
@@ -286,6 +292,9 @@
     </None>
     <None Include="..\..\protean\detail\data_table.ipp">
       <Filter>Implementation Files\detail</Filter>
+    </None>
+    <None Include="..\..\protean\data_table_column_base.ipp">
+      <Filter>Implementation Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

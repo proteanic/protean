@@ -5,7 +5,7 @@
 
 #include <boost/preprocessor/seq/for_each.hpp>
 
-namespace protean { namespace detail {
+namespace protean {
 
     /**************************/
     /* data_table_column_base */
@@ -43,4 +43,4 @@ namespace protean { namespace detail {
         return end_impl(static_cast<typename column_traits<E>::enum_type*>(0));
     }
 
-}} // namespace protean::detail
+} // namespace protean

@@ -7,7 +7,7 @@
 #define PROTEAN_DETAIL_DATA_TABLE_HPP
 
 #include <protean/config.hpp>
-#include <protean/detail/data_table_column_base.hpp>
+#include <protean/data_table_column_base.hpp>
 #include <protean/data_table_iterator.hpp>
 #include <protean/variant_base.hpp>
 #include <protean/detail/string.hpp>

@@ -3,8 +3,8 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef PROTEAN_DETAIL_DATA_TABLE_COLUMN_BASE_HPP
-#define PROTEAN_DETAIL_DATA_TABLE_COLUMN_BASE_HPP
+#ifndef PROTEAN_DATA_TABLE_COLUMN_BASE_HPP
+#define PROTEAN_DATA_TABLE_COLUMN_BASE_HPP
 
 #if defined(_MSC_VER)
 #    pragma warning(push)
@@ -16,18 +16,18 @@
 #include <protean/variant_iterator.hpp>
 #include <protean/variant_base.hpp>
 #include <protean/detail/data_table_types.hpp>
-#include <protean/detail/data_table_column_base.hpp>
+#include <protean/data_table_column_base.hpp>
 
 #include <vector>
 #include <string>
 
-namespace protean {	namespace detail {
+namespace protean {
 
 	template <variant_base::enum_type_t E>
 	struct column_traits
 	{
-		typedef boost::mpl::int_<E>                      enum_type;
-		typedef typename data_table_type_map<E>::type    value_type;
+		typedef boost::mpl::int_<E>                            enum_type;
+		typedef typename detail::data_table_type_map<E>::type  value_type;
 
 		typedef std::vector<value_type>                  container_type;
 		typedef typename container_type::iterator        iterator;
@@ -118,12 +118,12 @@ namespace protean {	namespace detail {
 		return other.clone();
 	}
 
-}} // namespace protean::detail
+} // namespace protean
 
-#include <protean/detail/data_table_column_base.ipp>
+#include <protean/data_table_column_base.ipp>
 
 #if defined(_MSC_VER)
 #    pragma warning(pop)
 #endif
 
-#endif // PROTEAN_DETAIL_DATA_TABLE_COLUMN_BASE_HPP
+#endif // PROTEAN_DATA_TABLE_COLUMN_BASE_HPP

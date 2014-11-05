@@ -12,8 +12,8 @@
 #include <protean/array_iterator.hpp>
 #include <protean/typed_array.hpp>
 #include <protean/data_table_iterator.hpp>
+#include <protean/data_table_column_base.hpp>
 #include <protean/detail/data_table.hpp>
-#include <protean/detail/data_table_column_base.hpp>
 
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
@@ -38,7 +38,7 @@ namespace protean {
         typedef value_type&                         reference;
         typedef const value_type&                   const_reference;
 
-		typedef boost::ptr_vector<detail::data_table_column_base> column_collection_t;
+		typedef boost::ptr_vector<data_table_column_base> column_collection_t;
 
         typedef const_iterator_traits::difference_type  difference_type;
         typedef std::bidirectional_iterator_tag         iterator_category;

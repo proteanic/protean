@@ -222,12 +222,12 @@
     <ClInclude Include="..\..\protean\binary_reader.hpp" />
     <ClInclude Include="..\..\protean\binary_writer.hpp" />
     <ClInclude Include="..\..\protean\config.hpp" />
+    <ClInclude Include="..\..\protean\data_table_column_base.hpp" />
     <ClInclude Include="..\..\protean\data_table_iterator.hpp" />
     <ClInclude Include="..\..\protean\detail\base64.hpp" />
     <ClInclude Include="..\..\protean\detail\crc64.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_column.hpp" />
-    <ClInclude Include="..\..\protean\detail\data_table_column_base.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_column_serializers.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_types.hpp" />
     <ClInclude Include="..\..\protean\detail\data_table_variant_iterator.hpp" />
@@ -278,9 +278,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\protean\array_iterator.ipp" />
+    <None Include="..\..\protean\data_table_column_base.ipp" />
     <None Include="..\..\protean\detail\data_table.ipp" />
     <None Include="..\..\protean\detail\data_table_column.ipp" />
-    <None Include="..\..\protean\detail\data_table_column_base.ipp" />
     <None Include="..\..\protean\detail\data_table_column_serializers.ipp" />
     <None Include="..\..\protean\detail\data_table_types.ipp" />
     <None Include="..\..\protean\detail\data_table_variant_iterator.ipp" />

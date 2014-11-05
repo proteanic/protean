@@ -12,7 +12,7 @@
 #include <protean/variant_base.hpp>
 #include <protean/detail/data_table_variant_iterator.hpp>
 #include <protean/detail/data_table_types.hpp>
-#include <protean/detail/data_table_column_base.hpp>
+#include <protean/data_table_column_base.hpp>
 
 #include <vector>
 #include <string>

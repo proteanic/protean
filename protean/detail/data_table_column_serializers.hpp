@@ -17,13 +17,15 @@
 #    pragma warning(disable:4251)
 #endif
 
-namespace protean { namespace detail {
+namespace protean {
+
+	class data_table_column_base;
+
+	namespace detail {
 
     // Forward declaration
-    class data_table_column_base;
     template <variant_base::enum_type_t E>
     class data_table_column;
-
 
     /* Column writers ************************************/
     /* For writing a column's values to some destination */
