@@ -30,6 +30,7 @@ namespace Protean {
                 settings.DtdProcessing = DtdProcessing.Ignore;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
+                //settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
                 settings.ValidationEventHandler += ValidationCallBack;
                 m_reader = System.Xml.XmlReader.Create(stream, settings);
             }
@@ -41,7 +42,7 @@ namespace Protean {
 
         private static void ValidationCallBack(object sender, ValidationEventArgs e)
         {
-		    throw new VariantException(String.Format("Validation Error: {0}" ,e.Message));
+		    throw new VariantException(String.Format("Validation {0}: {1}" , e.Severity, e.Message));
         }
 
         // Useful visual plot of how datatypes are derived in XML Schema:

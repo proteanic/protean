@@ -99,8 +99,32 @@
     <None Include="..\..\bindings\cs\protean.snk">
       <Link>protean.snk</Link>
     </None>
+    <None Include="..\..\test\bindings\cs\xsd\shiporder.xsd">
+      <Link>xsd\shiporder.xsd</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\test\bindings\cs\xml\shiporder_invalid.xml">
+      <Link>xml\shiporder_invalid.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\test\bindings\cs\xml\shiporder_non_existent_schema.xml">
+      <Link>xml\shiporder_non_existent_schema.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\test\bindings\cs\xml\shiporder_no_schema.xml">
+      <Link>xml\shiporder_no_schema.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\test\bindings\cs\xml\shiporder_valid.xml">
+      <Link>xml\shiporder_valid.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

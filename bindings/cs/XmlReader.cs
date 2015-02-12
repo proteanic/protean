@@ -69,7 +69,7 @@ namespace Protean {
             }
         }
 
-        private XmlParserBase m_parser;
+        private readonly XmlParserBase m_parser;
     }
 
 } // Protean
