@@ -68,22 +68,33 @@ namespace Protean {
                     { XmlTypeCode.UnsignedInt, Variant.EnumType.UInt32 }
                 };
 
-        public Variant.EnumType getVariantTypeFromSchema()
+        public Variant.EnumType GetVariantTypeFromSchema()
         {
+            if (m_reader.SchemaInfo == null)
+            {
+                return VariantBase.EnumType.Any;
+            }
+
             XmlSchemaType schemaType = m_reader.SchemaInfo.SchemaType;
 
-            //null if validation not used
             if (schemaType == null)
+            {
                 return VariantBase.EnumType.Any;
+            }
 
             while (true)
             {
                 if (XmlType2VariantType.ContainsKey(schemaType.TypeCode))
+                {
                     return XmlType2VariantType[schemaType.TypeCode];
+                }
 
                 schemaType = schemaType.BaseXmlSchemaType;
-                if (schemaType == null || schemaType.TypeCode == XmlTypeCode.Item || schemaType.TypeCode == XmlTypeCode.AnyAtomicType)
-                    return Variant.EnumType.Any;
+                if (schemaType == null || schemaType.TypeCode == XmlTypeCode.Item ||
+                    schemaType.TypeCode == XmlTypeCode.AnyAtomicType)
+                {
+                    return VariantBase.EnumType.Any;
+                }
             }
         }
 
@@ -98,12 +109,12 @@ namespace Protean {
                     string name = XmlConvert.DecodeName(m_reader.Name);
                     bool isEmptyElement = m_reader.IsEmptyElement;
 
-                    Variant.EnumType elementType = getVariantTypeFromSchema();
+                    Variant.EnumType elementType = GetVariantTypeFromSchema();
                     Variant attributes = new Variant(Variant.EnumType.Bag);
                     for (int i = 0; i<m_reader.AttributeCount; ++i)
                     {
                         m_reader.MoveToAttribute(i);
-                        Variant.EnumType attrType = getVariantTypeFromSchema();
+                        Variant.EnumType attrType = GetVariantTypeFromSchema();
                         if (attrType != Variant.EnumType.Buffer)
                         {
                             attributes.Add(XmlConvert.DecodeName(m_reader.Name), new Variant(attrType, m_reader.Value));
@@ -158,7 +169,7 @@ namespace Protean {
             return this;
         }
 
-        private System.Xml.XmlReader m_reader;
+        private readonly System.Xml.XmlReader m_reader;
         protected XmlMode m_mode;
         protected IVariantObjectFactory m_factory;
     }
