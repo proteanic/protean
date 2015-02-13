@@ -254,27 +254,30 @@ namespace Protean.Test
         }
 
         [Test]
-        public void TestXmlValidationSuccessWithEmbeddedSchemaReferenceUsingRelativeUri()
+        public void TestXmlValidationSuccessWithEmbeddedSchemaReference()
         {
-            using (System.IO.TextReader textReader = new System.IO.StreamReader(@"xml\shiporder_valid.xml"))
+            const string xmlPath = @"xml\shiporder_valid.xml";
+            string baseUri = System.IO.Path.GetFullPath(xmlPath);
+
+            using (System.IO.TextReader textReader = new System.IO.StreamReader(xmlPath))
             {
-                XmlReader xmlReader = XmlReader.Create(textReader, XmlMode.Default, true);
+                XmlReader xmlReader = XmlReader.Create(textReader, XmlMode.Default, true, baseUri, true);
                 Assert.That(() => { xmlReader.Read(); }, Throws.Nothing);
-                //only throws nothing because reportvalidationwarnings is turned off
             }
         }
 
         [Test]
-        [TestCase(@"xml\shiporder_invalid.xml")]
-        [TestCase(@"xml\shiporder_non_existent_schema.xml")]
-        [TestCase(@"xml\shiporder_no_schema.xml")]
-        public void TestXmlValidationFailureWithEmbeddedSchemaReferenceUsingRelativeUri(string path)
+        [TestCase(@"xml\shiporder_invalid.xml", "Validation Error")]
+        [TestCase(@"xml\shiporder_non_existent_schema.xml", "Validation Warning")]
+        [TestCase(@"xml\shiporder_no_schema.xml", "Validation Warning")]
+        public void TestXmlValidationFailureWithEmbeddedSchemaReference(string xmlPath, string expectedMessage)
         {
-            using (System.IO.TextReader textReader = new System.IO.StreamReader(path))
+            string baseUri = System.IO.Path.GetFullPath(xmlPath);
+            
+            using (System.IO.TextReader textReader = new System.IO.StreamReader(xmlPath))
             {
-                XmlReader xmlReader = XmlReader.Create(textReader, XmlMode.Default, true);
-                //xmlReader.Read();
-                Assert.That(() => { xmlReader.Read(); }, Throws.InstanceOf<VariantException>().With.Message.StartsWith("Validation Error"));
+                XmlReader xmlReader = XmlReader.Create(textReader, XmlMode.Default, true, baseUri, true);
+                Assert.That(() => { xmlReader.Read(); }, Throws.InstanceOf<VariantException>().With.Message.StartsWith(expectedMessage));
             }
         }
         

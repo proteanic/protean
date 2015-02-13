@@ -12,7 +12,7 @@ namespace Protean {
 
     internal abstract class XmlParserBase
     {
-        protected XmlParserBase(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd)
+        protected XmlParserBase(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd, string baseUri, bool reportValidationWarnings)
         {
             m_mode = mode;
 
@@ -30,9 +30,14 @@ namespace Protean {
                 settings.DtdProcessing = DtdProcessing.Ignore;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
-                //settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+                
+                if (reportValidationWarnings)
+                {
+                    settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+                }
+                
                 settings.ValidationEventHandler += ValidationCallBack;
-                m_reader = System.Xml.XmlReader.Create(stream, settings);
+                m_reader = System.Xml.XmlReader.Create(stream, settings, baseUri);
             }
             else
             {

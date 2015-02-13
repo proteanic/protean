@@ -7,14 +7,14 @@ namespace Protean {
 
     public class XmlReader
     {
-        public XmlReader(System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream)
+        public XmlReader(System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream, string baseUri, bool reportValidationWarnings)
         {
             if ((mode & XmlMode.Preserve) != 0)
             {
                 throw new VariantException("Preserve parser has not been implemented yet");
             }
 
-            m_parser = new XmlDefaultParser(stream, mode, xsdStream, validateXsd);
+            m_parser = new XmlDefaultParser(stream, mode, xsdStream, validateXsd, baseUri, reportValidationWarnings);
         }
 
         public Variant Read()
@@ -26,25 +26,38 @@ namespace Protean {
         public static XmlReader Create(
             System.IO.TextReader stream)
         {
-            return new XmlReader(stream, XmlMode.Default, false, null);
+            return new XmlReader(stream, XmlMode.Default, false, null, null, false);
         }
 
         public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode)
         {
-            return new XmlReader(stream, mode, false, null);
+            return new XmlReader(stream, mode, false, null, null, false);
         }
 
         public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode, bool validateXsd)
         {
-            return new XmlReader(stream, mode, validateXsd, null);
+            return new XmlReader(stream, mode, validateXsd, null, null, false);
+        }
+
+        public static XmlReader Create(
+            System.IO.TextReader stream, XmlMode mode, bool validateXsd, string baseUri, bool reportValidationWarnings)
+        {
+            return new XmlReader(stream, mode, validateXsd, null, baseUri, reportValidationWarnings);
         }
 
         public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream)
         {
-            return new XmlReader(stream, mode, validateXsd, xsdStream);
+            return new XmlReader(stream, mode, validateXsd, xsdStream, null, false);
+        }
+
+        public static XmlReader Create(
+            System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream,
+            bool reportValidationWarnings)
+        {
+            return new XmlReader(stream, mode, validateXsd, xsdStream, null, reportValidationWarnings);
         }
 
         public XmlReader WithObjectFactory(IVariantObjectFactory factory)
