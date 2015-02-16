@@ -12,7 +12,7 @@ namespace Protean {
 
     internal abstract class XmlParserBase
     {
-        protected XmlParserBase(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd)
+        protected XmlParserBase(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd, string baseUri, bool reportValidationWarnings)
         {
             m_mode = mode;
 
@@ -30,8 +30,14 @@ namespace Protean {
                 settings.DtdProcessing = DtdProcessing.Ignore;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
+                
+                if (reportValidationWarnings)
+                {
+                    settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+                }
+                
                 settings.ValidationEventHandler += ValidationCallBack;
-                m_reader = System.Xml.XmlReader.Create(stream, settings);
+                m_reader = System.Xml.XmlReader.Create(stream, settings, baseUri);
             }
             else
             {
@@ -41,7 +47,7 @@ namespace Protean {
 
         private static void ValidationCallBack(object sender, ValidationEventArgs e)
         {
-		    throw new VariantException(String.Format("Validation Error: {0}" ,e.Message));
+		    throw new VariantException(String.Format("Validation {0}: {1}" , e.Severity, e.Message));
         }
 
         // Useful visual plot of how datatypes are derived in XML Schema:
@@ -67,22 +73,33 @@ namespace Protean {
                     { XmlTypeCode.UnsignedInt, Variant.EnumType.UInt32 }
                 };
 
-        public Variant.EnumType getVariantTypeFromSchema()
+        public Variant.EnumType GetVariantTypeFromSchema()
         {
+            if (m_reader.SchemaInfo == null)
+            {
+                return VariantBase.EnumType.Any;
+            }
+
             XmlSchemaType schemaType = m_reader.SchemaInfo.SchemaType;
 
-            //null if validation not used
             if (schemaType == null)
+            {
                 return VariantBase.EnumType.Any;
+            }
 
             while (true)
             {
                 if (XmlType2VariantType.ContainsKey(schemaType.TypeCode))
+                {
                     return XmlType2VariantType[schemaType.TypeCode];
+                }
 
                 schemaType = schemaType.BaseXmlSchemaType;
-                if (schemaType == null || schemaType.TypeCode == XmlTypeCode.Item || schemaType.TypeCode == XmlTypeCode.AnyAtomicType)
-                    return Variant.EnumType.Any;
+                if (schemaType == null || schemaType.TypeCode == XmlTypeCode.Item ||
+                    schemaType.TypeCode == XmlTypeCode.AnyAtomicType)
+                {
+                    return VariantBase.EnumType.Any;
+                }
             }
         }
 
@@ -97,12 +114,12 @@ namespace Protean {
                     string name = XmlConvert.DecodeName(m_reader.Name);
                     bool isEmptyElement = m_reader.IsEmptyElement;
 
-                    Variant.EnumType elementType = getVariantTypeFromSchema();
+                    Variant.EnumType elementType = GetVariantTypeFromSchema();
                     Variant attributes = new Variant(Variant.EnumType.Bag);
                     for (int i = 0; i<m_reader.AttributeCount; ++i)
                     {
                         m_reader.MoveToAttribute(i);
-                        Variant.EnumType attrType = getVariantTypeFromSchema();
+                        Variant.EnumType attrType = GetVariantTypeFromSchema();
                         if (attrType != Variant.EnumType.Buffer)
                         {
                             attributes.Add(XmlConvert.DecodeName(m_reader.Name), new Variant(attrType, m_reader.Value));
@@ -157,7 +174,7 @@ namespace Protean {
             return this;
         }
 
-        private System.Xml.XmlReader m_reader;
+        private readonly System.Xml.XmlReader m_reader;
         protected XmlMode m_mode;
         protected IVariantObjectFactory m_factory;
     }

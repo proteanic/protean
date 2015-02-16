@@ -10,8 +10,8 @@ namespace Protean {
 
     internal class XmlDefaultParser : XmlParserBase
     {
-        public XmlDefaultParser(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd) :
-            base(stream, mode, xsdStream, validateXsd)
+        public XmlDefaultParser(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd, string baseUri, bool reportValidationWarnings) :
+            base(stream, mode, xsdStream, validateXsd, baseUri, reportValidationWarnings)
         {
             m_stack = new Stack<ElementInfo>();
             m_result = new Variant();
