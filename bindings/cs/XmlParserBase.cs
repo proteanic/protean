@@ -12,18 +12,19 @@ namespace Protean {
 
     internal abstract class XmlParserBase
     {
-        protected XmlParserBase(System.IO.TextReader stream, XmlMode mode, System.IO.TextReader xsdStream, bool validateXsd, string baseUri, bool reportValidationWarnings)
+        protected XmlParserBase(XmlReaderParameters parameters)
         {
-            m_mode = mode;
+            m_mode = parameters.Mode;
+            m_inferTypesFromSchema = parameters.ValidationOptions.HasFlag(XmlReaderValidationFlags.InferTypesFromSchema);
 
-            if (validateXsd)
+            if (parameters.ValidationOptions.HasFlag(XmlReaderValidationFlags.ValidateXsd))
             {
                 XmlReaderSettings settings = new XmlReaderSettings();
 
-                if (xsdStream != null)
+                if (parameters.XsdStream != null)
                 {
                     XmlSchemaSet sc = new XmlSchemaSet();
-                    sc.Add("", System.Xml.XmlReader.Create(xsdStream));
+                    sc.Add("", System.Xml.XmlReader.Create(parameters.XsdStream));
                     settings.Schemas = sc;
                 }
                 settings.ValidationType = ValidationType.Schema;
@@ -31,17 +32,17 @@ namespace Protean {
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
                 settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
                 
-                if (reportValidationWarnings)
+                if (parameters.ValidationOptions.HasFlag(XmlReaderValidationFlags.ReportValidationWarnings))
                 {
                     settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
                 }
                 
                 settings.ValidationEventHandler += ValidationCallBack;
-                m_reader = System.Xml.XmlReader.Create(stream, settings, baseUri);
+                m_reader = System.Xml.XmlReader.Create(parameters.XmlStream, settings, parameters.BaseUri);
             }
             else
             {
-                m_reader = System.Xml.XmlReader.Create(stream);
+                m_reader = System.Xml.XmlReader.Create(parameters.XmlStream);
             }
         }
 
@@ -79,11 +80,11 @@ namespace Protean {
 
         public Variant.EnumType GetVariantTypeFromSchema()
         {
-            if (m_reader.SchemaInfo == null)
+            if (!m_inferTypesFromSchema || m_reader.SchemaInfo == null)
             {
                 return VariantBase.EnumType.Any;
             }
-
+            
             XmlSchemaType schemaType = m_reader.SchemaInfo.SchemaType;
 
             if (schemaType == null)
@@ -178,6 +179,7 @@ namespace Protean {
             return this;
         }
 
+        private readonly bool m_inferTypesFromSchema;
         private readonly System.Xml.XmlReader m_reader;
         protected XmlMode m_mode;
         protected IVariantObjectFactory m_factory;

@@ -4,17 +4,29 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 namespace Protean {
-
     public class XmlReader
     {
-        public XmlReader(System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream, string baseUri, bool reportValidationWarnings)
+        public XmlReader(System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream)
+            : this(
+                new XmlReaderParameters(stream)
+                {
+                    Mode = mode,
+                    XsdStream = xsdStream,
+                    ValidationOptions =
+                        (validateXsd ? XmlReaderValidationFlags.ValidateXsd : XmlReaderValidationFlags.None) |
+                        XmlReaderValidationFlags.InferTypesFromSchema
+                })
         {
-            if ((mode & XmlMode.Preserve) != 0)
+        }
+
+        public XmlReader(XmlReaderParameters parameters)
+        {
+            if ((parameters.Mode & XmlMode.Preserve) != 0)
             {
                 throw new VariantException("Preserve parser has not been implemented yet");
             }
 
-            m_parser = new XmlDefaultParser(stream, mode, xsdStream, validateXsd, baseUri, reportValidationWarnings);
+            m_parser = new XmlDefaultParser(parameters);
         }
 
         public Variant Read()
@@ -26,47 +38,34 @@ namespace Protean {
         public static XmlReader Create(
             System.IO.TextReader stream)
         {
-            return new XmlReader(stream, XmlMode.Default, false, null, null, false);
+            return new XmlReader(stream, XmlMode.Default, true, null);
         }
 
         public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode)
         {
-            return new XmlReader(stream, mode, false, null, null, false);
+            return new XmlReader(stream, mode, true, null);
         }
 
         public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode, bool validateXsd)
         {
-            return new XmlReader(stream, mode, validateXsd, null, null, false);
-        }
-
-        public static XmlReader Create(
-            System.IO.TextReader stream, XmlMode mode, bool validateXsd, string baseUri, bool reportValidationWarnings)
-        {
-            return new XmlReader(stream, mode, validateXsd, null, baseUri, reportValidationWarnings);
+            return new XmlReader(stream, mode, validateXsd, null);
         }
 
         public static XmlReader Create(
             System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream)
         {
-            return new XmlReader(stream, mode, validateXsd, xsdStream, null, false);
+            return new XmlReader(stream, mode, validateXsd, xsdStream);
         }
-
-        public static XmlReader Create(
-            System.IO.TextReader stream, XmlMode mode, bool validateXsd, System.IO.TextReader xsdStream,
-            bool reportValidationWarnings)
-        {
-            return new XmlReader(stream, mode, validateXsd, xsdStream, null, reportValidationWarnings);
-        }
-
+        
         public XmlReader WithObjectFactory(IVariantObjectFactory factory)
         {
             m_parser.WithObjectFactory(factory);
             return this;
         }
 
-        public static Variant FromString(string xml, XmlMode mode, IVariantObjectFactory factory, bool validateXsd = false)
+        public static Variant FromString(string xml, XmlMode mode, IVariantObjectFactory factory, bool validateXsd = true)
         {
             using (var ms = new System.IO.StringReader(xml))
             {
@@ -74,7 +73,7 @@ namespace Protean {
             }
         }
 
-        public static Variant FromString(string xml, bool validateXsd = false)
+        public static Variant FromString(string xml, bool validateXsd = true)
         {
             using (var ms = new System.IO.StringReader(xml))
             {
