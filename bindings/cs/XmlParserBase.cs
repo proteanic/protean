@@ -67,8 +67,12 @@ namespace Protean {
                     { XmlTypeCode.Double, Variant.EnumType.Double },
                     
                     { XmlTypeCode.Decimal, Variant.EnumType.Double },
-                    { XmlTypeCode.NonNegativeInteger, Variant.EnumType.UInt64 },
                     { XmlTypeCode.Integer, Variant.EnumType.Int64 },
+                    { XmlTypeCode.NonPositiveInteger, Variant.EnumType.Int64 },
+                    { XmlTypeCode.PositiveInteger, Variant.EnumType.UInt64 },
+                    { XmlTypeCode.NonNegativeInteger, Variant.EnumType.UInt64 },
+                    { XmlTypeCode.Long, Variant.EnumType.Int64 },
+                    { XmlTypeCode.UnsignedLong, Variant.EnumType.UInt64 },
                     { XmlTypeCode.Int, Variant.EnumType.Int32 },
                     { XmlTypeCode.UnsignedInt, Variant.EnumType.UInt32 }
                 };
