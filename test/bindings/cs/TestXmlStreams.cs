@@ -241,6 +241,31 @@ namespace Protean.Test
         }
 
         [Test]
+        public void TestXmlValidationSuccessWithoutInferringTypesFromSchema()
+        {
+            using (System.IO.StringReader xmlStream = new System.IO.StringReader(c_validXml),
+                                            xsdStream = new System.IO.StringReader(c_xsd))
+            {
+                XmlReader xmlReader = new XmlReader(
+                    new XmlReaderParameters(xmlStream)
+                    {
+                        Mode = XmlMode.Default,
+                        XsdStream = xsdStream,
+                        ValidationOptions = XmlReaderValidationFlags.ValidateXsd
+                    });
+
+                Variant v1 = xmlReader.Read();
+
+                Assert.AreEqual(v1.Type, Variant.EnumType.Dictionary);
+
+                foreach (VariantItem item in v1)
+                {
+                    Assert.That(item.Value.Type, Is.EqualTo(Variant.EnumType.Any));
+                }
+            }
+        }
+
+        [Test]
         public void TestXmlValidationFailure()
         {
             using (System.IO.StringReader xmlStream = new System.IO.StringReader(c_invalidXml),
@@ -261,7 +286,14 @@ namespace Protean.Test
 
             using (System.IO.TextReader textReader = new System.IO.StreamReader(xmlPath))
             {
-                XmlReader xmlReader = XmlReader.Create(textReader, XmlMode.Default, true, baseUri, true);
+                XmlReader xmlReader = new XmlReader(
+                    new XmlReaderParameters(textReader)
+                    {
+                        BaseUri = baseUri,
+                        Mode = XmlMode.Default,
+                        ValidationOptions =
+                            XmlReaderValidationFlags.ValidateXsd | XmlReaderValidationFlags.ReportValidationWarnings
+                    });
                 Assert.That(() => { xmlReader.Read(); }, Throws.Nothing);
             }
         }
@@ -276,7 +308,14 @@ namespace Protean.Test
             
             using (System.IO.TextReader textReader = new System.IO.StreamReader(xmlPath))
             {
-                XmlReader xmlReader = XmlReader.Create(textReader, XmlMode.Default, true, baseUri, true);
+                XmlReader xmlReader = new XmlReader(
+                    new XmlReaderParameters(textReader)
+                    {
+                        BaseUri = baseUri,
+                        Mode = XmlMode.Default,
+                        ValidationOptions =
+                            XmlReaderValidationFlags.ValidateXsd | XmlReaderValidationFlags.ReportValidationWarnings
+                    });
                 Assert.That(() => { xmlReader.Read(); }, Throws.InstanceOf<VariantException>().With.Message.StartsWith(expectedMessage));
             }
         }
