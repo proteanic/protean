@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 
 namespace Protean {
 
+    [Serializable]
     public class VariantException :
         System.ApplicationException
     {
