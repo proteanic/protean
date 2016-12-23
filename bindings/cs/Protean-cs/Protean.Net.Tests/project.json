@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "copyToOutput" : {
+      "include": [ "xsd/*", "xml/*" ]
+    },
+    "publicSign": true,
+    "keyFile": "../Protean.Net/protean.snk"
+  },
+
+  "dependencies": {
+    "NUnitLite": "3.5.0",
+    "Protean.Net": "2.0.0-*",
+    "dotnet-test-nunit": "3.4.0-beta-3"
+  },
+
+  "testRunner": "nunit",
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "define": [ "DISABLE_XMLVALIDATION", "DISABLE_DATATABLE", "DISABLE_SERIALIZATION", "NETCORE10" ]
+      },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.1"
+        }
+      }
+    },
+    "net462": {
+    } 
+  },
+
+  "runtimes": {
+    "win":  {} 
+  }
+}
