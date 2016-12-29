@@ -1,15 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-protean", "vc1x\vc1x-protean.vcxproj", "{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc1x-test-protean", "vc1x\vc1x-test-protean.vcxproj", "{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-protean.net", "vc1x\vc1x-protean.net.csproj", "{007B367A-C2DD-4DDD-A702-44B40B8C09A1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vc1x-test-protean.net", "vc1x\vc1x-test-protean.net.csproj", "{867F4343-F062-4937-BD8E-2C00F64AB160}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,102 +167,6 @@ Global
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.vc120 Static Release|Win32.Build.0 = vc120 Static Release|Win32
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.vc120 Static Release|x64.ActiveCfg = vc120 Static Release|x64
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.vc120 Static Release|x64.Build.0 = vc120 Static Release|x64
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Debug|Any CPU.Build.0 = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Debug|Win32.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Debug|x64.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Release|Any CPU.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Release|Any CPU.Build.0 = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Release|Win32.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Release|x64.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|Any CPU.Build.0 = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|Win32.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Debug|x64.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|Any CPU.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|Any CPU.Build.0 = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|Win32.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc100 Static Release|x64.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|Any CPU.Build.0 = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|Win32.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Debug|x64.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Release|Any CPU.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Release|Any CPU.Build.0 = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Release|Win32.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Release|x64.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|Any CPU.Build.0 = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|Win32.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Debug|x64.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|Any CPU.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|Any CPU.Build.0 = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|Win32.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc110 Static Release|x64.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Debug|Any CPU.Build.0 = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Debug|Win32.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Debug|x64.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Release|Any CPU.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Release|Any CPU.Build.0 = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Release|Win32.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Release|x64.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Debug|Any CPU.Build.0 = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Debug|Win32.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Debug|x64.ActiveCfg = Debug|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Release|Any CPU.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Release|Any CPU.Build.0 = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Release|Win32.ActiveCfg = Release|Any CPU
-		{007B367A-C2DD-4DDD-A702-44B40B8C09A1}.vc120 Static Release|x64.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|Win32.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Debug|x64.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Release|Any CPU.Build.0 = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Release|Win32.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Release|x64.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|Win32.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Debug|x64.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|Any CPU.Build.0 = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|Win32.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc100 Static Release|x64.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|Win32.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Debug|x64.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Release|Any CPU.Build.0 = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Release|Win32.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Release|x64.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|Win32.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Debug|x64.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|Any CPU.Build.0 = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|Win32.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc110 Static Release|x64.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Debug|Win32.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Debug|x64.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Release|Any CPU.Build.0 = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Release|Win32.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Release|x64.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Debug|Win32.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Debug|x64.ActiveCfg = Debug|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Release|Any CPU.Build.0 = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Release|Win32.ActiveCfg = Release|Any CPU
-		{867F4343-F062-4937-BD8E-2C00F64AB160}.vc120 Static Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
