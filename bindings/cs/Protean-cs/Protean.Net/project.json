@@ -1,8 +1,8 @@
 {
   "title": "Protean.Net",
-  "version": "2.0.0-*",
+  "version": "2.0.1-*",
   "authors": [ "Johan Ditmar", "Karel Hruda", "Paul O'Neill" ],
-  "copyright": "Copyright © Johan Ditmar, Karel Hruda, Paul O'Neill and Luke Stedman",
+  "copyright": "Copyright ï¿½ Johan Ditmar, Karel Hruda, Paul O'Neill and Luke Stedman",
   "buildOptions": {
     "allowUnsafe": true,
     "keyFile": "protean.snk"
