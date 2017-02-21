@@ -2,4 +2,4 @@ bin/
 obj/
 project.lock.json
 *.xproj.user
-/.vs/
+TestResult.xml

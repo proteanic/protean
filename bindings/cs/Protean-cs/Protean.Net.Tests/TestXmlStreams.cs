@@ -7,6 +7,9 @@ using System;
 #if !DISABLE_DATATABLE
 using System.Data;
 #endif
+#if !DISABLE_XMLVALIDATION
+using System.IO;
+#endif
 
 namespace Protean.Test
 {
@@ -306,7 +309,7 @@ namespace Protean.Test
         [Test]
         public void TestXmlValidationSuccessWithEmbeddedSchemaReference()
         {
-            const string xmlPath = @"xml\shiporder_valid.xml";
+            var xmlPath = Path.Combine(TestContext.CurrentContext.TestDirectory, @"xml\shiporder_valid.xml");
             string baseUri = System.IO.Path.GetFullPath(xmlPath);
 
             using (System.IO.TextReader textReader = new System.IO.StreamReader(xmlPath))
@@ -329,7 +332,8 @@ namespace Protean.Test
         [TestCase(@"xml\shiporder_no_schema.xml", "Validation Warning")]
         public void TestXmlValidationFailureWithEmbeddedSchemaReference(string xmlPath, string expectedMessage)
         {
-            string baseUri = System.IO.Path.GetFullPath(xmlPath);
+            xmlPath = Path.Combine(TestContext.CurrentContext.TestDirectory, xmlPath);
+            var baseUri = System.IO.Path.GetFullPath(xmlPath);
             
             using (System.IO.TextReader textReader = new System.IO.StreamReader(xmlPath))
             {
