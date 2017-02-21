@@ -5,7 +5,6 @@
   "copyright": "Copyright © Johan Ditmar, Karel Hruda, Paul O'Neill and Luke Stedman",
   "buildOptions": {
     "allowUnsafe": true,
-    "publicSign": true,
     "keyFile": "protean.snk"
   },
 
