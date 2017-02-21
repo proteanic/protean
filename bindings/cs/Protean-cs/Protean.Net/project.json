@@ -18,20 +18,23 @@
   },
 
   "dependencies": {
-    "System.Reflection.TypeExtensions": "4.1.0"
+    "System.Reflection.TypeExtensions": "4.3.0"
   },
 
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50",
       "dependencies": {
-        "NETStandard.Library": "1.6.0",
+        "NETStandard.Library": "1.6.1",
         "System.Data.Common": "4.1.0",
         "System.IO.UnmanagedMemoryStream": "4.0.1",
         "System.Xml.ReaderWriter": "4.3.0"
       },
       "buildOptions": {
-        "define": [ "DISABLE_XMLVALIDATION", "DISABLE_DATATABLE", "DISABLE_SERIALIZATION" ]
+        "define": [
+          "DISABLE_XMLVALIDATION",
+          "DISABLE_DATATABLE",
+          "DISABLE_SERIALIZATION"
+        ]
       }
     },
     "net462": {

@@ -10,8 +10,11 @@
   },
 
   "dependencies": {
-    "NUnitLite": "3.5.0",
-    "Protean.Net": "2.0.0-*",
+    "NUnit": "3.6.0",
+    "NUnitLite": "3.6.0",
+    "Protean.Net": {
+      "target": "project"
+    },
     "dotnet-test-nunit": "3.4.0-beta-3"
   },
 
@@ -19,14 +22,13 @@
 
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": "dnxcore50",
       "buildOptions": {
         "define": [ "DISABLE_XMLVALIDATION", "DISABLE_DATATABLE", "DISABLE_SERIALIZATION", "NETCORE10" ]
       },
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.1"
+          "version": "1.0.3"
         }
       }
     },
