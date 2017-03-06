@@ -193,7 +193,7 @@ namespace protean { namespace detail {
     >
     void data_table_variant_iterator_interface<IteratorTraits, Base>::increment()
     {
-        for (column_iterator_container::iterator iter = m_column_iterators.begin()
+        for (typename column_iterator_container::iterator iter = m_column_iterators.begin()
                                                ; iter != m_column_iterators.end()
                                                ; ++iter)
             ++(*iter);
@@ -205,7 +205,7 @@ namespace protean { namespace detail {
     >
     void data_table_variant_iterator_interface<IteratorTraits, Base>::decrement()
     {
-        for (column_iterator_container::iterator iter = m_column_iterators.begin()
+        for (typename column_iterator_container::iterator iter = m_column_iterators.begin()
                                                ; iter != m_column_iterators.end()
                                                ; ++iter)
             --(*iter);
@@ -252,7 +252,7 @@ namespace protean { namespace detail {
             const_column_iterator_container;
 
         const_column_iterator_container const_column_iterators;
-		const_column_iterators.reserve( m_column_iterators.size() );
+        const_column_iterators.reserve( m_column_iterators.size() );
         std::copy( m_column_iterators.begin(), m_column_iterators.end(), std::back_inserter( const_column_iterators ) );
 
         return new data_table_variant_iterator_interface<const_iterator_traits>(const_column_iterators);

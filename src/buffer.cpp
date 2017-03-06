@@ -43,7 +43,7 @@ namespace protean { namespace detail {
     buffer::~buffer()
     {
         std::free(m_data);
-        m_data = NULL;
+        m_data = nullptr;
         m_size = 0;
     }
 

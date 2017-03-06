@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <string>
+#include <boost/preprocessor/seq/for_each.hpp>
 
 namespace protean {
 

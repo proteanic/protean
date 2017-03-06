@@ -3,7 +3,6 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#include <protean/array_iterator.hpp>
 #include <protean/variant.hpp>
 
 namespace protean {
@@ -73,7 +72,7 @@ namespace protean {
     }
 
     template<typename ITERATOR_TRAITS>
-    void array_iterator<ITERATOR_TRAITS>::advance(difference_type n)
+    void array_iterator<ITERATOR_TRAITS>::advance( typename array_iterator<ITERATOR_TRAITS>::difference_type n )
     {
         m_ref.m_value += n;
     }

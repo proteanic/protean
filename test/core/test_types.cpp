@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE( ms_specific_types )
         variant v( unsigned __int32(0) );
         BOOST_CHECK(v.is<variant::UInt32>());
         BOOST_CHECK(v.is<unsigned __int32>());
-        BOOST_CHECK_EQUAL(v.as<unsigned __int32>(), 0);
+        BOOST_CHECK_EQUAL(v.as<unsigned __int32>(), 0u);
     }
 
     {
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE( ms_specific_types )
         variant v( unsigned __int64(0) );
         BOOST_CHECK(v.is<variant::UInt64>());
         BOOST_CHECK(v.is<unsigned __int64>());
-        BOOST_CHECK_EQUAL(v.as<unsigned __int64>(), 0);
+        BOOST_CHECK_EQUAL(v.as<unsigned __int64>(), 0u);
     }
 
 	{

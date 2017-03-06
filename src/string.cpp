@@ -84,7 +84,7 @@ namespace protean { namespace detail {
         else
         {
             heapPointer(static_cast<char*>(alignedMalloc(size+1)));
-            #ifdef MSVC
+            #ifdef _MSC_VER
             strncpy_s(heapPointer(), size+1, value, _TRUNCATE);
             #else
             // This triggers unpleasant warnings under MSVC, but

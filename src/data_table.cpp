@@ -41,8 +41,9 @@ namespace protean { namespace detail {
 
     data_table& data_table::add_column(variant_base::enum_type_t type, const std::string& name)
     {
+        column_adder ca(*this, name);
         return enum_runtime_map<detail::data_table_column_enums, detail::enum_equality_comparer>(
-            type, column_adder(*this, name), "Columns of type " + variant_base::enum_to_string(type) + " are not supported"
+            type, ca, "Columns of type " + variant_base::enum_to_string(type) + " are not supported"
         );
     }
 

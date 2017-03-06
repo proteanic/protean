@@ -102,7 +102,7 @@ namespace protean {
     }
 
     template<typename ITERATOR_TRAITS>
-    void variant_iterator<ITERATOR_TRAITS>::advance(difference_type n)
+    void variant_iterator<ITERATOR_TRAITS>::advance( typename variant_iterator<ITERATOR_TRAITS>::difference_type n )
     {
         if (n > 0)
         {

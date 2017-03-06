@@ -26,6 +26,8 @@
 #   define PROTEAN_LIB_TOOLSET "vc110"
 #elif (_MSC_VER == 1800)
 #   define PROTEAN_LIB_TOOLSET "vc120"
+#elif (_MSC_VER == 1900)
+#   define PROTEAN_LIB_TOOLSET "vc140"
 #else
 #   error "Unhandled _MSC_VER"
 #endif

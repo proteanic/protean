@@ -44,7 +44,7 @@ namespace protean { namespace detail {
 
         struct element_info
         {
-            element_info(const std::string& name, int level) :
+            element_info(const std::string& name, size_t level) :
                 m_name(name),
                 m_attributes(variant::Dictionary),
                 m_level(level)

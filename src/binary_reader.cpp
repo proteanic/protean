@@ -24,7 +24,7 @@ namespace protean {
     binary_reader::binary_reader(std::istream &is, int mode) :
         m_is(is),
         m_mode(mode),
-        m_factory(NULL)
+        m_factory(nullptr)
     {
     }
 
@@ -220,7 +220,7 @@ namespace protean {
                 read(version);
 
                 handle<object> obj;
-                if (m_factory!=NULL)
+                if (m_factory!=nullptr)
                 {
                     obj = m_factory->create_instance(class_name);
                     if (obj.null())
@@ -248,12 +248,12 @@ namespace protean {
             }
             case variant::Exception:
             {
-                std::string type, message, source, stack;
-                read(type);
+                std::string excType, message, source, stack;
+                read(excType);
                 read(message);
                 read(source);
                 read(stack);
-                value = exception_data(type, message, source, stack);
+                value = exception_data(excType, message, source, stack);
                 break;
             }
             case variant::None:
@@ -370,12 +370,12 @@ namespace protean {
             // Bit nasty! Can't simply do "value = boost::posix_time::millisec(total_millis);" because of:
             //  https://svn.boost.org/trac/boost/ticket/3471
             // Hopefully this will be fixed for v1.44.
-            boost::uint32_t hours = total_millis / 3600000;
-            boost::uint32_t tmp = total_millis % 3600000;
-            boost::uint32_t mins = tmp / 60000;
+            boost::uint32_t hours = static_cast<boost::uint32_t>( total_millis / 3600000 );
+            boost::uint32_t tmp = static_cast<boost::uint32_t>( total_millis % 3600000 );
+            boost::uint32_t mins = static_cast<boost::uint32_t>( tmp / 60000 );
             tmp %= 60000;
-            boost::uint32_t secs = tmp / 1000;
-            boost::uint32_t millis = tmp % 1000;
+            boost::uint32_t secs = static_cast<boost::uint32_t>( tmp / 1000 );
+            boost::uint32_t millis = static_cast<boost::uint32_t>( tmp % 1000 );
 
             value = boost::posix_time::time_duration(hours, mins, secs) + boost::posix_time::millisec(millis);
         }

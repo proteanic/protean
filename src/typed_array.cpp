@@ -60,7 +60,7 @@ namespace protean {
         }
 
         delete[] m_data;
-        m_data = NULL;
+        m_data = nullptr;
         m_size = 0;
         m_type = variant::None;
     }

@@ -228,7 +228,7 @@ namespace protean { namespace detail {
             template<typename T>
             void operator()(T&)
             {
-                sm_runtime_fn_dispatch[enumToIndex::convert(boost::mpl::first<T>::type::value)].get<0>()=
+                sm_runtime_fn_dispatch[enumToIndex::convert(boost::mpl::first<T>::type::value)].template get<0>()=
                     &self::template getName_impl<boost::mpl::first<T>::type::value>
                 ;
 
@@ -295,7 +295,7 @@ namespace protean { namespace detail {
         static std::string enum_to_string(int n)
         {
             static staticDataInitialiser_runner makeSureDataIsInitialised;
-            return (sm_runtime_fn_dispatch[enumToIndex::convert(n)].get<0>())();
+            return (sm_runtime_fn_dispatch[enumToIndex::convert(n)].template get<0>())();
         }
 
         // Get enum from type string

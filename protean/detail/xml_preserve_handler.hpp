@@ -60,7 +60,7 @@ namespace protean { namespace detail {
         {
         public:
             element_info() :
-                m_element(NULL)
+                m_element(nullptr)
             {}
         public:
             variant& element() { return *m_element; }

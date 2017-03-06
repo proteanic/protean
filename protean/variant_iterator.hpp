@@ -32,7 +32,7 @@ namespace protean {
         typedef std::list<std::pair<std::string, variant> >::const_iterator bag_iterator_type;
         typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::const_iterator timeseries_iterator_type;
         typedef const variant* tuple_iterator_type;
-        typedef size_t difference_type;
+        typedef std::ptrdiff_t difference_type;
         template <typename T> struct column_iterator_type { typedef typename std::vector<T>::const_iterator type; };
     };
 
@@ -44,7 +44,7 @@ namespace protean {
         typedef std::list<std::pair<std::string, variant> >::iterator bag_iterator_type;
         typedef std::vector<std::pair<boost::posix_time::ptime, variant> >::iterator timeseries_iterator_type;
         typedef variant* tuple_iterator_type;
-        typedef size_t difference_type;
+        typedef std::ptrdiff_t difference_type;
         template <typename T> struct column_iterator_type { typedef typename std::vector<T>::iterator type; };
     };
 
@@ -78,19 +78,13 @@ namespace protean {
                 variant_iterator<ITERATOR_TRAITS>
               , typename ITERATOR_TRAITS::value_type
               , boost::bidirectional_traversal_tag
+              , typename ITERATOR_TRAITS::value_type&
+              , typename ITERATOR_TRAITS::difference_type
             >
     {
         typedef typename variant_iterator_interface<ITERATOR_TRAITS>::date_time_t date_time_t;
 
     public:
-
-        // BOOST_FOREACH for some reason demands that this be public, possibly
-        // because it has failed to figure out the type based on the traits,
-        // which might in turn be because they are somewhat non-standard 
-        // (e.g. iterator_category and pointer are missing, see 
-        // http://www.sgi.com/tech/stl/iterator_traits.html).
-        typedef typename ITERATOR_TRAITS::difference_type difference_type;
-
         variant_iterator();
         variant_iterator(variant_iterator_interface<ITERATOR_TRAITS> * iterator);
 
@@ -123,7 +117,7 @@ namespace protean {
 
         typename ITERATOR_TRAITS::value_type & dereference() const;
 
-        void advance(difference_type n);
+        void advance( typename variant_iterator<ITERATOR_TRAITS>::difference_type n );
 
         const variant_iterator_interface<ITERATOR_TRAITS>* iterator() const;
 

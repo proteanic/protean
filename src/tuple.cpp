@@ -53,7 +53,7 @@ namespace protean { namespace detail {
     int tuple::compare(const collection& rhs) const
     {
         const tuple* rhs_cast = dynamic_cast<const tuple*>(&rhs);
-        if (rhs_cast==NULL)
+        if (rhs_cast==nullptr)
         {
             boost::throw_exception(variant_error("Unable to cast collection to tuple"));
         }

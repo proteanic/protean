@@ -56,7 +56,7 @@ namespace protean { namespace detail {
             const dictionary_iterator_interface<const_iterator_traits>* cast_rhs =
                 dynamic_cast<const dictionary_iterator_interface<const_iterator_traits>*>(rhs);
 
-            if (cast_rhs==NULL)
+            if (cast_rhs==nullptr)
             {
                 boost::throw_exception(variant_error("Unable to convert iterator to dictionary iterator"));
             }

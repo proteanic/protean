@@ -28,7 +28,7 @@ namespace protean {
         m_is(is),
         m_mode(mode),
         m_entity_path("./"),
-        m_factory(NULL)
+        m_factory(nullptr)
     {
         if(!is.good())
         {

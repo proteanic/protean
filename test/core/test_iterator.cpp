@@ -91,7 +91,14 @@ BOOST_AUTO_TEST_CASE(traits_diff)
 
     variant l(variant::List);
     diff zero = 0;
+	// This original test doesn't appear to be valid as of Boost 1.61, and probably earlier: operator+ is only defined for iterators of category >= random_access_traversal
+	#if BOOST_VERSION < 106100
     BOOST_CHECK (l.end () == zero + l.begin ());
+	#else
+	auto it( l.begin() );
+	std::advance( it, zero );
+	BOOST_CHECK( it == l.end() );
+	#endif
 }
 
 BOOST_AUTO_TEST_CASE(algorithms)

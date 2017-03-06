@@ -15,7 +15,7 @@ namespace protean {
     }
 
     variant_ref::variant_ref() :
-        m_value(NULL),
+        m_value(nullptr),
         m_type(variant::None)
     {
     }
@@ -42,7 +42,7 @@ namespace protean {
 
     variant_ref::operator bool() const
     {
-        return m_value!=NULL;
+        return m_value!=nullptr;
     }
 
 
@@ -53,7 +53,7 @@ namespace protean {
     }
 
     variant_cref::variant_cref() :
-        m_value(NULL),
+        m_value(nullptr),
         m_type(variant::None)
     {
     }
@@ -94,7 +94,7 @@ namespace protean {
 
     variant_cref::operator bool() const
     {
-        return m_value!=NULL;
+        return m_value!=nullptr;
     }
 
 } // namespace protean

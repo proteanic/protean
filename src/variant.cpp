@@ -744,10 +744,12 @@ namespace protean {
             return result;
         }
     }
+
+    static const boost::regex dateRegex( "^\\d{4}-\\d{2}-\\d{2}$" );
+
     template<> variant::date_t variant::lexical_cast<variant::date_t>(const char* const& arg)
     {
-        const boost::regex expr( "^\\d{4}-\\d{2}-\\d{2}$" );
-        if ( boost::regex_match(arg, expr) )
+        if ( boost::regex_match(arg, dateRegex) )
         {
             variant::date_t value = boost::gregorian::from_string(arg);
             if (!value.is_special()) return value;
@@ -755,10 +757,12 @@ namespace protean {
         boost::throw_exception(variant_error(std::string("Bad lexical cast: invalid date '") + arg + "' specified, expecting YYYY-MM-DD"));
     }
 
+	static const boost::regex timeDurationRegex( "^\\d{2}:\\d{2}:\\d{2}(.\\d*)?$" );
+	static const boost::regex isoTimeDurationRegex( "^(-)?P(?:([0-9]+)Y)?(?:([0-9]+)M)?(?:([0-9]+)D)?(?:T(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?)?(?:.([0-9]+))?$" );
+
     template<> variant::time_t variant::lexical_cast<variant::time_t>(const char* const& arg)
     {
-        const boost::regex expr( "^\\d{2}:\\d{2}:\\d{2}(.\\d*)?$" );
-        if ( boost::regex_match(arg, expr ))
+        if ( boost::regex_match( arg, timeDurationRegex ))
         {
             variant::time_t value = boost::posix_time::duration_from_string(arg);
             if (!value.is_special()) return value;
@@ -766,10 +770,8 @@ namespace protean {
         else
         {
             // We assume this is a time duration (ISO 8601) under the form: PnYnMnDTnHnMnS
-            const boost::regex expr( "^(-)?P(?:([0-9]+)Y)?(?:([0-9]+)M)?(?:([0-9]+)D)?(?:T(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?)?(?:.([0-9]+))?$" );
-
             boost::cmatch match;
-            boost::regex_search(arg, match, expr);
+            boost::regex_search(arg, match, isoTimeDurationRegex);
             if (match[0].matched)
             {
                 bool sign = match[1].first!=match[1].second;
@@ -805,11 +807,12 @@ namespace protean {
         boost::throw_exception(variant_error(std::string("Bad lexical cast: invalid time '") + arg + "' specified, expecting expecting HH:MM:SS[.fff] or P[n]Y[n]M[n]DT[n]H[n]M[n]S"));
     }
 
+    static const boost::regex dateTimeRegex( "^(.+)T(.+)$" );
+
     template<> variant::date_time_t variant::lexical_cast<variant::date_time_t>(const char* const& arg)
     {
-        const boost::regex expr( "^(.+)T(.+)$" );
         boost::cmatch matches;
-        if (boost::regex_match(arg, matches, expr))
+        if (boost::regex_match(arg, matches, dateTimeRegex))
         {
             variant::date_t date = lexical_cast<variant::date_t>( matches[1].str().c_str() );
             variant::time_t time = lexical_cast<variant::time_t>( matches[2].str().c_str() );
@@ -862,7 +865,7 @@ namespace protean {
             {
                 // print extra precision
                 std::ostringstream oss;
-                oss << std::setprecision(20) << arg;
+                oss << std::setprecision(std::numeric_limits<double>::max_digits10) << arg;
                 return oss.str();
             }
             catch(const boost::bad_lexical_cast&)
@@ -1317,7 +1320,7 @@ namespace protean {
                     oss << "Buffer(";
 
                     const unsigned char* byteArray((const unsigned char*)as<void*>());
-                    if (byteArray!=NULL)
+                    if (byteArray!=nullptr)
                     {
                         for(size_t i=0; i<size(); ++i)
                         {

@@ -218,8 +218,8 @@ BOOST_AUTO_TEST_CASE(test_xml_collection)
         variant::date_time_t time1(variant::date_t(2007, 1, 3), variant::time_t(10, 30, 0));
         variant::date_time_t time2(variant::date_t(2007, 1, 4), variant::time_t(11, 30, 0));
 
-        v1.push_back( make_tuple(time1, 42, 3.141) );
-        v1.push_back( make_tuple(time2, 1, 2.718) );
+        v1.push_back( boost::make_tuple(time1, 42, 3.141) );
+        v1.push_back( boost::make_tuple(time2, 1, 2.718) );
 
         std::ostringstream oss;
         xml_writer writer(oss);
