@@ -38,7 +38,11 @@ namespace protean { namespace detail {
         void processingInstruction(
             const XMLCh *const target,
             const XMLCh *const data );
-     
+
+        void startCDATA();
+
+        void endCDATA();
+
         // And the PSVI callbacks
         void handleAttributesPSVI(
             const XMLCh* const localName, 
@@ -71,7 +75,7 @@ namespace protean { namespace detail {
         };
 
         std::stack<boost::shared_ptr<element_info> > m_stack;
-
+        bool m_withinCdata;
     };
 
 }} // namespace protean::detail

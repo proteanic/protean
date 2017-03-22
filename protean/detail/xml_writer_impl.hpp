@@ -27,6 +27,7 @@ namespace protean { namespace detail {
         void write_instruction(const variant& instruction);
         void write_element(const variant& element);
         void write_comment(const variant& comment);
+        void write_cdata(const variant& cdata);
         void write_text(const variant& text);
         void write_variant(const variant& value);
 
