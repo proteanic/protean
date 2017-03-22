@@ -531,15 +531,7 @@ namespace Protean {
 
         public static string ToString(TimeSpan arg)
         {
-            DateTime dt = new DateTime(arg.Ticks);
-            if (dt.Millisecond == 0)
-            {
-                return dt.ToString("HH:mm:ss");
-            }
-            else
-            {
-                return dt.ToString("HH:mm:ss.fff");
-            }
+            return $"{(arg < TimeSpan.Zero ? "-" : "")}{arg:hh\\:mm\\:ss}{(arg.Milliseconds != 0 ? arg.ToString(@"\.FFF") : "")}";
         }
 
         private readonly static Dictionary<string, float> s_nonRoundTripSingleSpecialValues =
