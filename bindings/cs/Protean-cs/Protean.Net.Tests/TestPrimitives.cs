@@ -192,16 +192,16 @@ namespace Protean.Test
         }
 
         [Test]
-        public void TestTime()
+        public void TestTime([Values("02:03:04.005", "-00:00:01.108", "01:03:23")] string asText)
         {
-            TimeSpan arg = new TimeSpan(0, 2, 3, 4, 5);
+            TimeSpan arg = TimeSpan.Parse(asText);
             Variant v1 = new Variant(arg);
             Assert.AreEqual(v1.Type, Variant.EnumType.Time);
             Assert.IsTrue(v1.Is(Variant.EnumType.Time));
             Assert.IsTrue(v1.Is<TimeSpan>());
             Assert.AreEqual(v1.As<TimeSpan>(), arg);
 
-            Assert.AreEqual(v1.ToString(), "02:03:04.005");
+            Assert.AreEqual(v1.ToString(), asText);
 
             Variant v2 = new Variant(v1);
             Assert.IsTrue(v1.Equals(v2));
