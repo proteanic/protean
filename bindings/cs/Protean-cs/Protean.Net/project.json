@@ -1,6 +1,6 @@
 {
   "title": "Protean.Net",
-  "version": "2.0.1-*",
+  "version": "2.0.2-*",
   "authors": [ "Johan Ditmar", "Karel Hruda", "Paul O'Neill" ],
   "copyright": "Copyright � Johan Ditmar, Karel Hruda, Paul O'Neill and Luke Stedman",
   "buildOptions": {
