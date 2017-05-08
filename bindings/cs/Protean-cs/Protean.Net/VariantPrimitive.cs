@@ -42,49 +42,62 @@ namespace Protean {
 
         public static string ToString<T>(T value)
         {
-            if (typeof(T) == typeof(TimeSpan))
+            var type = typeof(T);
+
+            if (type == typeof(TimeSpan))
             {
-                return VariantBase.ToString((TimeSpan)Convert.ChangeType(value, typeof(TimeSpan)));
+                return VariantBase.ToString((TimeSpan)Convert.ChangeType(value, type));
             }
             else
             {
-                TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
-                switch (typeCode)
+                if (type == typeof(double))
                 {
-                    case TypeCode.Double:
-                        return VariantBase.ToString((double)Convert.ChangeType(value, typeof(double)));
-                    case TypeCode.Boolean:
-                        return VariantBase.ToString((bool)Convert.ChangeType(value, typeof(bool)));
-                    case TypeCode.DateTime:
-                        return VariantBase.ToString((DateTime)Convert.ChangeType(value, typeof(DateTime)));
-                    default:
-                        return value.ToString();
+                    return VariantBase.ToString((double)Convert.ChangeType(value, type));
+                }
+                else if (type == typeof(bool))
+                {
+                    return VariantBase.ToString((bool)Convert.ChangeType(value, type));
+                }
+                else if (type == typeof(DateTime))
+                {
+                    return VariantBase.ToString((DateTime)Convert.ChangeType(value, type));
+                }
+                else
+                {
+                    return value.ToString();
                 }
             }
         }
 
         public static T Parse<T>(string value)
         {
-            if (typeof(T) == typeof(TimeSpan))
+            var type = typeof(T);
+
+            if (type == typeof(TimeSpan))
             {
-                return (T)Convert.ChangeType(VariantBase.ParseTime(value), typeof(T));
+                return (T)Convert.ChangeType(VariantBase.ParseTime(value), type);
             }
             else
             {
-
-                TypeCode typeCode = System.Type.GetTypeCode(typeof(T));
-                switch (typeCode)
+                if (type == typeof(float))
                 {
-                    case TypeCode.Single:
-                        return (T)Convert.ChangeType(VariantBase.ParseSingle(value), typeof(T));
-                    case TypeCode.Double:
-                        return (T)Convert.ChangeType(VariantBase.ParseDouble(value), typeof(T));
-                    case TypeCode.Boolean:
-                        return (T)Convert.ChangeType(VariantBase.ParseBoolean(value), typeof(T));
-                    case TypeCode.DateTime:
-                        return (T)Convert.ChangeType(VariantBase.ParseDateTime(value), typeof(T));
-                    default:
-                        return (T)Convert.ChangeType(value, typeof(T));
+                    return (T)Convert.ChangeType(VariantBase.ParseSingle(value), type);
+                }
+                else if (type == typeof(double))
+                {
+                    return (T)Convert.ChangeType(VariantBase.ParseDouble(value), type);
+                }
+                else if (type == typeof(bool))
+                {
+                    return (T)Convert.ChangeType(VariantBase.ParseBoolean(value), type);
+                }
+                else if (type == typeof(DateTime))
+                {
+                    return (T)Convert.ChangeType(VariantBase.ParseDateTime(value), type);
+                }
+                else
+                {
+                    return (T)Convert.ChangeType(value, type);
                 }
             }
         }

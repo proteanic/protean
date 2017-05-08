@@ -19,8 +19,7 @@ namespace Protean
 			m_stream = stream;
 			if ((m_mode & BinaryMode.Compress) != 0)
 			{
-                DeflateStream ds = new DeflateStream(stream, CompressionMode.Compress, true);
-                m_filter = new BufferedStream(ds, c_bufferSize);
+			    m_filter = new DeflateStream(stream, CompressionMode.Compress, true);
 			}
 			else
 			{

@@ -201,6 +201,22 @@ namespace Protean.Test
             Assert.IsTrue(v1.Equals(v2));
         }
 
+        [Test]
+        public void TestHeaderOutput()
+        {
+            Variant value = new Variant(Variant.EnumType.Bag);
+            value.Add("key1", new Variant("value1"));
+            value.Add("key2", new Variant(1.0));
+
+            var expectUtf8Header = XmlWriter.ToString(value);
+
+            Assert.That(expectUtf8Header, Is.EqualTo("<?xml version=\"1.0\" encoding=\"UTF-8\"?><Variant variant=\"Bag\"><key1 variant=\"String\">value1</key1><key2 variant=\"Double\">1</key2></Variant>"));
+
+            var expectNoHeader = XmlWriter.ToString(value, XmlMode.NoHeader);
+
+            Assert.That(expectNoHeader, Is.EqualTo("<Variant variant=\"Bag\"><key1 variant=\"String\">value1</key1><key2 variant=\"Double\">1</key2></Variant>"));
+        }
+
 #if !DISABLE_DATATABLE
         [Test]
         public void TestDataTable()
