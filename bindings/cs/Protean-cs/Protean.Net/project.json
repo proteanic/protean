@@ -1,6 +1,6 @@
 {
   "title": "Protean.Net",
-  "version": "2.0.2-*",
+  "version": "2.0.3-*",
   "authors": [ "Johan Ditmar", "Karel Hruda", "Paul O'Neill" ],
   "copyright": "Copyright � Johan Ditmar, Karel Hruda, Paul O'Neill and Luke Stedman",
   "buildOptions": {
@@ -21,7 +21,7 @@
   },
 
   "frameworks": {
-    "netstandard1.6": {
+    "netstandard1.3": {
       "dependencies": {
         "NETStandard.Library": "1.6.1",
         "System.Data.Common": "4.1.0",
