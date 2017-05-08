@@ -20,6 +20,7 @@ namespace Protean {
             var xmlWriterSettings = new XmlWriterSettings
                                     {
                                         Indent = mode.HasFlag(XmlMode.Indent),
+                                        OmitXmlDeclaration = mode.HasFlag(XmlMode.NoHeader),
                                         IndentChars = "  "
                                     };
             m_writer = System.Xml.XmlWriter.Create(stream, xmlWriterSettings);
@@ -85,12 +86,12 @@ namespace Protean {
             m_stack.Pop();
         }
 
-        void WriteHeader()
+        private void WriteHeader()
         {
             m_writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
         }
 
-        void WriteDocument(Variant document)
+        private void WriteDocument(Variant document)
         {
             if ((m_mode & XmlMode.NoHeader) == 0)
             {
@@ -149,7 +150,7 @@ namespace Protean {
             }
         }
 
-        void WriteInstruction(Variant instruction)
+        private void WriteInstruction(Variant instruction)
         {
             if (instruction.Is(VariantBase.EnumType.Mapping) && instruction.ContainsKey(XmlConst.Target) && instruction.ContainsKey(XmlConst.Data))
             {
@@ -161,7 +162,7 @@ namespace Protean {
             }
         }
 
-        void WriteAttributes(Variant attribute)
+        private void WriteAttributes(Variant attribute)
         {
             foreach (VariantItem item in attribute)
             {
@@ -169,7 +170,7 @@ namespace Protean {
             }
         }
 
-        void WriteStartTag(string name)
+        private void WriteStartTag(string name)
         {
             if (m_stack.Count!=0)
             {
@@ -178,17 +179,17 @@ namespace Protean {
              }
         }
 
-        void WriteEndTag()
+        private void WriteEndTag()
         {
             m_writer.WriteEndElement();
         }
 
-        void WriteComment(Variant comment)
+        private void WriteComment(Variant comment)
         {
             m_writer.WriteComment(comment.As<string>());
         }
 
-        void WriteText(Variant text)
+        private void WriteText(Variant text)
         {
             switch(text.Type)
             {
@@ -217,7 +218,7 @@ namespace Protean {
             }
         }
 
-        void WriteVariant(Variant value)
+        private void WriteVariant(Variant value)
         {
             if ((m_mode & XmlMode.Preserve)==0)
             {
@@ -227,7 +228,7 @@ namespace Protean {
             WriteElement(value);
         }
 
-        void WriteElement(Variant element)
+        private void WriteElement(Variant element)
         {
             WriteStartTag(m_stack.Peek().m_name);
             
@@ -534,7 +535,7 @@ namespace Protean {
             WriteEndTag();
         }
 
-        delegate void WriteDelegate(object arg);
+        private delegate void WriteDelegate(object arg);
 
         private readonly System.Xml.XmlWriter m_writer;
         private readonly XmlMode m_mode;
