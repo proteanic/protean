@@ -147,7 +147,7 @@ namespace Protean.Test
         }
 
         // This test is disabled for .NET Core 2.0 as there is an error in the .NET Serialisation. As this
-        // has nothing to do with Protean.
+        // has nothing to do with Protean it's not really an issue.
 #if !DISABLE_PERFORMANCETEST
         [Test]
         public void TestPerformance()
