@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.0;net462</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;net462;netcoreapp2.0</TargetFrameworks>
     <AssemblyName>Protean.Net.Tests</AssemblyName>
     <AssemblyOriginatorKeyFile>../Protean.Net/protean.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -28,6 +28,10 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
   </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+    <DefineConstants>$(DefineConstants);DISABLE_PERFORMANCETEST</DefineConstants>
+  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
     <DefineConstants>$(DefineConstants);DISABLE_XMLVALIDATION;DISABLE_DATATABLE;DISABLE_SERIALIZATION</DefineConstants>
