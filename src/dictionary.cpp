@@ -3,10 +3,10 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
+#include <protean/variant.hpp>
 #include <protean/detail/dictionary.hpp>
 #include <protean/detail/dictionary_iterator.hpp>
 #include <protean/detail/hash.hpp>
-#include <protean/variant.hpp>
 #include <protean/variant_error.hpp>
 
 namespace protean { namespace detail {
@@ -14,7 +14,7 @@ namespace protean { namespace detail {
     int dictionary::compare(const collection& rhs) const
     {
         const dictionary* cast_rhs = dynamic_cast<const dictionary*>(&rhs);
-        if (cast_rhs==NULL)
+        if (cast_rhs==nullptr)
         {
             boost::throw_exception(variant_error("Unable to cast collection to dictionary"));
         }

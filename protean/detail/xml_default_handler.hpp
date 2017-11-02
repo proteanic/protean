@@ -61,13 +61,13 @@ namespace protean {
             element_info() :
                 m_type(variant::Any),
                 m_attributes(variant::Bag), // a bag to preserve ordering
-                m_element(NULL),
+                m_element(nullptr),
                 m_typed(false),
                 m_num_rows(0),
                 m_num_row(0),
                 m_item_type(variant::None),
                 m_column(std::string()),
-                m_column_reader(NULL),
+                m_column_reader(nullptr),
                 m_num_columns(0),
                 m_num_column(0),
                 m_in_columns(false)

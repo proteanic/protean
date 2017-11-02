@@ -15,7 +15,7 @@ namespace protean { namespace detail {
     int timeseries::compare(const collection& rhs) const
     {
         const timeseries* cast_rhs = dynamic_cast<const timeseries*>(&rhs);
-        if (cast_rhs==NULL)
+        if (cast_rhs==nullptr)
         {
             boost::throw_exception(variant_error("Unable to cast collection to timeseries"));
         }

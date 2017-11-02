@@ -3,11 +3,13 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
+#include <protean/variant_error.hpp>
+
 namespace protean {
 
     template<typename T>
     handle<T>::handle() :
-        m_pointee(NULL)
+        m_pointee(nullptr)
     {
     }
     
@@ -15,7 +17,7 @@ namespace protean {
     handle<T>::handle(T* pointee) :
         m_pointee(pointee)
     {
-        if (m_pointee!=NULL)
+        if (m_pointee!=nullptr)
         {
             ++m_pointee->m_ref_count;
         }
@@ -24,21 +26,21 @@ namespace protean {
     template<typename T>
     handle<T>::~handle()
     {
-        if (m_pointee!=NULL)
+        if (m_pointee!=nullptr)
         {
             if (--m_pointee->m_ref_count==0)
             {
                 delete m_pointee;
             }
         }
-        m_pointee = NULL;
+        m_pointee = nullptr;
     }
 
     template<typename T>
     handle<T>::handle(const handle<T>& rhs)
     {
         m_pointee = rhs.m_pointee;
-        if (m_pointee!=NULL)
+        if (m_pointee!=nullptr)
         {
             ++m_pointee->m_ref_count;
         }
@@ -54,9 +56,9 @@ namespace protean {
     template<typename T>
     T& handle<T>::operator*() const
     {
-        if (m_pointee==NULL)
+        if (m_pointee==nullptr)
         {
-            boost::throw_exception(variant_error("Attempt to dereference NULL handle"));
+            boost::throw_exception(variant_error("Attempt to dereference nullptr handle"));
         }
         return *m_pointee;
     }
@@ -64,9 +66,9 @@ namespace protean {
     template<typename T>
     T* handle<T>::operator->() const
     {
-        if (m_pointee==NULL)
+        if (m_pointee==nullptr)
         {
-            boost::throw_exception(variant_error("Attempt to dereference NULL handle"));
+            boost::throw_exception(variant_error("Attempt to dereference nullptr handle"));
         }
         return m_pointee;
     }
@@ -74,13 +76,13 @@ namespace protean {
     template<typename T>
     bool handle<T>::unique() const
     {
-        return m_pointee!=NULL && m_pointee->m_ref_count==1;
+        return m_pointee!=nullptr && m_pointee->m_ref_count==1;
     }
 
     template<typename T>
     bool handle<T>::null() const
     {
-        return m_pointee==NULL;
+        return m_pointee==nullptr;
     }
 
     template<typename T>
@@ -93,7 +95,7 @@ namespace protean {
     template<typename U>
     bool handle<T>::is() const
     {
-        return as<U>()!=NULL;
+        return as<U>()!=nullptr;
     }
 
     template<typename T>

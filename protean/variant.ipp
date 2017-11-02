@@ -17,6 +17,7 @@
 #include <boost/tuple/tuple.hpp>
 
 #include <protean/detail/variant_macros_define.hpp>
+#include <protean/detail/data_table.hpp>
 
 namespace protean {
 

@@ -17,7 +17,7 @@ namespace protean { namespace detail {
     int bag::compare(const collection& rhs) const
     {
         const bag* cast_rhs = dynamic_cast<const bag*>(&rhs);
-        if (cast_rhs==NULL)
+        if (cast_rhs==nullptr)
         {
             boost::throw_exception(variant_error("Unable to cast collection to bag"));
         }

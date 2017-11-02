@@ -11,14 +11,14 @@
 namespace protean { namespace detail {
 
     xml_stream_resolver::xml_stream_resolver(const std::string& entity_path) :
-        m_entity_path(boost::filesystem::system_complete(boost::filesystem::path(entity_path, boost::filesystem::native)))
+        m_entity_path(boost::filesystem::system_complete(boost::filesystem::path(entity_path)))
     { }
 
     xercesc::InputSource* xml_stream_resolver::resolveEntity(
         const XMLCh* const /*publicId*/,
         const XMLCh* const systemId )
     {
-        xercesc::InputSource* result = NULL;
+        xercesc::InputSource* result = nullptr;
 
         std::string name = xml_utility::transcode(systemId);
         entity_stream_map_t::iterator it(m_entities.find(name));
@@ -30,7 +30,7 @@ namespace protean { namespace detail {
         }
         else
         {
-            boost::filesystem::path full_path = boost::filesystem::absolute(boost::filesystem::path(name, boost::filesystem::native), m_entity_path);
+            boost::filesystem::path full_path = boost::filesystem::absolute(boost::filesystem::path(name), m_entity_path);
             if (boost::filesystem::exists(full_path))
             {
                 detail::scoped_xmlch full_path_str( xercesc::XMLString::transcode(full_path.string().c_str()) );
@@ -102,7 +102,7 @@ namespace protean { namespace detail {
     xml_handler_base::xml_handler_base(variant& result, int mode) :
         m_result(result),
         m_mode(mode),
-        m_locator(NULL)
+        m_locator(nullptr)
     { }
 
     xml_handler_base::~xml_handler_base()

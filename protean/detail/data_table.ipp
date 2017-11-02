@@ -8,7 +8,6 @@
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
-#include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
 namespace protean { namespace detail {
@@ -24,7 +23,7 @@ namespace protean { namespace detail {
         if (m_columns.size() >= DATA_TABLE_MAX_COLUMNS)
             boost::throw_exception(variant_error("Reached maximum column capacity"));
 
-        BOOST_FOREACH(column_container_type::reference column, m_columns)
+        for ( const auto& column : m_columns )
             if (column.name() == name)
                 boost::throw_exception(variant_error("Column name already in use"));
 
@@ -38,10 +37,11 @@ namespace protean { namespace detail {
     template <typename Tuple>
     data_table& data_table::push_back(const Tuple& value)
     {
-        if (boost::tuples::length<Tuple>::value != m_columns.size())
+        size_t tuple_length = boost::tuples::length<Tuple>::value;
+        if (tuple_length != m_columns.size())
             boost::throw_exception(variant_error(boost::str(
                 boost::format("Cannot insert value with %s elements into series with %s columns")
-                % boost::tuples::length<Tuple>::value
+                % tuple_length
                 % m_columns.size()
             )));
 

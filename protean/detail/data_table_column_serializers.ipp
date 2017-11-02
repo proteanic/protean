@@ -49,7 +49,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
     void data_table_column_binary_writer<E>::write()
     {
-        data_table_column_binary_writer<E>::binary_writer_traits::write(m_writer, *m_iter);
+        binary_writer_traits<E>::write(m_writer, *(this->m_iter));
     }
 
     /* Stream writer: writing to a std::osteram */
@@ -80,7 +80,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
     void data_table_column_stream_writer<E>::write()
     {
-        data_table_column_stream_writer<E>::stream_writer_traits::write(m_os, *m_iter);
+        stream_writer_traits<E>::write(m_os, *(this->m_iter));
     }
 
 
@@ -134,7 +134,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
     void data_table_column_binary_reader<E>::read()
     {
-        data_table_column_binary_reader<E>::binary_reader_traits::read(m_reader, *m_iter);
+        binary_reader_traits<E>::read(m_reader, *(this->m_iter));
     }
 
     /* Stream reader: reading from a std::istream */
@@ -176,7 +176,7 @@ namespace protean { namespace detail {
     template <variant_base::enum_type_t E>
     void data_table_column_stream_reader<E>::read()
     {
-        data_table_column_stream_reader<E>::stream_reader_traits::read(*m_is, *m_iter);
+        stream_reader_traits<E>::read(*m_is, *(this->m_iter));
     }
 
 

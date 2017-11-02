@@ -17,6 +17,20 @@
 #endif
 
 namespace protean { namespace detail {
+    template <typename I, typename U>
+    struct MakeCopy {
+        static void make_copy(variant &cpy, I it) {
+            cpy = *it;
+        }
+    };
+
+    template <typename I>
+    struct MakeCopy<I, detail::string> {
+        static void make_copy(variant &cpy, I it) {
+            cpy = variant(variant_base::String);
+            cpy.m_value.set<variant_base::String>(*it);
+        }
+    };
 
     // Forward declaration
     template <variant_base::enum_type_t E>
@@ -64,14 +78,7 @@ namespace protean { namespace detail {
 
     private:
         template <typename U>
-        void make_copy() const { m_copy = *m_iterator; }
-
-        template <>
-        void make_copy<detail::string>() const
-        {
-            m_copy = variant(variant_base::String);
-            m_copy.m_value.set<variant_base::String>(*m_iterator);
-        }
+        void make_copy() const { MakeCopy<source_iterator_type, U>::make_copy(m_copy, m_iterator); }
 
     private:
         source_iterator_type m_iterator;

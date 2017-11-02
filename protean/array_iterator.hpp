@@ -16,16 +16,16 @@ namespace protean {
 
     struct array_const_iterator_traits
     {
-        typedef const variant_cref      value_type;
-        typedef const variant_base*     iterator_type;
-        typedef size_t                  difference_type;
+        typedef const variant_cref  value_type;
+        typedef const variant_base* iterator_type;
+        typedef std::ptrdiff_t difference_type;
     };
 
     struct array_iterator_traits
     {
-        typedef const variant_ref       value_type;
-        typedef variant_base*           iterator_type;
-        typedef size_t                  difference_type;
+        typedef const variant_ref value_type;
+        typedef variant_base*     iterator_type;
+        typedef std::ptrdiff_t difference_type;
     };
 
     template <typename ITERATOR_TRAITS>
@@ -34,19 +34,13 @@ namespace protean {
                 array_iterator<ITERATOR_TRAITS>
               , typename ITERATOR_TRAITS::value_type
               , boost::random_access_traversal_tag
+              , typename ITERATOR_TRAITS::value_type&
+              , typename ITERATOR_TRAITS::difference_type
             >
     {
         typedef typename ITERATOR_TRAITS::iterator_type iterator_type;
 
     public:
-        // BOOST_FOREACH for some reason demands that this be public, possibly
-        // because it has failed to figure out the type based on the traits,
-        // which might in turn be because they are somewhat non-standard 
-        // (e.g. iterator_category and pointer are missing, see 
-        // http://www.sgi.com/tech/stl/iterator_traits.html).
-
-        typedef typename ITERATOR_TRAITS::difference_type difference_type;
-
         array_iterator();
         array_iterator(iterator_type iterator, variant_base::enum_type_t type);
 
@@ -74,7 +68,7 @@ namespace protean {
 
         typename ITERATOR_TRAITS::value_type & dereference() const;
 
-        void advance(difference_type n);
+        void advance( typename array_iterator<ITERATOR_TRAITS>::difference_type n );
 
     private:
         typename boost::remove_const<typename ITERATOR_TRAITS::value_type>::type m_ref;
@@ -92,6 +86,12 @@ namespace protean {
         >
     {
         typedef typename boost::remove_cv<Value>::type no_cv_Value_t;
+    public:
+        typedef typename boost::iterator_facade<
+            range_array_iterator<Value>,
+            Value,
+            boost::random_access_traversal_tag
+        >::difference_type difference_type;
     private:
         struct enabler {};
     public:
@@ -121,14 +121,7 @@ namespace protean {
 
         Value &dereference() const;
 
-        void advance(difference_type n);
-
-    private:
-        template<typename T, int N>
-        T get();
-
-        template<>
-        std::string get<std::string, protean::variant_base::String>();
+        void advance( typename range_array_iterator<Value>::difference_type n );
 
     private:
         variant_base* m_data;
