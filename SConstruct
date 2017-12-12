@@ -1,49 +1,43 @@
-import errno, os, shutil
+import os
+import shutil
+import subprocess
+import sys
 
-user_libs = ['libboost_date_time.so.1.54.0',
-             'libboost_filesystem.so.1.54.0',
-             'libboost_iostreams.so.1.54.0',
-             'libboost_regex.so.1.54.0',
-             'libboost_system.so.1.54.0',
-             'libxerces-c-3.1.so']
+static_libs = [File('/usr/local/lib/libboost_date_time.a'),
+        File('/usr/local/lib/libboost_filesystem.a'),
+        File('/usr/local/lib/libboost_regex.a'),
+        File('/usr/local/lib/libboost_system.a'),
+        File('/usr/local/lib/libxerces-c.a'),
 
-env = Environment(CPPPATH=['#'],
-                  CPPFLAGS=['-Wno-multichar', '-std=c++11', '-s', '-O3', '-fdata-sections', '-ffunction-sections'],
-                  LINKFLAGS=['-Wl,--gc-sections'],
-                  LIBPATH=['#'])
+        File('/usr/local/lib/libboost_iostreams.a')]
+
+include_paths, lib_paths, linkflags = [], [], []
+if sys.platform == 'linux2':
+    linkflags = ['-Wl,--gc-sections']
+if sys.platform == 'darwin':
+    # Correct if boost and xerces were installed with brew
+    include_paths = ['/usr/local/include']
+    lib_paths = ['/usr/local/lib']
+    linkflags = ['-Wl,-dead_strip', '-v', '-install_name', '@loader_path/libprotean.dylib', '-dynamiclib']
+
+env = Environment(CPPPATH=['#'] + include_paths,
+                  CPPFLAGS=['-Wno-multichar', '-std=c++11',
+                    '-O3', '-fdata-sections', '-ffunction-sections'],
+                  LINKFLAGS=linkflags,
+                  LIBPATH=['#'] + lib_paths)
 
 env['CXX'] = os.getenv('CXX') or env['CXX']
 env['PREFIX'] = os.getenv('PREFIX') or '/usr'
 
-protean_libs = [lib.split('.so')[0] for lib in user_libs]
-
 protean = env.SharedLibrary(target = 'protean',
                             source = Glob('src/*.cpp'),
-                            LIBS   = protean_libs)
+                            LIBS=static_libs + ['z', 'curl'],
+                            FRAMEWORKS=['CoreServices'])
 
-env.Program(target     = 'protean_test',
-            source     = Glob('test/core/*.cpp'),
-            CPPDEFINES = ['BOOST_TEST_DYN_LINK'],
-            LIBS       = [protean, 'boost_unit_test_framework'] + protean_libs,
-            RPATH      = '.')
+protean_test = \
+    env.Program(target     = 'protean_test',
+                source     = Glob('test/core/*.cpp') + static_libs,
+                CPPDEFINES = ['BOOST_TEST_DYN_LINK'],
+                LIBS       = [protean, 'boost_unit_test_framework'],
+                RPATH      = '.')
 
-env.Alias('install', env.Install(os.path.join(env['PREFIX'], 'lib'), protean))
-
-# Copy dependent shared objects to be near the built binary for easy packaging
-# Downstream projects could be built in a different docker container that does
-# not have all the dependencies
-def _copy_user_libs():
-    dst_dir = 'third-party'
-    try:
-        os.makedirs(dst_dir)
-    except OSError as ex:
-        if ex.errno != errno.EEXIST:
-            raise
-    for lib in user_libs:
-        src = '/usr/local/lib/{}'.format(lib)
-        dst = '{}/{}'.format(dst_dir,lib)
-        if not os.path.isfile(dst) or \
-           os.stat(dst).st_size != os.stat(src).st_size or \
-           os.stat(dst).st_mtime != os.stat(src).st_mtime:
-            shutil.copy2(src, dst)
-_copy_user_libs()

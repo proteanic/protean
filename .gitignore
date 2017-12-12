@@ -15,5 +15,6 @@ projects/packages
 *.o
 *.os
 .sconsign.dblite
-libprotean.so
+*.so
+*.dylib
 protean_test
