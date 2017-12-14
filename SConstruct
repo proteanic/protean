@@ -39,7 +39,7 @@ protean_test = \
                 source     = Glob('test/core/*.cpp'),
                 CPPDEFINES = ['BOOST_TEST_DYN_LINK'],
                 LIBS       = libs+[protean, 'boost_unit_test_framework'],
-                RPATH      = '.')
+                LINKFLAGS  = ['-Wl,-rpath', '.', '-Wl,-rpath', '/usr/local/lib'])
 
 def copy_libs(target, source, env):
     if sys.platform != 'linux2':
