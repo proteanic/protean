@@ -11,21 +11,19 @@ libs = ['libboost_date_time',
              'libboost_regex',
              'libboost_system']
 
-include_paths, lib_paths, linkflags = [], [], []
+linkflags = []
 if sys.platform == 'linux2':
     libs += ['libxerces-c-3.1']
     linkflags = ['-Wl,--gc-sections', '-Wl,-rpath', '.']
 if sys.platform == 'darwin':
     libs = [ File('/usr/local/lib/'+lib+'.a') for lib in libs ] + ['libxerces-c'] + ['z', 'curl']
-    include_paths = ['/usr/local/include']
-    lib_paths = ['/usr/local/lib']
     linkflags = ['-Wl,-dead_strip', '-v', '-install_name', '@loader_path/libprotean.dylib', '-dynamiclib']
 
-env = Environment(CPPPATH=['#'] + include_paths,
+env = Environment(CPPPATH=['#'],
                   CPPFLAGS=['-Wno-multichar', '-std=c++11',
                     '-O3', '-fdata-sections', '-ffunction-sections'],
                   LINKFLAGS=linkflags,
-                  LIBPATH=['#'] + lib_paths)
+                  LIBPATH=['#'])
 
 
 env['CXX'] = os.getenv('CXX') or env['CXX']
