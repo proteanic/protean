@@ -3,19 +3,20 @@ import shutil
 import subprocess
 import sys
 
-static_libs = [File('/usr/local/lib/libboost_date_time.a'),
-        File('/usr/local/lib/libboost_filesystem.a'),
-        File('/usr/local/lib/libboost_regex.a'),
-        File('/usr/local/lib/libboost_system.a'),
-        File('/usr/local/lib/libxerces-c.a'),
+linux_boost_version = '1.54.0'
 
-        File('/usr/local/lib/libboost_iostreams.a')]
+libs = ['libboost_date_time',
+             'libboost_filesystem',
+             'libboost_iostreams',
+             'libboost_regex',
+             'libboost_system',
+             'libxerces-c-3.1']
 
 include_paths, lib_paths, linkflags = [], [], []
 if sys.platform == 'linux2':
-    linkflags = ['-Wl,--gc-sections']
+    linkflags = ['-Wl,--gc-sections', '-Wl,-rpath', '.']
 if sys.platform == 'darwin':
-    # Correct if boost and xerces were installed with brew
+    libs = [ File('/usr/local/lib/'+lib+'.a') for lib in libs ] + ['z', 'curl']
     include_paths = ['/usr/local/include']
     lib_paths = ['/usr/local/lib']
     linkflags = ['-Wl,-dead_strip', '-v', '-install_name', '@loader_path/libprotean.dylib', '-dynamiclib']
@@ -26,18 +27,35 @@ env = Environment(CPPPATH=['#'] + include_paths,
                   LINKFLAGS=linkflags,
                   LIBPATH=['#'] + lib_paths)
 
+
 env['CXX'] = os.getenv('CXX') or env['CXX']
 env['PREFIX'] = os.getenv('PREFIX') or '/usr'
 
 protean = env.SharedLibrary(target = 'protean',
                             source = Glob('src/*.cpp'),
-                            LIBS=static_libs + ['z', 'curl'],
+                            LIBS=libs,
                             FRAMEWORKS=['CoreServices'])
 
 protean_test = \
     env.Program(target     = 'protean_test',
-                source     = Glob('test/core/*.cpp') + static_libs,
+                source     = Glob('test/core/*.cpp'),
                 CPPDEFINES = ['BOOST_TEST_DYN_LINK'],
-                LIBS       = [protean, 'boost_unit_test_framework'],
+                LIBS       = libs+[protean, 'boost_unit_test_framework'],
                 RPATH      = '.')
 
+def copy_libs(target, source, env):
+    if sys.platform != 'linux2':
+        return
+
+    import shutil
+    for lib in libs:
+        srclib = '/usr/local/lib/'+lib+'.so' + ('.'+linux_boost_version if 'boost' in lib else '')
+        shutil.copy2(srclib, '.')
+
+
+copy_libs_cmd = Command(target="copy-libs",
+                     source=[],
+                     action=copy_libs)
+
+
+Depends( copy_libs_cmd, protean_test )
