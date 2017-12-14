@@ -9,14 +9,14 @@ libs = ['libboost_date_time',
              'libboost_filesystem',
              'libboost_iostreams',
              'libboost_regex',
-             'libboost_system',
-             'libxerces-c-3.1']
+             'libboost_system']
 
 include_paths, lib_paths, linkflags = [], [], []
 if sys.platform == 'linux2':
+    libs += ['libxerces-c-3.1']
     linkflags = ['-Wl,--gc-sections', '-Wl,-rpath', '.']
 if sys.platform == 'darwin':
-    libs = [ File('/usr/local/lib/'+lib+'.a') for lib in libs ] + ['z', 'curl']
+    libs = [ File('/usr/local/lib/'+lib+'.a') for lib in libs ] + ['libxerces-c'] + ['z', 'curl']
     include_paths = ['/usr/local/include']
     lib_paths = ['/usr/local/lib']
     linkflags = ['-Wl,-dead_strip', '-v', '-install_name', '@loader_path/libprotean.dylib', '-dynamiclib']
