@@ -230,7 +230,7 @@ namespace protean {
         }
         else
         {
-            boost::throw_exception(variant_error(std::string("Attempt to coerce ") + typeid(*obj).name() + " into object of type " + typeid(T).name()));
+            boost::throw_exception(variant_error(std::string("Attempt to coerce ") + typeid(object).name() + " into object of type " + typeid(T).name()));
         }
 
         END_TRANSLATE_ERROR();

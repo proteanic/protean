@@ -129,7 +129,7 @@ namespace protean { namespace detail {
 
         // If this data table has less rows than the RHS data table, return -1; if more, return 1
         if (size() != cast_rhs->size())
-            return rhs.size() - cast_rhs->size() < 0 ? -1 : 1;
+            return size() < cast_rhs->size() ? -1 : 1;
 
         // Else the data tables have the same number of rows, so compare each row (tuple)
         variant_iterator<const_iterator_traits> this_iter = begin(),
