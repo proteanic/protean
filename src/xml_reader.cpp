@@ -9,15 +9,6 @@
 #include <protean/detail/xml_utility.hpp>
 #include <protean/detail/scoped_xmlch.hpp>
 
-#if defined(_MSC_VER)
-#    pragma warning(push)
-#    pragma warning(disable:4512)
-#endif
-#include <boost/scope_exit.hpp>
-#if defined(_MSC_VER)
-#    pragma warning(pop)
-#endif
-
 #include <boost/scoped_ptr.hpp>
 #include <boost/scoped_array.hpp>
 #include <boost/foreach.hpp>
@@ -56,20 +47,10 @@ namespace protean {
             // this scope ends. Xerces is picky and insists that the parser is deleted
             // before xercesc::XMLPlatformUtils::Terminate is called so the order of
             // guard creation (and hence destruction) is important.
-
-#if defined(_MSC_VER)
-#    pragma warning(push)
-#    pragma warning(disable:4100 4512)
-#endif
-            char terminate; // BOOST_SCOPE_EXIT will not accept an empty list under MSVC
-            BOOST_SCOPE_EXIT ((&terminate))
+			struct terminateGuard_
             {
-                xercesc::XMLPlatformUtils::Terminate();
-            }
-            BOOST_SCOPE_EXIT_END
-#if defined(_MSC_VER)
-#    pragma warning(pop)
-#endif
+				~terminateGuard_() { xercesc::XMLPlatformUtils::Terminate(); }
+            } terminateGuard;
             boost::scoped_ptr<xercesc::SAX2XMLReaderImpl> parser( new xercesc::SAX2XMLReaderImpl() );
 
             parser->setContentHandler(handler.get());
