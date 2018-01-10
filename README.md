@@ -10,6 +10,8 @@ Protean has implementations in C++, C# and Python.
 
 ## Compilation ##
 
+### C++ ###
+
 Protean is known to build on:
 
 - Windows with MS Visual Studio 2013, 2015, 2017
@@ -23,6 +25,11 @@ On Windows, the following method will work:
 - Copy _projects/vc1x/vc1x-paths.props.template_ to _projects/vc1x/vc1x-paths.props_. Edit the latter to set `BOOST_VERSION`, `BOOST_ROOT`, and `XERCES_ROOT` appropriately.
 - Open _projects/vc1x-protean.sln_ in your chosen version of Visual Studio.
 - Choose a configuration, e.g. `vc141 Release` and `x64`, and Build Solution.
+
+On other platforms:
+
+- Install `boost`, `xerces` and `scons` dependencies, e.g. via `yum` or `apt-get`.
+- Build via `scons`.
 
 ## Usage examples ##
 
