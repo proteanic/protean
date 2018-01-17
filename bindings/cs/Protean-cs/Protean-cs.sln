@@ -1,17 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Protean.Net", "Protean.Net\Protean.Net.xproj", "{B461E480-890F-4E70-A975-9ED8E45BA4DB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D724D43F-C72E-4C68-B782-32D9B8A203A8}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Protean.Net.Tests", "Protean.Net.Tests\Protean.Net.Tests.xproj", "{62F06C51-0348-4A54-AA82-6DCAF6AC5AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Protean.Net", "Protean.Net\Protean.Net.csproj", "{B461E480-890F-4E70-A975-9ED8E45BA4DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Protean.Net.Tests", "Protean.Net.Tests\Protean.Net.Tests.csproj", "{62F06C51-0348-4A54-AA82-6DCAF6AC5AA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95C6B6A2-873E-4CD4-9BE9-2D32347B8DBF}
 	EndGlobalSection
 EndGlobal

@@ -7,13 +7,11 @@
 #define PROTEAN_VARIANT_HPP
 
 #include <protean/config.hpp>
+#include <protean/typed_array.hpp>
 #include <protean/variant_base.hpp>
 #include <protean/variant_ref.hpp>
-#include <protean/array_iterator.hpp>
-#include <protean/typed_array.hpp>
 #include <protean/data_table_iterator.hpp>
 #include <protean/data_table_column_base.hpp>
-#include <protean/detail/data_table.hpp>
 
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
@@ -24,6 +22,9 @@ namespace protean {
 
     class variant_ref;
     class variant_cref;
+
+    template<typename T>
+    class range_array_iterator;
 
     class PROTEAN_DECL variant : public variant_base
     {
@@ -40,8 +41,9 @@ namespace protean {
 
 		typedef boost::ptr_vector<data_table_column_base> column_collection_t;
 
+        typedef variant_iterator<const_iterator_traits> const_iterator;
+        typedef variant_iterator<iterator_traits>       iterator;
         typedef const_iterator_traits::difference_type  difference_type;
-        typedef std::bidirectional_iterator_tag         iterator_category;
 
     public:
         static const date_time_t& min_date_time();
@@ -185,9 +187,6 @@ namespace protean {
     public:
         enum enum_return_trait_t {ReturnSelf, ReturnItem};
 
-        typedef variant_iterator<const_iterator_traits> const_iterator;
-        typedef variant_iterator<iterator_traits> iterator;
-
         const_iterator begin() const;
         const_iterator end() const;
         iterator begin();
@@ -305,5 +304,6 @@ namespace protean {
 
 #include <protean/variant.ipp>
 #include <protean/variant_ref.ipp>
+#include <protean/array_iterator.hpp>
 
 #endif // PROTEAN_VARIANT_HPP

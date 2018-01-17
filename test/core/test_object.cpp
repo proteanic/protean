@@ -99,17 +99,12 @@ BOOST_AUTO_TEST_CASE(test_object)
 
     BOOST_CHECK(arg1.compare(arg4)==0);
 
-    {
-        variant params(variant::Dictionary);
-        params.insert("count", variant(boost::int32_t(10)))
-            .insert("id", variant("my id"));
-
-        variant v = make_object<testing_object>(params);
-
-        const testing_object& obj(v.as<testing_object>());
-        BOOST_CHECK_EQUAL(obj.id(),     "my id");
-        BOOST_CHECK_EQUAL(obj.count(),  10);
-    }
+    params = variant(variant::Dictionary);
+    params.insert("count", variant(boost::int32_t(10)))
+        .insert("id", variant("my id"));
+    variant v4 = make_object<testing_object>(params);
+    BOOST_CHECK_EQUAL(v4.as<testing_object>().id(),     "my id");
+    BOOST_CHECK_EQUAL(v4.as<testing_object>().count(),  10);
 
     // test hashing
     BOOST_CHECK_EQUAL(v1.hash(), 0xe0bb97afca6308aeUL);

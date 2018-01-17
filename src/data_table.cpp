@@ -41,8 +41,9 @@ namespace protean { namespace detail {
 
     data_table& data_table::add_column(variant_base::enum_type_t type, const std::string& name)
     {
+        column_adder ca(*this, name);
         return enum_runtime_map<detail::data_table_column_enums, detail::enum_equality_comparer>(
-            type, column_adder(*this, name), "Columns of type " + variant_base::enum_to_string(type) + " are not supported"
+            type, ca, "Columns of type " + variant_base::enum_to_string(type) + " are not supported"
         );
     }
 
@@ -128,7 +129,7 @@ namespace protean { namespace detail {
 
         // If this data table has less rows than the RHS data table, return -1; if more, return 1
         if (size() != cast_rhs->size())
-            return rhs.size() - cast_rhs->size() < 0 ? -1 : 1;
+            return size() < cast_rhs->size() ? -1 : 1;
 
         // Else the data tables have the same number of rows, so compare each row (tuple)
         variant_iterator<const_iterator_traits> this_iter = begin(),

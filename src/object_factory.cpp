@@ -35,7 +35,7 @@ namespace protean {
         if (citr == m_instance_map.end())
         {
             // Return empty handle
-            return handle<object>(NULL);
+            return handle<object>(nullptr);
         }
 
         return citr->second();

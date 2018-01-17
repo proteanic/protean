@@ -7,68 +7,59 @@
 #define PROTEAN_CONFIG_AUTO_LINK_HPP
 
 #ifndef PROTEAN_VERSION_HPP
-#  include <protean/version.hpp>
+#include <protean/version.hpp>
 #endif
 
 #ifndef PROTEAN_LIB_NAME
-#   error "Macro PROTEAN_LIB_NAME not set (internal error)"
+	#error "Macro PROTEAN_LIB_NAME not set (internal error)"
 #endif
 
-#if defined(_MSC_VER)
+#ifdef _MSC_VER
 
-#if (_MSC_VER <= 1400)
-#   define PROTEAN_LIB_TOOLSET "vc80"
-#elif (_MSC_VER == 1500)
-#   define PROTEAN_LIB_TOOLSET "vc90"
-#elif (_MSC_VER == 1600)
-#   define PROTEAN_LIB_TOOLSET "vc100"
-#elif (_MSC_VER == 1700)
-#   define PROTEAN_LIB_TOOLSET "vc110"
-#elif (_MSC_VER == 1800)
-#   define PROTEAN_LIB_TOOLSET "vc120"
-#else
-#   error "Unhandled _MSC_VER"
-#endif
+	#if _MSC_VER >= 1910
+		#define PROTEAN_LIB_TOOLSET "vc141"
+	#elif _MSC_VER >= 1900
+		#define PROTEAN_LIB_TOOLSET "vc140"
+	#elif _MSC_VER >= 1800
+		#define PROTEAN_LIB_TOOLSET "vc120"
+	#endif
 
-#if defined(_MT) || defined(__MT__)
-#   define PROTEAN_LIB_THREAD_OPT "-mt"
-#else
-#  define PROTEAN_LIB_THREAD_OPT
-#endif
+	#if defined(_MT) || defined(__MT__)
+		#define PROTEAN_LIB_THREAD_OPT "-mt"
+	#else
+		#define PROTEAN_LIB_THREAD_OPT
+	#endif
 
-#if defined(_DEBUG)
-#   define PROTEAN_LIB_RT_OPT "-gd"
-#else
-#   define PROTEAN_LIB_RT_OPT
-#endif
+	#ifdef _DEBUG
+		#define PROTEAN_LIB_RT_OPT "-gd"
+	#else
+		#define PROTEAN_LIB_RT_OPT
+	#endif
 
-#if defined(PROTEAN_DYN_LINK)
-#   define PROTEAN_LIB_PREFIX
-#else
-#   define PROTEAN_LIB_PREFIX "lib"
-#endif
+	#ifdef PROTEAN_DYN_LINK
+		#define PROTEAN_LIB_PREFIX
+	#else
+		#define PROTEAN_LIB_PREFIX "lib"
+	#endif
 
-//
-// now include the lib
-//
-#pragma comment(lib, PROTEAN_LIB_PREFIX PROTEAN_LIB_NAME "-" PROTEAN_LIB_TOOLSET PROTEAN_LIB_THREAD_OPT PROTEAN_LIB_RT_OPT "-" PROTEAN_LIB_VERSION ".lib")
+	#pragma comment(lib, PROTEAN_LIB_PREFIX PROTEAN_LIB_NAME "-" PROTEAN_LIB_TOOLSET PROTEAN_LIB_THREAD_OPT PROTEAN_LIB_RT_OPT "-" PROTEAN_LIB_VERSION ".lib")
 
 #endif
 
-#if defined(PROTEAN_LIB_PREFIX)
-#   undef PROTEAN_LIB_PREFIX
+#ifdef PROTEAN_LIB_PREFIX
+	#undef PROTEAN_LIB_PREFIX
 #endif
-#if defined(PROTEAN_LIB_NAME)
-#   undef PROTEAN_LIB_NAME
+#ifdef PROTEAN_LIB_NAME
+	#undef PROTEAN_LIB_NAME
 #endif
-#if defined(PROTEAN_LIB_TOOLSET)
-#   undef PROTEAN_LIB_TOOLSET
+#ifdef PROTEAN_LIB_TOOLSET
+	#undef PROTEAN_LIB_TOOLSET
 #endif
-#if defined(PROTEAN_LIB_THREAD_OPT)
-#   undef PROTEAN_LIB_THREAD_OPT
+#ifdef PROTEAN_LIB_THREAD_OPT
+	#undef PROTEAN_LIB_THREAD_OPT
 #endif
-#if defined(PROTEAN_LIB_RT_OPT)
-#   undef PROTEAN_LIB_RT_OPT
+#ifdef PROTEAN_LIB_RT_OPT
+	#undef PROTEAN_LIB_RT_OPT
 #endif
 
 #endif // PROTEAN_CONFIG_AUTO_LINK_HPP

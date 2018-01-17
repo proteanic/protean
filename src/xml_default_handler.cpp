@@ -392,7 +392,7 @@ namespace protean { namespace detail {
                 int version(context->element()["version"].as<int>());
 
                 handle<object> obj;
-                if ( m_factory!=NULL )
+                if ( m_factory!=nullptr )
                 {
                     obj = m_factory->create_instance(class_name);
                     if (obj.null())
@@ -427,7 +427,7 @@ namespace protean { namespace detail {
                 }
                 else
                 {
-                    context->element() = variant(NULL, 0);
+                    context->element() = variant(nullptr, 0);
                 }
             }
             else if ( context->m_type==variant::Array )

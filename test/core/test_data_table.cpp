@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(test_data_table_variant_fallback_types)
     BOOST_CHECK_THROW(dt.push_back( make_row(wrong_variant, x2, x3) ), variant_error);
 
 
-    /* Check push_back and typed iterators adhere to the variant enum inheritance hierarchy */
+    // Check push_back and typed iterators adhere to the variant enum inheritance hierarchy
     variant dt2(variant::DataTable);
     dt2.add_column(variant::Int32)
        .add_column(variant::Sequence);
@@ -370,7 +370,7 @@ BOOST_AUTO_TEST_CASE(test_data_table_large_number_of_columns)
     data_table_row<
         BOOST_PP_ENUM(NUM_COLUMNS, IDENTITY, variant::Int32)
     >::type row =
-        make_row(BOOST_PP_ENUM_PARAMS(NUM_COLUMNS, (int)));
+        make_row(BOOST_PP_ENUM_PARAMS(NUM_COLUMNS, ));
 
     dt.push_back(row);
 

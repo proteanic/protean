@@ -12,3 +12,9 @@ projects/packages
 .vscode/
 .vs/
 
+*.o
+*.os
+.sconsign.dblite
+*.so
+*.dylib
+protean_test

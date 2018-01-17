@@ -16,14 +16,9 @@
 
 #include <vector>
 #include <string>
-#include <boost/mpl/int.hpp>
-#include <boost/preprocessor.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <boost/function.hpp>
-#include <boost/any.hpp>
-#include <boost/utility.hpp>
 #include <boost/throw_exception.hpp>
-#include <boost/format.hpp>
+#include <boost/preprocessor/seq/for_each.hpp>
 
 #if defined(_MSC_VER)
 #    pragma warning(push)
@@ -102,7 +97,7 @@ namespace protean { namespace detail {
         #define PROTEAN_DETAIL_DT_COLUMN_VIRTUAL_PUSH_BACK_IMPL_DECL(r, data, type)  \
             virtual void push_back_impl(const type& value, type* = 0);               \
 
-        virtual void push_back_impl(const variant& value, variant* = 0);
+        virtual void push_back_impl(const variant& value, variant*);
 
         BOOST_PP_SEQ_FOR_EACH(PROTEAN_DETAIL_DT_COLUMN_VIRTUAL_PUSH_BACK_IMPL_DECL, , SUPPORTED_TYPES)
         BOOST_PP_SEQ_FOR_EACH(PROTEAN_DETAIL_DT_COLUMN_VIRTUAL_IMPLS_DECL, , COLUMN_TYPES)

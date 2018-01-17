@@ -21,7 +21,7 @@ namespace protean { namespace detail {
     int list::compare(const collection& rhs) const
     {
         const list* cast_rhs = dynamic_cast<const list*>(&rhs);
-        if (cast_rhs==NULL)
+        if (cast_rhs==nullptr)
         {
             boost::throw_exception(variant_error("Unable to cast collection to list"));
         }

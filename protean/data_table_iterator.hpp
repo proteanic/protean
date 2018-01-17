@@ -247,7 +247,7 @@ namespace protean {
         {
             return data_table_const_iterator<
                 BOOST_PP_ENUM_PARAMS(DATA_TABLE_MAX_COLUMNS, ENUM_PREFIX)
-            >(get_iterator_tuple());
+            >(this->get_iterator_tuple());
         }
     };
 

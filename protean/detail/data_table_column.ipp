@@ -3,8 +3,6 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#include <boost/preprocessor/seq/for_each.hpp>
-
 namespace protean { namespace detail {
 
     /************************/
@@ -98,7 +96,7 @@ namespace protean { namespace detail {
         { push_back_impl_tmpl<type>(value, p); }
 
     template <variant_base::enum_type_t E>
-    void data_table_column<E>::push_back_impl(const variant& value, variant* p = 0)
+    void data_table_column<E>::push_back_impl(const variant& value, variant* p/* = 0*/)
     { push_back_variant_impl_tmpl<variant>(value, p); }
 
 #if defined(_MSC_VER)

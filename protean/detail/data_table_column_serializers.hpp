@@ -68,8 +68,6 @@ namespace protean {
     class PROTEAN_DECL data_table_column_binary_writer : public data_table_column_writer_base<E>
     {
     public:
-        typedef binary_writer_traits<E> binary_writer_traits;
-
         data_table_column_binary_writer(const data_table_column_base& column, binary_writer& writer);
 
     public:
@@ -103,8 +101,6 @@ namespace protean {
     class PROTEAN_DECL data_table_column_stream_writer : public data_table_column_writer_base<E>
     {
     public:
-        typedef stream_writer_traits<E> stream_writer_traits;
-
         data_table_column_stream_writer(const data_table_column_base& column, std::ostream& os);
 
     public:
@@ -162,8 +158,6 @@ namespace protean {
     class PROTEAN_DECL data_table_column_binary_reader : public data_table_column_reader_base<E>
     {
     public:
-        typedef binary_reader_traits<E> binary_reader_traits;
-
         data_table_column_binary_reader(data_table_column_base& column, binary_reader& reader);
 
     public:
@@ -203,8 +197,6 @@ namespace protean {
     class PROTEAN_DECL data_table_column_stream_reader : public data_table_column_reader_base<E>
     {
     public:
-        typedef stream_reader_traits<E> stream_reader_traits;
-
         data_table_column_stream_reader(data_table_column_base& column, const boost::shared_ptr<std::istream>& is);
 
     public:
