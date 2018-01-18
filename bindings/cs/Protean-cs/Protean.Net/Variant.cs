@@ -343,11 +343,13 @@ namespace Protean {
                 case EnumType.UInt32:
                 case EnumType.Int64:
                 case EnumType.UInt64:
+                case EnumType.Float:
                 case EnumType.Double:
                 case EnumType.Boolean:
+                case EnumType.Date:
                 case EnumType.Time:
                 case EnumType.DateTime:
-                    sb.Append(Value.ToString());
+                    sb.Append(Value);
                     break;
                 case EnumType.List:
                     {
