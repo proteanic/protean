@@ -662,7 +662,15 @@ namespace Protean {
         }
         public String ToString(IFormatProvider provider)
         {
-            return As<String>();
+            switch (Type)
+            {
+                case EnumType.Any:
+                    return ((VariantAny)Value).Value;
+                case EnumType.String:
+                    return ((VariantPrimitive<String>)Value).Value;
+                default:
+                    return ToString(false, "", new StringBuilder()).ToString();
+            }
         }
         public Object ToType(Type conversionType, IFormatProvider provider)
         {
