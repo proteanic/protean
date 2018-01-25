@@ -343,11 +343,13 @@ namespace Protean {
                 case EnumType.UInt32:
                 case EnumType.Int64:
                 case EnumType.UInt64:
+                case EnumType.Float:
                 case EnumType.Double:
                 case EnumType.Boolean:
+                case EnumType.Date:
                 case EnumType.Time:
                 case EnumType.DateTime:
-                    sb.Append(Value.ToString());
+                    sb.Append(Value);
                     break;
                 case EnumType.List:
                     {
@@ -660,7 +662,15 @@ namespace Protean {
         }
         public String ToString(IFormatProvider provider)
         {
-            return As<String>();
+            switch (Type)
+            {
+                case EnumType.Any:
+                    return ((VariantAny)Value).Value;
+                case EnumType.String:
+                    return ((VariantPrimitive<String>)Value).Value;
+                default:
+                    return ToString(false, "", new StringBuilder()).ToString();
+            }
         }
         public Object ToType(Type conversionType, IFormatProvider provider)
         {
