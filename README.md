@@ -30,6 +30,7 @@ On other platforms:
 
 - Install `boost`, `xerces` and `scons` dependencies, e.g. via `yum` or `apt-get`.
 - Build via `scons`.
+- If you wish to provide alternate include or lib paths, set `CPPPATH` or `LIBPATH` env vars respectively. You can also override the Boost version, via `BOOST_VERSION`.
 
 ## Usage examples ##
 
