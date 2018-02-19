@@ -24,7 +24,7 @@ lib_path = os.getenv('LIBPATH', '').split(os.pathsep) + ["#"]
 
 env = Environment(ENV       = {'PATH': os.getenv('PATH')},
                   CPPPATH   = cpp_path,
-                  CPPFLAGS  = ['-Wno-multichar', '-std=c++11',
+                  CPPFLAGS  = ['-Wno-deprecated-declarations', '-Wno-multichar', '-std=c++11',
                                '-O3', '-fdata-sections', '-ffunction-sections'],
                   LINKFLAGS = link_flags,
                   LIBPATH   = lib_path)
