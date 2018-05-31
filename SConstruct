@@ -16,7 +16,7 @@ if sys.platform == 'linux2':
     libs += ['libxerces-c-3.1']
     link_flags = ['-Wl,--gc-sections', '-Wl,-rpath', '.']
 if sys.platform == 'darwin':
-    libs = [ File('/usr/local/lib/'+lib+'.a') for lib in libs ] + ['libxerces-c'] + ['z', 'curl']
+    libs += ['libxerces-c', 'z', 'curl']
     link_flags = ['-Wl,-dead_strip', '-v', '-install_name', '@loader_path/libprotean.dylib', '-dynamiclib']
 
 cpp_path = os.getenv('CPPPATH', '').split(os.pathsep) + ["#"]
