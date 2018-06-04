@@ -1,8 +1,4 @@
 """
-(C) Copyright Johan Ditmar, Karel Hruda, Paul O'Neill, Luke Stedman & Robert Wall 2011.
-Use, modification and distribution are subject to the Boost Software License,
-Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt).
-
 Python conversion functions for reading from and writing to
 protean variants
 
