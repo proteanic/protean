@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Copyright>Copyright \u00A9 Johan Ditmar, Karel Hruda, Paul O'Neill and Luke Stedman</Copyright>
     <AssemblyTitle>Protean.Net</AssemblyTitle>
-    <VersionPrefix>2.3.0</VersionPrefix>
+    <VersionPrefix>2.3.1</VersionPrefix>
     <Authors>Johan Ditmar;Karel Hruda;Paul O'Neill</Authors>
     <TargetFrameworks>netstandard1.3;net462;netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
