@@ -1,14 +1,9 @@
-//  (C) Copyright Johan Ditmar, Karel Hruda, Paul O'Neill & Luke Stedman 2009.
-//  Use, modification and distribution are subject to the Boost Software License,
-//  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-//  http://www.boost.org/LICENSE_1_0.txt).
-
 #ifndef PROTEAN_VERSION_HPP
 #define PROTEAN_VERSION_HPP
 
 #define PROTEAN_MAJOR_VERSION 2
 #define PROTEAN_MINOR_VERSION 3
-#define PROTEAN_PATCH_VERSION 0
+#define PROTEAN_PATCH_VERSION 1
 
 #define PROTEAN_VERSION ((PROTEAN_MAJOR_VERSION * 100000) + (PROTEAN_MINOR_VERSION * 100) + PROTEAN_PATCH_VERSION)
 
