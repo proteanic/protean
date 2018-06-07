@@ -65,6 +65,18 @@ namespace Protean {
             return sb.ToString();
         }
 
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Class != null ? Class.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Message != null ? Message.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Source != null ? Source.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Stack != null ? Stack.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         public string Class { get; set; }
         public string Message { get; set; }
         public string Source { get; set; }

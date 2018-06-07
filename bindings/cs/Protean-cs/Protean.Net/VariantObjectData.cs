@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Protean {
 
     internal class VariantObjectData : IVariantData
@@ -24,6 +26,16 @@ namespace Protean {
                 return Value.Version.CompareTo(rhsObj.Version);
             }
             return Value.Deflate().CompareTo(rhsObj.Deflate());
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = EqualityComparer<string>.Default.GetHashCode(Value.Class);
+                hashCode = (hashCode * 397) ^ Value.Version.GetHashCode();
+                return hashCode;
+            }
         }
 
         public IVariantObject Value { get; private set; }

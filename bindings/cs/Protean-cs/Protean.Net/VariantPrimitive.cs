@@ -153,6 +153,11 @@ namespace Protean {
             return Value.CompareTo(((VariantPrimitive<T>)rhs).Value);
         }
 
+        public override int GetHashCode()
+        {
+            return EqualityComparer<T>.Default.GetHashCode(Value);
+        }
+
         public T Value { get; set; }
     }
 

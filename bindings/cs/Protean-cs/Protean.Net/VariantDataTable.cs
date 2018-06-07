@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Protean {
 
@@ -116,6 +118,24 @@ namespace Protean {
 #else
             throw new NotSupportedException("Datatables are not supported on this platform.");
 #endif
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = 0x2D2816FE;
+                foreach (DataColumn column in Value.Columns)
+                {
+                    hashCode = (hashCode * 397) ^ EqualityComparer<string>.Default.GetHashCode(column.ColumnName);
+                }
+                foreach (DataRow row in Value.Rows)
+                {
+                    hashCode = row.ItemArray.Aggregate(hashCode, (cur, item) => (cur * 397) ^ item.GetHashCode());
+                }
+
+                return hashCode;
+            }
         }
     }
 

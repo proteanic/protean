@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.SqlTypes;
+using System.Linq;
 
 namespace Protean
 {
@@ -106,6 +108,16 @@ namespace Protean
                 }
             }
             return 0;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int)ElementType * 397;
+                hashCode = Value.Aggregate(hashCode, (cur, next) => (cur * 397) ^ next.GetHashCode());
+                return hashCode;
+            }
         }
 
         public VariantBase.EnumType _Type

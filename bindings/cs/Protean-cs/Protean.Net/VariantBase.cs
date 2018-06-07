@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Protean {
 
@@ -21,6 +22,11 @@ namespace Protean {
         }
 
         public int CompareTo(IVariantData rhs)
+        {
+            return 0;
+        }
+
+        public override int GetHashCode()
         {
             return 0;
         }
@@ -49,6 +55,11 @@ namespace Protean {
         public int CompareTo(IVariantData rhs)
         {
             return Value.CompareTo(((VariantAny)rhs).Value);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
 
         public string Value { get; set; }
@@ -81,11 +92,21 @@ namespace Protean {
         }
 
         public byte[] Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = 0x2D2816FE;
+                hashCode = Value.Aggregate(hashCode, (cur, next) => (cur * 397) ^ next.GetHashCode());
+                return hashCode;
+            }
+        }
     }
 
     public abstract class VariantBase
     {
-		[Flags]
+        [Flags]
         public enum EnumType
         {
             None                    = 0x00000001,
@@ -527,6 +548,11 @@ namespace Protean {
         public static string ToString(TimeSpan arg)
         {
             return $"{(arg < TimeSpan.Zero ? "-" : "")}{arg:hh\\:mm\\:ss}{(arg.Milliseconds != 0 ? arg.ToString(@"\.FFF") : "")}";
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
 
         private readonly static Dictionary<string, float> s_nonRoundTripSingleSpecialValues =
