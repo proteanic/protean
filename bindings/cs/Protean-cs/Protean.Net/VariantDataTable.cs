@@ -122,6 +122,7 @@ namespace Protean {
 
         public override int GetHashCode()
         {
+#if !DISABLE_DATATABLE
             unchecked
             {
                 var hashCode = 0x2D2816FE;
@@ -136,6 +137,9 @@ namespace Protean {
 
                 return hashCode;
             }
+#else
+            throw new NotSupportedException("Datatables are not supported on this platform.");
+#endif
         }
     }
 
