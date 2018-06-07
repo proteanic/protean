@@ -4,7 +4,7 @@
     <AssemblyTitle>Protean.Net</AssemblyTitle>
     <VersionPrefix>2.3.1</VersionPrefix>
     <Authors>Winton</Authors>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net462;netstandard2.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Protean.Net</AssemblyName>
     <AssemblyOriginatorKeyFile>protean.snk</AssemblyOriginatorKeyFile>
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>$(DefineConstants);DISABLE_XMLVALIDATION;DISABLE_DATATABLE;DISABLE_SERIALIZATION</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
