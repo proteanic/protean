@@ -48,6 +48,26 @@
         }
 
         [Test]
+        public void TestHashCode()
+        {
+            TypedArray a1 = new TypedArray(Variant.EnumType.Double, 2);
+            a1[0] = 1.0;
+            a1[1] = 2.0;
+
+            Variant v1 = new Variant(a1);
+
+            TypedArray a2 = new TypedArray(Variant.EnumType.Double, 2);
+            a2[0] = 1.0;
+            a2[1] = 2.0;
+
+            Variant v2 = new Variant(a2);
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
+        }
+
+        [Test]
         public void TestBinaryStreams()
         {
             TypedArray a1 = new TypedArray(Variant.EnumType.Double, 2);
