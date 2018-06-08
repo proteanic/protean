@@ -552,7 +552,10 @@ namespace Protean {
 
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            unchecked
+            {
+                return (Type.GetHashCode() * 397) ^ Value.GetHashCode();
+            }
         }
 
         private readonly static Dictionary<string, float> s_nonRoundTripSingleSpecialValues =
