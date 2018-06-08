@@ -126,11 +126,11 @@ namespace Protean {
             unchecked
             {
                 var hashCode = 0x2D2816FE;
-                foreach (DataColumn column in Value.Columns)
+                foreach (var column in Value.Columns)
                 {
                     hashCode = (hashCode * 397) ^ EqualityComparer<string>.Default.GetHashCode(column.ColumnName);
                 }
-                foreach (DataRow row in Value.Rows)
+                foreach (var row in Value.Rows)
                 {
                     hashCode = row.ItemArray.Aggregate(hashCode, (cur, item) => (cur * 397) ^ item.GetHashCode());
                 }
