@@ -126,7 +126,7 @@ namespace Protean {
         {
             unchecked
             {
-                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() ^ next.Value.GetHashCode());
+                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() * 397 ^ next.Value.GetHashCode());
             }
         }
     }
@@ -238,7 +238,7 @@ namespace Protean {
         {
             unchecked
             {
-                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() ^ next.Value.GetHashCode());
+                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() * 397 ^ next.Value.GetHashCode());
             }
         }
     }
@@ -335,7 +335,7 @@ namespace Protean {
         {
             unchecked
             {
-                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() ^ next.Value.GetHashCode());
+                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() * 397 ^ next.Value.GetHashCode());
             }
         }
     }
