@@ -321,7 +321,6 @@ namespace Protean {
 
         public int CompareTo(IVariantData rhs)
         {
-            // TODO - comparison of bags should not rely on element ordering
             return SequenceComparer.Compare(Value, ((VariantBag)rhs).Value, new KeyValuePairComparer<string, Variant>());
         }
 
@@ -336,7 +335,7 @@ namespace Protean {
         {
             unchecked
             {
-                return Value.OrderBy(v => v.Key).Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() ^ next.Value.GetHashCode());
+                return Value.Aggregate(0x2D2816FE, (cur, next) => (cur * 397) ^ next.Key.GetHashCode() ^ next.Value.GetHashCode());
             }
         }
     }
