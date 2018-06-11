@@ -98,7 +98,7 @@ namespace Protean {
             unchecked
             {
                 var hashCode = 0x2D2816FE;
-                hashCode = Value.Aggregate(hashCode, (cur, next) => (cur * 397) ^ next.GetHashCode());
+                hashCode = Value.Aggregate(hashCode, (cur, next) => cur * 397 ^ next.GetHashCode());
                 return hashCode;
             }
         }
@@ -554,7 +554,7 @@ namespace Protean {
         {
             unchecked
             {
-                return (Type.GetHashCode() * 397) ^ Value.GetHashCode();
+                return Type.GetHashCode() * 397 ^ Value.GetHashCode();
             }
         }
 

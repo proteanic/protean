@@ -33,7 +33,7 @@ namespace Protean {
             unchecked
             {
                 var hashCode = EqualityComparer<string>.Default.GetHashCode(Value.Class);
-                hashCode = (hashCode * 397) ^ Value.Version.GetHashCode();
+                hashCode = hashCode * 397 ^ Value.Version.GetHashCode();
                 return hashCode;
             }
         }

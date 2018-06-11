@@ -69,10 +69,10 @@ namespace Protean {
         {
             unchecked
             {
-                var hashCode = (Class != null ? Class.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Message?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Source?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Stack?.GetHashCode() ?? 0);
+                var hashCode = Class != null ? Class.GetHashCode() : 0;
+                hashCode = hashCode * 397 ^ (Message?.GetHashCode() ?? 0);
+                hashCode = hashCode * 397 ^ (Source?.GetHashCode() ?? 0);
+                hashCode = hashCode * 397 ^ (Stack?.GetHashCode() ?? 0);
                 return hashCode;
             }
         }

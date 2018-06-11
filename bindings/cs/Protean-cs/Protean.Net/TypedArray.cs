@@ -115,7 +115,7 @@ namespace Protean
             unchecked
             {
                 var hashCode = (int)ElementType * 397;
-                hashCode = Value.Aggregate(hashCode, (cur, next) => (cur * 397) ^ next.GetHashCode());
+                hashCode = Value.Aggregate(hashCode, (cur, next) => cur * 397 ^ next.GetHashCode());
                 return hashCode;
             }
         }
