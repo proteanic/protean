@@ -233,5 +233,23 @@ namespace Protean.Test
             Variant v8 = new Variant(Variant.EnumType.Any, "value");
             Assert.AreEqual("value", v8.As<string>());
         }
+
+        [Test]
+        public void TestHashCode()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Any, "1.0");
+            Variant v2 = new Variant(Variant.EnumType.Any, "1.0");
+            Variant v3 = new Variant(v1);
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreEqual(v1, v3);
+            Assert.AreEqual(v2, v3);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreNotSame(v1, v3);
+            Assert.AreNotSame(v2, v3);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
+            Assert.AreEqual(v1.GetHashCode(), v3.GetHashCode());
+            Assert.AreEqual(v2.GetHashCode(), v3.GetHashCode());
+        }
     }
 }

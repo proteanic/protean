@@ -77,5 +77,21 @@ namespace Protean.Test
             Assert.AreEqual(-1, v1.CompareTo(v3));
             Assert.AreEqual(1, v3.CompareTo(v1));
         }
+
+        [Test]
+        public void TestTSHashCode()
+        {
+            Variant v1 = new Variant(Variant.EnumType.TimeSeries);
+            v1.Add(new DateTime(2010, 1, 2, 3, 4, 5, 6), new Variant("value1"));
+            v1.Add(new DateTime(2010, 1, 2, 3, 4, 5, 6), new Variant("value2"));
+
+            Variant v2 = new Variant(Variant.EnumType.TimeSeries);
+            v2.Add(new DateTime(2010, 1, 2, 3, 4, 5, 6), new Variant("value1"));
+            v2.Add(new DateTime(2010, 1, 2, 3, 4, 5, 6), new Variant("value2"));
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
+        }
     }
 }

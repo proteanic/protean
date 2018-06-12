@@ -86,6 +86,38 @@ namespace Protean.Test
         }
 
         [Test]
+        public void TestHashCode()
+        {
+            System.Data.DataTable dt1 = new DataTable();
+            dt1.Columns.Add(new DataColumn("Double", typeof(double)));
+            dt1.Columns.Add(new DataColumn("String", typeof(string)));
+
+            DataRow dr1 = dt1.NewRow();
+            dr1[0] = 1.0;
+            dr1[1] = "value";
+
+            dt1.Rows.Add(dr1);
+
+            Variant v1 = new Variant(dt1);
+
+            System.Data.DataTable dt2 = new DataTable();
+            dt2.Columns.Add(new DataColumn("Double", typeof(double)));
+            dt2.Columns.Add(new DataColumn("String", typeof(string)));
+
+            DataRow dr2 = dt2.NewRow();
+            dr2[0] = 1.0;
+            dr2[1] = "value";
+
+            dt2.Rows.Add(dr2);
+
+            Variant v2 = new Variant(dt2);
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
+        }
+
+        [Test]
         public void TestBinaryStreams()
         {
             System.Data.DataTable dt1 = new DataTable();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Protean {
 
@@ -120,6 +121,14 @@ namespace Protean {
         }
 
         public List<KeyValuePair<DateTime, Variant>> Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return Value.Aggregate(0x2D2816FE, (cur, next) => cur * 397 ^ next.Key.GetHashCode() * 397 ^ next.Value.GetHashCode());
+            }
+        }
     }
 
     //
@@ -224,6 +233,14 @@ namespace Protean {
 
         // Use a sorted dictionary, so we can easily compare
         public SortedDictionary<string, Variant> Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return Value.Aggregate(0x2D2816FE, (cur, next) => cur * 397 ^ next.Key.GetHashCode() * 397 ^ next.Value.GetHashCode());
+            }
+        }
     }
 
     internal class VariantBag : IVariantMapping
@@ -313,6 +330,14 @@ namespace Protean {
         }
 
         public List<KeyValuePair<String, Variant>> Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return Value.Aggregate(0x2D2816FE, (cur, next) => cur * 397 ^ next.Key.GetHashCode() * 397 ^ next.Value.GetHashCode());
+            }
+        }
     }
 
     //
@@ -393,6 +418,14 @@ namespace Protean {
         }
 
         public List<Variant> Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return Value.Aggregate(0x2D2816FE, (cur, next) => cur * 397 ^ next.GetHashCode());
+            }
+        }
     }
 
     internal class VariantTuple : IVariantSequence
@@ -469,6 +502,14 @@ namespace Protean {
         }
 
         public Variant[] Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return Value.Aggregate(0x2D2816FE, (cur, next) => cur * 397 ^ next.GetHashCode());
+            }
+        }
     }
 
 } // Protean

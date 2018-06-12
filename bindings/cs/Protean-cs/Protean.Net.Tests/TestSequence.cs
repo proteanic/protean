@@ -102,6 +102,22 @@ namespace Protean.Test
         }
 
         [Test]
+        public void TestListHashCode()
+        {
+            Variant v1 = new Variant(Variant.EnumType.List);
+            v1.Add(new Variant("value1"));
+            v1.Add(new Variant("value2"));
+
+            Variant v2 = new Variant(Variant.EnumType.List);
+            v2.Add(new Variant("value1"));
+            v2.Add(new Variant("value2"));
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
+        }
+
+        [Test]
         public void TestTupleConstruction()
         {
             Variant v = new Variant(Variant.EnumType.Tuple, 2);
@@ -178,6 +194,22 @@ namespace Protean.Test
             Assert.AreEqual(0, v1.CompareTo(v1));
             Assert.AreEqual(-1, v1.CompareTo(v2));
             Assert.AreEqual(1, v2.CompareTo(v1));
+        }
+
+        [Test]
+        public void TestTupleHashCode()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Tuple, 2);
+            v1[0] = new Variant("value1");
+            v1[1] = new Variant("value2");
+
+            Variant v2 = new Variant(Variant.EnumType.Tuple, 2);
+            v2[0] = new Variant("value1");
+            v2[1] = new Variant("value2");
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
         }
     }
 }

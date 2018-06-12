@@ -96,6 +96,22 @@ namespace Protean.Test
         }
 
         [Test]
+        public void TestDictionaryHashCode()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Dictionary);
+            v1.Add("key1", new Variant("value1"));
+            v1.Add("key2", new Variant("value2"));
+
+            Variant v2 = new Variant(Variant.EnumType.Dictionary);
+            v2.Add("key2", new Variant("value2"));
+            v2.Add("key1", new Variant("value1"));
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
+        }
+
+        [Test]
         public void TestBagConstruction()
         {
             Variant v = new Variant(Variant.EnumType.Bag);
@@ -216,6 +232,22 @@ namespace Protean.Test
             Assert.AreEqual(1, v3.CompareTo(v1));
             Assert.AreEqual(-1, v1.CompareTo(v4));
             Assert.AreEqual(1, v4.CompareTo(v1));
+        }
+
+        [Test]
+        public void TestBagHashCode()
+        {
+            Variant v1 = new Variant(Variant.EnumType.Bag);
+            v1.Add("key1", new Variant("value1"));
+            v1.Add("key2", new Variant("value2"));
+
+            Variant v2 = new Variant(Variant.EnumType.Bag);
+            v2.Add("key1", new Variant("value1"));
+            v2.Add("key2", new Variant("value2"));
+
+            Assert.AreEqual(v1, v2);
+            Assert.AreNotSame(v1, v2);
+            Assert.AreEqual(v1.GetHashCode(), v2.GetHashCode());
         }
     }
 }

@@ -804,10 +804,10 @@ namespace Protean {
             return Equals(obj as Variant);
         }
 
-		public override int GetHashCode()
-		{
-			return  base.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         public static bool operator ==(Variant lhs, Variant rhs)
         {
