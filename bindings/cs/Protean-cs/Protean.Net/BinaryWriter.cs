@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 
 namespace Protean
 {
@@ -78,11 +79,11 @@ namespace Protean
             WriteVariant(v);
         }
 
-        public static int GetBytes(Variant value, BinaryMode mode, byte[] buffer, int bufferIndex)
+        public static int GetBytes(Variant value, BinaryMode mode, byte[] buffer, int bufferOffset)
         {
-            using (MemoryStream ms = new MemoryStream(buffer, bufferIndex, buffer.Length - bufferIndex))
+            using (var ms = new MemoryStream(buffer, bufferOffset, buffer.Length - bufferOffset))
             {
-                using (BinaryWriter writer = new BinaryWriter(ms, mode))
+                using (var writer = new BinaryWriter(ms, mode))
                 {
                     writer.Write(value);
                 }
@@ -105,7 +106,7 @@ namespace Protean
         }
 
         // This doesn't seem to support Unicode properly
-        private void Write(string arg)
+        private void WriteString(string arg)
         {
             int length = arg.Length;
             byte[] bytes = new byte[length];
@@ -115,8 +116,8 @@ namespace Protean
                 bytes[i] = (byte)arg[i];
             }
 
-            Write(length);
-            Write(bytes, true);
+            WriteInt(length);
+            WriteBytes(bytes, true);
         }
 
         private static int GetByteCountString(string arg)
@@ -124,80 +125,80 @@ namespace Protean
             return sizeof(Int32) + GetByteCountBytes(arg.Length, true);
         }
 
-        private void Write(TimeSpan arg)
+        private void WriteTimeSpan(TimeSpan arg)
         {
-            Write((Int64)arg.TotalMilliseconds);
+            WriteInt64((Int64)arg.TotalMilliseconds);
         }
 
         private static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
 
-        private void Write(DateTime arg)
+        private void WriteDateTime(DateTime arg)
         {
             if (arg == DateTime.MaxValue)
             {
-                Write(MaxDateTimeMillis);
+                WriteInt64(MaxDateTimeMillis);
             }
             else
             {
-                Write((arg.Ticks - Variant.MinDateTime.Ticks) / 10000);
+                WriteInt64((arg.Ticks - Variant.MinDateTime.Ticks) / 10000);
             }
         }
 
-        private void Write(byte arg)
+        private void WriteByte(byte arg)
         {
             m_filter.WriteByte(arg);
         }
 
-        private void Write(Int32 arg)
+        private void WriteInt(Int32 arg)
         {
-            Write(BitConverter.GetBytes(arg));
+            WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void Write(UInt32 arg)
+        private void WriteUInt32(UInt32 arg)
         {
-            Write(BitConverter.GetBytes(arg));
+            WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void Write(Int64 arg)
+        private void WriteInt64(Int64 arg)
         {
-            Write(BitConverter.GetBytes(arg));
+            WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void Write(UInt64 arg)
+        private void WriteUInt64(UInt64 arg)
         {
-            Write(BitConverter.GetBytes(arg));
+            WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void Write(float arg)
+        private void WriteFloat(float arg)
         {
-            Write(BitConverter.GetBytes(arg));
+            WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void Write(double arg)
+        private void WriteDouble(double arg)
         {
-            Write(BitConverter.DoubleToInt64Bits(arg));
+            WriteInt64(BitConverter.DoubleToInt64Bits(arg));
         }
 
-        private void Write(byte[] arg)
+        private void WriteBytes(byte[] arg)
         {
             m_filter.Write(arg, 0, arg.Length);
         }
 
-        private void Write(bool arg)
+        private void WriteBool(bool arg)
         {
-            Write((arg ? 1 : 0));
+            WriteInt(arg ? 1 : 0);
         }
 
-        private void Write(byte[] bytes, bool writePadding)
+        private void WriteBytes(byte[] bytes, bool writePadding)
         {
-            Write(bytes);
+            WriteBytes(bytes);
 
             if (writePadding)
             {
                 int residual = (4 - (bytes.Length % 4)) % 4;
                 for (int i = 0; i < residual; ++i)
                 {
-                    Write((byte)0);
+                    WriteByte((byte)0);
                 }
             }
         }
@@ -208,7 +209,7 @@ namespace Protean
             return byteCount + residual;
         }
 
-        private void Write(DataTable arg)
+        private void WriteDataTable(DataTable arg)
         {
 #if !DISABLE_DATATABLE
             int numCols = arg.Columns.Count;
@@ -225,21 +226,21 @@ namespace Protean
             }
 
             // Write number of columns
-            Write(numCols);
+            WriteInt(numCols);
 
             // Write number of rows
-            Write(numRows);
+            WriteInt(numRows);
 
             // Write column types
             foreach (VariantBase.EnumType colType in colTypes)
             {
-                Write((int)colType);
+                WriteInt((int)colType);
             }
 
             // Write column names
             foreach (string colName in colNames)
             {
-                Write(colName);
+                WriteString(colName);
             }
 
             // Write columns
@@ -264,17 +265,7 @@ namespace Protean
         private static int GetByteCountDataTable(DataTable arg)
         {
 #if !DISABLE_DATATABLE
-            int numCols = arg.Columns.Count;
-
-            VariantBase.EnumType[] colTypes = new VariantBase.EnumType[numCols];
-            string[] colNames = new string[numCols];
-
-            for (int i = 0; i < numCols; ++i)
-            {
-                DataColumn col = arg.Columns[i];
-                colTypes[i] = VariantPrimitiveBase.TypeToEnum(col.DataType);
-                colNames[i] = col.ColumnName;
-            }
+            int numCols = arg.Columns.Count;           
 
             // Write number of columns
             var writeCount = sizeof(int);
@@ -283,18 +274,18 @@ namespace Protean
             writeCount += sizeof(int);
 
             // Write column types
-            writeCount += sizeof(int) * colTypes.Length;
+            writeCount += sizeof(int) * numCols;
 
             // Write column names
-            foreach (string colName in colNames)
+            foreach (var column in arg.Columns.Cast<DataColumn>())
             {
-                writeCount += GetByteCountString(colName);
+                writeCount += GetByteCountString(column.ColumnName);
             }
 
             // Write columns
             for (int i = 0; i < numCols; ++i)
             {
-                var colWriteCounter = GetWriteCounterDelegate(colTypes[i]);
+                var colWriteCounter = GetWriteCounterDelegate(VariantPrimitiveBase.TypeToEnum(arg.Columns[i].DataType));
 
                 foreach (DataRow item in arg.Rows)
                 {
@@ -312,12 +303,12 @@ namespace Protean
 #endif
         }
 
-        private void Write(TypedArray arg)
+        private void WriteArray(TypedArray arg)
         {
             var writer = GetWriterDelegate(arg.ElementType);
 
-            Write(arg.Count);
-            Write((int)arg.ElementType);
+            WriteInt(arg.Count);
+            WriteInt((int)arg.ElementType);
 
             for (int i = 0; i < arg.Count; ++i)
             {
@@ -331,34 +322,34 @@ namespace Protean
             switch (type)
             {
                 case VariantBase.EnumType.Float:
-                    writer = o => Write((float) o);
+                    writer = o => WriteFloat((float) o);
                     break;
                 case VariantBase.EnumType.Double:
-                    writer = o => Write((double) o);
+                    writer = o => WriteDouble((double) o);
                     break;
                 case VariantBase.EnumType.String:
-                    writer = o => Write((string) o);
+                    writer = o => WriteString((string) o);
                     break;
                 case VariantBase.EnumType.Boolean:
-                    writer = o => Write((bool) o);
+                    writer = o => WriteBool((bool) o);
                     break;
                 case VariantBase.EnumType.Int32:
-                    writer = o => Write((int) o);
+                    writer = o => WriteInt((int) o);
                     break;
                 case VariantBase.EnumType.UInt32:
-                    writer = o => Write((uint) o);
+                    writer = o => WriteUInt32((uint) o);
                     break;
                 case VariantBase.EnumType.Int64:
-                    writer = o => Write((long) o);
+                    writer = o => WriteInt64((long) o);
                     break;
                 case VariantBase.EnumType.UInt64:
-                    writer = o => Write((ulong) o);
+                    writer = o => WriteUInt64((ulong) o);
                     break;
                 case VariantBase.EnumType.Time:
-                    writer = o => Write((TimeSpan) o);
+                    writer = o => WriteTimeSpan((TimeSpan) o);
                     break;
                 case VariantBase.EnumType.DateTime:
-                    writer = o => Write((DateTime) o);
+                    writer = o => WriteDateTime((DateTime) o);
                     break;
                 default:
                     throw new VariantException("Case exhaustion: " + type);
@@ -430,7 +421,7 @@ namespace Protean
         private void WriteVariant(Variant v)
         {
             VariantBase.EnumType type = v.Type;
-            Write((Int32)type);
+            WriteInt((Int32)type);
 
             switch (type)
             {
@@ -438,38 +429,38 @@ namespace Protean
                     break;
                 case VariantBase.EnumType.String:
                 case VariantBase.EnumType.Any:
-                    Write(v.As<string>());
+                    WriteString(v.As<string>());
                     break;
                 case VariantBase.EnumType.Float:
-                    Write(v.As<float>());
+                    WriteFloat(v.As<float>());
                     break;
                 case VariantBase.EnumType.Double:
-                    Write(v.As<double>());
+                    WriteDouble(v.As<double>());
                     break;
                 case VariantBase.EnumType.Int32:
-                    Write(v.As<Int32>());
+                    WriteInt(v.As<Int32>());
                     break;
                 case VariantBase.EnumType.UInt32:
-                    Write(v.As<UInt32>());
+                    WriteUInt32(v.As<UInt32>());
                     break;
                 case VariantBase.EnumType.Int64:
-                    Write(v.As<Int64>());
+                    WriteInt64(v.As<Int64>());
                     break;
                 case VariantBase.EnumType.UInt64:
-                    Write(v.As<UInt64>());
+                    WriteUInt64(v.As<UInt64>());
                     break;
                 case VariantBase.EnumType.Boolean:
-                    Write(v.As<bool>());
+                    WriteBool(v.As<bool>());
                     break;
                 case VariantBase.EnumType.Time:
-                    Write(v.As<TimeSpan>());
+                    WriteTimeSpan(v.As<TimeSpan>());
                     break;
                 case VariantBase.EnumType.DateTime:
-                    Write(v.As<DateTime>());
+                    WriteDateTime(v.As<DateTime>());
                     break;
                 case VariantBase.EnumType.List:
                 case VariantBase.EnumType.Tuple:
-                    Write(v.Count);
+                    WriteInt(v.Count);
                     foreach (VariantItem item in v)
                     {
                         WriteVariant(item.Value);
@@ -477,43 +468,43 @@ namespace Protean
                     break;
                 case VariantBase.EnumType.Dictionary:
                 case VariantBase.EnumType.Bag:
-                    Write(v.Count);
+                    WriteInt(v.Count);
                     foreach (VariantItem item in v)
                     {
-                        Write(item.Key);
+                        WriteString(item.Key);
                         WriteVariant(item.Value);
                     }
                     break;
                 case VariantBase.EnumType.TimeSeries:
-                    Write(v.Count);
+                    WriteInt(v.Count);
                     foreach (VariantItem item in v)
                     {
-                        Write(item.Time);
+                        WriteDateTime(item.Time);
                         WriteVariant(item.Value);
                     }
                     break;
                 case VariantBase.EnumType.Object:
                     IVariantObject o = v.AsObject();
-                    Write(o.Class);
-                    Write(o.Version);
+                    WriteString(o.Class);
+                    WriteInt(o.Version);
                     WriteVariant(o.Deflate());
                     break;
                 case VariantBase.EnumType.Exception:
                     VariantExceptionInfo x = v.AsException();
-                    Write(x.Class);
-                    Write(x.Message);
-                    Write(x.Source);
-                    Write(x.Stack);
+                    WriteString(x.Class);
+                    WriteString(x.Message);
+                    WriteString(x.Source);
+                    WriteString(x.Stack);
                     break;
                 case VariantBase.EnumType.Buffer:
-                    Write(v.AsBuffer().Length);
-                    Write(v.AsBuffer(), true);
+                    WriteInt(v.AsBuffer().Length);
+                    WriteBytes(v.AsBuffer(), true);
                     break;
                 case VariantBase.EnumType.DataTable:
-                    Write(v.AsDataTable());
+                    WriteDataTable(v.AsDataTable());
                     break;
                 case VariantBase.EnumType.Array:
-                    Write(v.AsArray());
+                    WriteArray(v.AsArray());
                     break;
                 default:
                     throw new VariantException("Case exhaustion: " + type.ToString());
@@ -524,7 +515,6 @@ namespace Protean
         {
             VariantBase.EnumType type = v.Type;
             var writeCount = sizeof(Int32);
-
             switch (type)
             {
                 case VariantBase.EnumType.None:
