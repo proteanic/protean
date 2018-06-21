@@ -105,7 +105,6 @@ namespace Protean
             m_stream.Write(BitConverter.GetBytes((int)m_mode), 0, 4);
         }
 
-        // This doesn't seem to support Unicode properly
         private void WriteString(string arg)
         {
             int length = arg.Length;
@@ -113,6 +112,11 @@ namespace Protean
 
             for (int i = 0; i < length; ++i)
             {
+                if (arg[i] > byte.MaxValue)
+                {
+                    throw new NotSupportedException("Unicode characters that need more than one byte are not supported");
+                }
+
                 bytes[i] = (byte)arg[i];
             }
 
