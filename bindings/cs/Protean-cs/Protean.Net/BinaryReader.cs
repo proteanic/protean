@@ -4,8 +4,7 @@ using System.IO;
 using System.Text;
 
 namespace Protean {
-
-    public class BinaryReader
+    public sealed class BinaryReader
     {
         public BinaryReader(Stream stream, BinaryMode mode, IVariantObjectFactory factory, bool requireSeekableReader)
         {
@@ -62,17 +61,17 @@ namespace Protean {
 			return FromBytes(bytes, BinaryMode.Default, null);
 		}
 
-    	protected long Position
+    	public long Position
     	{
 			get { return m_filter.Position; }
     	}
 
-		protected void Seek(long position, SeekOrigin origin)
+        public void Seek(long position, SeekOrigin origin)
 		{
 			m_filter.Seek(position, origin);
 		}
 
-    	protected void ReadHeader()
+        public void ReadHeader()
         {
             byte[] bytes = new byte[4];
             m_stream.Read(bytes, 0, 4);
@@ -120,7 +119,7 @@ namespace Protean {
 
         delegate object ReadDelegate();
 
-        protected Variant ReadVariant()
+        public Variant ReadVariant()
         {
         	Variant.EnumType type = ReadType();
 
@@ -267,7 +266,7 @@ namespace Protean {
             }
         }
 
-    	protected Variant.EnumType ReadType()
+        public Variant.EnumType ReadType()
     	{
     		return (Variant.EnumType)ReadUInt32();
     	}
@@ -288,18 +287,18 @@ namespace Protean {
 
             return bytes;
         }
-		protected byte[] ReadBytes(int length)
+        public byte[] ReadBytes(int length)
         {
             byte[] bytes = new byte[length];
             m_filter.Read(bytes, 0, length);
             return bytes;
         }
-		protected bool ReadBoolean()
+        public bool ReadBoolean()
         {
             return ReadInt32()!=0;
         }
 
-		protected string ReadString()
+        public string ReadString()
         {
 			Int32 length = ReadInt32();
 
@@ -320,31 +319,31 @@ namespace Protean {
 				return "";
 			}
         }
-		protected float ReadFloat()
+        public float ReadFloat()
         {
             return BitConverter.ToSingle(ReadBytes(sizeof(float)), 0);
         }
-		protected double ReadDouble()
+        public double ReadDouble()
         {
             return BitConverter.Int64BitsToDouble(ReadInt64());
         }
-		protected Int32 ReadInt32()
+        public Int32 ReadInt32()
         {
             return BitConverter.ToInt32(ReadBytes(sizeof(Int32)), 0);
         }
-		protected UInt32 ReadUInt32()
+        public UInt32 ReadUInt32()
         {
             return BitConverter.ToUInt32(ReadBytes(sizeof(UInt32)), 0);
         }
-		protected Int64 ReadInt64()
+        public Int64 ReadInt64()
         {
             return BitConverter.ToInt64(ReadBytes(sizeof(Int64)), 0);
         }
-		protected UInt64 ReadUInt64()
+        public UInt64 ReadUInt64()
         {
             return BitConverter.ToUInt64(ReadBytes(sizeof(UInt64)), 0);
         }
-		protected TimeSpan ReadTime()
+        public TimeSpan ReadTime()
         {
             Int64 totalMillis = ReadInt64();
 
@@ -353,7 +352,7 @@ namespace Protean {
 
         static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
 
-		protected DateTime ReadDateTime()
+        public DateTime ReadDateTime()
         {
             long totalMillis = ReadInt64();
 
@@ -366,7 +365,7 @@ namespace Protean {
                 return new DateTime(Variant.MinDateTime.Ticks + totalMillis * 10000);
             }
         }
-		protected DataTable ReadDataTable()
+        public DataTable ReadDataTable()
         {
 #if !DISABLE_DATATABLE
             int numCols = ReadInt32();
@@ -505,7 +504,7 @@ namespace Protean {
             return array;
         }
 
-		protected void SkipVariant()
+        public void SkipVariant()
 		{
 			Variant.EnumType type = ReadType();
 

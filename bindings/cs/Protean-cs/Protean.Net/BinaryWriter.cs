@@ -97,7 +97,7 @@ namespace Protean
             return 12 + GetByteCountVariant(variant);
         }
 
-        private void WriteHeader()
+        public void WriteHeader()
         {
             // Create and write the Protean header
             m_stream.Write(BitConverter.GetBytes(BinaryConstants.PROTEAN_MAGIC), 0, 4);
@@ -105,7 +105,7 @@ namespace Protean
             m_stream.Write(BitConverter.GetBytes((int)m_mode), 0, 4);
         }
 
-        private void WriteString(string arg)
+        public void WriteString(string arg)
         {
             int length = arg.Length;
             byte[] bytes = new byte[length];
@@ -129,14 +129,14 @@ namespace Protean
             return sizeof(Int32) + GetByteCountBytes(arg.Length, true);
         }
 
-        private void WriteTimeSpan(TimeSpan arg)
+        public void WriteTimeSpan(TimeSpan arg)
         {
             WriteInt64((Int64)arg.TotalMilliseconds);
         }
 
-        private static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
+        public static readonly long MaxDateTimeMillis = (Variant.MaxDateTime.Ticks - Variant.MinDateTime.Ticks) / 10000;
 
-        private void WriteDateTime(DateTime arg)
+        public void WriteDateTime(DateTime arg)
         {
             if (arg == DateTime.MaxValue)
             {
@@ -148,39 +148,44 @@ namespace Protean
             }
         }
 
-        private void WriteByte(byte arg)
+        public void WriteByte(byte arg)
         {
             m_filter.WriteByte(arg);
         }
 
-        private void WriteInt(Int32 arg)
+        public void WriteInt(Int32 arg)
         {
             WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void WriteUInt32(UInt32 arg)
+        public void WriteUInt32(UInt32 arg)
         {
             WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void WriteInt64(Int64 arg)
+        public void WriteInt64(Int64 arg)
         {
             WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void WriteUInt64(UInt64 arg)
+        public void WriteUInt64(UInt64 arg)
         {
             WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void WriteFloat(float arg)
+        public void WriteFloat(float arg)
         {
             WriteBytes(BitConverter.GetBytes(arg));
         }
 
-        private void WriteDouble(double arg)
+        public void WriteDouble(double arg)
         {
             WriteInt64(BitConverter.DoubleToInt64Bits(arg));
+        }
+
+        public void WriteBool(bool arg)
+        {
+            WriteInt(arg ? 1 : 0);
         }
 
         private void WriteBytes(byte[] arg)
@@ -188,12 +193,7 @@ namespace Protean
             m_filter.Write(arg, 0, arg.Length);
         }
 
-        private void WriteBool(bool arg)
-        {
-            WriteInt(arg ? 1 : 0);
-        }
-
-        private void WriteBytes(byte[] bytes, bool writePadding)
+        public void WriteBytes(byte[] bytes, bool writePadding)
         {
             WriteBytes(bytes);
 
@@ -213,7 +213,7 @@ namespace Protean
             return byteCount + residual;
         }
 
-        private void WriteDataTable(DataTable arg)
+        public void WriteDataTable(DataTable arg)
         {
 #if !DISABLE_DATATABLE
             int numCols = arg.Columns.Count;
@@ -422,7 +422,7 @@ namespace Protean
 
         private delegate int CountDelegate(object arg);
 
-        private void WriteVariant(Variant v)
+        public void WriteVariant(Variant v)
         {
             VariantBase.EnumType type = v.Type;
             WriteInt((Int32)type);
@@ -515,7 +515,7 @@ namespace Protean
             }
         }
 
-        private static int GetByteCountVariant(Variant v)
+        public static int GetByteCountVariant(Variant v)
         {
             VariantBase.EnumType type = v.Type;
             var writeCount = sizeof(Int32);
