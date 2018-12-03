@@ -304,15 +304,8 @@ namespace Protean {
 
 			if (length > 0)
 			{
-				byte[] bytes = ReadBytes(length, true);
-
-				unsafe
-				{
-					fixed (byte* ptr = bytes)
-					{
-					    return Encoding.UTF8.GetString(ptr, length);
-					}
-				}
+				var bytes = ReadBytes(length, true);
+			    return Encoding.UTF8.GetString(bytes);
 			}
 			else
 			{

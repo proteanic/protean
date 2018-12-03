@@ -18,6 +18,7 @@ namespace Protean.Test
             double argDouble = double.MaxValue;
             float argFloat = float.MaxValue;
             string argString = "test string";
+            string argUnicodeString = "öɏॳ";
             DateTime argDateTime = new DateTime(2010, 1, 2, 3, 4, 5, 6);
             TimeSpan argTime = new TimeSpan(0, 1, 2, 3, 4);
 
@@ -30,6 +31,7 @@ namespace Protean.Test
             v1.Add("Float", new Variant(argFloat));
             v1.Add("Double", new Variant(argDouble));
             v1.Add("String", new Variant(argString));
+            v1.Add("UnicodeString", new Variant(argUnicodeString));
             v1.Add("DateTime", new Variant(argDateTime));
             v1.Add("Time", new Variant(argTime));
             v1.Add("None", new Variant(Variant.EnumType.None));
@@ -41,6 +43,7 @@ namespace Protean.Test
 
             Assert.AreEqual(v2.Type, Variant.EnumType.Dictionary);
             Assert.AreEqual(v2["String"].Type, Variant.EnumType.String);
+            Assert.AreEqual(v2["UnicodeString"].Type, Variant.EnumType.String);
             Assert.AreEqual(v2["Int32"].Type, Variant.EnumType.Int32);
             Assert.AreEqual(v2["UInt32"].Type, Variant.EnumType.UInt32);
             Assert.AreEqual(v2["Int64"].Type, Variant.EnumType.Int64);
@@ -53,6 +56,7 @@ namespace Protean.Test
             Assert.AreEqual(v2["None"].Type, Variant.EnumType.None);
 
             Assert.AreEqual(v2["String"].As<string>(), argString);
+            Assert.AreEqual(v2["UnicodeString"].As<string>(), argUnicodeString);
             Assert.AreEqual(v2["Int32"].As<Int32>(), argInt32);
             Assert.AreEqual(v2["UInt32"].As<UInt32>(), argUInt32);
             Assert.AreEqual(v2["Int64"].As<Int64>(), argInt64);
