@@ -1,0 +1,21 @@
+version: '{build}'
+environment:
+  CLI_VERSION: latest
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+image: Visual Studio 2017
+configuration:
+    - Release
+skip_tags: true
+before_build:
+    - cd bindings/cs/Protean-cs
+    - dotnet restore
+build_script:
+    - dotnet build --no-restore --configuration Release
+test_script:
+    - dotnet test Protean.Net.Tests/ --no-build --no-restore --configuration Release
+artifacts:
+- path: .\**\*.nupkg
+  name: NuGet
+nuget:
+  disable_publish_on_pr: true
