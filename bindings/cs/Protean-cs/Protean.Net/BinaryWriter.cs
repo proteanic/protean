@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 
 namespace Protean
 {
@@ -107,20 +108,9 @@ namespace Protean
 
         public void WriteString(string arg)
         {
-            int length = arg.Length;
-            byte[] bytes = new byte[length];
+            var bytes = Encoding.UTF8.GetBytes(arg);
 
-            for (int i = 0; i < length; ++i)
-            {
-                if (arg[i] > byte.MaxValue)
-                {
-                    throw new NotSupportedException("Unicode characters that need more than one byte are not supported");
-                }
-
-                bytes[i] = (byte)arg[i];
-            }
-
-            WriteInt(length);
+            WriteInt(bytes.Length);
             WriteBytes(bytes, true);
         }
 
