@@ -82,6 +82,7 @@ Global
 		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.vc141 Static Release|Win32.ActiveCfg = vc141 Static Release|Win32
 		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.vc141 Static Release|Win32.Build.0 = vc141 Static Release|Win32
 		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.vc141 Static Release|x64.ActiveCfg = vc141 Static Release|x64
+		{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}.vc141 Static Release|x64.Build.0 = vc141 Static Release|x64
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.vc120 Debug|Win32.ActiveCfg = vc120 Debug|Win32
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.vc120 Debug|Win32.Build.0 = vc120 Debug|Win32
 		{41BDA0CB-3049-41E1-9F75-3D915B71EF5B}.vc120 Debug|x64.ActiveCfg = vc120 Debug|x64
