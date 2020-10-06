@@ -7,6 +7,8 @@
 #include <protean/variant.hpp>
 #include <protean/detail/data_table_column_serializers.hpp>
 
+#include <stack>
+
 namespace protean {
 
     class object_factory;
