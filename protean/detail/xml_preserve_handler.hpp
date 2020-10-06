@@ -6,6 +6,8 @@
 #include <protean/detail/xml_handler_base.hpp>
 #include <protean/variant.hpp>
 
+#include <stack>
+
 namespace protean { namespace detail {
 
     class xml_preserve_handler :

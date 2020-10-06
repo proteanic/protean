@@ -2,6 +2,7 @@
 #define PROTEAN_DETAIL_XML_WRITER_IMPL_HPP
 
 #include <protean/config.hpp>
+
 #include <protean/xml_common.hpp>
 #include <protean/variant.hpp>
 

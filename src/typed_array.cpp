@@ -2,6 +2,7 @@
 #include <protean/variant.hpp>
 #include <protean/detail/hash.hpp>
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/bind.hpp>
 #include <boost/cast.hpp>
 #include <boost/function.hpp>
