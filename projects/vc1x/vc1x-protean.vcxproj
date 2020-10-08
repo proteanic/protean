@@ -97,6 +97,38 @@
       <Configuration>vc141 Static Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Debug|Win32">
+      <Configuration>vc142 Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Debug|x64">
+      <Configuration>vc142 Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Release|Win32">
+      <Configuration>vc142 Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Release|x64">
+      <Configuration>vc142 Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Static Debug|Win32">
+      <Configuration>vc142 Static Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Static Debug|x64">
+      <Configuration>vc142 Static Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Static Release|Win32">
+      <Configuration>vc142 Static Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vc142 Static Release|x64">
+      <Configuration>vc142 Static Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AA074FA4-0F64-4EE6-9397-4EB25B17F4AF}</ProjectGuid>
@@ -112,6 +144,9 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="$(Configuration.StartsWith('vc141'))">
     <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="$(Configuration.StartsWith('vc142'))">
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="vc1x-configuration-processor.props" />
   <PropertyGroup Condition="'$(ConfiguredOutput)'=='static'">
