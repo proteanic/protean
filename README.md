@@ -4,7 +4,9 @@
 
 `protean` is a library for representing hierarchical data in a uniform way across multiple platforms.
 
-The library defines a `variant` object that can hold primitive data as well as collections (e.g. lists, dictionaries) with arbitrary depth. The variant can be inspected, enumerated, and/or serialised to XML/binary format.
+The library defines a `variant` object that can hold primitive data as well as collections (e.g.
+lists, dictionaries) with arbitrary depth. The variant can be inspected, enumerated, and/or serialised
+to XML/binary format.
 
 Protean has implementations in C++, C# and Python.
 
@@ -14,23 +16,25 @@ Protean has implementations in C++, C# and Python.
 
 Protean is known to build on:
 
-- Windows with MS Visual Studio 2013, 2015, 2017
-- Mac with scons 3.0.1 and LLVM 9.0.0
-- RHEL Linux with GCC 4.8.5
+- Windows with MS Visual Studio
+- Mac with cmake and Apple clang
+- CentOS Linux with cmake and GCC or clang
 
 On Windows, the following method will work:
 
-- Install [Boost](http://www.boost.org/). (Known to work with 1.55 and 1.66.)
-- Install [Xerces](http://xerces.apache.org/). (Known to work with version 3.1.1.)
-- Copy _projects/vc1x/vc1x-paths.props.template_ to _projects/vc1x/vc1x-paths.props_. Edit the latter to set `BOOST_VERSION`, `BOOST_ROOT`, and `XERCES_ROOT` appropriately.
-- Open _projects/vc1x-protean.sln_ in your chosen version of Visual Studio.
-- Choose a configuration, e.g. `vc141 Release` and `x64`, and Build Solution.
+- Install [Boost](http://www.boost.org) 1.69 or later
+- Install [Xerces](http://xerces.apache.org) 3.1 or later
+- Copy _projects/vc1x/vc1x-paths.props.template_ to _projects/vc1x/vc1x-paths.props_ and edit
+  the latter to set `BOOST_VERSION`, `BOOST_ROOT`, and `XERCES_ROOT` appropriately
+- Open _projects/vc1x-protean.sln_ in your chosen version of Visual Studio
+- Choose a configuration, e.g. `vc142 Release` and `x64`, and Build Solution
 
 On other platforms:
 
-- Install `boost`, `xerces` and `scons` dependencies, e.g. via `yum` or `apt-get`.
-- Build via `scons`.
-- If you wish to provide alternate include or lib paths, set `CPPPATH` or `LIBPATH` env vars respectively. You can also override the Boost version, via `BOOST_VERSION`.
+- Install `boost`, `cmake` and `xerces` dependencies, e.g. via `yum` or `apt-get`
+- Build via `mkdir build && cd build && cmake .. && make`, or something like `cmake -G Ninja && ninja` to
+  use a build tool besides the default of `make`
+- Static linking of Boost can be forced via `-DBOOST_STATIC_LINK_PATH=...` if required
 
 ## Usage examples ##
 
