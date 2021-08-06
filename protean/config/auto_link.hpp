@@ -11,7 +11,9 @@
 
 #ifdef _MSC_VER
 
-	#if _MSC_VER >= 1910
+	#if _MSC_VER >= 1920
+		#define PROTEAN_LIB_TOOLSET "vc142"
+	#elif _MSC_VER >= 1910
 		#define PROTEAN_LIB_TOOLSET "vc141"
 	#elif _MSC_VER >= 1900
 		#define PROTEAN_LIB_TOOLSET "vc140"
