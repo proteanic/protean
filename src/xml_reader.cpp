@@ -1,4 +1,7 @@
 #include <protean/xml_reader.hpp>
+
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/detail/xml_default_handler.hpp>
 #include <protean/detail/xml_preserve_handler.hpp>
 #include <protean/detail/xml_utility.hpp>
@@ -133,3 +136,4 @@ namespace protean {
     }
 } // namespace protean
 
+#endif // #ifndef PROTEAN_DISABLE_XML

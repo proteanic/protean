@@ -20,6 +20,7 @@
 #   include <protean/config/auto_link.hpp>
 #endif
 
+#ifndef PROTEAN_DISABLE_XML
 #if !defined(XERCES_BINARY)
 #if defined(_DEBUG)
 #    if defined XERCES_STATIC_LIBRARY
@@ -33,6 +34,7 @@
 #    else
 #       define XERCES_BINARY "xerces-c_3"
 #    endif
+#endif
 #endif
 #endif
 

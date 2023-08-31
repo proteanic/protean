@@ -1,4 +1,7 @@
 #include <protean/detail/xml_default_handler.hpp>
+
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/detail/xml_utility.hpp>
 #include <protean/xml_common.hpp>
 #include <protean/object_proxy.hpp>
@@ -695,3 +698,5 @@ namespace protean { namespace detail {
 
 
 }} // namespace protean::detail
+
+#endif // #ifndef PROTEAN_DISABLE_XML

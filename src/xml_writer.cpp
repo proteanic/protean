@@ -1,4 +1,7 @@
 #include <protean/xml_writer.hpp>
+
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/detail/xml_writer_impl.hpp>
 
 namespace protean {
@@ -17,4 +20,4 @@ namespace protean {
 
 } // namespace protean
 
-
+#endif // #ifndef PROTEAN_DISABLE_XML

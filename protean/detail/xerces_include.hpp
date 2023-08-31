@@ -1,6 +1,8 @@
 #ifndef PROTEAN_DETAIL_XERCES_INCLUDE_HPP
 #define PROTEAN_DETAIL_XERCES_INCLUDE_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/config.hpp>
 
 #include <xercesc/util/PlatformUtils.hpp>
@@ -16,5 +18,7 @@
 #include <xercesc/parsers/SAX2XMLReaderImpl.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/Base64.hpp>
+
+#endif // #ifndef PROTEAN_DISABLE_XML
 
 #endif // PROTEAN_DETAIL_XERCES_INCLUDE_HPP

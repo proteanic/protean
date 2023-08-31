@@ -29,20 +29,23 @@
 namespace protean {
 
     class typed_array;
+    #ifndef PROTEAN_DISABLE_XML
     class xml_reader;
     class xml_writer;
+    #endif
     class binary_reader;
     class binary_writer;
 
     namespace detail {
-         class xml_default_handler;
-         class data_table;
+        #ifndef PROTEAN_DISABLE_XML
+        class xml_default_handler;
+        #endif
+        class data_table;
     }
 
     class PROTEAN_DECL variant_base
     {
     public:
-
         enum enum_type_t
         {
             None                    = 0x00000001,
@@ -130,7 +133,9 @@ namespace protean {
         boost::uint64_t hash(enum_type_t type, boost::uint64_t seed) const;
 
     private:
+        #ifndef PROTEAN_DISABLE_XML
         friend class detail::xml_default_handler;
+        #endif
         friend class binary_reader;
         friend class binary_writer;
     };
@@ -138,5 +143,3 @@ namespace protean {
 } // namespace protean
 
 #endif // PROTEAN_VARIANT_BASE_HPP
-
-

@@ -1,6 +1,8 @@
 #ifndef PROTEAN_XML_COMMON_HPP
 #define PROTEAN_XML_COMMON_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/config.hpp>
 
 #if defined(_MSC_VER)
@@ -44,4 +46,6 @@ namespace protean {
 
 } // namespace protean
 
-#endif // PROTEAN_XML_COMMON_HPP
+#endif // #ifndef PROTEAN_DISABLE_XML
+
+#endif // #ifndef PROTEAN_XML_COMMON_HPP

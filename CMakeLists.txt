@@ -6,6 +6,8 @@ cmake_minimum_required(
   VERSION 3.0)
 
 option(
+  ENABLE_XML_SUPPORT "Enable support for converting to/from XML representation" ON)
+option(
   ENABLE_TESTS "Enable tests" ON)
 option(
   BOOST_STATIC_LINK_PATH "Force required Boost libs to be statically linked using this location" "")
@@ -24,16 +26,17 @@ endif()
 
 # Common compiler / linker setup
 
+find_package(
+  Boost REQUIRED COMPONENTS iostreams)
+
+include_directories(
+  SYSTEM ${Boost_INCLUDE_DIRS})
 add_compile_options(
   -fdata-sections -ffunction-sections -Wno-deprecated-declarations -Wno-multichar)
 
-set(
-  BoostLibs boost_date_time boost_filesystem boost_iostreams boost_regex boost_system)
-if(BOOST_STATIC_LINK_PATH)
-  list(
-    TRANSFORM BoostLibs PREPEND ${BOOST_STATIC_LINK_PATH}/lib)
-  list(
-    TRANSFORM BoostLibs APPEND .a)
+if(NOT ENABLE_XML_SUPPORT)
+  add_compile_definitions(
+    PROTEAN_DISABLE_XML)
 endif()
 
 # Platform-specific compiler / linker setup (including setting up variables for later use)
@@ -59,12 +62,20 @@ set_target_properties(
 target_include_directories(
   protean PUBLIC .)
 target_link_libraries(
-  protean PUBLIC xerces-c ${BoostLibs} z)
+  protean PUBLIC Boost::iostreams z)
+
+if(ENABLE_XML_SUPPORT)
+  target_link_libraries(
+    protean PUBLIC xerces-c)
+endif()
 
 # Target protean_test
 
 if(ENABLE_TESTS)
   enable_testing()
+
+  find_package(
+    Boost REQUIRED COMPONENTS unit_test_framework)
 
   file(
     GLOB_RECURSE TestSourceFiles
@@ -75,5 +86,5 @@ if(ENABLE_TESTS)
   target_compile_definitions(
     protean_test PRIVATE BOOST_TEST_DYN_LINK)
   target_link_libraries(
-    protean_test PRIVATE protean boost_unit_test_framework)
+    protean_test PRIVATE protean Boost::unit_test_framework)
 endif()
