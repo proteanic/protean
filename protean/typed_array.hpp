@@ -61,7 +61,9 @@ namespace protean {
         const variant_base& at(size_t n) const;
 
     private:
+        #ifndef PROTEAN_DISABLE_XML
         friend class detail::xml_default_handler;
+        #endif
         friend class binary_reader;
         friend class binary_writer;
 
