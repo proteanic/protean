@@ -1,4 +1,7 @@
 #include <protean/detail/xml_utility.hpp>
+
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/detail/xerces_include.hpp>
 #include <protean/variant.hpp>
 
@@ -52,3 +55,5 @@ namespace protean { namespace detail {
     }
 
 }} // protean::detail
+
+#endif // #ifndef PROTEAN_DISABLE_XML

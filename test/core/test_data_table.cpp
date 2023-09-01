@@ -5,8 +5,6 @@ using boost::unit_test::test_suite;
 
 #include <protean/variant.hpp>
 #include <protean/detail/data_table.hpp>
-#include <protean/xml_writer.hpp>
-#include <protean/xml_reader.hpp>
 #include <boost/date_time.hpp>
 #include <protean/binary_writer.hpp>
 #include <protean/binary_reader.hpp>

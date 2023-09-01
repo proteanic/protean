@@ -1,6 +1,8 @@
 #ifndef PROTEAN_DETAIL_XML_WRITER_IMPL_HPP
 #define PROTEAN_DETAIL_XML_WRITER_IMPL_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/config.hpp>
 
 #include <protean/xml_common.hpp>
@@ -56,5 +58,6 @@ namespace protean { namespace detail {
 
 }} // namespace protean::detail
 
+#endif // #ifndef PROTEAN_DISABLE_XML
 
-#endif // PROTEAN_DETAIL_XML_WRITER_IMPL_HPP
+#endif // #ifndef PROTEAN_DETAIL_XML_WRITER_IMPL_HPP

@@ -1,6 +1,8 @@
 #ifndef PROTEAN_DETAIL_XML_PRESERVE_HANDLER_HPP
 #define PROTEAN_DETAIL_XML_PRESERVE_HANDLER_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/config.hpp>
 
 #include <protean/detail/xml_handler_base.hpp>
@@ -73,4 +75,6 @@ namespace protean { namespace detail {
 
 }} // namespace protean::detail
 
-#endif // PROTEAN_DETAIL_XML_PRESERVE_HANDLER_HPP
+#endif // #ifndef PROTEAN_DISABLE_XML
+
+#endif // #ifndef PROTEAN_DETAIL_XML_PRESERVE_HANDLER_HPP

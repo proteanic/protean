@@ -1,4 +1,7 @@
 #include <protean/detail/xml_writer_impl.hpp>
+
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/detail/xml_utility.hpp>
 #include <protean/detail/base64.hpp>
 #include <protean/detail/data_table.hpp>
@@ -659,3 +662,5 @@ namespace protean { namespace detail {
     }
 
 }} // namespace protean::detail
+
+#endif // #ifndef PROTEAN_DISABLE_XML

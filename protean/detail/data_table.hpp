@@ -114,7 +114,9 @@ namespace protean { namespace detail {
     /**************************************/
     private:
         friend class binary_reader;
+        #ifndef PROTEAN_DISABLE_XML
         friend class xml_default_handler;
+        #endif
 
     /* Member variables */
     /********************/

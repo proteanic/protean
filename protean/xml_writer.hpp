@@ -1,6 +1,8 @@
 #ifndef PROTEAN_XML_WRITER_HPP
 #define PROTEAN_XML_WRITER_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/config.hpp>
 #include <protean/xml_common.hpp>
 #include <protean/variant.hpp>
@@ -30,4 +32,6 @@ namespace protean {
 #    pragma warning(pop)
 #endif
 
-#endif // PROTEAN_XML_WRITER_HPP
+#endif // #ifndef PROTEAN_DISABLE_XML
+
+#endif // #ifndef PROTEAN_XML_WRITER_HPP

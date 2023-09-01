@@ -1,6 +1,8 @@
 #ifndef PROTEAN_DETAIL_XML_UTILITY_HPP
 #define PROTEAN_DETAIL_XML_UTILITY_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/config.hpp>
 
 #include <protean/detail/xerces_include.hpp>
@@ -24,4 +26,6 @@ namespace protean {
 
 }} // protean::detail
 
-#endif // PROTEAN_DETAIL_XML_UTILITY_HPP
+#endif // #ifndef PROTEAN_DISABLE_XML
+
+#endif // #ifndef PROTEAN_DETAIL_XML_UTILITY_HPP

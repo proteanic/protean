@@ -1,5 +1,7 @@
 #include "protean/xml_common.hpp"
 
+#ifndef PROTEAN_DISABLE_XML
+
 namespace protean {
 
     const char* xml_default_element  = "Variant";
@@ -12,3 +14,5 @@ namespace protean {
     const char* xml_data             = "__data__";
 
 } // namespace protean
+
+#endif // #ifndef PROTEAN_DISABLE_XML

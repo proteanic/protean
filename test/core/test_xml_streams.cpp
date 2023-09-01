@@ -1,3 +1,5 @@
+#ifndef PROTEAN_DISABLE_XML
+
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test.hpp>  
 
@@ -751,3 +753,5 @@ BOOST_AUTO_TEST_CASE(test_xml_float)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif // #ifndef PROTEAN_DISABLE_XML

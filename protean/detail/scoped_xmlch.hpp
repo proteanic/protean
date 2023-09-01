@@ -1,6 +1,8 @@
 #ifndef PROTEAN_DETAIL_SCOPED_XMLCH_HPP
 #define PROTEAN_DETAIL_SCOPED_XMLCH_HPP
 
+#ifndef PROTEAN_DISABLE_XML
+
 #include <protean/detail/xerces_include.hpp>
 #include <boost/utility.hpp>
 
@@ -38,4 +40,6 @@ namespace protean { namespace detail {
 
 }} // protean::detail
 
-#endif // PROTEAN_DETAIL_SCOPED_XMLCH_HPP
+#endif // #ifndef PROTEAN_DISABLE_XML
+
+#endif // #ifndef PROTEAN_DETAIL_SCOPED_XMLCH_HPP
